@@ -41,6 +41,9 @@
 		</property>
 	</bean>
 
+	<!-- form:form CSRF 자동 필드 (RequestMappingHandlerAdapter 속성 대신 빈 등록) -->
+	<bean id="requestDataValueProcessor" class="org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor"/>
+
 	<!-- setting Locale Locale Interceptor 설정하기  -->
 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
 

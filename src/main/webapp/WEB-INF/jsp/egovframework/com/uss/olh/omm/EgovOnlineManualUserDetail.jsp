@@ -20,6 +20,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssOlhOmm.onlineManualVO.title"/></c:set>
 <!DOCTYPE html>
@@ -35,6 +36,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="onlineManualForm"  method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -70,7 +72,7 @@
 		<tr>
 			<th><spring:message code="comUssOlhOmm.onlineManualVO.onlineMnlDc" /></th>
 			<td class="cnt">
-				<span style="white-space:pre-line"><c:out value="${result.onlineMnlDc}"/></span>
+				<span class="ck-content"><c:out value="${egovc:sanitizeHtml(result.onlineMnlDc)}" escapeXml="false"/></span>
 			</td>
 		</tr>
 		

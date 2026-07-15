@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,7 +89,7 @@ public class EgovNoteManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "쪽지관리", order = 840, gid = 50)
-	@RequestMapping(value = "/uss/ion/ntm/registEgovNoteManage.do")
+	@RequestMapping("/uss/ion/ntm/registEgovNoteManage.do")
 	public String EgovNoteRecptnRegistForm(NoteManageVO noteManage, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 
@@ -137,7 +138,7 @@ public class EgovNoteManageController {
 	 * @return String -리턴 URL
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ntm/registEgovNoteManageActor.do")
+	@PostMapping("/uss/ion/ntm/registEgovNoteManageActor.do")
 	public String EgovNoteRecptnRegist(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("noteManage") NoteManageVO noteManage, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -228,7 +229,7 @@ public class EgovNoteManageController {
 	 * @throws Exception
 	 */
 
-	@RequestMapping(value = "/uss/ion/ntm/listEgovNoteEmpListPopup.do")
+	@RequestMapping("/uss/ion/ntm/listEgovNoteEmpListPopup.do")
 	public String EgovEgovNoteEmpList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 

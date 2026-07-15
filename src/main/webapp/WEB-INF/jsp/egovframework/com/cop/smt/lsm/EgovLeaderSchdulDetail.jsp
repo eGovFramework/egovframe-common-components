@@ -78,7 +78,8 @@ function fn_egov_delete_LeaderSchdul(){
 	<!-- 타이틀 -->
 	<h2><spring:message code="comCopSmtLsm.leaderSchdulDetail.title" /></h2><!-- 간부일정관리 상세보기 -->
 
-	<form name="leaderSchdulVO" id="leaderSchdulVO" action="<c:url value='/cop/smt/lsm/mng/modifyLeaderSchdul.do'/>" method="post">
+	<form name="leaderSchdulVO" id="leaderSchdulVO" action="${pageContext.request.contextPath}/cop/smt/lsm/mng/modifyLeaderSchdul.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
@@ -160,8 +161,8 @@ function fn_egov_delete_LeaderSchdul(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_LeaderSchdul(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/lsm/mng/deleteLeaderSchdul.do'/>?schdulId=<c:out value='${leaderSchdulVO.schdulId}'/>" onclick="fn_egov_delete_LeaderSchdul(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulList.do'/>" onclick="fn_egov_list_LeaderSchdul(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_LeaderSchdul(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_LeaderSchdul(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 

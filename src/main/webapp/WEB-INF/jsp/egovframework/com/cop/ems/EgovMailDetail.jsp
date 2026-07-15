@@ -32,7 +32,6 @@
 <title><spring:message code="comCopSymEms.regist.title" /> <spring:message code="title.detail" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
@@ -72,6 +71,7 @@ function fnSelectXml(){
 <!-- 발송메일 상세조회 -->
 
 <form name="detailForm" action ="<c:url value='/cop/ems/deleteSndngMail.action'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 <input name="mssageId" type="hidden" value="${resultInfo.mssageId}"/>
 <input name="atchFileIdList" type="hidden" value="${resultInfo.atchFileId}"/>
@@ -130,7 +130,7 @@ function fnSelectXml(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		
-		<span class="btn_s"><a href="<c:url value='/cop/ems/deleteSndngMail.do'/>" onClick="fnDelete(); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onClick="fnDelete(); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/cop/ems/selectSndngMailList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	  

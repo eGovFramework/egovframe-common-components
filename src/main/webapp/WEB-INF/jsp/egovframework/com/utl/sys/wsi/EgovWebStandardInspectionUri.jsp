@@ -60,7 +60,9 @@ try {
 	URL url = new URL("https://validator.w3.org/check?uri=" + URLEncoder.encode(rawUri, "UTF-8"));
 
 	URLConnection uc = url.openConnection();
-	uc.setRequestProperty("Cookie","JSESSIONID="+session.getId());
+	// [보안조치] 외부(validator.w3.org)로 세션 쿠키(JSESSIONID)를 전송하지 않도록 제거.
+	// 외부 사이트로의 아웃바운드 요청에 애플리케이션 세션 식별자를 포함시키면
+	// 제3자에게 세션이 유출되어 세션 하이재킹에 악용될 수 있음(CWE-201).
 
 	buf = new BufferedReader(new InputStreamReader(uc.getInputStream(), "utf-8"));
 	String str = null;

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -148,7 +149,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/selectQnaDetail.do")
+	@PostMapping("/uss/olh/qna/selectQnaDetail.do")
 	public String selectQnaDetail(@RequestParam("qaId") String qaId, QnaVO qnaVO,
 			@ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -179,7 +180,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/insertQnaView.do")
+	@PostMapping("/uss/olh/qna/insertQnaView.do")
 	public String insertQnaView(@ModelAttribute("searchVO") QnaVO searchVO, QnaVO qnaVO, Model model) throws Exception {
 
 		// 인증여부 체크
@@ -214,7 +215,7 @@ public class EgovQnaController {
 	 * @return "forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/insertQna.do")
+	@PostMapping("/uss/olh/qna/insertQna.do")
 	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @Valid @ModelAttribute("qnaVO") QnaVO qnaVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -250,7 +251,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQnaView.do")
+	@PostMapping("/uss/olh/qna/updateQnaView.do")
 	public String updateQnaView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -276,7 +277,7 @@ public class EgovQnaController {
 	 * @return "forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQna.do")
+	@PostMapping("/uss/olh/qna/updateQna.do")
 	public String updateQna(HttpServletRequest request, @ModelAttribute("searchVO") QnaVO searchVO,
 			@Valid @ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult) throws Exception {
 
@@ -326,7 +327,7 @@ public class EgovQnaController {
 	 * @return "forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/deleteQna.do")
+	@PostMapping("/uss/olh/qna/deleteQna.do")
 	public String deleteQna(HttpServletRequest request, QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO)
 			throws Exception {
 
@@ -396,7 +397,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaAnswerDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/selectQnaAnswerDetail.do")
+	@PostMapping("/uss/olh/qna/selectQnaAnswerDetail.do")
 	public String selectQnaAnswerDetail(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -416,7 +417,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaAnswerUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQnaAnswerView.do")
+	@PostMapping("/uss/olh/qna/updateQnaAnswerView.do")
 	public String updateQnaAnswerView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -441,7 +442,7 @@ public class EgovQnaController {
 	 * @return "forward:/uss/olh/qnm/selectQnaAnswerList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQnaAnswer.do")
+	@PostMapping("/uss/olh/qna/updateQnaAnswer.do")
 	public String updateQnaAnswer(@Valid QnaVO qnaVO, BindingResult bindingResult,
 			 @ModelAttribute("searchVO") QnaVO searchVO,
 			 Model model

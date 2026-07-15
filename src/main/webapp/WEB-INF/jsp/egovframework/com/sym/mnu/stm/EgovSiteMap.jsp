@@ -100,6 +100,7 @@ function fMenuCreatSiteMap() {
 </head>
 <body>
 <form name="menuCreatManageForm" action ="<c:url value='/sym/mnu/mcm/EgovMenuCreatSelect.do' />" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input name="checkedMenuNoForInsert" type="hidden" />
 <input name="checkedAuthorForInsert"  type="hidden" />

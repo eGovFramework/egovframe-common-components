@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovProgramListManage.jsp
@@ -102,7 +103,6 @@ function fDeleteProgrmManageList() {
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
-//	document.menuManageForm.searchKeyword.value =
 	document.progrmManageForm.pageIndex.value = pageNo;
 	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListManageSelect.do'/>";
    	document.progrmManageForm.submit();
@@ -148,7 +148,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 
 <div class="board">
 	<h1><spring:message code="comSymPrm.programListManage.pageTop.title" /></h1><!-- 프로그램목록관리 -->
-	<form name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListManageSelect.do' />" method="post">
+	<form:form name="progrmManageForm" modelAttribute="searchVO" action ="<c:url value='/sym/prm/EgovProgramListManageSelect.do' />" method="post">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	<input name="checkedProgrmFileNmForDel" type="hidden" />
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -158,7 +158,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 				<input id="F1" class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${searchVO.searchKeyword}'/>" size="60" maxlength="60" onkeypress="press();" title="<spring:message code="title.searchCondition" />" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="selectProgramListManage(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/prm/EgovProgramListRegist.do'/>" onclick="insertProgramListManage(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="insertProgramListManage(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 				<span class="btn_b"><a href="#LINK" onclick="fDeleteProgrmManageList(); return false;" title='<spring:message code="button.delete" />'><spring:message code="button.delete" /></a></span><!-- 삭제 -->
 			</li>
 		</ul>
@@ -199,7 +199,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 			       <input name="checkProgrmFileNm" type="hidden" value="<c:out value='${result.progrmFileNm}'/>"/>
 			    </td>
 			    <td>
-		            <span class="link"><a href="<c:url value='/sym/prm/EgovProgramListDetailSelect.do'/>?progrmFileNm=<c:out value="${result.progrmFileNm}"/>"  onclick="selectUpdtProgramListDetail('<c:out value="${result.progrmFileNm}"/>'); return false;">
+		            <span class="link"><a href="javascript:void(0);"  onclick="selectUpdtProgramListDetail('<c:out value="${result.progrmFileNm}"/>'); return false;">
 		
 		            <c:if test="${fn:length(result.progrmFileNm)> 22}">
 				    	<c:out value="${fn:substring(result.progrmFileNm,0, 22)}"/>...
@@ -242,7 +242,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 	
 	<input type="hidden" name="cmd">
 	<input type="hidden" name="progrmFileNm">
-	</form>
+	</form:form>
 
 </div>
 

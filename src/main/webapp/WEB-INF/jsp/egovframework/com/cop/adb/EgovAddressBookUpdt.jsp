@@ -229,7 +229,7 @@
 				<c:if test="${result.ncrdId == '' || result.ncrdId == NULL}">
 			<td>
 				<!-- 2011.09.05 수정사항 -->
-				<!-- <form name="deleteItem" method="post" action="<c:url value='/cop/adb/deleteUser.do'/>"> -->
+				<!-- <form name="deleteItem" method="post" action="${pageContext.request.contextPath}/cop/adb/deleteUser.do"> -->
 			   	<!-- <input type="hidden" name="emplyrId" value="<c:out value="${result.emplyrId}"/>"/> -->
 			   	<!-- 
  				<span class="button">
@@ -245,7 +245,7 @@
 			<c:if test="${result.emplyrId == '' || result.emplyrId == NULL}">
 			<td>
 				<!-- 2011.09.05 수정사항 -->
-				<!-- <form name="deleteItem" method="post" action="<c:url value='/cop/adb/deleteUser.do'/>"> -->
+				<!-- <form name="deleteItem" method="post" action="${pageContext.request.contextPath}/cop/adb/deleteUser.do"> -->
 			    <!-- <input type="hidden" name="ncrdId" value="<c:out value="${result.ncrdId}"/>"/> -->
 			    <!--
 			    <span class="button">

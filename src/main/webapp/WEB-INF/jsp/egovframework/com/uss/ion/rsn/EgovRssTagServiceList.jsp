@@ -17,6 +17,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,6 +34,18 @@ function linkPage(pageNo){
 	document.listForm.pageIndex.value = pageNo;
 	document.listForm.action = "<c:url value='/uss/ion/rsn/listRssTagService.do'/>";
    	document.listForm.submit();
+}
+
+/* ********************************************************
+ * 상세화면 처리 함수
+ ******************************************************** */
+function fn_egov_detail_RssTagService(rssId){
+	var vFrom = document.listForm;
+	vFrom.rssId.value = rssId;
+	vFrom.action = "<c:url value='/uss/ion/rsn/detailRssTagService.do'/>";
+	vFrom.target = '_blank';
+	vFrom.submit();
+	vFrom.target = '';
 }
 
 
@@ -66,7 +80,7 @@ function fn_egov_search_RssTagManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/ion/rsn/listRssTagService.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/rsn/listRssTagService.do" method="post">
 	<h1><spring:message code="ussIonRsn.rssTagServiceList.rssTagServiceList"/></h1><!-- RSS태그서비스 목록 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다 -->
@@ -117,10 +131,10 @@ function fn_egov_search_RssTagManage(){
 				<td><c:out value="${(rssInfo.pageIndex-1) * rssInfo.pageSize + status.count}"/></td>
 				<td>
 				<div style="visibility:hidden;display:none;"><a href="#LINK_PAGE${status.count}"></a></div>
-				<a href="<c:url value='/uss/ion/rsn/detailRssTagService.do'/>?rssId=${resultInfo.rssId}" target="_blank" title="새 창으로 이동"><c:out value="${resultInfo.trgetSvcNm}"/></a>
+				<a href="javascript:void(0);" onclick="fn_egov_detail_RssTagService('<c:out value="${resultInfo.rssId}"/>'); return false;" title="새 창으로 이동"><c:out value="${resultInfo.trgetSvcNm}"/></a>
 				</td>
 				<td>
-				<a href="<c:url value='/uss/ion/rsn/detailRssTagService.do'/>?rssId=${resultInfo.rssId}" target="_blank" title="새 창으로 이동"><c:out value="${resultInfo.trgetSvcTable}"/></a>
+				<a href="javascript:void(0);" onclick="fn_egov_detail_RssTagService('<c:out value="${resultInfo.rssId}"/>'); return false;" title="새 창으로 이동"><c:out value="${resultInfo.trgetSvcTable}"/></a>
 				</td>
 				<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 			   <td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
@@ -136,8 +150,9 @@ function fn_egov_search_RssTagManage(){
 		</ul>
 	</div>
 <input name="cmd" type="hidden" value="">
+<input type="hidden" name="rssId" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${rssInfo.pageIndex}'/>">
-</form>
+</form:form>
 </div>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -186,7 +187,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprtVO
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/selectMemoReprt.do")
+	@PostMapping("/cop/smt/mrm/selectMemoReprt.do")
 	public String selectMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
 			throws Exception {
 
@@ -222,7 +223,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/addMemoReprt.do")
+	@PostMapping("/cop/smt/mrm/addMemoReprt.do")
 	public String addMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
@@ -263,7 +264,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/modifyMemoReprt.do")
+	@PostMapping("/cop/smt/mrm/modifyMemoReprt.do")
 	public String modifyMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -300,7 +301,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/updateMemoReprt.do")
+	@PostMapping("/cop/smt/mrm/updateMemoReprt.do")
 	public String updateMemoReprt(final MultipartHttpServletRequest multiRequest, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -358,7 +359,7 @@ public class EgovMemoReprtController {
 	 * @param model
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
+	@PostMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
 	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
 			throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -380,7 +381,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/insertMemoReprt.do")
+	@PostMapping("/cop/smt/mrm/insertMemoReprt.do")
 	public String insertMemoReprt(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -442,7 +443,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/deleteMemoReprt.do")
+	@PostMapping("/cop/smt/mrm/deleteMemoReprt.do")
 	public String deleteMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리

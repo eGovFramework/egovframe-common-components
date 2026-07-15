@@ -33,7 +33,6 @@
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
 <title><spring:message code="comUatUap.loginPolicyRegist.title"/></title><!-- 로그인정책 등록 -->
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
@@ -115,7 +114,7 @@ function ipValidate() {
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUatUap.loginPolicyRegist.pageTop.title"/></h2><!-- 로그인정책 등록 -->
-	<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/addLoginPolicy.do' />">
+	<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/addLoginPolicy.do">
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -156,7 +155,7 @@ function ipValidate() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fncLoginPolicyInsert(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/uat/uap/selectLoginPolicyList.do'/>?pageIndex=<c:out value='${loginPolicyVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginPolicyVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncSelectLoginPolicyList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectLoginPolicyList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 	<input type="hidden" name="dplctPermAt" value="Y" >

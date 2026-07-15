@@ -96,7 +96,8 @@ function fn_egov_list_InsttCode(){
 	
 	<!-- 하단 버튼 -->
 	<div class="btn">
-      <form name="formList" action="<c:url value='/sym/ccm/icr/getInsttCodeRecptnList.do'/>" method="post">
+      <form name="formList" action="${pageContext.request.contextPath}/sym/ccm/icr/getInsttCodeRecptnList.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_InsttCodeRecptn(); return false;" /> <!-- 목록 -->
 	  </form>
 	</div>

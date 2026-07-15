@@ -108,6 +108,7 @@ td.rightGap {background:url(<c:url value='/images/egovframework/com/cop/tpl/righ
 <body>
 
 <form action="" name="frm" method="post" >
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="bbsId" value="" />
 	<input type="hidden" name="nttId" value="" />
 	<input type="hidden" name="bbsAttrbCode" value="" />

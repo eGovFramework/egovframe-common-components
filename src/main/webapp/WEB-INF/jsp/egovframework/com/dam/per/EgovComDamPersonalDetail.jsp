@@ -77,7 +77,8 @@
 	<!-- 자바스크립트 경고 태그  -->
 	<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 	
-	<form id="frm" name="frm" action="<c:url value='/dam/per/EgovComDamPersonalModify.do'/>" method="post">
+	<form id="frm" name="frm" action="${pageContext.request.contextPath}/dam/per/EgovComDamPersonalModify.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="knoId" type="hidden">
 	<input type="hidden" id="searchCondition" name="searchCondition" value="${searchVO.searchCondition}" />
 	<input type="hidden" id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />

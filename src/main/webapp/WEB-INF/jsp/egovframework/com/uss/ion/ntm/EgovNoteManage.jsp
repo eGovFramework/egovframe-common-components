@@ -28,7 +28,6 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javaScript">
 /* ********************************************************
@@ -238,7 +237,7 @@ function  fn_egov_recptnEmpSearchPupup(){
 							<form:radiobutton path="recptnSe" value="2" style="width:18px;border: 1px solid #dedede;"/><spring:message code="comUssIonNtm.NoteMange.reference"/>
 							<form:errors path="recptnSe" cssClass="error"/>
 							<!-- 수신/참조자 선택 목록 팝업창 열기 -->
-							<a href="<c:url value='/uss/ion/ntm/listEgovNoteEmpListPopup.do'/>" onClick="fn_egov_recptnEmpSearchPupup();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px;margin-right:10px;" alt="${recptnEmnpList}" title="${recptnEmnpList}"></a>
+							<a href="javascript:void(0);" onClick="fn_egov_recptnEmpSearchPupup();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px;margin-right:10px;" alt="${recptnEmnpList}" title="${recptnEmnpList}"></a>
 							<!-- 수신자 목록 리스트 제외 -->
 							<span class="btn_s"><a href="#LINK" onClick="fn_egov_delete_NoteManage(1);"  title="<spring:message code="comUssIonNtm.NoteMange.delete" /> <spring:message code="input.button" />"><spring:message code="comUssIonNtm.NoteMange.delete" /> </a></span>
 						</div>

@@ -21,6 +21,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -136,7 +137,7 @@ public class EgovDtaUseStatsContoller {
 	 * @param reprtStatsVO - 자료이용현황 VO
 	 * @return String
 	 */
-	@RequestMapping("/sts/dst/getDtaUseStats.do")
+	@PostMapping("/sts/dst/getDtaUseStats.do")
 	public String selectDtaUseStats(@ModelAttribute("dtaUseStatsVO") DtaUseStatsVO dtaUseStatsVO,
 			                         ModelMap model) throws Exception {
 

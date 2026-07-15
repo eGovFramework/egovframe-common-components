@@ -152,12 +152,12 @@ function fncRoleDelete() {
 <input type="hidden" name="pageIndex" value="<c:out value='${roleManageVO.pageIndex}'/>"/>
 </form:form>
 
-<form id="frmIdDelete" name="frmDelete" method="post">
+<form:form id="frmIdDelete" name="frmDelete" modelAttribute="roleManage" method="post" action="${pageContext.request.contextPath}/sec/rmt/EgovRoleDelete.do">
 <input type="hidden" name="roleCode" value="<c:out value='${roleManage.roleCode}'/>"/>
 <input type="hidden" name="searchCondition" value="<c:out value='${roleManageVO.searchCondition}'/>"/>
 <input type="hidden" name="searchKeyword" value="<c:out value='${roleManageVO.searchKeyword}'/>"/>
 <input type="hidden" name="pageIndex" value="<c:out value='${roleManageVO.pageIndex}'/>"/>
-</form>
+</form:form>
 
 </body>
 </html>

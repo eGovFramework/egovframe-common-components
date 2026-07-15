@@ -26,7 +26,6 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js'/>" ></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
@@ -48,8 +47,6 @@ const QUSTNR_POPUP_CONFIG = {
  ******************************************************** */
 function fn_egov_init_QustnrQestnManage(){
 
-	//document.getElementById("qestnrBeginDe").value = "2008-01-01";
-	//document.getElementById("qestnrEndDe").value = "2008-01-30";
 }
 /* ********************************************************
  * 목록 으로 가기
@@ -67,23 +64,11 @@ function fn_egov_save_QustnrQestnManage(form){
 	var vform = document.getElementById("qustnrQestnManageVO")
 	if(confirm("<spring:message code='common.save.msg' />")){
 
-		/* if(form.qestnrCn.value == "" ||
-		   form.getElementById("qestnrTmplatId").value == "" ||
-		   form.getElementById("qestnrId").value == ""
-				){
-			alert("<spring:message code='comUssOlpQqm.regist.qestnrCn'/><spring:message code='comUssOlpQqm.alert.input'/>"); //설문지정보(제목)를  입력해주세요!
-			//form.getElementById("qestnrCn").focus();
-			return;
-		} */
-		
 		if(document.getElementById("qestnrCn").value == "" ||
 				document.getElementById("qestnrTmplatId").value == "" ||
 				document.getElementById("qestnrId").value == ""
 						){
 					alert("<spring:message code='comUssOlpQqm.regist.qestnrCn'/><spring:message code='comUssOlpQqm.alert.input'/>"); //설문지정보(제목)를  입력해주세요!
-					console.log("qestnrCn: "+ $("#qestnrCn").val());
-					console.log("qestnrTmplatId: "+ $("#qestnrTmplatId").val());
-					console.log("qestnrId: "+ $("#qestnrId").val());
 					//form.getElementById("qestnrCn").focus();
 					return;
 		} 		
@@ -93,7 +78,6 @@ function fn_egov_save_QustnrQestnManage(form){
 			return;
 		}else{
 			
-			//form.submit();
 			vform.submit();
 		}
 	}
@@ -236,7 +220,6 @@ $(document).ready(function() {
 function openQustnrModal(type) {
   const config = QUSTNR_POPUP_CONFIG[type];
   if (!config) {
-      console.error("알 수 없는 팝업 타입:", type);
       return;
   }
 
@@ -246,7 +229,6 @@ function openQustnrModal(type) {
       const keyword = config.getKeyword();
 
       if (!keyword) {
-          console.log("url 필수 값이 없습니다.");
           return;
       }
 

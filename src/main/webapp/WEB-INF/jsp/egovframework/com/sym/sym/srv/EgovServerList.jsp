@@ -84,7 +84,7 @@ function windowOpen(serverId) {
 <div class="board">
 	<h1><spring:message code="comSymSymSrv.serverList.pageTop.title"/></h1><!-- 서버S/W 관리 -->
 
-	<form name="listForm" action="<c:url value='/sym/sym/srv/selectServerList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/sym/srv/selectServerList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -92,13 +92,13 @@ function windowOpen(serverId) {
 				<input id="strServerNm" class="s_input2 vat" name="strServerNm" type="text" value='<c:out value="${serverVO.strServerNm}"/>' size="15" onkeypress="press();" title="검색" /><!-- 검색 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectServerList('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/sym/srv/addViewServer.do'/>?pageIndex=<c:out value='${serverVO.pageIndex}'/>&amp;strServerNm=<c:out value="${serverVO.strServerNm}"/>" onclick="fncAddServerInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddServerInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
 	<input type="hidden" name="serverId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty serverVO.pageIndex }">1</c:if><c:if test="${!empty serverVO.pageIndex }"><c:out value='${serverVO.pageIndex}'/></c:if>">
-	</form>
+	
 
 	<table class="board_list">
 		<caption></caption>
@@ -122,12 +122,7 @@ function windowOpen(serverId) {
 			<c:forEach var="server" items="${serverList}" varStatus="status">
 			  <tr>
 			    <td>
-			        <form name="item" method="post" action="<c:url value='/sym/sym/srv/getServer.do'/>">
-			            <input type="hidden" name="serverId" value="<c:out value="${server.serverId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${serverVO.pageIndex}'/>">
-			            <input type="hidden" name="strServerNm" value="<c:out value="${serverVO.strServerNm}"/>">
-			            <span class="link"><input type="submit" value="<c:out value="${server.serverId}"/>" onclick="fncSelectServer('<c:out value="${server.serverId}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="fncSelectServer('<c:out value="${server.serverId}"/>'); return false;"><span class="link"><c:out value="${server.serverId}"/></span></a>
 			    </td>
 			    <td><c:out value="${server.serverNm}"/></td>
 			    <td><c:out value="${server.serverKndNm}"/></td>
@@ -144,6 +139,8 @@ function windowOpen(serverId) {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

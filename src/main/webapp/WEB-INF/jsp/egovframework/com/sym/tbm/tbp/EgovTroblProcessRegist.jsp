@@ -231,9 +231,9 @@ function fncSelectTroblProcessList() {
 		<input class="s_submit" type="submit" value='<spring:message code="button.create" />' onclick="fncTroblProcessInsert(); return false;" /><!-- 등록 -->
 		
 		<c:if test="${troblProcess.processSttus == 'C'}">
-		<span class="btn_s"><a href="<c:url value='/sym/tbm/tbp/removeTroblProcess.do'/>?troblId=<c:out value='${troblProcess.troblId}'/>" onclick="fncTroblProcessDelete('${troblProcess.troblId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncTroblProcessDelete('${troblProcess.troblId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
 		</c:if>
-		<span class="btn_s"><a href="<c:url value='/sym/tbm/tbp/selectTroblProcessList.do'/>?pageIndex=<c:out value='${troblProcessVO.pageIndex}'/>&amp;strTroblNm=<c:out value="${troblProcessVO.strTroblNm}"/>" onclick="fncSelectTroblProcessList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectTroblProcessList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 	

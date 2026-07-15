@@ -132,9 +132,9 @@ function fncNtwrkDelete(ntwrkId) {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/sym/sym/nwk/updtViewNtwrk.do'/>?ntwrkId=<c:out value='${ntwrk.ntwrkId}'/>" onclick="fncNtwrkUpdateView('${ntwrk.ntwrkId}'); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/nwk/removeNtwrk.do'/>?ntwrkId=<c:out value='${ntwrk.ntwrkId}'/>" onclick="fncNtwrkDelete('${ntwrk.ntwrkId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/nwk/selectNtwrkList.do'/>?pageIndex=<c:out value='${ntwrkVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${ntwrkVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncSelectNtwrkList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncNtwrkUpdateView('${ntwrk.ntwrkId}'); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncNtwrkDelete('${ntwrk.ntwrkId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectNtwrkList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

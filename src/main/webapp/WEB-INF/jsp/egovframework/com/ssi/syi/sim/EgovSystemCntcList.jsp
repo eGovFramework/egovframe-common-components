@@ -25,8 +25,11 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comSsiSyiSim.systemCntcList.title"/></title><!-- 시스템연계 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -70,13 +73,13 @@ function fn_egov_search_SystemCntc(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_SystemCntc(){
-	location.href = "<c:url value='/ssi/syi/sim/addSystemCntc.do'/>";
+	fn_egov_postNavigate("<c:url value='/ssi/syi/sim/addSystemCntc.do'/>");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_SystemCntc(){
-	location.href = "<c:url value='/ssi/syi/sim/updateSystemCntc.do'/>";
+	fn_egov_postNavigate("<c:url value='/ssi/syi/sim/updateSystemCntc.do'/>");
 }
 </c:if>
 
@@ -108,10 +111,10 @@ function press(event) {
 <div class="board">
 	<h1><spring:message code="comSsiSyiSim.systemCntcList.pageTop.title"/></h1><!-- 시스템연계 목록 -->
 
-	<form name="Form" action="<c:url value='${detailUri}'/>" method="post">
+	<form:form name="Form" modelAttribute="searchVO" action="${pageContext.request.contextPath}${detailUri}" method="post">
 		<input type="hidden" name="cntcId">
-	</form>
-	<form name="listForm" action="<c:url value='${selfUri}'/>" method="post">
+	</form:form>
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}${selfUri}" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -125,14 +128,14 @@ function press(event) {
 				
 				<% /** * 일반사용자 모드 처리 */ %>
 				<c:if test="${confirmTF eq 'F'}">
-				<span class="btn_b"><a href="<c:url value='/ssi/syi/sim/addSystemCntc.do?pageIndex='/><c:out value='${searchVO.pageIndex}'/>" onclick="" title="<spring:message code="title.create"/>"><spring:message code="button.create"/></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_regist_SystemCntc(); return false;" title="<spring:message code="title.create"/>"><spring:message code="button.create"/></a></span>
 				</c:if>
 			</li>
 		</ul>
 	</div>
 	<input name="cntcId"    type="hidden" value=""/>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	</form:form>
 	
 	<table class="board_list">
 		<caption></caption>
@@ -155,7 +158,8 @@ function press(event) {
 			<tr>
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
-			    	<form name="subForm"      method="post" action="<c:url value='${detailUri}'/>">
+			    	<form name="subForm"      method="post" action="${pageContext.request.contextPath}${detailUri}">
+			    	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			    	<input name="cntcId"      type="hidden" value="<c:out value='${resultInfo.cntcId}'/>">
 			    	<input name="pageIndex"   type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 			    	<span class="link"><input type="submit" value="<c:out value='${resultInfo.cntcId}'/>" onclick="fn_egov_detail_SystemCntc('<c:out value="${resultInfo.cntcId}"/>'); return false;"></span>

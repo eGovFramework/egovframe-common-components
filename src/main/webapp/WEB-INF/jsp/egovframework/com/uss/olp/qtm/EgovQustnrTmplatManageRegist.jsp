@@ -27,7 +27,6 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
@@ -78,10 +77,8 @@ function fn_egov_list_QustnrTmplatManage(){
  * 선택이미지 미리보기
  ******************************************************** */
 function fnImgChange(obj) {
-    console.log("함수 호출됨");
 
     if (!obj.files || obj.files.length === 0) {
-        console.log("파일 선택 취소");
         return;
     }
 
@@ -91,14 +88,12 @@ function fnImgChange(obj) {
     // 공통 컴포넌트로 확장자 검사 (false면 불허용)
     const isAllowed = EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", "<c:out value='${fileUploadExtensions}'/>");
     // 확인용
-    console.log(EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", ".jpg,.png"));
     if (!isAllowed) {
         obj.value = ""; // 초기화
         document.getElementById("DIV_IMG_VIEW").style.display = "none";
         return;
     }
 
-    console.log("허용 확장자 통과!");
 
     // 미리보기 영역 보이기
     document.getElementById("DIV_IMG_VIEW").style.display = "block";
@@ -110,7 +105,6 @@ function fnImgChange(obj) {
     if (window.FileReader) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            console.log("미리보기 데이터 로드 완료");
             document.getElementById("IMG_VIEW").src = e.target.result;
         };
         reader.readAsDataURL(file);
@@ -220,10 +214,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fileInput) {
         fileInput.addEventListener("change", function() {
             fnImgChange(this);  // 기존 함수 호출
-            console.log("onchange 이벤트 정상 작동!");
         });
     } else {
-        console.error("ID 'qestnrTmplatImage' 요소를 찾을 수 없습니다!");
     }
 });
 */

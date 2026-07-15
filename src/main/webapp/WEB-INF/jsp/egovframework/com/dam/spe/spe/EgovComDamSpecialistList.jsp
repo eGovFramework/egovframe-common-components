@@ -23,9 +23,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title><spring:message code="comDamSpeSpe.comDamSpecialistList.title"/></title><!-- 지식전문가 목록 -->
 		<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -59,7 +62,18 @@
 		 * 등록 처리 함수
 		 ******************************************************** */
 		function fnRegist(){
-			location.href = "<c:url value='/dam/spe/spe/EgovComDamSpecialistRegistView.do'/>";
+			fn_egov_postNavigate("<c:url value='/dam/spe/spe/EgovComDamSpecialistRegistView.do' />");
+		}
+		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fn_egov_detail_Specialist(speId, knoTypeCd, appTypeCd){
+			var form = document.listForm;
+			form.speId.value = speId;
+			form.knoTypeCd.value = knoTypeCd;
+			form.appTypeCd.value = appTypeCd;
+			form.action = "<c:url value='/dam/spe/spe/EgovComDamSpecialist.do'/>";
+			form.submit();
 		}
 		/* ********************************************************
 		 * 수정 처리 함수
@@ -79,7 +93,7 @@
 	<div class="board">
 		<h1><spring:message code="comDamSpeSpe.comDamSpecialistList.pageTop.title"/></h1><!-- 지식전문가  목록 -->
 		
-		<form name="listForm" action="<c:url value='/dam/spe/spe/EgovComDamSpecialistList.do'/>" method="post">
+		<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/spe/spe/EgovComDamSpecialistList.do" method="post">
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 			<ul>
 				<li>
@@ -123,7 +137,7 @@
 						<td>${resultInfo.orgnztNm}</td>
 						<td>${resultInfo.knoTypeNm}</td>
 						<td>
-						<a href="<c:url value='/dam/spe/spe/EgovComDamSpecialist.do?pageIndex=${searchVO.pageIndex}&amp;speId=${resultInfo.speId}&amp;knoTypeCd=${resultInfo.knoTypeCd}&amp;appTypeCd=${resultInfo.appTypeCd}'/>"><c:out value="${resultInfo.userNm}"/></a>								
+						<a href="javascript:void(0);" onclick="fn_egov_detail_Specialist('<c:out value="${resultInfo.speId}"/>','<c:out value="${resultInfo.knoTypeCd}"/>','<c:out value="${resultInfo.appTypeCd}"/>'); return false;"><c:out value="${resultInfo.userNm}"/></a>								
 						</td>								
 					    <td>
 					    <c:if test="${resultInfo.appTypeCd == '1'}">수석</c:if><!-- 수석 -->
@@ -156,7 +170,7 @@
 		<input type="hidden" name="knoTypeCd">
 		<input type="hidden" name="appTypeCd">								
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-		</form>
+		</form:form>
 
 	</div>
 	

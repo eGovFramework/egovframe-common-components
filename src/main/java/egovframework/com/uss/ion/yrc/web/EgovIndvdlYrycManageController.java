@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -76,23 +77,7 @@ public class EgovIndvdlYrycManageController {
      * @param indvdlYrycManage - 연차관리 model
      * @return String - 리턴 Url
      */
-    @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycRegist.do", method = RequestMethod.GET)
-    public String insertViewIndvdlYrycManage(@ModelAttribute IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
-
-        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        indvdlYrycManage.setMberId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-        indvdlYrycManage.setMberNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
-
-        List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
-        indvdlYrycManage.setOccrrncYear(EgovDateUtil.getCurrentYearAsString());
-
-        int totCnt = egovIndvdlYrycManageService.selectIndvdlYrycManageListTotCnt(indvdlYrycManage);
-
-        model.addAttribute("resultList", resultList);
-        model.addAttribute("totCnt", totCnt);
-
-        return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycRegist";
-    }
+    
 
     /**
      * 개인별연차관리 등록한다.
@@ -100,7 +85,7 @@ public class EgovIndvdlYrycManageController {
      * @param indvdlYrycManage - 연차관리 model
      * @return String - 리턴 Url
      */
-    @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycRegist.do", method = RequestMethod.POST)
+    @PostMapping("/uss/ion/yrc/EgovIndvdlYrycRegist.do")
     public String insertIndvdlYrycManage(
 		@Valid @ModelAttribute IndvdlYrycManage indvdlYrycManage,
 		BindingResult bindingResult, ModelMap model) throws Exception {
@@ -147,7 +132,7 @@ public class EgovIndvdlYrycManageController {
 	 * @param indvdlYrycManage - 연차관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/yrc/deleteIndvdlYryc.do", method = RequestMethod.POST)
+	@PostMapping("/uss/ion/yrc/deleteIndvdlYryc.do")
 	public String deleteIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

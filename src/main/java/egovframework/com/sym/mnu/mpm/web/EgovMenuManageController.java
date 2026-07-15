@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -157,7 +158,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "forward:/sym/mnu/mpm/EgovMenuManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping("/sym/mnu/mpm/EgovMenuManageListDelete.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuManageListDelete.do")
 	public String deleteMenuManageList(@RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel,
 			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -198,7 +199,7 @@ public class EgovMenuManageController {
 	 *         출력페이지정보 등록처리시 "forward:/sym/mnu/mpm/EgovMenuManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuRegistInsert.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuRegistInsert.do")
 	public String insertMenuManage(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -245,7 +246,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "forward:/sym/mnu/mpm/EgovMenuManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do")
 	public String updateMenuManage(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -282,7 +283,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "forward:/sym/mnu/mpm/EgovMenuManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuManageDelete.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuManageDelete.do")
 	public String deleteMenuManage(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -336,7 +337,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuList"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListInsert.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuListInsert.do")
 	public String insertMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -379,7 +380,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuList"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListUpdt.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuListUpdt.do")
 	public String updateMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -416,7 +417,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuList"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListDelete.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuListDelete.do")
 	public String deleteMenuList(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -488,7 +489,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuBndeRegist"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuBndeAllDelete.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuBndeAllDelete.do")
 	public String menuBndeAllDelete(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -513,7 +514,7 @@ public class EgovMenuManageController {
 	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuBndeRegist"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuBndeRegist.do")
+	@PostMapping("/sym/mnu/mpm/EgovMenuBndeRegist.do")
 	public String menuBndeRegist(@RequestParam Map<?, ?> commandMap, final HttpServletRequest request,
 			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model) throws Exception {
 		String sLocationUrl = null;

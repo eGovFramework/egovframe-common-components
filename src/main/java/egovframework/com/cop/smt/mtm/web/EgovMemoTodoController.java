@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -110,9 +111,23 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodoVO
 	 */
-    @RequestMapping("/cop/smt/mtm/selectMemoTodo.do")
+    @PostMapping("/cop/smt/mtm/selectMemoTodo.do")
 	public String selectMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new IllegalStateException("인증 정보가 없습니다.");
+    	}
     	MemoTodo memoTodo = memoTodoService.selectMemoTodo(memoTodoVO);
+    	if (memoTodo == null) {
+    		throw new IllegalStateException("권한이 없습니다.");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치
+    	if (!loginVO.getUniqId().equals(memoTodo.getWrterId())) {
+    		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    			throw new IllegalStateException("권한이 없습니다.");
+    		}
+    	}
 		model.addAttribute("memoTodo", memoTodo);
 
 
@@ -126,7 +141,7 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodo
 	 */
-    @RequestMapping("/cop/smt/mtm/addMemoTodo.do")
+    @PostMapping("/cop/smt/mtm/addMemoTodo.do")
 	public String addMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
     	String sLocationUrl = "egovframework/com/cop/smt/mtm/EgovMemoTodoRegist";
 
@@ -164,7 +179,7 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodo
 	 */
-    @RequestMapping("/cop/smt/mtm/modifyMemoTodo.do")
+    @PostMapping("/cop/smt/mtm/modifyMemoTodo.do")
 	public String modifyMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -201,7 +216,7 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodo
 	 */
-    @RequestMapping("/cop/smt/mtm/updateMemoTodo.do")
+    @PostMapping("/cop/smt/mtm/updateMemoTodo.do")
 	public String updateMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -230,7 +245,7 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodo
 	 */
-    @RequestMapping("/cop/smt/mtm/insertMemoTodo.do")
+    @PostMapping("/cop/smt/mtm/insertMemoTodo.do")
 	public String insertMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -268,7 +283,7 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodo
 	 */
-    @RequestMapping("/cop/smt/mtm/deleteMemoTodo.do")
+    @PostMapping("/cop/smt/mtm/deleteMemoTodo.do")
 	public String deleteMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -364,6 +379,33 @@ public class EgovMemoTodoController {
     		listMM.add(codeVO);
     	}
     	return listMM;
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

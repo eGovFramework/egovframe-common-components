@@ -56,9 +56,9 @@ function fncBndtCeckManageClear() {
  ******************************************************** */
 function fncInsertBndtCeckManage() {
     var varFrom = document.getElementById("bndtCeckManageVO");
-    /*if(!validateBndtCeckManage(varFrom)){           
+    if(!validateBndtCeckManage(varFrom)){
            return;
-    }*/
+    }
     if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
            varFrom.submit();
     }
@@ -122,7 +122,7 @@ function fncInsertBndtCeckManage() {
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.init"/>" onclick="fncBndtCeckManageClear(); return false;" /><!-- 초기화 -->
 		<span class="btn_s"><a href="#LINK" onclick="fncInsertBndtCeckManage(); return false;"><spring:message code="button.save" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>?searchCondition=1" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

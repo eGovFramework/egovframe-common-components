@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -72,7 +74,6 @@
 				 return;
 			 } 
 		 }
-		 //varForm.searchCondition.value = "1";
 		 varForm.pageIndex.value  = pageNo;
 		 varForm.action           = "<c:url value='/uss/ion/evt/selectEventRceptConfmList.do'/>";
 		 varForm.target           ="_self";
@@ -223,12 +224,13 @@
 
 <div class="board">
 	<h1><spring:message code="comUssIonEvt.eventRceptConfm.eventRcptMngList"/></h1><!-- 행사접수승인관리 목록 -->
-		<form name="listFormPop" action="<c:url value='/uss/ion/evt/selectEventRceptConfmList.do'/>" method="post">
+		<form name="listFormPop" action="${pageContext.request.contextPath}/uss/ion/evt/selectEventRceptConfmList.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<div style="visibility:hidden;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonEvt.common.submit"/>" title="<spring:message code="comUssIonEvt.common.submit"/>"></div><!-- 전송 -->
 	    <input type="hidden" name="eventId">
 	    <input type="hidden" name="cmd">
 	</form>
-	<form name="listForm" action="#" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="#" method="post">
 	<input type="hidden" name="searchCondition">
     <input type="hidden" name="cmd">
     <input type="hidden" name="confmAt">
@@ -318,7 +320,7 @@
 		 			<c:if test="${resultInfo.confmAt eq 'C'}"><spring:message code="comUssIonEvt.common.confrm"/></c:if><!-- 승인 -->
 		 			<c:if test="${resultInfo.confmAt eq 'R'}"><spring:message code="comUssIonEvt.common.return"/></c:if><!-- 반려 -->		
 				</td>
-			    <td><span class="link"><a href="<c:url value='/uss/ion/evt/EgovEventReqstDetail.do?cmd=popup&'/>eventId=${resultInfo.eventId}" target="_blank" title="<spring:message code="comUssIonEvt.common.toNewWindow"/>" onclick="fncEventReqstDetailPop('<c:out value="${resultInfo.eventId}"/>'); return false;"><c:out value="${resultInfo.eventNm}"/></a></span></td>    <!--  새창으로 -->
+			    <td><span class="link"><a href="javascript:void(0);" onclick="fncEventReqstDetailPop('<c:out value="${resultInfo.eventId}"/>'); return false;"><c:out value="${resultInfo.eventNm}"/></a></span></td>    <!--  새창으로 -->
 				<td><c:out value="${resultInfo.eventPlace}"/></td>
 				<td><c:out value="${resultInfo.eventSeNm}"/></td>
 				<td><c:out value="${resultInfo.eventBeginDe}"/> ~ <br><c:out value="${resultInfo.eventEndDe}"/></td>
@@ -344,7 +346,7 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
-	</form>
+	</form:form>
 </div>
 </body>
 </html>

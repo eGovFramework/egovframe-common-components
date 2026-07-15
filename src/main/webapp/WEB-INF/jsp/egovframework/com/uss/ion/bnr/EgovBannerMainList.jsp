@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <%
 
@@ -48,7 +49,7 @@ function fncSelectBanner(bannerId) {
 
 <div class="board">
 <!-- MYPAGE배너관리 -->
-<form name="items" method="post" action="<c:url value='/uss/ion/bnr/getBanner.do'/>">
+<form:form name="items" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/uss/ion/bnr/getBanner.do">
 	<h1><spring:message code="ussIonBnr.bannerMainList.bannerMainList"/></h1>
 	<span>※<spring:message code="ussIonBnr.bannerMainList.EgovBannerDc"/></span>
 
@@ -92,6 +93,6 @@ function fncSelectBanner(bannerId) {
 <input type="hidden" name="pageIndex" value="1">
 <input type="hidden" name="searchCondition" value="1">
 <input type="hidden" name="searchKeyword" value="">
-</form>
+</form:form>
 </body>
 </html>

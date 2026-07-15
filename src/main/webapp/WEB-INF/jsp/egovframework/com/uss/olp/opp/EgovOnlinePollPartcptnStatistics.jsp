@@ -46,7 +46,8 @@ function fn_egov_init_OnlinePollPartcptnStatistics() {
 <div class="wTableFrm">
 
 <!-- 상단타이틀 -->
-<form name="QustnrQestnManageForm" action="<c:url value=''/>" method="post">
+<form name="QustnrQestnManageForm" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
  <%-- 온라인POLL관리 목록 페이지 --%>
 <c:if test="${linkType eq '1'}">

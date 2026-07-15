@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -122,7 +123,7 @@ public class EgovOnlinePollPartcptnController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "온라인poll참여", order = 661, gid = 50)
-	@RequestMapping(value = "/uss/olp/opp/listOnlinePollPartcptn.do")
+	@RequestMapping("/uss/olp/opp/listOnlinePollPartcptn.do")
 	public String egovOnlinePollPartcptnList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, OnlinePollPartcptn onlinePollPartcptn, ModelMap model)
 			throws Exception {
@@ -171,7 +172,7 @@ public class EgovOnlinePollPartcptnController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/olp/opp/registOnlinePollPartcptn.do")
+	@PostMapping("/uss/olp/opp/registOnlinePollPartcptn.do")
 	public String egovOnlinePollPartcptnRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("onlinePollPartcptn") OnlinePollPartcptn onlinePollPartcptn, BindingResult bindingResult,

@@ -23,9 +23,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmAdc.ccmAdministCode.title"/> <spring:message code="title.list" /></c:set>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle}</title> <!-- 행정코드 목록 -->
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -51,7 +54,7 @@ function fnSearch(){
  * 등록 처리 함수
  ******************************************************** */
 function fnRegist(){
-	location.href = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeRegistView.do' />";
+	fn_egov_postNavigate("<c:url value='/sym/ccm/adc/EgovCcmAdministCodeRegistView.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
@@ -63,7 +66,7 @@ function fnModify(){
  * 상세회면 처리 함수
  ******************************************************** */
 function fnDetail(administZoneSe,administZoneCode){
-	var varForm				       = document.getElementById("Form");
+	var varForm				       = document.listForm;
 	varForm.action                 = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeDetail.do'/>";
 	varForm.administZoneSe.value   = administZoneSe;
 	varForm.administZoneCode.value = administZoneCode;
@@ -83,7 +86,7 @@ function press(event) {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="board">
-<form name="listForm" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCodeList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/adc/EgovCcmAdministCodeList.do" method="post">
 	<h1>${pageTitle}</h1>
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -157,12 +160,10 @@ function press(event) {
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 
-</form>
-<form name="Form" id="Form" method="post" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCodeList.do'/>">
-	<input type=hidden name="administZoneSe">
-	<input type=hidden name="administZoneCode">
-	<input type="submit" id="invisible" class="invisible">
-</form>
+<input type=hidden name="administZoneSe">
+<input type=hidden name="administZoneCode">
+</form:form>
+
 
 </DIV>
 </body>

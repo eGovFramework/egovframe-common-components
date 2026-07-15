@@ -62,7 +62,8 @@ function fn_egov_list(){
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymBat.batchResultDetail.pageTop.title"/></h2><!-- 배치결과 상세조회 -->
 
-<form name="batchResultForm"  id="batchResultForm" action="<c:url value='/sym/bat/getBatchResult.do'/>" method="post">
+<form name="batchResultForm"  id="batchResultForm" action="${pageContext.request.contextPath}/sym/bat/getBatchResult.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="batchResultId" type="hidden" value="<c:out value='${resultInfo.batchResultId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
@@ -144,7 +145,7 @@ function fn_egov_list(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete(); return false;" /><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/bat/getBatchResultList.do'></c:url>" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 

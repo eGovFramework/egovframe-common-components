@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -157,7 +158,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/addAdbkInf.do")
+    @PostMapping("/cop/adb/addAdbkInf.do")
     public String addAdressBook(
     		@ModelAttribute("searchVO") AddressBookVO adbkVO,
     		@ModelAttribute("adbk") AddressBookVO addressBookVO,
@@ -175,7 +176,7 @@ public class EgovAddressBookController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	@RequestMapping("/cop/adb/deleteAdbkInf.do")
+	@PostMapping("/cop/adb/deleteAdbkInf.do")
     public String deleteAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -202,7 +203,7 @@ public class EgovAddressBookController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	@RequestMapping("/cop/adb/addUser.do")
+	@PostMapping("/cop/adb/addUser.do")
     public String addUser(@ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
             @RequestParam("checkCnd")String checkCnd, ModelMap model) throws Exception {
 
@@ -239,7 +240,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/deleteUser.do")
+    @PostMapping("/cop/adb/deleteUser.do")
     public String deleteUser( @ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
             @RequestParam("checkWord")String checkWord, @RequestParam("checkCnd")String checkCnd, ModelMap model) throws Exception {
 
@@ -366,7 +367,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/updateAdbkInf.do")
+    @PostMapping("/cop/adb/updateAdbkInf.do")
     public String updateAdbkInf(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -426,7 +427,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/RegistAdbkInf.do")
+    @PostMapping("/cop/adb/RegistAdbkInf.do")
     public String registadbk(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult, 
     		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
     		ModelMap model) throws Exception {
@@ -474,7 +475,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/UpdateAddressBook.do")
+    @PostMapping("/cop/adb/UpdateAddressBook.do")
     public String updateAdressBook(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult,
     		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
     		ModelMap model) throws Exception {

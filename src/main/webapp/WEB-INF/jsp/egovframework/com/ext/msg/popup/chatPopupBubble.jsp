@@ -62,7 +62,6 @@
 
 	function processMessage(message) {
 		var jsonData = JSON.parse(message.data);
-		//alert("jsonData: " + jsonData.messageType + "," + jsonData.name +  "," + jsonData.message + "," + jsonData.users  );
 		if (jsonData.messageType == "ChatMessage") {
 			message = jsonData.name + " : "+ jsonData.message + '\n';
 			display(message);

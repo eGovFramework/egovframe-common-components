@@ -49,7 +49,6 @@
 			});
 			
 			var callback = function(response) {
-				console.log(response);
 				accessToken = response.authResponse.accessToken;
 				userID = response.authResponse.userID;
 			}
@@ -62,7 +61,6 @@
 				  'GET',
 				  {"fields":"id,name,email,first_name"},
 				  function(response) {
-					console.log(response)
 						
 					 var data = response;
 					 var html = ""

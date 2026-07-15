@@ -3,6 +3,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -76,7 +78,7 @@ function press() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/ion/mtg/selectMtgPlaceManageList.do'/>" method="post">    
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceManageList.do" method="post">    
 	<h1><spring:message code="comUssIonMtg.mtgPlaceManageList.title"/></h1><!-- 회의실 관리목록  -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -84,12 +86,14 @@ function press() {
 				<label for=""><spring:message code="comUssIonMtg.mtgPlaceManageList.mtgPlaceNm" /></label><!-- 회의실명 -->
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${mtgPlaceManageVO.searchKeyword }"/>' size="25" onkeypress="press();" title="<spring:message code="comUssIonMtg.mtgPlaceManageList.searchUser" />" />
 				<input type="submit" class="s_btn"  value='<spring:message code="button.inquire" />'  title='<spring:message code="button.inquire" />'  onclick="fncSelectMtgPlaceManageList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/mtg/insertViewMtgPlace.do'/>?searchCondition=1" onclick="fncInsertMtgPlace(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncInsertMtgPlace(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty mtgPlaceManageVO.pageIndex }">1</c:if><c:if test="${!empty mtgPlaceManageVO.pageIndex }"><c:out value='${mtgPlaceManageVO.pageIndex}'/></c:if>">
-	</form>
+	<input type="hidden" name="searchCondition" value="1">
+	<input type="hidden" name="mtgPlaceId">
+	
 	<table class="board_list">
 		<caption><spring:message code="comUssIonMtg.mtgPlaceManageList.meetingManagementList" /></caption><!-- 회의실 목차 관리 -->
 		<colgroup>
@@ -113,10 +117,7 @@ function press() {
 			<tr>
 				<td><c:out value="${(mtgPlaceManageVO.pageIndex - 1) * mtgPlaceManageVO.pageSize + status.count}"/></td>
 				<td class="left">
-					<form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceManage.do'/>">
-						<input type="hidden" name="mtgPlaceId"  value="<c:out value="${mtgPlaceManage.mtgPlaceId}"/>">
-						<span class="link"><input type="submit" value="<c:out value="${mtgPlaceManage.mtgPlaceNm}"/>" onclick="fncSelectMtgPlaceManage('<c:out value="${mtgPlaceManage.mtgPlaceId}"/>'); return false;" style="text-align : left;"></span>
-					</form>
+					<a href="javascript:void(0);" onclick="fncSelectMtgPlaceManage('<c:out value="${mtgPlaceManage.mtgPlaceId}"/>'); return false;"><span class="link"><c:out value="${mtgPlaceManage.mtgPlaceNm}"/></span></a>
 				</td>
 				<td><c:out value="${mtgPlaceManage.opnBeginTm}"/> ~ <c:out value="${mtgPlaceManage.opnEndTm}"/></td>
 				<td><c:out value="${mtgPlaceManage.aceptncPosblNmpr}"/><spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></td><!-- 명 -->
@@ -132,6 +133,8 @@ function press() {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

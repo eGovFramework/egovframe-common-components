@@ -99,8 +99,13 @@ function MultiSelector(list_target, max, file_label) {
 		// Row div
 		var new_row = document.createElement('div');
 		new_row.className = "file_add_" + i;
-		new_row.innerHTML = "<span>" + element.files[i].name
-				+ "</span>&nbsp;&nbsp;";
+		// 2026.07.13 KISA 보안취약점 조치: 선택한 파일명(element.files[i].name)에 HTML 태그가
+		// 포함될 수 있어 innerHTML로 직접 대입하면 DOM XSS로 이어질 수 있으므로,
+		// span 요소를 생성하고 textContent로 파일명을 안전하게 대입한다.
+		var new_row_span = document.createElement('span');
+		new_row_span.textContent = element.files[i].name;
+		new_row.appendChild(new_row_span);
+		new_row.appendChild(document.createTextNode('  '));
 
 		// Add it to the list
 		this.list_target.appendChild(new_row);

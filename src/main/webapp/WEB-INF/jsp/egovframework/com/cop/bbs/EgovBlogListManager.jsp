@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopBlog.blogMasterVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -54,13 +55,20 @@ function fn_egov_search_blog(){
 	document.BlogMasterForm.submit();
 }
 
+function fn_egov_selectBBSMasterDetail(bbsId, blogId) {
+	document.BlogMasterForm.bbsId.value = bbsId;
+	document.BlogMasterForm.blogId.value = blogId;
+	document.BlogMasterForm.action = "<c:url value='/cop/bbs/selectBBSMasterDetail.do'/>";
+	document.BlogMasterForm.submit();
+}
+
 </script>
 </head>
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="BlogMasterForm" action="<c:url value='/cop/bbs/selectBlogListManager.do' />" method="post" onSubmit="fn_egov_search_blog(); return false;"> 
+<form:form name="BlogMasterForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/bbs/selectBlogListManager.do" method="post" onSubmit="fn_egov_search_blog(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 개인블로그 관리 목록-->
 	<!-- 하단 버튼 -->
@@ -107,7 +115,7 @@ function fn_egov_search_blog(){
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/cop/bbs/selectBBSMasterDetail.do'/>?bbsId=${resultInfo.bbsId}&blogId=${resultInfo.blogId}" return false;"><c:out value='${fn:substring(resultInfo.bbsNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_selectBBSMasterDetail('<c:out value="${resultInfo.bbsId}"/>','<c:out value="${resultInfo.blogId}"/>'); return false;"><c:out value='${fn:substring(resultInfo.bbsNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>		
@@ -125,8 +133,9 @@ function fn_egov_search_blog(){
 </div>
 
 <input name="blogId" type="hidden" value="<c:out value='${searchVO.blogId}'/>">
+<input name="bbsId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

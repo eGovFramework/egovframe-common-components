@@ -77,11 +77,6 @@
 
 			var ls_clYmd = mapTeam.clYmd.value;
 
-			/*if (mapTeam.clYmd.value !="")	{
-				ls_clYmd = ls_clYmd.replace(/-/gi,"");
-				mapTeam.clYmd.value = ls_clYmd;
-			}*/
-
 			if(confirm("<spring:message code="common.save.msg" />")){
 				if(!validateMapTeam(form)){
 					return;

@@ -22,6 +22,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comStsDst.dtaUseStats.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -153,7 +155,7 @@ function press() {
 <div class="board">
 	<h1>${pageTitle}</h1>
 	
-	<form name="listForm" action="<c:url value='/sts/dst/selectDtaUseStatsList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sts/dst/selectDtaUseStatsList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<input type="hidden" name="pmFromDate" value="<c:out value="${dtaUseStatsVO.pmFromDate}"/>" >
 		<input type="hidden" name="pmToDate" value="<c:out value="${dtaUseStatsVO.pmToDate}"/>" >
@@ -187,7 +189,7 @@ function press() {
 <input type="hidden" name="fileSn" >
 <input type="hidden" name="pageIndex" value="<c:if test="${empty dtaUseStatsVO.pageIndex }">1</c:if><c:if test="${!empty dtaUseStatsVO.pageIndex }"><c:out value='${dtaUseStatsVO.pageIndex}'/></c:if>">
 <input type="hidden" name="searchCondition" value="1">	
-	</form>
+	</form:form>
 	<table class="board_list">
 		<caption><spring:message code="title.list"/></caption> <!-- 목록 -->
 		<colgroup>
@@ -217,7 +219,7 @@ function press() {
 			<c:forEach var="dtaUseStats" items="${dtaUseStatsList}" varStatus="status">
 			<tr>
 				<td class="lt_text3" nowrap>
-					<form name="item" method="post" action="<c:url value='/sts/dst/getDtaUseStats.do'/>">
+					<form name="item" method="post" action="${pageContext.request.contextPath}/sts/dst/getDtaUseStats.do">
 						<input type="hidden" name="bbsId" value="<c:out value="${dtaUseStats.bbsId}"/>">
 						<input type="hidden" name="nttId" value="<c:out value="${dtaUseStats.nttId}"/>">
 						<input type="hidden" name="atchFileId" value="<c:out value="${dtaUseStats.atchFileId}"/>">

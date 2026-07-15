@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -100,6 +101,11 @@ public class EgovNoteRecptnController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
         	LOGGER.debug("##### EgovNoteRecptnController EgovNoteRecptnList()  start");
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
         	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
@@ -175,7 +181,7 @@ public class EgovNoteRecptnController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do")
+	@PostMapping("/uss/ion/ntr/detailNoteRecptn.do")
     public String EgovNoteRecptnDetail(
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
@@ -187,6 +193,11 @@ public class EgovNoteRecptnController {
         String sCmd = securityMap.get("cmd") == null ? "" : (String) securityMap.get("cmd");
 
         if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
         	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
             searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         	egovNoteRecptnService.deleteNoteRecptn(searchVO);

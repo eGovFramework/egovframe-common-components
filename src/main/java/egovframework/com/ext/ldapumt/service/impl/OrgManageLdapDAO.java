@@ -64,7 +64,9 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	 * vo의 dn의 객체를 인자로 넘어온 객체로 업데이트.
 	 */
 	protected void updateOrg(LdapObject vo) {
-		String dn = vo.getDn();
+		String dn = EgovWebUtil.removeLDAPInjectionRisk(vo.getDn());
+		vo.setDn(dn);
+		// 2026.07.13 KISA 보안취약점 조치 - DN 검증
 
 		final ArrayList<ModificationItem> itemList = new ArrayList<>();
 

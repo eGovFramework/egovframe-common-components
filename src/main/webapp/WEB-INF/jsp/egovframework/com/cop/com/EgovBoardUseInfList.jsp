@@ -5,6 +5,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovBoardUseInfList.jsp
@@ -68,7 +69,7 @@
 <body>
 <div id="border" style="width:730px">
 
-<form name="frm" method="post" action = "<c:url value='/cop/com/selectBBSUseInf.do'/>">
+<form:form name="frm" modelAttribute="searchVO" method="post" action = "<c:url value='/cop/com/selectBBSUseInf.do'/>">
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="bbsId" >
 <input type="hidden" name="trgetId" >
@@ -96,11 +97,11 @@
 	   <table border="0" cellspacing="0" cellpadding="0">
 	    <tr>
 	      <td><span class="button">
-	      <a href="<c:url value='/cop/com/selectBBSUseInfs.do'/>" onclick="fn_egov_select_bbsUseInfs('1'); return false;">조회</a>
+	      <a href="javascript:void(0);" onclick="fn_egov_select_bbsUseInfs('1'); return false;">조회</a>
 	      </span></td>
 	      <td>&nbsp;&nbsp;</td>
 	      <td><span class="button">
-	      <a href="<c:url value='/cop/com/addBBSUseInf.do'/>" onclick="fn_egov_insert_addbbsUseInf(); return false;">등록</a>
+	      <a href="javascript:void(0);" onclick="fn_egov_insert_addbbsUseInf(); return false;">등록</a>
 	      </span></td>
 	    </tr>
 	   </table>
@@ -140,7 +141,7 @@
 	    		<td class="lt_text" nowrap>
 
 			    	<!-- 2010.11.1
-			    	<form name="item" method="post" action="<c:url value='/cop/com/selectBBSUseInf.do'/>"  target="_blank">
+			    	<form name="item" method="post" action="${pageContext.request.contextPath}/cop/com/selectBBSUseInf.do"  target="_blank">
 			        	<input type=hidden name="bbsId" value="<c:out value="${result.bbsId}"/>">
 			        	<input type=hidden name="trgetId" value="<c:out value="${result.trgetId}"/>">
 			            <span class="link"><input type="submit" value="<c:out value="${result.bbsNm}"/>" onclick="fn_egov_select_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>'); return false;"></span>
@@ -150,7 +151,7 @@
 		        	<input type=hidden name="bbsId" value="<c:out value="${result.bbsId}"/>">
 		        	<input type=hidden name="trgetId" value="<c:out value="${result.trgetId}"/>">
 
-					<a href="<c:url value='/cop/com/selectBBSUseInf.do'/>?bbsId=<c:out value='${result.bbsId}'/>&amp;trgetId=<c:out value='${result.trgetId}'/>" onclick="">
+					<a href="javascript:void(0);" onclick="fn_egov_select_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>'); return false;">
 						<c:out value="${result.bbsNm}"/>
 					</a>
 
@@ -164,7 +165,7 @@
 		        	<input type=hidden name="bbsId" value="<c:out value="${result.bbsId}"/>">
 		        	<input type=hidden name="trgetId" value="<c:out value="${result.trgetId}"/>">
 
-					<a href="<c:url value='/cop/com/selectBBSUseInf.do'/>?bbsId=<c:out value='${result.bbsId}'/>&amp;trgetId=<c:out value='${result.trgetId}'/>" onclick="">
+					<a href="javascript:void(0);" onclick="fn_egov_select_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>'); return false;">
 						<c:out value="${result.bbsNm}"/>
 					</a>
 
@@ -197,7 +198,7 @@
 		<ui:pagination paginationInfo = "${paginationInfo}" type="image" jsFunction="fn_egov_select_bbsUseInfs" />
 	</div>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	</form:form>
 </div>
 
 </body>

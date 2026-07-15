@@ -54,29 +54,7 @@ function fn_egov_confirm_login(){
 function fn_egov_confirm_realname() {
 
 	fn_egov_confirm_callback("R");
-	
-/*	
-	var url 	= "<c:url value='/uss/umt/cmm/EgovRlnmCnfirm.do?nextUrlName=Q&A&nextUrl=/uss/olp/cns/CnsltDtlsRegistView.do'/>";
-	
-	var	status 	= "dialogWidth=740px;dialogHeight=180px;resizable=no;center=yes";
 
-		
-	var returnValue = window.showModalDialog(url, self, status);
-
-	returnValue = false;
-		
-
-	if	(returnValue)	{
-
-	 	document.LoginRealnmForm.action = "<c:url value='/uss/olp/cns/CnsltDtlsRegistView.do'/>";
-	 	document.LoginRealnmForm.submit();	
-	 		 				
-	}
-
-	window.close();
-*/
-	
-						
 }
 
 /* ********************************************************
@@ -85,7 +63,6 @@ function fn_egov_confirm_realname() {
 function fn_egov_confirm_callback(ls_loginRealnmAt){
 
 	getDialogArguments();
-	/* var opener = window.dialogArguments; */
 	var opener;
  
 	if (window.dialogArguments) {
@@ -123,6 +100,7 @@ function fn_egov_cancel_loginrealnm() {
 <DIV id="content" style="width:270px">
 <!-- 상단타이틀 -->
 <form name="LoginRealnmForm"  method="post" action="" >
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 
 	 	  

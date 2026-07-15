@@ -171,7 +171,7 @@ function fncEgovVcatnManageList(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${vcatnManageVO.confmAt eq 'A' }">
-		<form id="updtForm" name="updtForm" action="<c:url value='/uss/ion/vct/EgovVcatnManageDetail.do'/>" method="post" style="display:inline-block; vertical-align:top">  
+		<form id="updtForm" name="updtForm" action="${pageContext.request.contextPath}/uss/ion/vct/EgovVcatnManageDetail.do" method="post" style="display:inline-block; vertical-align:top">  
 		<input type="hidden" name="cmd"       value="updt"/>
 		<input type="hidden" name="applcntId" value="<c:out value='${vcatnManageVO.applcntId}'/>"/>
 		<input type="hidden" name="vcatnSe"   value="<c:out value='${vcatnManageVO.vcatnSe}'/>"/>
@@ -181,7 +181,7 @@ function fncEgovVcatnManageList(){
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fncEgovVcatnManage(); return false;" />
 		</form>
 		
-		<form id="deleteForm" name="deleteForm" action="<c:url value='/uss/ion/vct/deleteVcatnManage.do'/>" method="post" style="display:inline-block; vertical-align:top">  
+		<form id="deleteForm" name="deleteForm" action="${pageContext.request.contextPath}/uss/ion/vct/deleteVcatnManage.do" method="post" style="display:inline-block; vertical-align:top">  
 		<input type="hidden" name="applcntId" value="<c:out value='${vcatnManageVO.applcntId}'/>"/>
 		<input type="hidden" name="vcatnSe"   value="<c:out value='${vcatnManageVO.vcatnSe}'/>"/>
 		<input type="hidden" name="bgnde"     value="<c:out value='${vcatnManageVO.bgnde}'/>"/>
@@ -191,7 +191,7 @@ function fncEgovVcatnManageList(){
 		</form>
 		</c:if>
 		
-		<span class="btn_s"><a href="<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>?searchCondition=1" onclick="fncEgovVcatnManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovVcatnManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

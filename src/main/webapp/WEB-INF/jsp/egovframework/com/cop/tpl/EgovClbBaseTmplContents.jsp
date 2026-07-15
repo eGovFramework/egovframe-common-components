@@ -105,6 +105,7 @@ A.comun:hover	{	font-size:9pt;	font-family:"gulim";	color:#ffcb2c;	font-weight: 
 <body>
 
 <form action="" name="frm" method="post" >
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="bbsId" value="" />
 	<input type="hidden" name="nttId" value="" />
 	<input type="hidden" name="bbsAttrbCode" value="" />

@@ -67,7 +67,7 @@ function fncDeleteBndtManage() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="bndtManage" id="bndtManage" method="post">  
+<form name="bndtManage" id="bndtManage" method="post"><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>  
 <input name="cmd" type="hidden" value="updt"/>
 <input name="bndtId" type="hidden" value="<c:out value='${bndtManageVO.bndtId}'/>"/>
 <input name="bndtDe" type="hidden" value="<c:out value='${bndtManageVO.bndtDe}'/>"/>
@@ -111,8 +111,8 @@ function fncDeleteBndtManage() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="title.update"/>" onclick="fncEgovBndtManage(); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/deleteBndtManage.do'/>?bndtId=<c:out value='${bndtManageVO.bndtId}'/>&bndtDe=<c:out value='${bndtManageVO.bndtDe}'/>" onclick="fncDeleteBndtManage(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteBndtManage(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

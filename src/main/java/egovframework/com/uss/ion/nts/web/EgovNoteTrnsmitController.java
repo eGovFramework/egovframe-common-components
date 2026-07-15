@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -163,7 +164,7 @@ public class EgovNoteTrnsmitController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/nts/detailNoteTrnsmit.do")
+    @PostMapping("/uss/ion/nts/detailNoteTrnsmit.do")
     public String EgovNoteTrnsmitDetail(
     		@ModelAttribute("searchVO") NoteTrnsmit searchVO,
     		EgovSecurityMap securityMap,
@@ -222,11 +223,62 @@ public class EgovNoteTrnsmitController {
     		NoteTrnsmit noteTrnsmit,
     		@RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
+
+    		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    		if (loginVO == null || loginVO.getUniqId() == null) {
+    			throw new IllegalStateException("인증 정보가 없습니다.");
+    		}
+    		noteTrnsmit.setTrnsmiterId(EgovStringUtil.isNullToString(loginVO.getUniqId()));
+    		Map<?, ?> noteTrnsmitMap = egovNoteTrnsmitService.selectNoteTrnsmitDetail(noteTrnsmit);
+    		if (noteTrnsmitMap == null || noteTrnsmitMap.isEmpty()) {
+    			throw new IllegalStateException("권한이 없습니다.");
+    		}
+    		Object trnsmiterId = noteTrnsmitMap.get("trnsmiterId");
+    		if (trnsmiterId == null) {
+    			trnsmiterId = noteTrnsmitMap.get("TRNSMITER_ID");
+    		}
+    		// 2026.07.13 KISA 보안취약점 조치
+    		if (!loginVO.getUniqId().equals(String.valueOf(trnsmiterId))) {
+    			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    				throw new IllegalStateException("권한이 없습니다.");
+    			}
+    		}
 
             List<EgovMap> resultList = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
         	model.addAttribute("resultList", resultList);
 
     		return "egovframework/com/uss/ion/nts/EgovNoteTrnsmitCnfirm";
     }
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
 
 }

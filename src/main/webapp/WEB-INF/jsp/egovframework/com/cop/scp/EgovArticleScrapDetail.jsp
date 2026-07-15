@@ -70,7 +70,8 @@
 		<tr>
 			<th><spring:message code="comCopScp.articleScrapVO.detail.nttSj" /></th>
 			<td colspan="5" class="left">
-				<form name="subForm" method="post" action="<c:url value='/cop/bbs/selectArticleDetail.do'/>">
+				<form name="subForm" method="post" action="${pageContext.request.contextPath}/cop/bbs/selectArticleDetail.do">
+				    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				    <input name="nttId" type="hidden" value="<c:out value="${articleVO.nttId}"/>">
 				    <input name="bbsId" type="hidden" value="<c:out value="${articleVO.bbsId}"/>">
 				    <span class="link"><input type="submit" value="<c:out value='${fn:substring(articleVO.nttSj, 0, 40)}'/>" style="border:0px solid #e0e0e0;"></span>
@@ -98,17 +99,20 @@
 	</table>
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="articleScrapForm" action="<c:url value='/cop/scp/updateArticleScrapView.do'/>" method="post" style="float:left;">
+		<form name="articleScrapForm" action="${pageContext.request.contextPath}/cop/scp/updateArticleScrapView.do" method="post" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
 			<input name="scrapId" type="hidden" value="${result.scrapId}">
 			<input name="nttId" type="hidden" value="<c:out value='${articleVO.nttId}'/>"/>
 			<input name="bbsId" type="hidden" value="<c:out value='${articleVO.bbsId}'/>"/>
 		</form>
-		<form name="formDelete" action="<c:url value='/cop/scp/deleteArticleScrap.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/cop/scp/deleteArticleScrap.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_articleScrap(this.form); return false;"><!-- 삭제 -->
 			<input name="scrapId" type="hidden" value="${result.scrapId}">
 		</form>
-		<form name="formList" action="<c:url value='/cop/scp/selectArticleScrapList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/cop/scp/selectArticleScrapList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />"><!-- 목록 -->
 		</form>
 	</div><div style="clear:both;"></div>

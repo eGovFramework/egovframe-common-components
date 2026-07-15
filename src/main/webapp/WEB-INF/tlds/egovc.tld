@@ -516,4 +516,14 @@
 		</example>
 	</function>
 
+	<function>
+		<description>CKEditor 등 리치텍스트로 등록한 HTML(이미지 포함)을 조회화면에 출력하기 전에 XSS 방지 처리(허용된 태그/속성만 남김)를 수행한다.</description>
+		<name>sanitizeHtml</name>
+		<function-class>egovframework.com.cmm.EgovHtmlSanitizer</function-class>
+		<function-signature>java.lang.String sanitize(java.lang.String)</function-signature>
+		<example>
+			${egovc:sanitizeHtml(resultList[0].schdulCn)}
+		</example>
+	</function>
+
 </taglib>

@@ -20,6 +20,32 @@ var treeIcons			= new Array(6);
 //var imgpath         = "./../../../../../../../images/egovframework/com/cmm/utl/";
 var vHtmlCode       = "";
 
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
+function escapeJsString(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/\\/g, '\\\\')
+		.replace(/'/g, "\\'")
+		.replace(/"/g, '\\"')
+		.replace(/\r/g, '\\r')
+		.replace(/\n/g, '\\n')
+		.replace(/</g, '\\x3c')
+		.replace(/>/g, '\\x3e');
+}
+
 /*
  * 노드 , 트리 구성 이미지 정보
  */
@@ -123,11 +149,11 @@ function addTreeNode(parentNode, recursedNodes) {
 			vHtmlCode +="<img src='"+imgpath+"menu_empty.gif' border='0' align='absbottom' alt='' >";
 			if (hasChildNode){
 			    vHtmlCode +="+<img src='"+imgpath+"menu_empty.gif' border='0' align='absbottom' alt='' >";
-			    vHtmlCode +="<font size=2><b>▶ "+nodeValues[2]+"</b></font><br> \n";
+			    vHtmlCode +="<font size=2><b>▶ "+escapeHtml(nodeValues[2])+"</b></font><br> \n";
 
             }else{
 				vHtmlCode +="<img src='"+imgpath+"menu_empty.gif' border='0' align='absbottom' alt='' >";
-				vHtmlCode +="<font size=2 class='.location'><a href=javascript:fCallUrl('" + getContextPath + nodeValues[4] + "');>― "+nodeValues[2]+"</a></font><br> \n";
+				vHtmlCode +="<font size=2 class='.location'><a href=javascript:fCallUrl('" + escapeJsString(getContextPath + nodeValues[4]) + "');>― "+escapeHtml(nodeValues[2])+"</a></font><br> \n";
             }
 			if (hasChildNode) {
 				vHtmlCode +="<div id='div" + nodeValues[0] + "'> \n";
