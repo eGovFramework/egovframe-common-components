@@ -44,7 +44,8 @@ function fn_egov_list(){
 
 <DIV class="wTableFrm">
 
-<form name="trsmrcvMntrngLogForm"  id="trsmrcvMntrngLogForm" action="<c:url value='/utl/sys/trm/getTrsmrcvMntrngLogList.do'/>" method="post">
+<form name="trsmrcvMntrngLogForm"  id="trsmrcvMntrngLogForm" action="${pageContext.request.contextPath}/utl/sys/trm/getTrsmrcvMntrngLogList.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="cntcId" type="hidden" value="<c:out value='${resultInfo.cntcId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

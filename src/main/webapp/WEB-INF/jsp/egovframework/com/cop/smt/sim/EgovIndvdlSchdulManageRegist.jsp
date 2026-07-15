@@ -35,8 +35,8 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
+<script type="text/javascript" src="<c:url value='/html/egovframework/com/cmm/utl/ckeditor/ckeditor.js?t=B37D54V'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
@@ -45,6 +45,11 @@
  * 초기화
  ******************************************************** */
 function fn_egov_init_IndvdlSchdulManage(){
+
+	var ckeditor_config = {
+		filebrowserImageUploadUrl: '${ckImageUploadUrl}?${_csrf.parameterName}=${_csrf.token}'
+	};
+	CKEDITOR.replace('schdulCn', ckeditor_config);
 
 	$("#schdulBgndeYYYMMDD").datepicker( 
 	        {dateFormat:'yy-mm-dd'
@@ -111,6 +116,7 @@ function fn_egov_list_IndvdlSchdulManage(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_save_IndvdlSchdulManage(form){
+	CKEDITOR.instances.schdulCn.updateElement();
 	if(confirm("<spring:message code="common.save.msg" />")){
 		if(!validateIndvdlSchdulManageVO(form)){
 			return;

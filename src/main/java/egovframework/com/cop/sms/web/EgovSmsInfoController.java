@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -108,7 +109,7 @@ public class EgovSmsInfoController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/sms/addSms.do")
+	@PostMapping("/cop/sms/addSms.do")
 	public String addSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
 
 		Sms sms = new Sms();
@@ -129,7 +130,7 @@ public class EgovSmsInfoController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/sms/insertSms.do")
+	@PostMapping("/cop/sms/insertSms.do")
 	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @Valid @ModelAttribute("sms") Sms sms, BindingResult bindingResult, SessionStatus status, ModelMap model)
 			throws Exception {
 
@@ -182,7 +183,7 @@ public class EgovSmsInfoController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/sms/selectSms.do")
+	@PostMapping("/cop/sms/selectSms.do")
 	public String selectSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)

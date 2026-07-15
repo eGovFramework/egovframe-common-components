@@ -26,8 +26,8 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -37,8 +37,6 @@
  ******************************************************** */
 function fn_egov_init_QustnrManage(){
 
-	//document.getElementById("qestnrBeginDe").value = "2008-01-01";
-	//document.getElementById("qestnrEndDe").value = "2008-01-30";
 	
 	$("#qestnrBeginDe").datepicker(  
 	        {dateFormat:'yy-mm-dd'

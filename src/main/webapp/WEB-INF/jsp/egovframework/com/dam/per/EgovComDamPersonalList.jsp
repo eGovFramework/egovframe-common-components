@@ -25,6 +25,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -90,7 +92,7 @@
 		<div class="board">
 			<h1><spring:message code="comDamPer.comDamPersonalList.pageTop.title"/></h1><!-- 개인지식관리 목록 -->
 		
-			<form name="listForm" action="<c:url value='/dam/per/EgovComDamPersonalList.do'/>" method="post">
+			<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/per/EgovComDamPersonalList.do" method="post">
 		
 			<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 				<ul>
@@ -168,7 +170,7 @@
 
 			<input type="hidden" id="knoId" name="knoId">
 			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			</form>
+			</form:form>
 
 		</div>
 		

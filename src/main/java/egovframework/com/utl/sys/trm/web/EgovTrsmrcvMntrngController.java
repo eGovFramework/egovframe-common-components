@@ -11,11 +11,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.trm.service.CntcVO;
@@ -70,7 +72,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
+    @PostMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -94,7 +97,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model			ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
+    @PostMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String insertTrsmrcvMntrng(@Valid @ModelAttribute TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -131,9 +135,12 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/getTrsmrcvMntrng.do")
+    @PostMapping("/utl/sys/trm/getTrsmrcvMntrng.do")
 	public String selectTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrng);
 		TrsmrcvMntrng result = egovTrsmrcvMntrngService.selectTrsmrcvMntrng(trsmrcvMntrng);
 		model.addAttribute("resultInfo", result);
@@ -151,7 +158,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/getTrsmrcvMntrngLog.do")
+    @PostMapping("/utl/sys/trm/getTrsmrcvMntrngLog.do")
 	public String selectTrsmrcvMntrngLog(@ModelAttribute("searchVO") TrsmrcvMntrngLog trsmrcvMntrngLog, ModelMap model)
 	  throws Exception{
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrngLog);
@@ -171,7 +178,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngForRegist.do")
+	@PostMapping("/utl/sys/trm/getTrsmrcvMntrngForRegist.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngForRegist(@ModelAttribute("searchVO")TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
         model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
@@ -187,7 +195,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngForUpdate.do")
+	@PostMapping("/utl/sys/trm/getTrsmrcvMntrngForUpdate.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngForUpdate(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
 
@@ -289,7 +298,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model				ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
+	@PostMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO,
 			@Valid @ModelAttribute("trsmrcvMntrng") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
@@ -386,4 +396,31 @@ public class EgovTrsmrcvMntrngController {
 			return ;
 		}
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

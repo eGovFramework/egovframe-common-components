@@ -37,6 +37,14 @@
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 		<!--
 		var knoTypeCdCheckState = 0;
 
@@ -110,6 +118,7 @@
 		
 		function fn_egov_knoTypeCd_check(){	
 			$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 				type : "POST",
 				url : "<c:url value='/dam/map/mat/EgovKnoTypeCdCheckAjax.do'/>",
 				data : { "knoTypeCd": $("#knoTypeCd").val() },

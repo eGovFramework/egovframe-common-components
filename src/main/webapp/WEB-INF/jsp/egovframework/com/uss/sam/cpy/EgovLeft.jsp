@@ -17,6 +17,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>메뉴</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <style>
@@ -58,7 +59,7 @@ body {font-family: "돋움"; font-size: 9pt; color:#000000; font-weight:normal;}
 	</table>
 	<table width="100%" border="0" cellpadding="0" cellspacing="1" class="table-register">
 	<tr>
-	  <td align="center" nowrap><a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do' />" target="content">저작권보호정책</a></td>
+	  <td align="center" nowrap><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do' />'); return false;" target="content">저작권보호정책</a></td>
 	 </tr>
 	</table>
 

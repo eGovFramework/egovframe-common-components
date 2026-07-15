@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -203,7 +204,7 @@ public class EgovCommuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/insertCommuUserBySelf.do")
+    @PostMapping("/cop/cmy/insertCommuUserBySelf.do")
     public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -249,7 +250,7 @@ public class EgovCommuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/deleteCommuUserBySelf.do")
+    @PostMapping("/cop/cmy/deleteCommuUserBySelf.do")
     public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -325,7 +326,7 @@ public class EgovCommuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/insertCommuUser.do")
+    @PostMapping("/cop/cmy/insertCommuUser.do")
     public String insertCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -358,7 +359,7 @@ public class EgovCommuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/deleteCommuUser.do")
+    @PostMapping("/cop/cmy/deleteCommuUser.do")
     public String deleteCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -390,7 +391,7 @@ public class EgovCommuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/insertCommuUserAdmin.do")
+    @PostMapping("/cop/cmy/insertCommuUserAdmin.do")
     public String insertCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -423,7 +424,7 @@ public class EgovCommuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/deleteCommuUserAdmin.do")
+    @PostMapping("/cop/cmy/deleteCommuUserAdmin.do")
     public String deleteCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -600,7 +601,7 @@ public class EgovCommuManageController {
 		    target.add(null);
 		}
 
-		model.addAttribute("boardList", target);
+		model.addAttribute("articleList", target);
 
 		model.addAttribute("preview", "true");
 

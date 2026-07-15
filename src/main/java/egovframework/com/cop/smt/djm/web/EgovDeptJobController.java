@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -280,7 +281,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param DeptJobBx
 	 */
-	@RequestMapping("/cop/smt/djm/addDeptJobBx.do")
+	@PostMapping("/cop/smt/djm/addDeptJobBx.do")
 	public String addDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model)
 			throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
@@ -333,7 +334,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param DeptJobBx
 	 */
-	@RequestMapping("/cop/smt/djm/modifyDeptJobBx.do")
+	@PostMapping("/cop/smt/djm/modifyDeptJobBx.do")
 	public String modifyDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -362,7 +363,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobBxVO
 	 */
-	@RequestMapping("/cop/smt/djm/updateDeptJobBx.do")
+	@PostMapping("/cop/smt/djm/updateDeptJobBx.do")
 	public String updateDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -388,7 +389,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobBx
 	 */
-	@RequestMapping("/cop/smt/djm/updateDeptJobBxOrdr.do")
+	@PostMapping("/cop/smt/djm/updateDeptJobBxOrdr.do")
 	public String updateDeptJobBxOrdr(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model)
 			throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -415,7 +416,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobBxVO
 	 */
-	@RequestMapping("/cop/smt/djm/insertDeptJobBx.do")
+	@PostMapping("/cop/smt/djm/insertDeptJobBx.do")
 	public String insertDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -457,7 +458,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param DeptJobBx
 	 */
-	@RequestMapping("/cop/smt/djm/deleteDeptJobBx.do")
+	@PostMapping("/cop/smt/djm/deleteDeptJobBx.do")
 	public String deleteDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBx deptJobBx, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -525,7 +526,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJob
 	 */
-	@RequestMapping("/cop/smt/djm/addDeptJob.do")
+	@PostMapping("/cop/smt/djm/addDeptJob.do")
 	public String addDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobRegist";
 
@@ -558,7 +559,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJob
 	 */
-	@RequestMapping("/cop/smt/djm/modifyDeptJob.do")
+	@PostMapping("/cop/smt/djm/modifyDeptJob.do")
 	public String modifyDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -586,7 +587,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobVO
 	 */
-	@RequestMapping("/cop/smt/djm/selectDeptJob.do")
+	@PostMapping("/cop/smt/djm/selectDeptJob.do")
 	public String selectDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
 		DeptJob deptJob = deptJobService.selectDeptJob(deptJobVO);
 		model.addAttribute("deptJob", deptJob);
@@ -610,7 +611,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJob
 	 */
-	@RequestMapping("/cop/smt/djm/updateDeptJob.do")
+	@PostMapping("/cop/smt/djm/updateDeptJob.do")
 	public String updateDeptJob(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<String, Object> commandMap, @Valid @ModelAttribute("deptJobVO") DeptJobVO deptJobVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -669,7 +670,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJob
 	 */
-	@RequestMapping("/cop/smt/djm/insertDeptJob.do")
+	@PostMapping("/cop/smt/djm/insertDeptJob.do")
 	public String insertDeptJob(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("deptJobVO") DeptJobVO deptJobVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -730,7 +731,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJob
 	 */
-	@RequestMapping("/cop/smt/djm/deleteDeptJob.do")
+	@PostMapping("/cop/smt/djm/deleteDeptJob.do")
 	public String deleteDeptJob(@ModelAttribute("deptJobVO") DeptJob deptJob, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -739,17 +740,35 @@ public class EgovDeptJobController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+		// IDOR 조치: 요청으로 전달된 atchFileId/deptJob 값을 그대로 신뢰하지 않고,
+		// deptJobId로 서버에서 원본 레코드를 조회하여 존재 여부를 확인한 뒤,
+		// 삭제에 사용할 atchFileId/deptJobId는 반드시 서버에서 조회한 값만 사용한다.
+		DeptJobVO checkVO = new DeptJobVO();
+		checkVO.setDeptJobId(deptJob.getDeptJobId());
+		DeptJobVO originDeptJob = deptJobService.selectDeptJob(checkVO);
+
+		if (originDeptJob == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/cop/smt/djm/selectDeptJobList.do";
+		}
+
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = deptJob.getAtchFileId();
+		// 클라이언트가 임의로 조작할 수 있는 값이 아닌, 서버에서 조회한 원본 첨부파일ID만 사용한다.
+		String atchFileId = originDeptJob.getAtchFileId();
 
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
 
-		fileMngService.deleteAllFileInf(fvo);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 		// 첨부파일 삭제 End.............
 
-		deptJobService.deleteDeptJob(deptJob);
+		// 삭제 대상 deptJob 역시 서버에서 조회한 원본 deptJobId 기준으로만 삭제한다.
+		DeptJob targetDeptJob = new DeptJob();
+		targetDeptJob.setDeptJobId(originDeptJob.getDeptJobId());
+		deptJobService.deleteDeptJob(targetDeptJob);
 		return "forward:/cop/smt/djm/selectDeptJobList.do";
 	}
 

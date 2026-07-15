@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -111,7 +112,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/selectArticleScrapDetail.do")
+    @PostMapping("/cop/scp/selectArticleScrapDetail.do")
     public String selectArticleScrapDetail(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -122,6 +123,16 @@ public class EgovArticleScrapController {
         }
 
 		ScrapVO scrap = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		if (scrap == null) {
+			throw new IllegalStateException("권한이 없습니다.");
+		}
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovStringUtil.isNullToString(user.getUniqId()).equals(scrap.getFrstRegisterId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
+		}
 
 		model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		model.addAttribute("result", scrap);
@@ -146,8 +157,11 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/insertArticleScrapView.do")
+    @PostMapping("/cop/scp/insertArticleScrapView.do")
     public String insertArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		ScrapVO scrap = new ScrapVO();
 
@@ -177,7 +191,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/insertArticleScrap.do")
+    @PostMapping("/cop/scp/insertArticleScrap.do")
     public String insertArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("scrap") Scrap scrap,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -215,7 +229,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/deleteArticleScrap.do")
+    @PostMapping("/cop/scp/deleteArticleScrap.do")
     public String deleteArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("Scrap") Scrap scrap, ModelMap model) throws Exception {
 	@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -236,9 +250,23 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/updateArticleScrapView.do")
+    @PostMapping("/cop/scp/updateArticleScrapView.do")
     public String updateArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("scrap") Scrap scrap, ModelMap model) throws Exception {
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		if (user == null || user.getUniqId() == null) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
 		Scrap vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		if (vo == null) {
+			throw new IllegalStateException("권한이 없습니다.");
+		}
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!user.getUniqId().equals(vo.getFrstRegisterId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
+		}
 
 		model.addAttribute("articleScrapVO", vo);
 
@@ -265,7 +293,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/updateArticleScrap.do")
+    @PostMapping("/cop/scp/updateArticleScrap.do")
     public String updateArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("Scrap") Scrap scrap,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -289,5 +317,32 @@ public class EgovArticleScrapController {
 
 		return "forward:/cop/scp/selectArticleScrapList.do";
     }
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
 
 }

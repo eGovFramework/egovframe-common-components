@@ -70,7 +70,7 @@ function fn_egov_delete_RecentSrchwrd(){
 	<h2><spring:message code="ussIonRsm.recentSrchwrdDetail.recentSrchwrdDetail"/></h2><!-- 최근검색어관리 상세보기 -->
 
 	<!-- 등록폼 -->
-	<form name="RecentSrchwrdForm" action="<c:url value=''/>" method="post">
+	<form name="RecentSrchwrdForm" action="" method="post">
 	
 	<table class="wTable">
 		<colgroup>
@@ -109,18 +109,18 @@ function fn_egov_delete_RecentSrchwrd(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/rsm/updtRecentSrchwrdView.do'/>" method="post" style="display:inline-block">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/rsm/updtRecentSrchwrdView.do" method="post" style="display:inline-block">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_RecentSrchwrd(); return false;" />
 		<input name="srchwrdManageId" type="hidden" value="${recentSrchwrd.srchwrdManageId}">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/ion/rsm/detailRecentSrchwrd.do'/>" method="post" style="display:inline-block">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/rsm/detailRecentSrchwrd.do" method="post" style="display:inline-block">
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_RecentSrchwrd(); return false;" />
 		<input name="srchwrdManageId" type="hidden" value="${recentSrchwrd.srchwrdManageId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		
-		<form name="formList" action="<c:url value='/uss/ion/rsm/listRecentSrchwrd.do'/>" method="post" style="display:inline-block">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/rsm/listRecentSrchwrd.do" method="post" style="display:inline-block">
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_RecentSrchwrd(); return false;" />
 		</form>
 	</div>

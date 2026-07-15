@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -127,7 +128,7 @@ public class EgovPopupManageController {
 	 * @return "/uss/ion/pwm/detailPopupManage"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/pwm/detailPopup.do")
+	@PostMapping("/uss/ion/pwm/detailPopup.do")
 	public String egovPopupManageDetail(PopupManageVO popupManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 
@@ -155,7 +156,7 @@ public class EgovPopupManageController {
 	 * @return "egovframework/com/uss/ion/pwm/EgovPopupRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/pwm/insertPopupView.do")
+	@PostMapping("/uss/ion/pwm/insertPopupView.do")
 	public String insertPopupView(@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("popupManageVO", popupManageVO);
@@ -180,7 +181,7 @@ public class EgovPopupManageController {
 	 * @return "egovframework/com/uss/ion/pwm/EgovPopupUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/pwm/updatePopupView.do")
+	@PostMapping("/uss/ion/pwm/updatePopupView.do")
 	public String updatePopupView(@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, ModelMap model)
 			throws Exception {
 		PopupManageVO resultVO = egovPopupManageService.selectPopup(popupManageVO);
@@ -220,7 +221,7 @@ public class EgovPopupManageController {
 	 * @return "/uss/ion/pwm/updtPopupManage"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/pwm/updtPopup.do")
+	@PostMapping("/uss/ion/pwm/updtPopup.do")
 	public String egovPopupManageUpdt(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -288,7 +289,7 @@ public class EgovPopupManageController {
 	 * @return "/uss/ion/pwm/registPopupManage"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/pwm/registPopup.do")
+	@PostMapping("/uss/ion/pwm/registPopup.do")
 	public String egovPopupManageRegist(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {

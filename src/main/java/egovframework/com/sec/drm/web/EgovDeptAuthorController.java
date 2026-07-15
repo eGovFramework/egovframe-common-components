@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -117,7 +118,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/drm/EgovDeptAuthorInsert.do")
+	@PostMapping("/sec/drm/EgovDeptAuthorInsert.do")
 	public String insertDeptAuthor(@RequestParam("userIds") String userIds,
 			                       @RequestParam("authorCodes") String authorCodes,
 			                       @RequestParam("regYns") String regYns,
@@ -155,7 +156,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/drm/EgovDeptAuthorDelete.do")
+	@PostMapping("/sec/drm/EgovDeptAuthorDelete.do")
 	public String deleteDeptAuthor (@RequestParam("userIds") String userIds,
 			                        @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
                                      ModelMap model) throws Exception {

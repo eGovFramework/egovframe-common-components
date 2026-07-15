@@ -11,6 +11,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ClassUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.IncludedCompInfoVO;
@@ -74,7 +79,9 @@ public class EgovComIndexController {
 	}
 
 	@RequestMapping("/EgovTop.do")
-	public String top() {
+	public String top(ModelMap model) {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		model.addAttribute("loginVO", loginVO);
 		return "egovframework/com/cmm/EgovUnitTop";
 	}
 
@@ -97,7 +104,7 @@ public class EgovComIndexController {
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
 
-		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
+		// 비밀번호 설정일로부터 며칠이 지났는지 확인한다. ex) 3이면 비밀번호 설정후 3일 경과
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
@@ -121,7 +128,6 @@ public class EgovComIndexController {
 	public String setLeftMenu(ModelMap model) {
 
 		Map<Integer, IncludedCompInfoVO> map = new TreeMap<Integer, IncludedCompInfoVO>();
-		RequestMapping rmAnnotation;
 		IncludedInfo annotation;
 		IncludedCompInfoVO zooVO;
 
@@ -139,19 +145,31 @@ public class EgovComIndexController {
 
 				if (annotation != null) {
 					// LOG.debug("Found @IncludedInfo Method : " + methods[i] );
+					String listUrl = annotation.listUrl();
+					if ("".equals(listUrl)) {
+						/*
+						 * 목록형 조회를 위한 url 매핑은 @IncludedInfo나 @RequestMapping류(@RequestMapping,
+						 * @GetMapping, @PostMapping, @PutMapping, @PatchMapping, @DeleteMapping)
+						 * 에서 가져온다
+						 */
+						listUrl = resolveMappingUrl(methods[i]);
+					}
+
+					if (listUrl == null) {
+						/*
+						 * URL을 찾지 못한 경우 좌측메뉴 전체가 에러 화면(egovError.jsp)으로 대체되는 것을
+						 * 방지하기 위해 해당 항목만 건너뛴다.
+						 */
+						LOGGER.warn("@IncludedInfo가 설정되었으나 매핑 URL을 확인할 수 없어 좌측메뉴에서 제외합니다. method={}",
+								methods[i]);
+						continue;
+					}
+
 					zooVO = new IncludedCompInfoVO();
 					zooVO.setName(annotation.name());
 					zooVO.setOrder(annotation.order());
 					zooVO.setGid(annotation.gid());
-					/*
-					 * 목록형 조회를 위한 url 매핑은 @IncludedInfo나 @RequestMapping에서 가져온다
-					 */
-					rmAnnotation = methods[i].getAnnotation(RequestMapping.class);
-					if ("".equals(annotation.listUrl())) {
-						zooVO.setListUrl(rmAnnotation.value()[0]);
-					} else {
-						zooVO.setListUrl(annotation.listUrl());
-					}
+					zooVO.setListUrl(listUrl);
 
 					map.put(zooVO.getOrder(), zooVO);
 				}
@@ -163,6 +181,48 @@ public class EgovComIndexController {
 		LOGGER.debug("EgovComIndexController index is called ");
 
 		return "egovframework/com/cmm/EgovUnitLeft";
+	}
+
+	/**
+	 * 메서드에 설정된 @RequestMapping류 애노테이션에서 첫번째 매핑 URL을 조회한다.
+	 * @RequestMapping이 없는 경우 @GetMapping, @PostMapping, @PutMapping, @PatchMapping,
+	 * @DeleteMapping 순서로 확인한다.
+	 *
+	 * @param method 확인 대상 메서드
+	 * @return 매핑된 URL, 없으면 null
+	 */
+	private String resolveMappingUrl(Method method) {
+		RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+		if (requestMapping != null && requestMapping.value().length > 0) {
+			return requestMapping.value()[0];
+		}
+
+		GetMapping getMapping = method.getAnnotation(GetMapping.class);
+		if (getMapping != null && getMapping.value().length > 0) {
+			return getMapping.value()[0];
+		}
+
+		PostMapping postMapping = method.getAnnotation(PostMapping.class);
+		if (postMapping != null && postMapping.value().length > 0) {
+			return postMapping.value()[0];
+		}
+
+		PutMapping putMapping = method.getAnnotation(PutMapping.class);
+		if (putMapping != null && putMapping.value().length > 0) {
+			return putMapping.value()[0];
+		}
+
+		PatchMapping patchMapping = method.getAnnotation(PatchMapping.class);
+		if (patchMapping != null && patchMapping.value().length > 0) {
+			return patchMapping.value()[0];
+		}
+
+		DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
+		if (deleteMapping != null && deleteMapping.value().length > 0) {
+			return deleteMapping.value()[0];
+		}
+
+		return null;
 	}
 
 	// context-security.xml 설정

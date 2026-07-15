@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovSmsInfoList.jsp
@@ -67,7 +68,7 @@
 
 <div class="board">
 	<h1><spring:message code="cop.sms.textMassageList"/></h1><!-- 문자메시지 목록 -->
-	<form name="frm" method="post" action="<c:url value='/cop/sms/selectSmsList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/sms/selectSmsList.do">
 	<input type="hidden" name="smsId" value="<c:out value=""/>">
 	<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
 
@@ -83,11 +84,11 @@
 				<input class="s_input2 vat" type="text" name="searchWrd" size="35" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" onkeypress="press(event);" title="<spring:message code="title.search"/>" /><!-- 검색단어입력 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire"/>" title="<spring:message code="button.inquire"/>" onclick="fn_egov_select_sms('1'); return false;" /><!-- 조회 -->
-				<span class="s_btn"><a href="<c:url value='/cop/sms/addSms.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="fn_egov_insert_sms(); return false;"><spring:message code="cop.sms.send"/></a></span><!-- 전송 -->
+				<span class="s_btn"><a href="javascript:void(0);" onclick="fn_egov_insert_sms(); return false;"><spring:message code="cop.sms.send"/></a></span><!-- 전송 -->
 			</li>
 		</ul>
 	</div>
-	</form>
+	</form:form>
 	
 	<table class="board_list">
 		<caption><spring:message code="cop.sms.textMassageList"/></caption><!-- 문자메시지 목록 -->
@@ -110,7 +111,7 @@
 			<tr>
 				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 				<td>	
-				<a href="<c:url value='/cop/sms/selectSms.do'/>?smsId=${result.smsId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_inqire_sms('<c:out value="${result.smsId}"/>');return false;"><c:out value='${result.frstRegisterPnttm}'/></a>	
+				<a href="javascript:void(0);" onClick="fn_egov_inqire_sms('<c:out value="${result.smsId}"/>');return false;"><c:out value='${result.frstRegisterPnttm}'/></a>	
 				
 				</td>
 				<td><c:out value="${result.trnsmitTelno}"/></td>

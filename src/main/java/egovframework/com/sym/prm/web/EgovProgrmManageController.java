@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -142,7 +143,7 @@ public class EgovProgrmManageController {
 	 * @return 출력페이지정보 "forward:/sym/prm/EgovProgramListManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping("/sym/prm/EgovProgrmManageListDelete.do")
+	@PostMapping("/sym/prm/EgovProgrmManageListDelete.do")
 	public String deleteProgrmManageList(@RequestParam("checkedProgrmFileNmForDel") String checkedProgrmFileNmForDel,
 			@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -179,7 +180,7 @@ public class EgovProgrmManageController {
 	 *         "forward:/sym/prm/EgovProgramListManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramListRegistView.do")
+	@PostMapping("/sym/prm/EgovProgramListRegistView.do")
 	public String insertProgrmListView(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -200,7 +201,7 @@ public class EgovProgrmManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramListRegist.do")
+	@PostMapping("/sym/prm/EgovProgramListRegist.do")
 	public String insertProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String resultMsg = "";
@@ -232,7 +233,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	/* 프로그램목록수정 */
-	@RequestMapping(value = "/sym/prm/EgovProgramListDetailSelectUpdt.do")
+	@PostMapping("/sym/prm/EgovProgramListDetailSelectUpdt.do")
 	public String updateProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
 			BindingResult bindingResult,@ModelAttribute("searchVO") ComDefaultVO searchVO, Model model) throws Exception {
 		String resultMsg = "";
@@ -268,7 +269,7 @@ public class EgovProgrmManageController {
 	 * @return 출력페이지정보 "forward:/sym/prm/EgovProgramListManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramListManageDelete.do")
+	@PostMapping("/sym/prm/EgovProgramListManageDelete.do")
 	public String deleteProgrmList(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -362,7 +363,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	/* 프로그램변경요청등록 */
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstStre.do")
+	@PostMapping("/sym/prm/EgovProgramChangRequstStre.do")
 	public String insertProgrmChangeRequst(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -411,7 +412,7 @@ public class EgovProgrmManageController {
 	 * @return 출력페이지정보 "forward:/sym/prm/EgovProgramChangeRequstSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstDetailSelectUpdt.do")
+	@PostMapping("/sym/prm/EgovProgramChangRequstDetailSelectUpdt.do")
 	public String updateProgrmChangeRequst(@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -460,7 +461,7 @@ public class EgovProgrmManageController {
 	 * @return 출력페이지정보 "forward:/sym/prm/EgovProgramChangeRequstSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstDelete.do")
+	@PostMapping("/sym/prm/EgovProgramChangRequstDelete.do")
 	public String deleteProgrmChangeRequst(@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -574,7 +575,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do")
+	@PostMapping("/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do")
 	public String updateProgrmChangRequstProcess(
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -665,7 +666,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	/* 프로그램변경요청처리 삭제 */
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstProcessDelete.do")
+	@PostMapping("/sym/prm/EgovProgramChangRequstProcessDelete.do")
 	public String deleteProgrmChangRequstProcess(
 			@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리

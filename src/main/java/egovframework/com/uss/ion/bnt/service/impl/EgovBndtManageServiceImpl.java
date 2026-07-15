@@ -63,6 +63,7 @@ import jakarta.annotation.Resource;
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2025.08.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
  *   2025.08.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.10  유지보수        NCSC 보안점검 반영 (엑셀 행 수 상한 적용)
  *
  *      </pre>
  */
@@ -76,6 +77,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	private BndtManageDAO bndtManageDAO;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovBndtManageServiceImpl.class);
+	private static final int MAX_EXCEL_ROWS = 1000;
 	/**
 	 * 당직관리정보를 관리하기 위해 등록된 당직관리 목록을 조회한다.
 	 *
@@ -438,6 +440,9 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		if (workbook.getNumberOfSheets() == 1) {
 			HSSFSheet sheet = workbook.getSheetAt(0); // 당직자 시트 가져오기
 			int rowsCnt = sheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
+			if (rowsCnt - 1 > MAX_EXCEL_ROWS) {
+				throw new IllegalArgumentException("Excel row count exceeds maximum allowed: " + MAX_EXCEL_ROWS);
+			}
 
 			BndtManageVO checkBndtManageVO = new BndtManageVO();
 			for (int j = 1; j < rowsCnt; j++) { // row 루프
@@ -501,6 +506,9 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 				if (sheet != null) {
 					// xlsx에서는 getPhysicalNumberOfRows()가 0을 반환할 수 있으므로 getLastRowNum() 사용 (0-based)
 					int lastRowNum = sheet.getLastRowNum();
+					if (lastRowNum > MAX_EXCEL_ROWS) {
+						throw new IllegalArgumentException("Excel row count exceeds maximum allowed: " + MAX_EXCEL_ROWS);
+					}
 
 					BndtManageVO checkBndtManageVO = new BndtManageVO();
 					for (int j = 1; j <= lastRowNum; j++) { // row 루프 (1=헤더 다음 첫 데이터행)

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -100,7 +101,7 @@ public class EgovIndvdlPgeController {
      * @return	"/uss/mpe/EgovIndvdlPgeDetail"
      * @throws Exception
      */
-     @RequestMapping("/uss/mpe/selectIndvdlPgeDetail.do")
+     @PostMapping("/uss/mpe/selectIndvdlPgeDetail.do")
      public String selectIndvdlPgeDetail(IndvdlPgeVO indvdlPgeVO, @ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model) throws Exception {
 
  		IndvdlPgeVO vo = egovIndvdlPgeService.selectIndvdlPgeDetail(indvdlPgeVO);
@@ -117,7 +118,7 @@ public class EgovIndvdlPgeController {
       * @return	"/uss/mpe/EgovIndvdlPgeRegist"
       * @throws Exception
       */
-     @RequestMapping("/uss/mpe/insertIndvdlPgeView.do")
+     @PostMapping("/uss/mpe/insertIndvdlPgeView.do")
      public String insertIndvdlPgeView(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, Model model) throws Exception {
 
          model.addAttribute("indvdlPgeVO", new IndvdlPgeVO());
@@ -134,7 +135,7 @@ public class EgovIndvdlPgeController {
       * @return	"forward:/uss/mpe/selectIndvdlPgeList.do"
       * @throws Exception
       */
-      @RequestMapping("/uss/mpe/insertIndvdlPge.do")
+      @PostMapping("/uss/mpe/insertIndvdlPge.do")
       public String insertIndvdlPge(
 	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
 		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,
@@ -157,7 +158,7 @@ public class EgovIndvdlPgeController {
        * @return	"/uss/mpe/EgovIndvdlPgeUpdt"
        * @throws Exception
        */
-      @RequestMapping("/uss/mpe/updateIndvdlPgeView.do")
+      @PostMapping("/uss/mpe/updateIndvdlPgeView.do")
       public String updateIndvdlPgeView(@RequestParam("cntntsId") String cntntsId ,
               @ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model)
               throws Exception {
@@ -180,7 +181,7 @@ public class EgovIndvdlPgeController {
        * @return	"forward:/uss/mpe/selectIndvdlPgeList.do"
        * @throws Exception
        */
-      @RequestMapping("/uss/mpe/updateIndvdlPge.do")
+      @PostMapping("/uss/mpe/updateIndvdlPge.do")
       public String updateIndvdlPge(
 	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
 		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,

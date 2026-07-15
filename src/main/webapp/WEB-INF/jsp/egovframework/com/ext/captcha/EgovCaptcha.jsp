@@ -44,7 +44,8 @@
 <div class="wTableFrm">
 	<h2><spring:message code="comCmm.left.3300"/> <spring:message code="title.create" /></h2>
 
-	<form id="frm" action="<c:url value='/ext/captcha/result.do'/>" method="post">
+	<form id="frm" action="${pageContext.request.contextPath}/ext/captcha/result.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="hidden" id="pgNm" name="pgNm" value="testprogram" />
 		<table class="wTable" summary="Captcha와 함께한 입력 값 등록 폼">
 			<caption>등록폼</caption>

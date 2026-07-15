@@ -158,7 +158,6 @@ function fn_egov_save(){
     } else if (varForm.executCycle.value == "04") {
       executSchdulDe = '0000' + varForm.executSchdulMonth.value + varForm.executSchdulDay.value;
     } else if ( varForm.executCycle.value == "05" ) {
-    	debugger;
       executSchdulDe = varForm.executSchdulDeNm.value;
       executSchdulDe = executSchdulDe.replace(/-/gi,"");
     }
@@ -406,7 +405,7 @@ function fn_egov_clearExecutSchdulValue(bYyyyMMdd, bMonth, bDay, bDfk, bHHmmss) 
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="저장" onclick="fn_egov_save(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/bak/getBackupOpertList.do'/>" onclick="fn_egov_get_list(); return false;">목록</a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_get_list(); return false;">목록</a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

@@ -60,6 +60,7 @@
     <td width="400">
 <!-- ********** 여기서 부터 본문 내용 *************** -->
 <form name="dplactCeckForm" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input type="hidden" name="dplactCeck" value="<c:out value='${dplactCeck}'/>">
 </form>
 

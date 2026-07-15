@@ -139,7 +139,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 					} else {
 						throw new SecurityException("Unacceptable file extension."); // 허용되지 않는 확장자 처리
 					}
-					if (extensionWhiteList.indexOf(ext) < 0) {
+					if (!isAllowedExtension(ext, extensionWhiteList)) {
 						throw new SecurityException("Unacceptable file extension."); // 허용되지 않는 확장자 처리
 					}
 
@@ -205,12 +205,34 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 */
 	public static boolean checkFileExtension(String fileNamePath, String whiteListExtensions) {
 		String extension = getFileExtension(fileNamePath);
+		return isAllowedExtension(extension, whiteListExtensions);
+	}
 
-		if ("".equals(extension) || (whiteListExtensions == null) || "".equals(whiteListExtensions)) {
+	/**
+	 * 확장자가 허용목록에 포함되는지 exact match로 검증한다.
+	 *
+	 * @param extension 확장자 (점 없이)
+	 * @param whiteListExtensions ex) .gif,.jpg,.jpeg,.png
+	 * @return true : 허용
+	 */
+	public static boolean isAllowedExtension(String extension, String whiteListExtensions) {
+		if (extension == null || extension.isEmpty() || whiteListExtensions == null || whiteListExtensions.isEmpty()) {
 			return false;
 		}
 
-		return whiteListExtensions.contains("." + extension);
+		String[] allowedExtensions = whiteListExtensions.split(",");
+		String normalizedExt = extension.toLowerCase();
+
+		for (String allowedExt : allowedExtensions) {
+			String trimmedExt = allowedExt.trim().toLowerCase();
+			if (trimmedExt.startsWith(".")) {
+				trimmedExt = trimmedExt.substring(1);
+			}
+			if (trimmedExt.equals(normalizedExt)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

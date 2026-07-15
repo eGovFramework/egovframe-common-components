@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -111,7 +112,7 @@ public class EgovAdministrationWordController {
 	 * @return "/uss/olh/awm/EgovAdministrationWordDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olh/awm/selectAdministrationWordDetail.do")
+	@PostMapping("/uss/olh/awm/selectAdministrationWordDetail.do")
 	public String selectAdministrationWordDetail(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			AdministrationWordVO administrationWord, ModelMap model) throws Exception {
 
@@ -167,7 +168,7 @@ public class EgovAdministrationWordController {
 	 * @return "/uss/olh/awm/EgovAdministrationWordDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olh/awm/selectAdministrationWordManageDetail.do")
+	@PostMapping("/uss/olh/awm/selectAdministrationWordManageDetail.do")
 	public String selectAdministrationWordManageDetail(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			AdministrationWordVO administrationWord, ModelMap model) throws Exception {
 
@@ -185,7 +186,7 @@ public class EgovAdministrationWordController {
 	 * @return "/uss/olh/awm/EgovAdministrationWordRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/insertAdministrationWordView.do")
+	@PostMapping("/uss/olh/awm/insertAdministrationWordView.do")
 	public String insertAdministrationWordView(@ModelAttribute("searchVO") AdministrationWordVO searchVO, Model model)
 			throws Exception {
 
@@ -211,7 +212,7 @@ public class EgovAdministrationWordController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/insertAdministrationWord.do")
+	@PostMapping("/uss/olh/awm/insertAdministrationWord.do")
 	public String insertAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
 			BindingResult bindingResult,
@@ -248,7 +249,7 @@ public class EgovAdministrationWordController {
 	 * @return "/uss/olh/hpc/EgovAdministrationWordUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/updateAdministrationWordView.do")
+	@PostMapping("/uss/olh/awm/updateAdministrationWordView.do")
 	public String updateAdministrationWordView(@RequestParam("administWordId") String administWordId,
 			@ModelAttribute("searchVO") AdministrationWordVO searchVO, ModelMap model) throws Exception {
 
@@ -277,7 +278,7 @@ public class EgovAdministrationWordController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/updateAdministrationWord.do")
+	@PostMapping("/uss/olh/awm/updateAdministrationWord.do")
 	public String updateAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
 			BindingResult bindingResult,
@@ -311,13 +312,40 @@ public class EgovAdministrationWordController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/deleteAdministrationWord.do")
+	@PostMapping("/uss/olh/awm/deleteAdministrationWord.do")
 	public String deleteAdministrationWord(AdministrationWordVO administrationWordVO,
 			@ModelAttribute("searchVO") AdministrationWordVO searchVO) throws Exception {
 
 		egovAdministrationWordService.deleteAdministrationWord(administrationWordVO);
 
 		return "forward:/uss/olh/awm/selectAdministrationWordManageList.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

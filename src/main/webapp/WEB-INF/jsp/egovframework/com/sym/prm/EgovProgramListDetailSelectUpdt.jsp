@@ -47,7 +47,7 @@ function updateProgramListManage(form) {
 		if(!validateProgrmManageVO(form)){
 			return;
 		}else{
-            form.action="<c:url value='/sym/prm/EgovProgramListDetailSelectUpdt.do' />";
+            form.action="${pageContext.request.contextPath}/sym/prm/EgovProgramListDetailSelectUpdt.do";
 			form.submit();
 		}
 	}
@@ -58,7 +58,7 @@ function updateProgramListManage(form) {
  ******************************************************** */
 function deleteProgramListManage(form) {
 	if(confirm("<spring:message code="common.delete.msg" />")){
-        form.action="<c:url value='/sym/prm/EgovProgramListManageDelete.do' />";
+        form.action="${pageContext.request.contextPath}/sym/prm/EgovProgramListManageDelete.do";
 		form.submit();
 	}
 }
@@ -142,7 +142,7 @@ function selectList(){
 	<div class="btn">
 		<span class="btn_s"><a onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="updateProgramListManage(document.forms[0]); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/sym/prm/EgovProgramListManageDelete.do'/>?progrmFileNm=<c:out value="${progrmManageVO.progrmFileNm  }"/>" onclick="deleteProgramListManage(document.forms[0]); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="deleteProgramListManage(document.forms[0]); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

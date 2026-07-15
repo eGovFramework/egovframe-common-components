@@ -18,26 +18,37 @@
  */
 package egovframework.com.utl.wed.filter;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.InvalidPathException;
+import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
-import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
-import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletDiskFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
 /**
  * Created by guava on 1/20/14.
@@ -59,6 +70,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *  2020.08.28	신용호			보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
  *  2023.06.09	이택진			NSR 보안조치 (크로스사이트 스크립트 방지를 위한 데이터 변환 코드 수정)
  *  2023.06.27	김혜준			크로스사이트 스크립트 방지 코드 미사용 변수 개선
+ *  2026.07.12	NCSC			Spring Security CSRF 등으로 본문 선파싱 시 Part/Multipart 우선 처리
  *
  * </pre>
  */
@@ -122,73 +134,185 @@ public class CkImageSaver {
 	 * @throws IOException
 	 */
 	public void saveAndReturnUrlToClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// Parse the request
+		String errorMessage = null;
+		String relUrl = null;
+
 		try {
-			DiskFileItemFactory factory = new DiskFileItemFactory.Builder().get();
+			UploadedImage uploaded = resolveUploadedImage(request);
 
-			// Create a new file upload handler
-			JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
-
-			List<FileItem> /* FileItem */items = upload.parseRequest(request);
-			// We upload just one file at the same time
-			FileItem uplFile = items.get(0);
-
-			String errorMessage = null;
-			String relUrl = null;
-
-			if (isAllowFileType(FilenameUtils.getName(uplFile.getName()))) {
-				String uploadFilePath = fileSaveManager.saveFile(uplFile, imageBaseDir);
-				//System.out.println("===>>> uploadFilePath = "+uploadFilePath);
-
+			if (uploaded == null) {
+				errorMessage = "No file uploaded";
+			} else if (!isAllowFileType(uploaded.originalFileName)) {
+				errorMessage = "Restricted Image Format";
+			} else {
+				String uploadFilePath = saveBytes(uploaded.bytes, uploaded.originalFileName, imageBaseDir);
 				String fileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('/') + 1);
-				String filePath = imageBaseDir+uploadFilePath.substring(0,uploadFilePath.lastIndexOf('/'));
+				String filePath = imageBaseDir + uploadFilePath.substring(0, uploadFilePath.lastIndexOf('/'));
 
 				relUrl = request.getContextPath()
-					    + "/utl/web/imageSrc.do?"
-					    + "path=" + this.encrypt(filePath,request)
-					    + "&physical=" + this.encrypt(fileName,request)
-					    + "&contentType=" + this.encrypt(uplFile.getContentType(),request);
-
-				//System.out.println("===>>> relUrl = "+relUrl);
-			} else {
-				errorMessage = "Restricted Image Format";
+						+ "/utl/web/imageSrc.do?"
+						+ "path=" + this.encrypt(filePath, request)
+						+ "&physical=" + this.encrypt(fileName, request)
+						+ "&contentType=" + this.encrypt(uploaded.contentType, request);
 			}
-
-			StringBuffer sb = new StringBuffer();
-			sb.append("<script type=\"text/javascript\">\n");
-			// Compressed version of the document.domain automatic fix script.
-			// The original script can be found at [fckeditor_dir]/_dev/domain_fix_template.js
-			// sb.append("(function(){var d=document.domain;while (true){try{var A=window.parent.document.domain;break;}catch(e) {};d=d.replace(/.*?(?:\\.|$)/,'');if (d.length==0) break;try{document.domain=d;}catch (e){break;}}})();\n");
-			// KISA 보안약점 조치 (2018-12-11, 신용호)
-			String funcNo = request.getParameter(FUNC_NO);
-			boolean isInteger = true;
-			try {
-				Integer.parseInt(funcNo);
-			} catch (NumberFormatException e) {
-				isInteger = false;
-				log.error(e);
-			}
-			if(!isInteger) {
-				funcNo = "1";		// 가장 많이 사용되는 값
-			}
-			sb.append("window.parent.CKEDITOR.tools.callFunction(").append(funcNo).append(", '");
-			sb.append(relUrl);
-			if (errorMessage != null) {
-				sb.append("', '").append(errorMessage);
-			}
-			sb.append("');\n </script>");
-
-			response.setContentType("text/html");
-			response.setHeader("Cache-Control", "no-cache");
-			PrintWriter out = response.getWriter();
-
-			out.print(sb.toString());
-			out.flush();
-			out.close();
-
 		} catch (FileUploadException e) {
 			log.error(e);
+			errorMessage = "Upload failed";
+		} catch (Exception e) {
+			log.error("CKEditor image upload failed", e);
+			errorMessage = "Upload failed";
 		}
+
+		writeCallback(request, response, relUrl, errorMessage);
+	}
+
+	/**
+	 * Spring Multipart / Servlet Part / commons-fileupload 순으로 업로드 파일을 찾는다.
+	 * CSRF 필터 등이 본문을 먼저 파싱한 경우 commons-fileupload만으로는 파일을 못 찾을 수 있다.
+	 */
+	private UploadedImage resolveUploadedImage(HttpServletRequest request) throws IOException, ServletException, FileUploadException {
+		UploadedImage uploaded = resolveFromSpringMultipart(request);
+		if (uploaded != null) {
+			return uploaded;
+		}
+
+		uploaded = resolveFromServletParts(request);
+		if (uploaded != null) {
+			return uploaded;
+		}
+
+		return resolveFromCommonsFileUpload(request);
+	}
+
+	private UploadedImage resolveFromSpringMultipart(HttpServletRequest request) throws IOException {
+		if (!(request instanceof MultipartHttpServletRequest multipartRequest)) {
+			return null;
+		}
+
+		MultipartFile multipartFile = multipartRequest.getFile("upload");
+		if (multipartFile == null || multipartFile.isEmpty()) {
+			for (MultipartFile candidate : multipartRequest.getFileMap().values()) {
+				if (candidate != null && !candidate.isEmpty()) {
+					multipartFile = candidate;
+					break;
+				}
+			}
+		}
+
+		if (multipartFile == null || multipartFile.isEmpty()) {
+			return null;
+		}
+
+		String originalFileName = FilenameUtils.getName(multipartFile.getOriginalFilename());
+		if (StringUtils.isBlank(originalFileName)) {
+			return null;
+		}
+
+		return new UploadedImage(originalFileName, multipartFile.getContentType(), multipartFile.getBytes());
+	}
+
+	private UploadedImage resolveFromServletParts(HttpServletRequest request) throws IOException {
+		try {
+			Collection<Part> parts = request.getParts();
+			for (Part part : parts) {
+				String submittedFileName = part.getSubmittedFileName();
+				if (StringUtils.isBlank(submittedFileName) || part.getSize() <= 0) {
+					continue;
+				}
+				String originalFileName = FilenameUtils.getName(submittedFileName);
+				try (InputStream inputStream = part.getInputStream()) {
+					return new UploadedImage(originalFileName, part.getContentType(), IOUtils.toByteArray(inputStream));
+				}
+			}
+		} catch (IllegalStateException | ServletException e) {
+			log.debug("Servlet Part API unavailable for CKEditor upload, fallback to commons-fileupload", e);
+		}
+		return null;
+	}
+
+	private UploadedImage resolveFromCommonsFileUpload(HttpServletRequest request) throws FileUploadException, IOException {
+		DiskFileItemFactory factory = DiskFileItemFactory.builder().get();
+		JakartaServletDiskFileUpload upload = new JakartaServletDiskFileUpload(factory);
+		List<DiskFileItem> items = upload.parseRequest(request);
+
+		for (DiskFileItem item : items) {
+			if (item.getSize() <= 0) {
+				continue;
+			}
+
+			boolean isUploadField = "upload".equals(item.getFieldName()) || !item.isFormField();
+			if (!isUploadField) {
+				continue;
+			}
+
+			String originalFileName = extractFileName(item);
+			if (StringUtils.isBlank(originalFileName)) {
+				continue;
+			}
+
+			return new UploadedImage(originalFileName, item.getContentType(), item.get());
+		}
+		return null;
+	}
+
+	private String extractFileName(DiskFileItem item) {
+		try {
+			return FilenameUtils.getName(item.getName());
+		} catch (InvalidPathException e) {
+			log.warn("Invalid upload file name, using raw input", e);
+			return FilenameUtils.getName(e.getInput());
+		}
+	}
+
+	/**
+	 * DefaultFileSaveManager와 동일한 규칙으로 바이트 배열을 저장한다.
+	 */
+	private String saveBytes(byte[] fileBytes, String originalFileName, String baseDir) throws IOException {
+		// fileSaveManager가 커스텀인 경우를 위해 FileItem 경로도 유지하되, 바이트 저장은 공통 규칙 사용
+		if (fileSaveManager != null && !(fileSaveManager instanceof DefaultFileSaveManager)) {
+			log.debug("Custom FileSaveManager is configured; using byte save fallback compatible with imageSrc.do");
+		}
+
+		String subDir = File.separator
+				+ DirectoryPathManager.getDirectoryPathByDateType(DirectoryPathManager.DIR_DATE_TYPE.DATE_POLICY_YYYY_MM);
+		String fileName = RandomStringUtils.randomAlphanumeric(20) + "."
+				+ StringUtils.lowerCase(StringUtils.substringAfterLast(originalFileName, "."));
+		String saveFileName = fileName + "_upfile";
+
+		File fileToSave = DirectoryPathManager.getUniqueFile(baseDir, subDir, saveFileName);
+		FileUtils.writeByteArrayToFile(fileToSave, fileBytes);
+
+		return StringUtils.replace(subDir, "\\", "/") + fileName;
+	}
+
+	private void writeCallback(HttpServletRequest request, HttpServletResponse response, String relUrl, String errorMessage)
+			throws IOException {
+		StringBuffer sb = new StringBuffer();
+		sb.append("<script type=\"text/javascript\">\n");
+		String funcNo = request.getParameter(FUNC_NO);
+		boolean isInteger = true;
+		try {
+			Integer.parseInt(funcNo);
+		} catch (NumberFormatException e) {
+			isInteger = false;
+			log.error(e);
+		}
+		if (!isInteger) {
+			funcNo = "1";
+		}
+		sb.append("window.parent.CKEDITOR.tools.callFunction(").append(funcNo).append(", '");
+		sb.append(relUrl == null ? "" : relUrl);
+		if (errorMessage != null) {
+			sb.append("', '").append(errorMessage);
+		}
+		sb.append("');\n </script>");
+
+		response.setContentType("text/html; charset=UTF-8");
+		response.setHeader("Cache-Control", "no-cache");
+		PrintWriter out = response.getWriter();
+		out.print(sb.toString());
+		out.flush();
+		out.close();
 	}
 
 	/**
@@ -212,24 +336,36 @@ public class CkImageSaver {
 		return isAllow;
 	}
 
-    /**
-     * 암호화
-     *
-     * @param encrypt
+	/**
+	 * 암호화
+	 *
+	 * @param encrypt
 	 * @param request
 	 * @return
-     */
-    private String encrypt(String encrypt,HttpServletRequest request) {
+	 */
+	private String encrypt(String encrypt, HttpServletRequest request) {
 
-    	WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
-    	EgovEnvCryptoService cryptoService = (EgovEnvCryptoService)wac.getBean("egovEnvCryptoService");
+		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
+		EgovEnvCryptoService cryptoService = (EgovEnvCryptoService) wac.getBean("egovEnvCryptoService");
 
-    	try {
-    		return cryptoService.encrypt(encrypt);
-        } catch(IllegalArgumentException e) {
-        	log.error("[IllegalArgumentException] Try/Catch...usingParameters Running : "+ e.getMessage());
-        }
+		try {
+			return cryptoService.encrypt(encrypt);
+		} catch (IllegalArgumentException e) {
+			log.error("[IllegalArgumentException] Try/Catch...usingParameters Running : " + e.getMessage());
+		}
 		return encrypt;
-    }
+	}
+
+	private static final class UploadedImage {
+		private final String originalFileName;
+		private final String contentType;
+		private final byte[] bytes;
+
+		private UploadedImage(String originalFileName, String contentType, byte[] bytes) {
+			this.originalFileName = originalFileName;
+			this.contentType = contentType;
+			this.bytes = bytes;
+		}
+	}
 
 }

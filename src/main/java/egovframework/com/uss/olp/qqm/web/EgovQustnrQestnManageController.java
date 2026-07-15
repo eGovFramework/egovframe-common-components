@@ -197,6 +197,11 @@ public class EgovQustnrQestnManageController {
 		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
 		if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrQestnManageService.deleteQustnrQestnManage(qustnrQestnManageVO);
 		}
 
@@ -243,7 +248,7 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
+	@PostMapping("/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
 	public String egovQustnrQestnManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -256,6 +261,11 @@ public class EgovQustnrQestnManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrQestnManageService.deleteQustnrQestnManage(qustnrQestnManageVO);
 			/** 목록으로갈때 검색조건 유지 */
 			sLocationUrl = "redirect:/uss/olp/qqm/EgovQustnrQestnManageList.do?";

@@ -150,7 +150,7 @@
 	<div class="board">
 		<h1>${pageTitle}</h1>
 	
-			<form name="frm" method="post" action="<c:url value='/utl/sys/prm/EgovComUtlProcessMonLogList.do'/>">
+			<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/utl/sys/prm/EgovComUtlProcessMonLogList.do">
 			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 			<input type="hidden" name="processNm">
 			<input type="hidden" name="logId">
@@ -186,7 +186,7 @@
 				</li>
 			</ul>
 		</div>
-			</form>
+			
 	
 		<table class="board_list">
 			<caption></caption>
@@ -212,18 +212,7 @@
 					    <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 						<td><c:out value="${result.logId}"/></td>
 					    <td>
-					    	<form name="processMonLogVO" method="post" action="<c:url value='EgovComUtlProcessMonLogList.do'/>">
-					    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-					    	<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
-					    	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
-					    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-					    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-					    	<input name="searchBgnHour" type="hidden" value="<c:out value='${searchVO.searchBgnHour}'/>">
-					    	<input name="searchEndHour" type="hidden" value="<c:out value='${searchVO.searchEndHour}'/>">
-							<span class="link"><input type="submit" value="<c:out value="${result.processNm}"/>"
-							onclick="javascript:fn_egov_inqire_processMonLog('<c:out value="${result.processNm}"/>'
-							, '<c:out value="${result.logId}"/>'); return false;" style="text-align : left;"></span>
-						 	</form>
+					    	<a href="javascript:void(0);" onclick="javascript:fn_egov_inqire_processMonLog('<c:out value="${result.processNm}"/>', '<c:out value="${result.logId}"/>'); return false;"><span class="link"><c:out value="${result.processNm}"/></span></a>
 						</td>
 						<td><c:out value="${result.procsSttus}"/></td>
 					    <td><c:out value="${result.creatDt}"/></td>
@@ -243,6 +232,8 @@
 				<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_processMonLog"/>
 			</ul>
 		</div>
+</form:form>
+
 	</div>
 	
 	</body>

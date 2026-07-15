@@ -36,6 +36,7 @@ if(!execFlag.equals("EgovPrntngOutpt")){
 
 <!-- 준비화면  시작-->
 <form name="ready" action ="/utl/pao/EgovPrntngOutpt.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type = "hidden" name="execFlag" value="EgovPrntngOutpt">
 <input type = "hidden" name="cmdStr" value="<%=CmdStr%>">
 <table border="1">

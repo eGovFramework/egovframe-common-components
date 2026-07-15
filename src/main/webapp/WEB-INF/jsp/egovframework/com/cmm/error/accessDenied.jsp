@@ -26,6 +26,10 @@ function fncGoAfterErrorPage(){
     if (!hasTimer) {
       topFrame.location.reload();
     }
+    var leftFrame = parent && parent.frames ? parent.frames["_left"] : null;
+    if (leftFrame) {
+      leftFrame.location.reload();
+    }
   } catch (e) {
     // cross-frame 예외 무시
   }

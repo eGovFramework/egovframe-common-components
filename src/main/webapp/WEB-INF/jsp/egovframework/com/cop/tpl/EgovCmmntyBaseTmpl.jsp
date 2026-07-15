@@ -143,7 +143,6 @@ table.me{background:url(<c:url value='/images/egovframework/com/cop/tpl/top_menu
 	}
 
 	function fn_egov_deleteUser(cmmntyId){
-		//window.open("<c:url value='/cop/cmy/deleteCmmntyUserBySelf.do' />?cmmntyId="+cmmntyId, "userDeletet", "width=320px, height=200px;");
 		window.open("<c:url value='/cop/com/selectCmmntyMngrList.do' />?trgetId="+cmmntyId+"&PopFlag=S", "userDelete", "width=640px, height=400px;");
 	}
 //-->
@@ -154,6 +153,7 @@ table.me{background:url(<c:url value='/images/egovframework/com/cop/tpl/top_menu
 <body>
 
 <form action="" name="frm" method="post" >
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="cmmntyId" value="<c:out value='${cmmntyVO.cmmntyId}' />" />
 	<input type="hidden" name="cmmntyNm" value="<c:out value='${cmmntyVO.cmmntyNm}' />" />
 	<input type="hidden" name="clbId" value="" />

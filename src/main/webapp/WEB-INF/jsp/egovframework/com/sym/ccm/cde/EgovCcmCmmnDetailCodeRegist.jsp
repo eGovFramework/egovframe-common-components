@@ -30,6 +30,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle}<spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet"
@@ -71,7 +72,7 @@
 	function fn_egov_get_CodeId(form) {
 
 		form.action = "<c:url value='/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do'/>";
-		form.method = 'get';
+		form.method = "post";
 		form.submit();
 	}
 

@@ -23,6 +23,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <title>법정동코드수신 목록</title>
@@ -66,7 +68,7 @@ function fn_egov_detail_AdministCodeRecptn(administZoneSe,administZoneCode){
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
-<form name="listForm" action="<c:url value='/sym/ccm/acr/getAdministCodeRecptnList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/acr/getAdministCodeRecptnList.do" method="post">
 <table width="700" cellpadding="8" class="table-search" border="0">
  <tr>
   <td width="40%"class="title_left">
@@ -98,7 +100,7 @@ function fn_egov_detail_AdministCodeRecptn(administZoneSe,administZoneCode){
 <input type="hidden" name="administZoneSe">
 <input type="hidden" name="administZoneCode">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>
+
 
 <table width="700" cellspacing="0" cellpadding="0" border="0">
 <tr>
@@ -128,12 +130,7 @@ function fn_egov_detail_AdministCodeRecptn(administZoneSe,administZoneCode){
 <tr style="cursor:pointer;cursor:hand;" onclick="javascript:fn_egov_detail_AdministCodeRecptn('<c:out value="${resultInfo.administZoneSe}"/>','<c:out value="${resultInfo.administZoneCode}"/>');">
 	<td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 	<td class="lt_text3" nowrap>
-    	<form name="subForm" method="post" action="<c:url value='/sym/ccm/acr/getAdministCodeDetail.do'/>">
-    	<input name="administZoneSe"   type="hidden" value="<c:out value="${resultInfo.administZoneSe}"/>">
-    	<input name="administZoneCode" type="hidden" value="<c:out value="${resultInfo.administZoneCode}"/>">
-    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-    	<span class="link"><input type="submit" value="<c:out value="${resultInfo.administZoneCode}"/>" onclick="fn_egov_detail_AdministCodeRecptn3('<c:out value="${resultInfo.administZoneSe}"/>','<c:out value="${resultInfo.administZoneCode}"/>'); return false;"></span>
-    	</form>
+    	<a href="javascript:void(0);" onclick="fn_egov_detail_AdministCodeRecptn('<c:out value="${resultInfo.administZoneSe}"/>','<c:out value="${resultInfo.administZoneCode}"/>'); return false;"><span class="link"><c:out value="${resultInfo.administZoneCode}"/></span></a>
 
 	</td>
 	<td class="lt_text"  nowrap><c:out value="${resultInfo.administZoneNm}"/></td>
@@ -163,5 +160,6 @@ function fn_egov_detail_AdministCodeRecptn(administZoneSe,administZoneCode){
 
 </DIV>
 
+</form:form>
 </body>
 </html>

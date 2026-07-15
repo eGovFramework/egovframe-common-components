@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -71,7 +72,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "개인정보보호정책확인", order = 510, gid = 50)
-	@RequestMapping(value = "/uss/sam/ipm/listIndvdlInfoPolicy.do")
+	@RequestMapping("/uss/sam/ipm/listIndvdlInfoPolicy.do")
 	public String egovIndvdlInfoPolicyList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
 
@@ -116,9 +117,12 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "/uss/sam/ipm/EgovOnlinePollDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/detailIndvdlInfoPolicy.do")
+	@PostMapping("/uss/sam/ipm/detailIndvdlInfoPolicy.do")
 	public String egovIndvdlInfoPolicyDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			IndvdlInfoPolicy indvdlInfoPolicy, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		String sLocationUrl = "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyDetail";
 
@@ -145,7 +149,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "/uss/sam/ipm/EgovOnlinePollUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicyView.do")
+	@PostMapping("/uss/sam/ipm/updtIndvdlInfoPolicyView.do")
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, 
 			RedirectAttributes redirectAttributes,
@@ -175,7 +179,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "redirect:/uss/sam/ipm/listIndvdlInfoPolicy.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicy.do")
+	@PostMapping("/uss/sam/ipm/updtIndvdlInfoPolicy.do")
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			BindingResult bindingResult,
@@ -214,7 +218,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "/uss/sam/ipm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicyView.do")
+	@PostMapping("/uss/sam/ipm/registIndvdlInfoPolicyView.do")
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			RedirectAttributes redirectAttributes,
@@ -240,7 +244,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "/uss/sam/ipm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicy.do")
+	@PostMapping("/uss/sam/ipm/registIndvdlInfoPolicy.do")
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			BindingResult bindingResult,
@@ -269,6 +273,33 @@ public class EgovIndvdlInfoPolicyController {
 		egovIndvdlInfoPolicyService.insertIndvdlInfoPolicy(indvdlInfoPolicy);
 
 		return "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

@@ -146,10 +146,10 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${mtgPlaceManageVO.resveManId eq mtgPlaceManageVO.usidTemp}">
-			<span class="btn_s"><a href="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>?searchCondition=1" onclick="fncSelectMtgPlaceResveManage(); return false;"><spring:message code="button.update" /></a></span>
-			<span class="btn_s"><a href="<c:url value='/uss/ion/mtg/deleteMtgPlaceResve.do'/>?searchCondition=1" onclick="fncDeleteMtgPlaceResve(); return false;"><spring:message code="button.delete" /></a></span>     
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectMtgPlaceResveManage(); return false;"><spring:message code="button.update" /></a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteMtgPlaceResve(); return false;"><spring:message code="button.delete" /></a></span>     
 		</c:if>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>?searchCondition=1" onclick="fncSelectMtgPlaceResveManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectMtgPlaceResveManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

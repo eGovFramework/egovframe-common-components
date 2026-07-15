@@ -140,7 +140,7 @@ function checknum(number) {
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
-    <form name="listForm" action="<c:url value='/utl/sys/pxy/selectProxyLogList.do'/>" method="post">
+    <form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/pxy/selectProxyLogList.do" method="post">
     <input type="hidden" name="pageIndex" />
 
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">
@@ -157,7 +157,7 @@ function checknum(number) {
 		</ul>
 	</div>
 
-    </form>
+    </form:form>
 
 	<table class="board_list">
 		<caption></caption>

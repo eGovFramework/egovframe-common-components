@@ -16,7 +16,7 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
 import jakarta.annotation.Resource;
 
 /**
- * 일반회원관리에 관한비지니스클래스를 정의한다.
+ * 일반회원관리에 관한비즈니스클래스를 정의한다.
  * @author 공통서비스 개발팀 조재영
  * @since 2009.04.10
  * @version 1.0

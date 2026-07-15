@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -54,7 +56,7 @@
 <div class="board">
 	<h1><spring:message code="comUssIonEvt.eventReqstAtdrnList.title"/></h1><!-- 행사참석자 목록 -->
 
-	<form name="listForm" action="#LINK" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="#LINK" method="post">
     <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonEvt.common.submit"/>" title="<spring:message code="comUssIonEvt.common.submit"/>"></div><!-- 전송 -->
 	<input type=hidden name="eventId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty eventManageVO.pageIndex }">1</c:if><c:if test="${!empty eventManageVO.pageIndex }"><c:out value='${eventManageVO.pageIndex}'/></c:if>">
@@ -102,7 +104,7 @@
 			</c:if>
 		</tbody>
 	</table>
-	</form>
+	</form:form>
 	
 	<!-- paging navigation -->
 	<div class="pagination">

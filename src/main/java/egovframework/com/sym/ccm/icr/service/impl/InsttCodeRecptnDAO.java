@@ -24,7 +24,7 @@ import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *   2011.09.05  서준식          beforeData에 대한 null체크 추가
- *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
@@ -112,6 +112,14 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
     public int selectInsttCodeRecptnListTotCnt(InsttCodeRecptnVO searchVO) {
         return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeRecptnListTotCnt", searchVO);
     }
+
+	/**
+	 * 등록된 기관코드 목록을 조회한다.
+	 * @return List(기관코드 목록)
+	 */
+	public List<String> selectExistingInsttCodes() {
+		return selectList("InsttCodeRecptnDAO.selectExistingInsttCodes");
+	}
 
     /**
 	 * 기관코드 목록을 조회한다.

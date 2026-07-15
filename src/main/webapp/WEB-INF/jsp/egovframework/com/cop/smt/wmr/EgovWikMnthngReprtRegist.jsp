@@ -31,7 +31,6 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js' />"></script>
@@ -230,7 +229,7 @@ function fn_egov_init_WikMnthngReprt(){
 			<td class="left">
 				<c:set var="reportrName"><spring:message code="copSmtWmr.wikMnthngReprtRegist.reportrNm"/></c:set>
 			    <form:input path="reportrNm" size="15" readonly="true" maxlength="10" title="${reportrName}" cssStyle="width:128px"/>
-				<a href="<c:url value='/cop/smt/wmr/selectReportrListPopup.do' />" target="_blank"  title="새 창으로 이동" onclick="fn_egov_reportr_WikMnthngReprt('보고대상자', 'reportrId', '', 'reportrNm', '');return false;">
+				<a href="javascript:void(0);" onclick="fn_egov_reportr_WikMnthngReprt('보고대상자', 'reportrId', '', 'reportrNm', '');return false;">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" alt="보고대상자 검색" title="보고대상자 검색"/>
 				</a>
 				<div><form:errors path="reportrNm" cssClass="error"/></div>
@@ -282,7 +281,7 @@ function fn_egov_init_WikMnthngReprt(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_insert_wikmnthngreprt(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/selectWikMnthngReprtList.do'/>?searchWrd=<c:out value='${wikMnthngReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${wikMnthngReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${wikMnthngReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${wikMnthngReprtVO.searchSttus}'/>&amp;searchDe=<c:out value='${wikMnthngReprtVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${wikMnthngReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${wikMnthngReprtVO.searchEndDe}'/>" onclick="fn_egov_list_wikmnthngreprt(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_wikmnthngreprt(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

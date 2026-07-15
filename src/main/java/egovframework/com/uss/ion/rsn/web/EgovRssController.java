@@ -8,6 +8,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -56,7 +57,7 @@ public class EgovRssController {
      * @throws Exception
      */
     @IncludedInfo(name="RSS태그서비스", order = 822 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/rsn/listRssTagService.do")
+    @RequestMapping("/uss/ion/rsn/listRssTagService.do")
     public String EgovRssTagServiceList(
             @RequestParam Map<?, ?> commandMap,
             @ModelAttribute("rssInfo") RssInfo rssInfo, ModelMap model)
@@ -105,7 +106,7 @@ public class EgovRssController {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-	@RequestMapping(value = "/uss/ion/rsn/detailRssTagService.do")
+	@PostMapping("/uss/ion/rsn/detailRssTagService.do")
     public String EgovRssTagServiceDetail(
             RssInfo rssInfo,
             @RequestParam Map<?, ?> commandMap,

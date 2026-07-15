@@ -11,7 +11,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -19,6 +21,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sec.ram.service.AuthorManageVO;
@@ -121,7 +124,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRole.do")
+    @PostMapping("/sec/rmt/EgovRole.do")
+    @RequireAdmin
 	public String selectRole(@RequestParam("roleCode") String roleCode,
 	                         @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
 	                         @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
@@ -144,7 +148,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping("/sec/rmt/EgovRoleInsertView.do")
+    @PostMapping("/sec/rmt/EgovRoleInsertView.do")
+    @RequireAdmin
     public String insertRoleView(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     								@ModelAttribute("roleManage") RoleManage roleManage,
     									ModelMap model) throws Exception {
@@ -175,13 +180,15 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleInsert.do")
+    @PostMapping("/sec/rmt/EgovRoleInsert.do")
+    @RequireAdmin
 	public String insertRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 							  BindingResult bindingResult,
 			                  @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
                               ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
 			return "egovframework/com/sec/rmt/EgovRoleInsert";
 		} else {
     	    String roleTyp = roleManage.getRoleTyp();
@@ -212,12 +219,14 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleUpdate.do")
+    @PostMapping("/sec/rmt/EgovRoleUpdate.do")
+    @RequireAdmin
 	public String updateRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 			BindingResult bindingResult,
             ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
 			return "egovframework/com/sec/rmt/EgovRoleUpdate";
 		} else {
     	egovRoleManageService.updateRole(roleManage);
@@ -233,7 +242,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleDelete.do")
+    @PostMapping("/sec/rmt/EgovRoleDelete.do")
+    @RequireAdmin
 	public String deleteRole(@ModelAttribute("roleManage") RoleManage roleManage,
             ModelMap model) throws Exception {
     	egovRoleManageService.deleteRole(roleManage);
@@ -249,7 +259,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rmt/EgovRoleListDelete.do")
+	@PostMapping("/sec/rmt/EgovRoleListDelete.do")
+	@RequireAdmin
 	public String deleteRoleList(@RequestParam("roleCodes") String roleCodes,
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {

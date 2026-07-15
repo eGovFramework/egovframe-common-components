@@ -32,6 +32,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -120,7 +121,7 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/lsi/getLoginScrinImage.do")
+    @PostMapping("/uss/ion/lsi/getLoginScrinImage.do")
 	public String selectLoginScrinImage(@RequestParam("imageId") String imageId,
 			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            ModelMap model) throws Exception {
@@ -139,7 +140,7 @@ public class EgovLoginScrinImageController {
 	 * 로그인화면이미지 등록 화면으로 이동한다.
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/lsi/addViewLoginScrinImage.do")
+    @PostMapping("/uss/ion/lsi/addViewLoginScrinImage.do")
 	public String insertViewLoginScrinImage(@ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO) throws Exception {
     	return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageRegist";
 	}
@@ -150,7 +151,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/lsi/addLoginScrinImage.do")
+	@PostMapping("/uss/ion/lsi/addLoginScrinImage.do")
 	public String insertLoginScrinImage(final MultipartHttpServletRequest multiRequest,
 			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            BindingResult bindingResult,
@@ -234,7 +235,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/lsi/updtLoginScrinImage.do")
+	@PostMapping("/uss/ion/lsi/updtLoginScrinImage.do")
 	public String updateLoginScrinImage(final MultipartHttpServletRequest multiRequest,
 			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            BindingResult bindingResult,
@@ -310,7 +311,7 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/lsi/removeLoginScrinImage.do")
+    @PostMapping("/uss/ion/lsi/removeLoginScrinImage.do")
 	public String deleteLoginScrinImage(@RequestParam("imageId") String imageId,
 			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                             SessionStatus status,
@@ -331,7 +332,7 @@ public class EgovLoginScrinImageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/uss/ion/lsi/removeLoginScrinImageList.do")
+    @PostMapping("/uss/ion/lsi/removeLoginScrinImageList.do")
 	public String deleteLoginScrinImageList(@RequestParam("imageIds") String imageIds,
 			                                @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                                 SessionStatus status,

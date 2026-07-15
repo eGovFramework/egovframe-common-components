@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -86,7 +87,7 @@ public class EgovWebLogController {
 	 * @return sym/log/wlg/EgovWebLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/wlg/SelectWebLogDetail.do")
+	@PostMapping("/sym/log/wlg/SelectWebLogDetail.do")
 	public String selectWebLog(@ModelAttribute("searchVO") WebLog webLog,
 			@RequestParam("requstId") String requstId,
 			ModelMap model) throws Exception{

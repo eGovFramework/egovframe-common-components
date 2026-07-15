@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 
 <!DOCTYPE html>
@@ -126,7 +128,7 @@ function fncRwardManageConfm(rwardId,infrmlSanctnId){
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 	
-	<form name="listForm" action="<c:url value='/uss/ion/rwd/EgovRwardConfmList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/rwd/EgovRwardConfmList.do" method="post">
 	
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="rwardId">
@@ -169,7 +171,7 @@ function fncRwardManageConfm(rwardId,infrmlSanctnId){
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectRwardConfmList(); return false;" />
 			</li>
 		</ul>
-		</form>
+		</form:form>
 	</div>
 
 	<table class="board_list">
@@ -211,7 +213,8 @@ function fncRwardManageConfm(rwardId,infrmlSanctnId){
 		          <c:if test="${resultInfo.confmAt eq 'R'}"><spring:message code="comUssIonRwd.common.confmAt.R"/></c:if><!-- 반려 -->
 				</td>
 				<td>
-				<form name="item" method="post" action="<c:url value='/uss/ion/rwd/EgovRwardConfm.do'/>">
+				<form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/rwd/EgovRwardConfm.do">
+		        	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		        	<input type="hidden" name="rwardId" value="<c:out value="${resultInfo.rwardId }"/>">
 		            <input class="btn01" type="submit"
 		                  value="<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonRwd.rwardConfmList.rwardProgress"/></c:if><c:if test="${resultInfo.confmAt ne 'A'}"><spring:message code="comUssIonRwd.rwardConfmList.detailView"/></c:if>"

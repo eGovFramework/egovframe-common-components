@@ -39,19 +39,21 @@
 		<script language="javascript" src="<c:url value='/html/egovframework/com/ext/ldapumt/jstree.js' />"></script>
 
 		<script>
-		//var csrfHeaderName = "${_csrf.headerName}";
-		//var csrfToken = "${_csrf.token}";
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfToken = "${_csrf.token}";
+
+		function ldapCsrfBeforeSend(xhr) {
+			if (csrfHeaderName && csrfToken) {
+				xhr.setRequestHeader(csrfHeaderName, csrfToken);
+			}
+		}
 
 		function ldapPost(url, data) {
 			return $.ajax({
 				type: "POST",
 				url: url,
 				data: data,
-				/*beforeSend: function(xhr) {
-					if (csrfHeaderName && csrfToken) {
-						xhr.setRequestHeader(csrfHeaderName, csrfToken);
-					}
-				}*/
+				beforeSend: ldapCsrfBeforeSend
 			});
 		}
 		
@@ -64,9 +66,12 @@
 			$('#tree')
 				.jstree({
 					'core' : {
+						// 2026.07.13 NCSC 보안점검 조치: LDAP ou/cn 값이 innerHTML로 그대로 렌더링되어 저장된 XSS로 이어지지 않도록 노드 텍스트를 항상 escape(plain text) 처리
+						'force_text' : true,
 						'data' : {
 							'type' : 'POST',
-							'url' : '<c:url value="/ext/ldapumt/dpt/getDeptManageSublist.do"/>',		
+							'url' : '<c:url value="/ext/ldapumt/dpt/getDeptManageSublist.do"/>',
+							'beforeSend' : ldapCsrfBeforeSend,
 							'data' : function (node) {
 								
 								if(node.id == '#')

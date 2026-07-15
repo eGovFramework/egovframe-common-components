@@ -30,7 +30,6 @@
 		webSocket.onerror = function(message) { processError(message); };
 		
 	});
-	//var webSocket = new WebSocket('ws://' + window.location.host + '/egov-messenger/usersServerEndpoint');
 	
 	
 	function connection(url) {

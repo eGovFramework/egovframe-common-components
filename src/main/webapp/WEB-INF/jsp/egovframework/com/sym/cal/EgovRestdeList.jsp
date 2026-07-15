@@ -24,9 +24,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="sym.cal.title"/></c:set>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>${pageTitle}</title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
@@ -52,13 +55,13 @@ function fn_egov_search_Restde(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_Restde(){
-	location.href = "<c:url value='/sym/cal/EgovRestdeRegistView.do' />";
+	fn_egov_postNavigate("<c:url value='/sym/cal/EgovRestdeRegistView.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_Restde(restdeNo){
-	var varForm				 = document.all["Form"];
+	var varForm				 = document.listForm;
 	varForm.action           = "<c:url value='/sym/cal/EgovRestdeDetail.do'/>";
 	varForm.restdeNo.value   = restdeNo;
 	varForm.submit();
@@ -79,7 +82,7 @@ function press(event) {
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-<form name="listForm" action="<c:url value='/sym/cal/EgovRestdeList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/cal/EgovRestdeList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -141,11 +144,9 @@ function press(event) {
 	
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	
-</form>
-<form name="Form" method="post">
-	<input type="hidden" name="restdeNo">
-	<input type="submit" id="invisible" class="invisible"/>
-</form>
+<input type="hidden" name="restdeNo">
+</form:form>
+
 	
 </div>
 
