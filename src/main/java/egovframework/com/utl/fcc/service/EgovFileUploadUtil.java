@@ -249,11 +249,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 			return false;
 		}
 
-		if (multipartFile.getSize() <= maxFileSize) {
-			return true;
-		} else {
-			return false;
-		}
+		return multipartFile.getSize() <= maxFileSize;
 	}
 
 }
