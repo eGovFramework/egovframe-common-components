@@ -58,6 +58,7 @@ import jakarta.websocket.server.ServerEndpoint;
  *   2014.11.27  이영지          최초 생성
  *   2023.06.09  김장하          NSR 보안조치 (사용자목록 크로스사이트 스크립트 방지)
  *   2025.06.21  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드), CloseResource(리소스 닫기)
+ *   2026.07.17  z3rotig4r      synchronizedSet 순회 경로 동기화 일관화(브로드캐스트·handleClose·getUsers 순회를 synchronized 블록으로 보호)
  *
  *      </pre>
  */
@@ -114,8 +115,10 @@ public class ChatServerEndPoint {
 			outgoingChatMessage.setName(username);
 			outgoingChatMessage.setMessage(filteredIncommingMessage);
 
-			for (Session session : chatroomUsers) { // NOPMD-CloseResource
-				session.getBasicRemote().sendObject(outgoingChatMessage);
+			synchronized (chatroomUsers) {
+				for (Session session : chatroomUsers) { // NOPMD-CloseResource
+					session.getBasicRemote().sendObject(outgoingChatMessage);
+				}
 			}
 		}
 	}
@@ -126,8 +129,10 @@ public class ChatServerEndPoint {
 			throws IOException, EncodeException {
 		chatroomUsers.remove(userSession);
 
-		for (Session session : chatroomUsers) { // NOPMD-CloseResource
-			session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+		synchronized (chatroomUsers) {
+			for (Session session : chatroomUsers) { // NOPMD-CloseResource
+				session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+			}
 		}
 	}
 
@@ -153,9 +158,11 @@ public class ChatServerEndPoint {
 	private Set<String> getUsers() {
 		HashSet<String> returnSet = new HashSet<String>();
 
-		for (Session session : chatroomUsers) { // NOPMD-CloseResource
-			if (session.getUserProperties().get("username") != null) {
-				returnSet.add(session.getUserProperties().get("username").toString());
+		synchronized (chatroomUsers) {
+			for (Session session : chatroomUsers) { // NOPMD-CloseResource
+				if (session.getUserProperties().get("username") != null) {
+					returnSet.add(session.getUserProperties().get("username").toString());
+				}
 			}
 		}
 		return returnSet;
