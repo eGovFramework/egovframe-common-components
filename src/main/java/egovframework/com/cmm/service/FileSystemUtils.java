@@ -453,10 +453,13 @@ public class FileSystemUtils {
 	private Process openProcess(String[] cmdAttribs) throws IOException {
 		//return Runtime.getRuntime().exec(cmdAttribs);
 		// Runtime.exec 사용 시 Command Injection 위험이 있으므로 사용하지 말 것...
-		// 현재는 빈 프로세스를 리턴하게 구성함...
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		Process process = processBuilder.start();
-		return process;
+		// 명령 실행은 비활성화된 상태임.
+		// 기존의 new ProcessBuilder().start()는 커맨드 목록이 비어 있어
+		// IOException이 아닌 IndexOutOfBoundsException(unchecked)을 던지므로,
+		// 호출부의 catch (IOException) 블록을 우회해 예외가 그대로 전파됨.
+		// 선언된 IOException을 던져 호출부(ProcessMonChecker 등)가 기존
+		// 오류 처리 경로로 정상 동작하도록 함.
+		throw new IOException("Process execution is disabled (command injection prevention). command=" + Arrays.toString(cmdAttribs));
 	}
 
 	/**
