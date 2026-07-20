@@ -80,7 +80,7 @@ public class MberManageVO extends UserDefaultVO{
 	@Size(max=20)
 	private String mberId;
 	/**
-	 * 회원명
+	 * 회원명 (외국인 등 국제 실명 지원 - 한글/영문 전용이 아닌 유니코드 전체 문자 허용)
 	 */
 	@EgovNullCheck
 	@Size(max=50)
