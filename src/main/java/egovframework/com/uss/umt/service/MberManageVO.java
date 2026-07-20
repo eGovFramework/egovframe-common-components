@@ -85,6 +85,14 @@ public class MberManageVO extends UserDefaultVO{
 	@EgovNullCheck
 	@Size(max=50)
 	private String mberNm;
+
+	/**
+	 * 앞뒤 공백만 제거한다. 이름 중간의 의미 있는 공백은 유지한다.
+	 */
+	public void setMberNm(String mberNm) {
+		this.mberNm = mberNm == null ? null : mberNm.trim();
+	}
+
 	/**
 	 * 회원상태
 	 */

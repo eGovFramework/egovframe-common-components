@@ -95,18 +95,17 @@ class MberManageVOMberNmTest {
 	}
 
 	@Test
-	void whitespaceOnlyNamePassesNullCheckButIsNotUseful() {
-		// @EgovNullCheck uses ObjectUtils.isEmpty, which treats "   " as non-empty.
-		// Document current Bean Validation behavior; blank names are a separate concern.
-		assertFieldValid("   ", "whitespace-only mberNm currently passes @EgovNullCheck");
+	void rejectsWhitespaceOnlyName() {
+		// setMberNm trims leading/trailing whitespace, so "   " becomes "" and fails @EgovNullCheck
+		assertFieldInvalid("   ", "whitespace-only mberNm should be rejected after trim");
 	}
 
 	@Test
-	void preservesInternalSpacesWithoutTruncation() {
-		String name = "Jean Paul  Marie"; // multiple internal spaces, still under 50 chars
-		MberManageVO vo = vo(name);
-		assertEquals(name, vo.getMberNm(), "internal spaces must not be collapsed or trimmed away");
-		assertFieldValid(name, "name with multiple internal spaces should be accepted");
+	void trimsLeadingAndTrailingWhitespaceButPreservesInternalSpaces() {
+		MberManageVO vo = vo("  Jean Paul  Marie  ");
+		assertEquals("Jean Paul  Marie", vo.getMberNm(),
+				"leading/trailing whitespace trimmed; internal spaces preserved");
+		assertFieldValid(vo.getMberNm(), "trimmed name with internal spaces should be accepted");
 	}
 
 	@Test
