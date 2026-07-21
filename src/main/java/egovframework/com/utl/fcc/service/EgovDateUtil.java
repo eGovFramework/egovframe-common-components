@@ -881,7 +881,7 @@ public class EgovDateUtil {
 	 * @return
 	 */
 	public static String validChkTime(String timeStr) {
-		if (timeStr == null || !(timeStr.trim().length() == 4)) {
+		if (timeStr == null || !(timeStr.trim().length() == 4 || timeStr.trim().length() == 5)) {
 			throw new IllegalArgumentException("Invalid time format: " + timeStr);
 		}
 
