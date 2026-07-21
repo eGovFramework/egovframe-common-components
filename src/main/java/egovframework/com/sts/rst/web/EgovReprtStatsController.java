@@ -131,7 +131,7 @@ public class EgovReprtStatsController {
 			if (reprtStatsVO.getMaxUnit() > 0.5f) {
 				reprtStatsVO.setMaxUnit(0.5f);
 			}
-		} else if (reprtStatsVO.getMaxUnit() > 1000) {
+		} else if (totCnt > 1000) {
 			if (reprtStatsVO.getMaxUnit() > 0.05f) {
 				reprtStatsVO.setMaxUnit(0.05f);
 			}
