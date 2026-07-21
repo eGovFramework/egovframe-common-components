@@ -1,7 +1,5 @@
 package egovframework.com.cmm.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.WebApplicationInitializer;
 import org.egovframe.rte.fdl.security.config.EgovSecurityConfig;
@@ -23,6 +21,7 @@ import jakarta.servlet.MultipartConfigElement;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRegistration;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * EgovWebApplicationInitializer 클래스
@@ -47,14 +46,14 @@ import jakarta.servlet.ServletRegistration;
  *   2018.10.26  신용호          EgovLoginPolicyFilter 추가 (IP접근처리)
  *   2018.12.03  신용호          springMultipartFilter,HTMLTagFilter 추가 (XSS방지처리)
  *   2025.05.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
- *   2026.04.01  유지보수        MultipartConfigElement를 globals.properties 값으로 생성
- *   2026.04.01  유지보수        Security Fiter 추가
+ *   2026.04.01  유지보수         MultipartConfigElement를 globals.properties 값으로 생성
+ *   2026.04.01  유지보수         Security Fiter 추가
+ *   2026.07.06  이백행          [2026년 컨트리뷰션] Lombok @Slf4j를 적용하여 Logger 선언 간소화
  *
  *      </pre>
  */
+@Slf4j
 public class EgovWebApplicationInitializer implements WebApplicationInitializer {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovWebApplicationInitializer.class);
 
     private static final String TMP_LOCATION = "";						// 업로드 임시 디렉터리, 빈 문자열이면 컨테이너 기본 tmp 사용
     private static final long DEFAULT_MAX_SIZE = 104857600L;			// 개별파일 최대크기 (100MB)
@@ -64,7 +63,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 
-		LOGGER.debug("EgovWebApplicationInitializer START-============================================");
+		log.debug("EgovWebApplicationInitializer START-============================================");
 
 		//-------------------------------------------------------------
 		// Egov Web ServletContextListener 설정
@@ -203,7 +202,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		//-------------------------------------------------------------
 		servletContext.addListener(new org.springframework.web.context.request.RequestContextListener());
 
-		LOGGER.debug("EgovWebApplicationInitializer END-============================================");
+		log.debug("EgovWebApplicationInitializer END-============================================");
 
 	}
 
@@ -216,7 +215,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		long maxRequestSize = parseLongProperty("Globals.fileUpload.maxRequestSize", DEFAULT_MAX_REQUEST_SIZE);
 		int fileSizeThreshold = parseIntProperty("Globals.fileUpload.fileSizeThreshold", DEFAULT_FILE_SIZE_THRESHOLD);
 
-		LOGGER.debug( "MultipartConfigElement: maxFileSize={}, maxRequestSize={}, fileSizeThreshold={}", maxFileSize, maxRequestSize, fileSizeThreshold);
+		log.debug( "MultipartConfigElement: maxFileSize={}, maxRequestSize={}, fileSizeThreshold={}", maxFileSize, maxRequestSize, fileSizeThreshold);
 
 		return new MultipartConfigElement(TMP_LOCATION, maxFileSize, maxRequestSize, fileSizeThreshold);
 	}
