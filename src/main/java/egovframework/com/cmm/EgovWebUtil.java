@@ -26,6 +26,13 @@ import java.util.regex.Pattern;
  */
 
 public class EgovWebUtil {
+
+	// 성능: 매 호출마다 Pattern.compile이 반복되지 않도록 정규식은 클래스 로딩 시 1회만 컴파일한다.
+	// (정규식 의미가 없는 문자 그대로의 치환은 String.replace로 대체 — 패턴 컴파일 자체가 불필요)
+	private static final Pattern SPACE_PATTERN = Pattern.compile("\\p{Space}");
+	private static final Pattern DOT_ANY_CHAR_PATTERN = Pattern.compile("\\.."); // '.' + 임의 1문자 (기존 정규식 의미 그대로 보존)
+	private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
+
 	public static String clearXSSMinimum(String value) {
 		if (value == null || value.trim().equals("")) {
 			return "";
@@ -33,14 +40,14 @@ public class EgovWebUtil {
 
 		String returnValue = value;
 
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("\"", "&#34;");
-		returnValue = returnValue.replaceAll("\'", "&#39;");
-		returnValue = returnValue.replaceAll("\\.", "&#46;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
+		returnValue = returnValue.replace("&", "&amp;");
+		returnValue = returnValue.replace("<", "&lt;");
+		returnValue = returnValue.replace(">", "&gt;");
+		returnValue = returnValue.replace("\"", "&#34;");
+		returnValue = returnValue.replace("'", "&#39;");
+		returnValue = returnValue.replace(".", "&#46;");
+		returnValue = returnValue.replace("%2E", "&#46;");
+		returnValue = returnValue.replace("%2F", "&#47;");
 		return returnValue;
 	}
 
@@ -50,14 +57,14 @@ public class EgovWebUtil {
 
 		returnValue = returnValue.replace("%00", "");
 
-		returnValue = returnValue.replaceAll("%", "&#37;");
+		returnValue = returnValue.replace("%", "&#37;");
 
 		// \\. => .
 
-		returnValue = returnValue.replaceAll("\\.\\./", ""); // ../
-		returnValue = returnValue.replaceAll("\\.\\.\\\\", ""); // ..\
-		returnValue = returnValue.replaceAll("\\./", ""); // ./
-		returnValue = returnValue.replaceAll("%2F", "");
+		returnValue = returnValue.replace("../", "");
+		returnValue = returnValue.replace("..\\", "");
+		returnValue = returnValue.replace("./", "");
+		returnValue = returnValue.replace("%2F", "");
 
 		return returnValue;
 	}
@@ -68,13 +75,13 @@ public class EgovWebUtil {
 		}
 
 		String returnValue = value;
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("%3C", "&lt;");
-		returnValue = returnValue.replaceAll("%3E", "&gt;");
+		returnValue = returnValue.replace("&", "&amp;");
+		returnValue = returnValue.replace("%2E", "&#46;");
+		returnValue = returnValue.replace("%2F", "&#47;");
+		returnValue = returnValue.replace("<", "&lt;");
+		returnValue = returnValue.replace(">", "&gt;");
+		returnValue = returnValue.replace("%3C", "&lt;");
+		returnValue = returnValue.replace("%3E", "&gt;");
 
 		return returnValue;
 	}
@@ -85,7 +92,7 @@ public class EgovWebUtil {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("\\.\\.", "");
+		returnValue = returnValue.replace("..", "");
 
 		return returnValue;
 	}
@@ -123,10 +130,10 @@ public class EgovWebUtil {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\\\", "");
-		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
-		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replace("/", "");
+		returnValue = returnValue.replace("\\", "");
+		returnValue = returnValue.replace("..", "");
+		returnValue = returnValue.replace("&", "");
 
 		return returnValue;
 	}
@@ -137,18 +144,16 @@ public class EgovWebUtil {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\..", ""); // ..
-		returnValue = returnValue.replaceAll("\\\\", "");// \
-		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replace("/", "");
+		returnValue = DOT_ANY_CHAR_PATTERN.matcher(returnValue).replaceAll(""); // '.' + 임의 1문자 (기존 의미 보존)
+		returnValue = returnValue.replace("\\", "");
+		returnValue = returnValue.replace("&", "");
 
 		return returnValue;
 	}
 
 	public static boolean isIPAddress(String str) {
-		Pattern ipPattern = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-
-		return ipPattern.matcher(str).matches();
+		return IP_PATTERN.matcher(str).matches();
 	}
 
 	/**
@@ -255,16 +260,16 @@ public class EgovWebUtil {
 	}
 
 	public static String removeCRLF(String parameter) {
-		return parameter.replaceAll("\r", "").replaceAll("\n", "");
+		return parameter.replace("\r", "").replace("\n", "");
 	}
 
 	public static String removeSQLInjectionRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("%", "").replaceAll(";", "")
-			.replaceAll("-", "").replaceAll("\\+", "").replaceAll(",", "");
+		return SPACE_PATTERN.matcher(parameter).replaceAll("").replace("*", "").replace("%", "").replace(";", "")
+			.replace("-", "").replace("+", "").replace(",", "");
 	}
 
 	public static String removeOSCmdRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("\\|", "").replaceAll(";", "").replaceAll("&", "");
+		return SPACE_PATTERN.matcher(parameter).replaceAll("").replace("*", "").replace("|", "").replace(";", "").replace("&", "");
 	}
 
 	/**
@@ -287,10 +292,10 @@ public class EgovWebUtil {
 //		returnValue = returnValue.replaceAll(match, "");
 
 		/*특수문자 선택적 제거*/
-		returnValue = returnValue.replaceAll("\\*", "");
-		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replace("*", "");
+		returnValue = returnValue.replace("&", "");
 		returnValue = returnValue.replace("|", "");
-		returnValue = returnValue.replaceAll("//", "");
+		returnValue = returnValue.replace("//", "");
 		//...
 		//개별로 필요한 항목들 추가 필요
 
