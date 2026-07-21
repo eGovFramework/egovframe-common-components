@@ -612,7 +612,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		int iWeek = 0;
 		sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
 		// KISA 보안약점 조치 - 널(null) 값 체크
-		if (sDayOfWeek == null) {
+		// getDateWeekString과 동일하게 8자리 미만이면 substring 파싱 예외를 피하고 0을 반환한다.
+		if (sDayOfWeek == null || sDayOfWeek.length() < 8) {
 			return 0;
 		}
 		targetDate.set(Integer.parseInt(sDayOfWeek.substring(0, 4)), Integer.parseInt(sDayOfWeek.substring(4, 6)) - 1,
