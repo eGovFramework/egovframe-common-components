@@ -103,23 +103,23 @@ public class OAuthLogin {
 
 		if (oauthVO.getOrigin().equals("google")) {
 			user.setServiceName(OAuthConfig.GOOGLE_SERVICE_NAME);
-			user.setUserId(rootNode.get("sub").asText());
-			String uname = rootNode.get("name").asText();
+			user.setUserId(rootNode.path("sub").asText(""));
+			String uname = rootNode.path("name").asText("");
 			user.setUserName(uname);
 //			getEmails(user, rootNode);
 
 		} else if (oauthVO.getOrigin().equals("naver")) {
 			user.setServiceName(OAuthConfig.NAVER_SERVICE_NAME);
-			JsonNode resNode = rootNode.get("response");
-			user.setUserId(resNode.get("id").asText());
-			user.setNickName(resNode.get("nickname").asText());
-			user.setEmail(resNode.get("email").asText());
+			JsonNode resNode = rootNode.path("response");
+			user.setUserId(resNode.path("id").asText(""));
+			user.setNickName(resNode.path("nickname").asText(""));
+			user.setEmail(resNode.path("email").asText(""));
 
 		} else if (oauthVO.getOrigin().equals("kakao")) {
 			user.setServiceName(OAuthConfig.KAKAO_SERVICE_NAME);
-			JsonNode resNode = rootNode.get("properties");
-			user.setUserId(rootNode.get("id").asText());
-			user.setNickName(resNode.get("nickname").asText());
+			JsonNode resNode = rootNode.path("properties");
+			user.setUserId(rootNode.path("id").asText(""));
+			user.setNickName(resNode.path("nickname").asText(""));
 		}
 
 		return user;
