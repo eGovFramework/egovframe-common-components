@@ -257,7 +257,7 @@ public class EgovFileMngUtil {
 		if ((String) request.getAttribute("orgFileName") == null) {
 			orgFileName = "";
 		} else {
-			orgFileName = (String) request.getAttribute("orginFile");
+			orgFileName = (String) request.getAttribute("orgFileName");
 		}
 
 		orgFileName = orgFileName.replaceAll("\r", "").replaceAll("\n", "");
@@ -274,7 +274,7 @@ public class EgovFileMngUtil {
 		}
 
 		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition:",
+		response.setHeader("Content-Disposition",
 				"attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Pragma", "no-cache");
@@ -376,7 +376,7 @@ public class EgovFileMngUtil {
 
 				// response.setBufferSize(fSize);
 				response.setContentType(mimetype);
-				response.setHeader("Content-Disposition:", "attachment; filename=" + orgFileName);
+				response.setHeader("Content-Disposition", "attachment; filename=" + orgFileName);
 				response.setContentLength(fSize);
 				// response.setHeader("Content-Transfer-Encoding","binary");
 				// response.setHeader("Pragma","no-cache");
