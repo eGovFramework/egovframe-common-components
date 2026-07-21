@@ -3,6 +3,7 @@ package egovframework.com.secure.path;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import jakarta.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +27,9 @@ import org.springframework.web.context.WebApplicationContext;
  *
  *  수정일         수정자       수정내용
  *  ----------   --------   ---------------------------
- *  2024.12.05   신용호       최초 생성
- *  2026.01.26   신용호       JUnit 4 => JUnit 5 마이그레이션
+ *   2024.12.05  신용호          최초 생성
+ *   2026.01.26  신용호          JUnit 4 => JUnit 5 마이그레이션
+ *   2026.07.11  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
@@ -44,6 +46,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 //@Profile("mysql")
 @ActiveProfiles({"mysql","session"})
+@Slf4j
 public class FileDownloadControllerTest {
 
 	@Inject
@@ -60,7 +63,7 @@ public class FileDownloadControllerTest {
 	void test() throws Exception {
 		//fail("Not yet implemented");
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
-		System.out.println("===> start test");
+		log.debug("===> start test");
 		mockMvc.perform(MockMvcRequestBuilders.get("/downFile.do")
 				.param("streFileNm","/etc/passwd") // macOS , Linux OS
 				.param("streFileNm","C:\\Windows\\System32\\drivers\\etc\\hosts") // WindowsOS

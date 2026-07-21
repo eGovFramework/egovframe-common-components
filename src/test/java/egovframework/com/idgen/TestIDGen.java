@@ -1,9 +1,12 @@
 package egovframework.com.idgen;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ID Generation Test Class 구현
@@ -15,13 +18,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  *  수정일              수정자          수정내용
  *  ----------  --------  ---------------------------
- *  2019.03.05  신용호          최초 생성
+ *   2019.03.05  신용호          최초 생성
+ *   2026.07.11  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * # 테스트시 Run As > Run Configuration 메뉴 선택후
  *   Arguments 탭에서 VM Arguments 항목에 -Dspring.profiles.active=mysql 추가한다.
  * </pre>
  */
-
+@Slf4j
 public class TestIDGen {
 
 	@SuppressWarnings("resource")
@@ -37,15 +41,15 @@ public class TestIDGen {
 
 		try {
 			String result = idgenService.getNextStringId();
-			System.out.println("=====>>>>> Result Next ID = "+result);
-			System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextStringId());
-			System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextStringId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextBigDecimalId());
+			log.debug("=====>>>>> Result Next ID = {}", result);
+			log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextStringId());
+			log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextStringId());
+			//log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextIntegerId());
+			//log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextIntegerId());
+			//log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextIntegerId());
+			//log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextBigDecimalId());
 		} catch (FdlException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 		
 		//BeanFactory

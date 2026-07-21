@@ -3,6 +3,8 @@ package egovframework.com.http;
 import java.io.IOException;
 import java.net.URL;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * TestHttpTimeoutStatus1 Class 구현 ( Timeout 처리 테스트 )
  * @author 표준프레임워크 신용호
@@ -13,21 +15,22 @@ import java.net.URL;
  *
  *  수정일              수정자          수정내용
  *  ----------  --------  ---------------------------
- *  2021.08.31  신용호          최초 생성
+ *   2021.08.31  신용호          최초 생성
+ *   2026.07.11  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
-
+@Slf4j
 public class TestHttpTimeoutStatus1 {
 
 	public static void main(String[] args) {
-		System.out.println("Start Chceck URL");
+		log.debug("Start Chceck URL");
 		String httpSttusCd = null;
 		String siteUrl = "http://googlezzz.com:81";
 		long start = System.currentTimeMillis();
 
-		System.out.println("sun.net.client.defaultConnectTimeout = "+System.getProperty("sun.net.client.defaultConnectTimeout"));
-		System.out.println("sun.net.client.defaultReadTimeout = "+System.getProperty("sun.net.client.defaultReadTimeout"));
+		log.debug("sun.net.client.defaultConnectTimeout = {}", System.getProperty("sun.net.client.defaultConnectTimeout"));
+		log.debug("sun.net.client.defaultReadTimeout = {}", System.getProperty("sun.net.client.defaultReadTimeout"));
 		
 		System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
 		System.setProperty("sun.net.client.defaultReadTimeout", "10000");
@@ -42,11 +45,11 @@ public class TestHttpTimeoutStatus1 {
 			httpSttusCd = "02";
 		}
 
-		System.out.println("실행 결과 : " + httpSttusCd );
+		log.debug("실행 결과 : {}", httpSttusCd );
 
 		long end = System.currentTimeMillis();
-		System.out.println("실행 시간 : " + ( end - start ) / 1000.0 + "초" );
-		System.out.println("Finish Chceck URL");
+		log.debug("실행 시간 : {}초", ( end - start ) / 1000.0);
+		log.debug("Finish Chceck URL");
 
 	}
 

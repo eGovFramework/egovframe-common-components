@@ -13,8 +13,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import egovframework.com.cmm.EgovWebUtil;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
+import egovframework.com.cmm.EgovWebUtil;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class EgovWhiteList {
 
 	//파일구분자
@@ -25,7 +29,7 @@ public class EgovWhiteList {
 
 		String fName = EgovProperties.getProperty("Globals.linkWhitelistFile");
 		if ( fName == null || "".equals(fName) ) {
-			throw new RuntimeException("Globals.linkWhitelistFile is not defined!");
+			throw new BaseRuntimeException("Globals.linkWhitelistFile is not defined!");
 		}
 		return checkNew(keyword, fName);
 	}
@@ -57,7 +61,7 @@ public class EgovWhiteList {
 		
 		String fName = EgovProperties.getProperty("Globals.linkWhitelistFile");
 		if ( fName == null || "".equals(fName) ) {
-			throw new RuntimeException("Globals.linkWhitelistFile is not defined!");
+			throw new BaseRuntimeException("Globals.linkWhitelistFile is not defined!");
 		}
 		return check(keyword, fName);
 	}
@@ -99,12 +103,11 @@ public class EgovWhiteList {
 		try{
 		    list = Files.readAllLines(path,cs);
 		}catch(IOException e){
-		    //e.printStackTrace();
-			throw new RuntimeException("Link WhiteList config file not found!");
+			throw new BaseRuntimeException("Link WhiteList config file not found!");
 		}
-		/*for(String readLine : list){
-		    System.out.println(readLine);
-		}*/
+		for(String readLine : list){
+		    log.debug(readLine);
+		}
 		
 		return list;
 	}
@@ -120,14 +123,12 @@ public class EgovWhiteList {
 			String line;
 			while ((line = br.readLine()) != null) {
 				list.add(line);
-				//System.out.println(line);
+				log.debug(line);
 			}
 		} catch (FileNotFoundException e) {
-			//e.printStackTrace();
-			throw new RuntimeException("Link WhiteList config file not found!");
+			throw new BaseRuntimeException("Link WhiteList config file not found!");
 		} catch (IOException e) {
-			//e.printStackTrace();
-			throw new RuntimeException("Link WhiteList config file not found!");
+			throw new BaseRuntimeException("Link WhiteList config file not found!");
 		}finally {
 			if(br != null) try {br.close(); } catch (IOException e) {}
 		}
