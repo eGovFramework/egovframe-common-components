@@ -6,6 +6,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -80,7 +81,7 @@ public class EgovPrivacyLogController {
 	 * @return sym/log/plg/EgovPrivacyLogInqire
 	 * @throws Exception
 	 */
-	@PostMapping("/sym/log/plg/SelectPrivacyLogDetail.do")
+	@GetMapping("/sym/log/plg/SelectPrivacyLogDetail.do")
 	public String selectWebLog(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 

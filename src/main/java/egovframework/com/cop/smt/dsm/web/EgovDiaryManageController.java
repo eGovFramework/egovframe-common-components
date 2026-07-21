@@ -80,6 +80,24 @@ public class EgovDiaryManageController {
 	private EgovFileMngUtil fileUtil;
 
 	/**
+	 * 일지 작성자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
+	 *
+	 * @param user 현재 로그인한 사용자
+	 * @param frstRegisterId 일지 작성자 ID(frstRegisterId)
+	 * @return 소유자이거나 관리자이면 true
+	 */
+	private boolean isOwner(LoginVO user, String frstRegisterId) {
+		if (user == null || user.getUniqId() == null) {
+			return false;
+		}
+		if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
+			return true;
+		}
+		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
+		return authorities != null && authorities.contains("ROLE_ADMIN");
+	}
+
+	/**
 	 * 일지관리 목록을 조회한다.
 	 * 
 	 * @param searchVO
@@ -144,6 +162,19 @@ public class EgovDiaryManageController {
 	public String egovDiaryManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, DiaryManageVO diaryManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
+		// 0. Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 일지를 조회/삭제할 수 있다.
+		DiaryManageVO existingDiary = egovDiaryManageService.selectDiaryManageDetail(diaryManageVO);
+		if (existingDiary == null || !isOwner(loginVO, existingDiary.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageDetail";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
@@ -152,7 +183,7 @@ public class EgovDiaryManageController {
 			egovDiaryManageService.deleteDiaryManage(diaryManageVO);
 			sLocationUrl = "redirect:/cop/smt/dsm/EgovDiaryManageList.do";
 		} else {
-			model.addAttribute("diaryManageVO", egovDiaryManageService.selectDiaryManageDetail(diaryManageVO));
+			model.addAttribute("diaryManageVO", existingDiary);
 		}
 
 		return sLocationUrl;
@@ -185,11 +216,17 @@ public class EgovDiaryManageController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정폼을 조회할 수 있다.
+		DiaryManageVO existingDiaryForModify = egovDiaryManageService.selectDiaryManageDetail(diaryManageVO);
+		if (existingDiaryForModify == null || !isOwner(loginVO, existingDiaryForModify.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageModify";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-		model.addAttribute("diaryManageVO", egovDiaryManageService.selectDiaryManageDetail(diaryManageVO));
+		model.addAttribute("diaryManageVO", existingDiaryForModify);
 
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
@@ -229,6 +266,14 @@ public class EgovDiaryManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// 소유권(작성자) 검증 - 기존 일지 수정인 경우 작성자 본인 또는 관리자만 수정할 수 있다.
+		if (diaryManageVO.getDiaryId() != null && !diaryManageVO.getDiaryId().isEmpty()) {
+			DiaryManageVO existingDiary = egovDiaryManageService.selectDiaryManageDetail(diaryManageVO);
+			if (existingDiary == null || !isOwner(loginVO, existingDiary.getFrstRegisterId())) {
+				return "egovframework/com/cmm/error/accessDenied";
+			}
+		}
 
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");

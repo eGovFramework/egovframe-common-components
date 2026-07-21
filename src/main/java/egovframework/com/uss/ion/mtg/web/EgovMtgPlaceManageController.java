@@ -8,6 +8,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -280,7 +281,7 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@PostMapping("/uss/ion/mtg/selectMtgPlaceImage.do")
+	@GetMapping("/uss/ion/mtg/selectMtgPlaceImage.do")
 	public String selectMtgPlaceImage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@RequestParam("sTmMtgPlaceId") String sTmMtgPlaceId, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -583,7 +584,7 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int - 중복건수
 	 */
-	@PostMapping("/uss/ion/mtg/mtgPlaceResveDplactCeck.do")
+	@GetMapping("/uss/ion/mtg/mtgPlaceResveDplactCeck.do")
 	public String mtgPlaceResveDplactCeck(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@RequestParam("sTmResveDe") String sTempResveDe, @RequestParam("sTmResveBeginTm") String sTempResveBeginTm,
 			@RequestParam("sTmResveEndTm") String sTempResveEndTm,

@@ -93,6 +93,11 @@ public class EgovQustnrManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
+			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
+			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
+			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
+				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -146,6 +151,11 @@ public class EgovQustnrManageController {
 			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
+			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
+			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
+				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
 			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
@@ -202,6 +212,11 @@ public class EgovQustnrManageController {
 			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
+			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
+			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
+				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
 			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 			sLocationUrl = "redirect:/uss/olp/qmc/EgovQustnrManageList.do";

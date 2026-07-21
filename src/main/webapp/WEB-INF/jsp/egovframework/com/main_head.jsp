@@ -36,9 +36,10 @@ var getContextPath = "${pageContext.request.contextPath}";
 <body leftmargin="0" topmargin="0" marginwidth="0" marginheight= "0">
 <link rel="stylesheet" type="text/css" href="<c:url value='/css/egovframework/com/common.css' />" />
 <link rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />" type="text/css" />
-<form name="selectOne">
+<form name="selectOne" method="post">
 <input name="vStartP" type="hidden" />
 <input name="chkURL" type="hidden" />
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 </form>
 
     <div id="gnb">

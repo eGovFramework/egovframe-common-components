@@ -88,65 +88,65 @@ function fn_egov_delete_Zip(){
   <c:if test="${searchList == '1'}">
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th> <!-- 우편번호 -->
-	    <td>${result.zip}</td>
+	    <td><c:out value="${result.zip}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/> <span class="pilsu">*</span></th> <!-- 시도명 -->
-	    <td>${result.ctprvnNm}</td>
+	    <td><c:out value="${result.ctprvnNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.signguNm"/> <span class="pilsu">*</span></th> <!-- 시군구명 -->
-	    <td>${result.signguNm}</td>
+	    <td><c:out value="${result.signguNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.emdNm"/> <span class="pilsu">*</span></th> <!-- 읍면동명 -->
-	    <td>${result.emdNm}</td>
+	    <td><c:out value="${result.emdNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.liBuldNm"/></th> <!-- 리건물명 -->
-	    <td>${result.liBuldNm}</td>
+	    <td><c:out value="${result.liBuldNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.lnbrDongHo"/></th><!-- 번지동호 -->
-	    <td>${result.lnbrDongHo}</td>
+	    <td><c:out value="${result.lnbrDongHo}"/></td>
 	  </tr>
   </c:if>
   <c:if test="${searchList == '2'}">
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th><!-- 우편번호 -->
-	    <td>${result.zip}</td>
+	    <td><c:out value="${result.zip}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.rdmnCode"/> <span class="pilsu">*</span></th><!-- 도로명코드 -->
-	    <td>${result.rdmnCode}</td>
+	    <td><c:out value="${result.rdmnCode}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/> <span class="pilsu">*</span></th> <!-- 시도명 -->
-	    <td>${result.ctprvnNm}</td>
+	    <td><c:out value="${result.ctprvnNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.signguNm"/> <span class="pilsu">*</span></th> <!-- 시군구명 -->
-	    <td>${result.signguNm}</td>
+	    <td><c:out value="${result.signguNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.rdmn"/> <span class="pilsu">*</span></th> <!-- 도로명 -->
-	    <td>${result.rdmn}</td>
+	    <td><c:out value="${result.rdmn}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.bdnbrMnnm"/></th> <!-- 건물번호본번 -->
-	    <td>${result.bdnbrMnnm}</td>
+	    <td><c:out value="${result.bdnbrMnnm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.bdnbrSlno"/></th> <!-- 건물번호부번 -->
-	    <td>${result.bdnbrSlno}</td>
+	    <td><c:out value="${result.bdnbrSlno}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.buldNm"/></th> <!-- 건물명 -->
-	    <td>${result.buldNm}</td>
+	    <td><c:out value="${result.buldNm}"/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.detailBuldNm"/></th> <!-- 상세건물명 -->
-	    <td>${result.detailBuldNm}</td>
+	    <td><c:out value="${result.detailBuldNm}"/></td>
 	  </tr>
   </c:if>
 </table>

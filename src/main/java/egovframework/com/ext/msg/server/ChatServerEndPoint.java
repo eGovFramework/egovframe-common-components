@@ -34,6 +34,7 @@ import egovframework.com.ext.msg.server.model.UsersMessage;
 import egovframework.com.ext.msg.server.model.decoder.MessageDecoder;
 import egovframework.com.ext.msg.server.model.encoder.MessageEncoder;
 import jakarta.websocket.EncodeException;
+import jakarta.websocket.EndpointConfig;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
@@ -73,8 +74,14 @@ public class ChatServerEndPoint {
 	 * @param userSession 사용자 session
 	 */
 	@OnOpen
-	public void handleOpen(Session userSession, @PathParam("room") final String room)
+	public void handleOpen(Session userSession, EndpointConfig config, @PathParam("room") final String room)
 			throws IOException, EncodeException {
+		// 핸드셰이크(ChatServerAppConfig)에서 서버가 검증한 실제 로그인 사용자명을 세션 신원으로 강제 바인딩한다.
+		// (클라이언트가 이후 메시지로 보내는 이름은 신뢰하지 않는다 - 신원 사칭 방지)
+		Object authUsername = config.getUserProperties().get(ChatServerAppConfig.AUTHENTICATED_USERNAME_PROPERTY);
+		if (authUsername instanceof String) {
+			userSession.getUserProperties().put("username", authUsername);
+		}
 		userSession.getUserProperties().put("room", room);
 		chatroomUsers.add(userSession);
 	}
@@ -98,13 +105,11 @@ public class ChatServerEndPoint {
 		String username = (String) userSession.getUserProperties().get("username");
 		String filteredIncommingMessage = EgovWebUtil.clearXSSMaximum(incomingChatMessage.getMessage());
 
-		if (username == null) {
-			username = filteredIncommingMessage;
-
-			if (username != null) {
-				userSession.getUserProperties().put("username", username);
-			}
-
+		// 신원(username)은 @OnOpen에서 이미 핸드셰이크 인증 정보로 바인딩되어 있으므로 클라이언트가 보내는
+		// 값은 신뢰하지 않는다. 클라이언트가 접속 직후 보내는 첫 메시지(chatPopupBubble.jsp의 초기 send 호출)는
+		// 신원 선언이 아니라 입장 알림(사용자 목록 브로드캐스트) 트리거로만 사용한다.
+		Object alreadyAnnounced = userSession.getUserProperties().putIfAbsent("announced", Boolean.TRUE);
+		if (alreadyAnnounced == null) {
 			synchronized (chatroomUsers) {
 				for (Session session : chatroomUsers) { // NOPMD-CloseResource
 					session.getBasicRemote().sendObject(new UsersMessage(getUsers()));

@@ -6,7 +6,9 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -63,6 +65,10 @@ public class EgovImageProcessController extends HttpServlet {
 	private EgovFileMngService fileService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovImageProcessController.class);
+
+	/** getImage.do가 인라인(image/*)으로 제공할 수 있는 안전한 이미지 확장자 화이트리스트 */
+	private static final List<String> SAFE_INLINE_IMAGE_EXTENSIONS =
+			Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
 
 	/**
 	 * 첨부된 이미지에 대한 미리보기 기능을 제공한다.
@@ -144,21 +150,20 @@ public class EgovImageProcessController extends HttpServlet {
 
 			FileCopyUtils.copy(in, bStream);
 
-			String type = "";
+			String extsn = fvo.getFileExtsn() == null ? "" : fvo.getFileExtsn().toLowerCase();
 
-			if (fvo.getFileExtsn() != null && !"".equals(fvo.getFileExtsn())) {
-				if ("jpg".equals(fvo.getFileExtsn().toLowerCase())) {
-					type = "image/jpeg";
-				} else {
-					type = "image/" + fvo.getFileExtsn().toLowerCase();
-				}
-				/* type = "image/" + fvo.getFileExtsn().toLowerCase(); */
-
+			// 화이트리스트에 없는 확장자(svg, html 등)는 브라우저가 인라인으로 해석해
+			// 저장형 XSS로 이어질 수 있으므로, image/* 콘텐츠 타입 대신 다운로드(attachment)로 처리한다.
+			if (!SAFE_INLINE_IMAGE_EXTENSIONS.contains(extsn)) {
+				response.setHeader("Content-Type", "application/octet-stream");
+				response.setHeader("Content-Disposition", "attachment");
+				response.setHeader("X-Content-Type-Options", "nosniff");
 			} else {
-				LOGGER.debug("Image fileType is null.");
+				String type = "jpg".equals(extsn) ? "image/jpeg" : "image/" + extsn;
+				response.setHeader("Content-Type", EgovWebUtil.removeCRLF(type));
+				response.setHeader("X-Content-Type-Options", "nosniff");
 			}
 
-			response.setHeader("Content-Type", EgovWebUtil.removeCRLF(type));
 			response.setContentLength(bStream.size());
 
 			bStream.writeTo(response.getOutputStream());
