@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,7 @@ import jakarta.annotation.Resource;
  *   수정일			수정자		수정내용
  *  -------			--------	---------------------------
  *   2024.10.29		inganyoyo	Controller는 Transaction 처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
+ *   2026.07.06		이백행		[2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
@@ -66,7 +68,7 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public void updateBBSMasterInf(BoardMaster boardMaster) throws Exception {
+	public void updateBBSMasterInf(BoardMaster boardMaster) {
 		egovBBSMasterDao.updateBBSMaster(boardMaster);
 
 		//---------------------------------
@@ -131,12 +133,17 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public void insertBBSMasterInf(BoardMaster boardMaster) throws Exception {
+	public void insertBBSMasterInf(BoardMaster boardMaster) {
 
 		//2021 github 반영
 		//String bbsId = idgenService.getNextStringId();
 		//게시판 ID 채번
-		String bbsId = idgenService.getNextStringId() + RandomStringUtils.randomAlphabetic(10);
+		String bbsId;
+		try {
+			bbsId = idgenService.getNextStringId() + RandomStringUtils.randomAlphabetic(10);
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		boardMaster.setBbsId(bbsId);
 
 		egovBBSMasterDao.insertBBSMasterInf(boardMaster);
@@ -174,15 +181,21 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public void insertBlogMaster(Blog blog) throws FdlException {
+	public void insertBlogMaster(Blog blog) {
 		egovBBSMasterDao.insertBlogMaster(blog);
 	}
 
   @Override
-  public void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user) throws Exception {
+  public void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user) {
 
-    String blogId = idgenServiceBlog.getNextStringId(); //블로그 아이디 채번
-    String bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
+    String blogId;
+    String bbsId;
+	try {
+		blogId = idgenServiceBlog.getNextStringId(); //블로그 아이디 채번
+		bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
+	} catch (FdlException e) {
+		throw new BaseRuntimeException(e);
+	} 
 
     blog.setRegistSeCode("REGC02");
     blog.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -217,12 +230,12 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public List<BlogVO> selectBlogListPortlet(BlogVO blogVO) throws Exception{
+	public List<BlogVO> selectBlogListPortlet(BlogVO blogVO) {
 		return egovBBSMasterDao.selectBlogListPortlet(blogVO);
 	}
 
 	@Override
-	public List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO) throws Exception {
+	public List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO) {
 		return egovBBSMasterDao.selectBBSListPortlet(boardMasterVO);
 	}
 
