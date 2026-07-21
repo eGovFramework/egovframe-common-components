@@ -2,6 +2,7 @@ package egovframework.com.cmm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -53,5 +54,23 @@ public class EgovWebUtilTest {
 	public void removeLDAPInjectionRisk_nullOrBlankReturnsEmpty() {
 		assertEquals("", EgovWebUtil.removeLDAPInjectionRisk(null));
 		assertEquals("", EgovWebUtil.removeLDAPInjectionRisk("   "));
+	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_acceptsContextRelativePath() {
+		assertEquals("/cop/bbs/SelectBBSMasterInfsPop.do",
+				EgovWebUtil.sanitizeRelativeRequestUrl("/cop/bbs/SelectBBSMasterInfsPop.do"));
+	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_rejectsProtocolRelativeUrl() {
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("//evil.example/popup"));
+	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_rejectsBackslashProtocolRelativeUrl() {
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\\evil.example/popup"));
 	}
 }

@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
  *  2023.08.10   신용호      removeLDAPInjectionRisk() 오류 수정
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
  *  2026.07.10   유지보수    NCSC 보안점검 반영 (XSS/SSRF/세션고정 대응 유틸 추가)
+ *  2026.07.15   EricSeokgon 팝업 프로토콜 상대 URL 검증 강화
  * </pre>
  */
 
@@ -186,7 +187,8 @@ public class EgovWebUtil {
 			throw new IllegalArgumentException("requestUrl is required");
 		}
 		String trimmed = requestUrl.trim();
-		if (!trimmed.startsWith("/") || trimmed.contains("://") || trimmed.contains("..")
+		if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\")
+				|| trimmed.contains("://") || trimmed.contains("..")
 				|| trimmed.contains("\"") || trimmed.contains("'") || trimmed.contains("<")
 				|| trimmed.contains(">") || trimmed.contains("\r") || trimmed.contains("\n")) {
 			throw new IllegalArgumentException("Invalid requestUrl");
