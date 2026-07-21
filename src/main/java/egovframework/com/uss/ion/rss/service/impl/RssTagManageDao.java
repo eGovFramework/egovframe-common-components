@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -42,6 +43,7 @@ import jakarta.annotation.Resource;
  *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
  *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
+ *   2026.07.07  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *      </pre>
  */
@@ -58,9 +60,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * JDBC 테이블 목록을조회한다.
 	 *
 	 * @return List -조회한목록이담긴List
-	 * @throws Exception
 	 */
-	public List<ComDefaultCodeVO> selectRssTagManageTableList() throws Exception {
+	public List<ComDefaultCodeVO> selectRssTagManageTableList() {
 
 		String columnLabelTableName = "TABLE_NAME";
 		String columnLabelTableSchema = "TABLE_SCHEM";
@@ -93,6 +94,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 					arrListResult.add(codeVO);
 				}
 			}
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			if (tables != null) {
 				try {
@@ -113,9 +116,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 *
 	 * @param map - 컬럼조회정보
 	 * @return List -조회한목록이담긴List
-	 * @throws Exception
 	 */
-	public List<Map<String, String>> selectRssTagManageTableColumnList(Map<String, String> map) throws Exception {
+	public List<Map<String, String>> selectRssTagManageTableColumnList(Map<String, String> map) {
 
 		String sTableName = map.get("tableName");
 		String sDbType = map.get("dbType");
@@ -165,6 +167,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 					arrListResult.add(hmResult);
 				}
 			}
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			if (rs != null) {
 				try {
