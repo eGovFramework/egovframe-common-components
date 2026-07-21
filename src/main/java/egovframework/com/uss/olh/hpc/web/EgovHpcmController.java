@@ -131,17 +131,25 @@ public class EgovHpcmController {
 	@PostMapping("/uss/olh/hpc/insertHpcmView.do")
 	public String insertHpcmView(@ModelAttribute("searchVO") HpcmVO searchVO, Model model) throws Exception {
 
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM021");
-
-		List<CmmnDetailCode> hpcmSeCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("hpcmSeCode", hpcmSeCode);
+		model.addAttribute("hpcmSeCode", selectHpcmSeCodeList());
 
 		model.addAttribute("hpcmVO", new HpcmVO());
 
 		return "egovframework/com/uss/olh/hpc/EgovHpcmRegist";
 
+	}
+
+	/**
+	 * 도움말구분 공통코드(COM021) 목록을 조회한다.
+	 *
+	 * @return 도움말구분 공통코드 목록
+	 * @throws Exception
+	 */
+	private List<CmmnDetailCode> selectHpcmSeCodeList() throws Exception {
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("COM021");
+
+		return cmmUseService.selectCmmCodeDetail(vo);
 	}
 
 	/**
@@ -155,9 +163,10 @@ public class EgovHpcmController {
 	 */
 	@PostMapping("/uss/olh/hpc/insertHpcm.do")
 	public String insertHpcmCn(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
-			BindingResult bindingResult) throws Exception {
+			BindingResult bindingResult, Model model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("hpcmSeCode", selectHpcmSeCodeList());
 			return "egovframework/com/uss/olh/hpc/EgovHpcmRegist";
 		}
 
@@ -187,12 +196,7 @@ public class EgovHpcmController {
 	public String updateHpcmView(@RequestParam("hpcmId") String hpcmId, @ModelAttribute("searchVO") HpcmVO searchVO,
 			ModelMap model) throws Exception {
 
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM021");
-
-		List<CmmnDetailCode> hpcmSeCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("hpcmSeCode", hpcmSeCode);
+		model.addAttribute("hpcmSeCode", selectHpcmSeCodeList());
 
 		HpcmVO hpcmVO = new HpcmVO();
 		hpcmVO.setHpcmId(hpcmId);
@@ -212,10 +216,11 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/updateHpcm.do")
-	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmManageVO") HpcmVO hpcmVO,
-			BindingResult bindingResult) throws Exception {
+	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
+			BindingResult bindingResult, Model model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("hpcmSeCode", selectHpcmSeCodeList());
 			return "egovframework/com/uss/olh/hpc/EgovHpcmUpdt";
 		}
 
