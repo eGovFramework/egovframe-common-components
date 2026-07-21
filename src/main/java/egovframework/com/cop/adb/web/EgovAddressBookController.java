@@ -295,6 +295,13 @@ public class EgovAddressBookController {
     public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
         String requestUrl = (String)commandMap.get("requestUrl");
+
+        // iframe src로 그대로 반영되므로, 외부 URL/스킴 URI(javascript:, data: 등)를 차단하고
+        // 애플리케이션 내부의 절대경로만 허용한다.
+        if (!isSafeInternalUrl(requestUrl)) {
+            return "egovframework/com/cmm/error/accessDenied";
+        }
+
         String width = (String)commandMap.get("width");
         String height = (String)commandMap.get("height");
 
@@ -304,6 +311,28 @@ public class EgovAddressBookController {
 
         return "egovframework/com/cop/adb/EgovModalPopupFrame";
   }
+
+    /**
+     * openPopup.do의 requestUrl이 iframe src로 그대로 반영되므로,
+     * 애플리케이션 내부의 절대경로("/"로 시작)만 허용하고 외부 URL이나
+     * javascript:/data: 등 스킴 URI를 차단한다.
+     *
+     * @param url 검증할 요청 URL
+     * @return 내부 상대경로이면 true
+     */
+    private boolean isSafeInternalUrl(String url) {
+        if (url == null) {
+            return false;
+        }
+        String trimmed = url.trim();
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+        if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\") || trimmed.contains(":")) {
+            return false;
+        }
+        return true;
+    }
 
 
     /**

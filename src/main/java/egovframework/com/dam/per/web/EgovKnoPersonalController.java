@@ -92,6 +92,24 @@ public class EgovKnoPersonalController {
 	EgovMessageSource egovMessageSource;
 
 	/**
+	 * 개인지식 작성자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
+	 *
+	 * @param user 현재 로그인한 사용자
+	 * @param frstRegisterId 개인지식 작성자 ID(frstRegisterId)
+	 * @return 소유자이거나 관리자이면 true
+	 */
+	private boolean isOwner(LoginVO user, String frstRegisterId) {
+		if (user == null || user.getUniqId() == null) {
+			return false;
+		}
+		if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
+			return true;
+		}
+		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
+		return authorities != null && authorities.contains("ROLE_ADMIN");
+	}
+
+	/**
 	 * 등록된 개인지식 정보를 조회 한다.
 	 * 
 	 * @param KnoPersonalVO - 개인지식 VO
@@ -150,7 +168,20 @@ public class EgovKnoPersonalController {
 	 */
 	@RequestMapping(value = "/dam/per/EgovComDamPersonal.do")
 	public String selectKnoPersonal(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
+		// Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 		KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
+
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 조회할 수 있다.
+		if (result == null || !isOwner(loginVO, result.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		model.addAttribute("result", result);
 		model.addAttribute("searchVO", knoPersonal);
 		return "egovframework/com/dam/per/EgovComDamPersonalDetail";
@@ -253,21 +284,22 @@ public class EgovKnoPersonalController {
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalModifyView.do")
 	public String updateKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
-		updateKnoPersonalViewInit(knoPersonal, model);
+		// Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정폼을 조회할 수 있다.
+		KnoPersonal existing = knoPersonalService.selectKnoPersonal(knoPersonal);
+		if (existing == null || !isOwner(loginVO, existing.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
+		model.addAttribute("knoPersonal", existing);
 		model.addAttribute("searchVO", knoPersonal);
 		return "egovframework/com/dam/per/EgovComDamPersonalModify";
-	}
-
-	/**
-	 * 기 등록 된 개인지식 정보를 수정폼. 초기값
-	 * 
-	 * @param knoPersonal
-	 * @param model
-	 * @throws Exception
-	 */
-	private void updateKnoPersonalViewInit(KnoPersonal knoPersonal, ModelMap model) throws Exception {
-		KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
-		model.addAttribute("knoPersonal", result);
 	}
 
 	/**
@@ -295,10 +327,16 @@ public class EgovKnoPersonalController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정할 수 있다.
+		KnoPersonal existingKnoPersonal = knoPersonalService.selectKnoPersonal(knoPersonal);
+		if (existingKnoPersonal == null || !isOwner(loginVO, existingKnoPersonal.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalModify";
 
 		if (bindingResult.hasErrors()) {
-			updateKnoPersonalViewInit(knoPersonal, model);
+			model.addAttribute("knoPersonal", existingKnoPersonal);
 			return sLocationUrl;
 		}
 
@@ -353,6 +391,18 @@ public class EgovKnoPersonalController {
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalRemove.do")
 	public String deleteKnoPersonal(KnoPersonal knoPersonal) throws Exception {
+		// Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 삭제할 수 있다.
+		KnoPersonal existing = knoPersonalService.selectKnoPersonal(knoPersonal);
+		if (existing == null || !isOwner(loginVO, existing.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		knoPersonalService.deleteKnoPersonal(knoPersonal);
 		return "forward:/dam/per/EgovComDamPersonalList.do";
 	}

@@ -184,7 +184,7 @@ function fn_egov_list(){
 	<tr style="cursor:pointer;cursor:hand;" onclick="javascript:fn_egov_detail_Zip('${resultInfo.zip}','${resultInfo.sn}');">
 		<td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 		<td class="lt_text3" nowrap><c:out value='${resultInfo.zip}'/></td>
-		<td class="lt_text"  nowrap>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm} ${resultInfo.lnbrDongHo}</td>
+		<td class="lt_text"  nowrap><c:out value="${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm} ${resultInfo.lnbrDongHo}"/></td>
 	</tr>
 	</c:forEach>
 </c:when>
@@ -192,8 +192,8 @@ function fn_egov_list(){
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr style="cursor:pointer;cursor:hand;" onclick="javascript:fn_egov_detail_RdmnCode_Zip('${resultInfo.rdmnCode}','${resultInfo.sn}');">
 		<td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
-		<td class="lt_text3" nowrap>${resultInfo.zip}</td>
-		<td class="lt_text"  nowrap>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}</td>
+		<td class="lt_text3" nowrap><c:out value="${resultInfo.zip}"/></td>
+		<td class="lt_text"  nowrap><c:out value="${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm}"/> <c:if test="${resultInfo.bdnbrSlno != ''}">- <c:out value="${resultInfo.bdnbrSlno}"/></c:if> <c:out value="${resultInfo.buldNm} ${resultInfo.detailBuldNm}"/></td>
 	</tr>
 	</c:forEach>
 </c:otherwise>

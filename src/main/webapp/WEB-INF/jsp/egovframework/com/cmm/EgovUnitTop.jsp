@@ -91,6 +91,25 @@ var stateExpiredTime = false;
 var logoutUrl = "<c:url value='/uat/uia/actionLogout.do'/>";
 var timer;
 
+// actionLogout.do는 CSRF 방지를 위해 POST만 허용하므로, GET 방식인 location.href 대신
+// CSRF 토큰을 포함한 hidden form을 동적으로 생성해 부모 프레임셋의 "_content" 프레임에 제출한다.
+function doLogout() {
+	var logoutForm = parent.document.createElement("form");
+	logoutForm.method = "post";
+	logoutForm.action = logoutUrl;
+	logoutForm.target = "_content";
+	<c:if test="${not empty _csrf}">
+	var csrfInput = parent.document.createElement("input");
+	csrfInput.type = "hidden";
+	csrfInput.name = "${_csrf.parameterName}";
+	csrfInput.value = "${_csrf.token}";
+	logoutForm.appendChild(csrfInput);
+	</c:if>
+	parent.document.body.appendChild(logoutForm);
+	logoutForm.submit();
+	parent.document.body.removeChild(logoutForm);
+}
+
 function init() {
 	objLeftTime = document.getElementById("leftTimeInfo");
 
@@ -126,7 +145,7 @@ function showRemaining() {
 		stateExpiredTime = true;
 		alert('<spring:message code="comCmm.top.expireSessionTimeInfo"/>'); //로그인 세션시간이 만료 되었습니다.
 		$("#sessionInfo").hide();
-		parent.frames["_content"].location.href = logoutUrl;
+		doLogout();
 		return;
 	}
 	var timeHour = Math.floor(timeRemaining/1000/60 / 60); 

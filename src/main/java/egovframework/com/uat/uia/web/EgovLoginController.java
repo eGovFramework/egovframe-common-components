@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -166,7 +167,7 @@ public class EgovLoginController {
 	 * @return result - 로그인결과(세션정보)
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uat/uia/actionLogin.do")
+	@RequestMapping(value = "/uat/uia/actionLogin.do", method = RequestMethod.POST)
 	public String actionLogin(@Valid @ModelAttribute("loginRequestVO") LoginRequestVO loginRequestVO, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, ModelMap model,  RedirectAttributes
 			  redirectAttributes) throws Exception {
 
@@ -372,7 +373,7 @@ public class EgovLoginController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uat/uia/actionLogout.do")
+	@RequestMapping(value = "/uat/uia/actionLogout.do", method = RequestMethod.POST)
 	public String actionLogout(HttpServletRequest request, ModelMap model) throws Exception {
 
 		request.getSession().setAttribute("loginVO", null);

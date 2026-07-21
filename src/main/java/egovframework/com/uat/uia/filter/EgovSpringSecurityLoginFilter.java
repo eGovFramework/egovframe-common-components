@@ -121,7 +121,7 @@ public class EgovSpringSecurityLoginFilter extends OncePerRequestFilter {
 				session.setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
 
 				String securityUser = resultVO.getUserSe().concat(resultVO.getId());
-				String securityPass = resultVO.getUniqId();
+				String securityPass = password.trim();
 				if (!StringUtils.hasText(securityPass)) {
 					LOGGER.warn("Login succeeded but uniqId is empty for user {}", securityUser);
 					forwardToLoginFailure(request, response);

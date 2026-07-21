@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.uas.service.EgovUserAbsnceService;
 import egovframework.com.uss.ion.uas.service.UserAbsnceVO;
@@ -102,11 +103,12 @@ public class EgovUserAbsnceController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/uas/getUserAbsnce.do")
-	public String selectUserAbsnce(@RequestParam("userId") String userId,
-			                       @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
+	public String selectUserAbsnce(@ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                       ModelMap model) throws Exception {
 
-		userAbsnceVO.setUserId(userId);
+		// 소유권 검증 - 요청 파라미터가 아닌 로그인한 본인의 사용자ID만 조회할 수 있다.
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		userAbsnceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 		UserAbsnceVO resultUserAbsnceVO = egovUserAbsnceService.selectUserAbsnce(userAbsnceVO);
 		model.addAttribute("userAbsnceVO", resultUserAbsnceVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -124,10 +126,11 @@ public class EgovUserAbsnceController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/uas/addViewUserAbsnce.do")
-	public String insertUserAbsnceView(@RequestParam("userId") String userId,
-			                           @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
+	public String insertUserAbsnceView(@ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                            ModelMap model) throws Exception {
-    	userAbsnceVO.setUserId(userId);
+    	// 소유권 검증 - 요청 파라미터가 아닌 로그인한 본인의 사용자ID로만 등록화면을 구성한다.
+    	LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	userAbsnceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
     	UserAbsnceVO resultUserAbsnceVO = egovUserAbsnceService.selectUserAbsnce(userAbsnceVO);
     	model.addAttribute("userAbsnceVO", resultUserAbsnceVO);
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -151,6 +154,8 @@ public class EgovUserAbsnceController {
 		}
 
 	   	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	   	// 소유권 검증 - 요청 파라미터가 아닌 로그인한 본인의 사용자ID로만 등록할 수 있다.
+	   	userAbsnceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 	   	userAbsnceVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
 	   	UserAbsnceVO resultUserAbsnceVO = egovUserAbsnceService.insertUserAbsnce(userAbsnceVO);
@@ -176,6 +181,8 @@ public class EgovUserAbsnceController {
 		}
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	// 소유권 검증 - 요청 파라미터가 아닌 로그인한 본인의 사용자ID만 수정할 수 있다.
+   	    userAbsnceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
    	    userAbsnceVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
     	egovUserAbsnceService.updateUserAbsnce(userAbsnceVO);
@@ -191,6 +198,10 @@ public class EgovUserAbsnceController {
 	public String deleteUserAbsnce(@ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
                                     ModelMap model) throws Exception {
 
+		// 소유권 검증 - 요청 파라미터가 아닌 로그인한 본인의 사용자ID만 삭제할 수 있다.
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		userAbsnceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+
 		egovUserAbsnceService.deleteUserAbsnce(userAbsnceVO);
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/ion/uas/selectUserAbsnceList.do";
@@ -201,6 +212,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
+    @RequireAdmin
     @RequestMapping("/uss/ion/uas/removeUserAbsnceList.do")
 	public String deleteUserAbsnceList(@RequestParam("userIds") String userIds ,
 			                           @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,

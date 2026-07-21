@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.utl.sys.rsc.service.EgovLoginSesionCeckUtil;
 import jakarta.annotation.Resource;
@@ -44,6 +45,7 @@ public class EgovLoginSesionController {
 	 * @return String
 	 */
 	@IncludedInfo(name="로그인세션정보체크", order = 2160 ,gid = 90)
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/rsc/loginSessionView.do")
 	public String checkLoginSessionView() throws Exception {
 		return "egovframework/com/utl/sys/rsc/EgovLoginSesionCheck";
@@ -54,6 +56,7 @@ public class EgovLoginSesionController {
 	 * @param url - String
 	 * @return String
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/rsc/setLoginSession.do")
 	public String setLoginSession(@RequestParam("url") String url) throws Exception {
 		egovLoginSesionCeckUtil.setLoginSession(url);
@@ -64,6 +67,7 @@ public class EgovLoginSesionController {
 	 * 로그인 세션정보체크
 	 * @return String
 	 */
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/rsc/checkLloginSession.do")
 	public String checkLoginSession() throws Exception {
 		egovLoginSesionCeckUtil.checkLoginSessionView();

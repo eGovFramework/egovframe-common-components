@@ -151,20 +151,25 @@ public class EgovQnaController {
 	 */
 	@PostMapping("/uss/olh/qna/selectQnaDetail.do")
 	public String selectQnaDetail(@RequestParam("qaId") String qaId, QnaVO qnaVO,
-			@ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model) throws Exception {
+			@ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model, HttpServletRequest request) throws Exception {
 
 		qnaVO.setQaId(qaId);
 
+		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
+
+		// 작성자 본인만 열람 가능하도록 소유권 검증
+		// (updateQna/deleteQna와 동일하게 EgovXssChecker.checkerUserXss로 통일)
+		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+
 		// 조회수 수정처리
 		egovQnaService.updateQnaInqireCo(qnaVO);
-
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
 
 		// 작성 비밀번호를 얻는다.
 //		String writngPassword = vo.getWritngPassword();
 
 		// EgovFileScrty Util에 있는 암호화 모듈을 적용해서 복호화한다.
 //		vo.setWritngPassword(EgovFileScrty.decode(writngPassword));
+		vo.setWritngPassword(null); // 응답 모델에 작성비밀번호를 포함하지 않는다.
 
 		model.addAttribute("result", vo);
 
