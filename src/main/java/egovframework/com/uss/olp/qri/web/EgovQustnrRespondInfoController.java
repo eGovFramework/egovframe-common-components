@@ -382,6 +382,34 @@ public class EgovQustnrRespondInfoController {
 		if (bindingResult.hasErrors()) {
 			LOGGER.info("####EgovQustnrRespondInfoManageRegist 유효성검증 ERROR");
 			model.addAttribute("searchVO", searchVO);
+
+			// 검증 실패로 폼을 다시 표시할 때도 정상 표시 경로와 동일하게 참조데이터를 재적재한다.
+			// (누락 시 문항 영역이 빈 templateUrl로 에러 페이지 대체 + hidden qestnrTmplatId/qestnrId 유실)
+			if (loginVO.getUniqId() != null) {
+				commandMap.put("uniqId", loginVO.getUniqId());
+				// 사용자정보
+				model.addAttribute("Emplyrinfo",
+						egovQustnrRespondInfoService.selectQustnrRespondInfoManageEmplyrinfo(commandMap));
+			}
+			// 설문템플릿정보
+			model.addAttribute("QustnrTmplatManage",
+					egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
+			// 설문정보
+			model.addAttribute("Comtnqestnrinfo",
+					egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
+			// 문항정보
+			model.addAttribute("Comtnqustnrqesitm",
+					egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
+			// 항목정보
+			model.addAttribute("Comtnqustnriem",
+					egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
+			// 설문템플릿ID 설정
+			model.addAttribute("qestnrTmplatId",
+					commandMap.get("qestnrTmplatId") == null ? "" : (String) commandMap.get("qestnrTmplatId"));
+			// 설문지정보ID 설정
+			model.addAttribute("qestnrId",
+					commandMap.get("qestnrId") == null ? "" : (String) commandMap.get("qestnrId"));
+
 			return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageRegist";
 		}
 
