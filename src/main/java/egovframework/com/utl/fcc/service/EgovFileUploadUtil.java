@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletRequest;
  *  2020.08.05   신용호            uploadFilesExt Parameter 수정
  *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
  *  2022.11.11   김혜준            시큐어코딩 처리
+ *  2026.07.10   EricSeokgon      InputStream 자원 처리를 try-with-resources로 변경(자원 누수 방지, java:S2093)
  *
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
@@ -80,16 +81,9 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 					}
 
 					if (mFile.getSize() > 0) {
-						InputStream is = null;
-
-						try {
-							is = mFile.getInputStream();
+						try (InputStream is = mFile.getInputStream()) {
 							saveFile(is, new File(EgovWebUtil.filePathBlackList(
 								where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName())));
-						} finally {
-							if (is != null) {
-								is.close();
-							}
 						}
 						list.add(vo);
 					}
@@ -159,16 +153,9 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 					}
 
 					if (fileSize > 0) {
-						InputStream is = null;
-
-						try {
-							is = mFile.getInputStream();
+						try (InputStream is = mFile.getInputStream()) {
 							String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile";
 							saveFile(is, new File(EgovWebUtil.filePathBlackList( fullPath )));
-						} finally {
-							if (is != null) {
-								is.close();
-							}
 						}
 						list.add(vo);
 					}
