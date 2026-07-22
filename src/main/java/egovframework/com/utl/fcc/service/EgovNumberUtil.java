@@ -6,6 +6,7 @@
  *     수정일         수정자                   수정내용
  *     -------          --------        ---------------------------
  *   2009.02.13       이삼섭                  최초 생성
+ *   2026.07.09       EricSeokgon             지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 02. 13
@@ -176,7 +177,7 @@ public class EgovNumberUtil {
 		String subject = String.valueOf(cnvrSrcNumber);
 		String object = String.valueOf(cnvrTrgtNumber);
 
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 

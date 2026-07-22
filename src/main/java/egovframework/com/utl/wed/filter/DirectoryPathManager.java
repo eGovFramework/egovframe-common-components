@@ -64,7 +64,7 @@ public class DirectoryPathManager {
 	public static String getDirectoryPathByDateType(DIR_DATE_TYPE policy) {
 
 		Calendar calendar = Calendar.getInstance();
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(calendar.get(Calendar.YEAR)).append(File.separator);
 		if (policy.ordinal() <= DIR_DATE_TYPE.DATE_POLICY_YYYY_MM.ordinal()) {
 			sb.append(StringUtils.leftPad(String.valueOf(calendar.get(Calendar.MONTH)+1), 2, '0')).append(File.separator);
