@@ -30,6 +30,7 @@ import jakarta.annotation.Resource;
  *  ----------   --------   ---------------------------
  *  2019.12.06   신용호             KISA 보안약점 조치 (부적절한 예외처리)
  *  2022.11.11   김혜준             시큐어코딩 처리
+ *  2026.07.10   EricSeokgon        문자열 상태값을 ==(참조) 대신 equals()로 비교하도록 수정(PMD/Sonar S4973)
  *
  * </pre>
  */
@@ -101,7 +102,7 @@ public class EgovProcessMonScheduling extends EgovAbstractServiceImpl {
 				nrmltAt = false;
 			}
 
-			if (procsSttus == "02") {
+			if ("02".equals(procsSttus)) {
 				nrmltAt = false;
 			}
 
@@ -113,7 +114,7 @@ public class EgovProcessMonScheduling extends EgovAbstractServiceImpl {
 
 			// DB에 결과값 저장
 			target.setProcsSttus(procsSttus);
-			if (procsSttus == "02") {
+			if ("02".equals(procsSttus)) {
 				target.setLogInfo("실행 중인 작업 중 지정된 조건에 일치하는 작업이 없습니다.");
 			}
 

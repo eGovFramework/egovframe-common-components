@@ -26,6 +26,7 @@ import jakarta.annotation.Resource;
  *    2010.09.01   박종선      최초생성
  *    2019.12.06   신용호      KISA 보안약점 조치 (부적절한 예외처리)
  *    2022.11.11   김혜준      시큐어코딩 처리
+ *    2026.07.10   EricSeokgon 문자열 상태값을 ==(참조) 대신 equals()로 비교하도록 수정(PMD/Sonar S4973)
  *
  * @author 박종선
  * @since 2010.05.01
@@ -109,7 +110,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 				nrmltAt = false;
 			}
 
-			if (httpSttusCd == "02") {
+			if ("02".equals(httpSttusCd)) {
 				nrmltAt = false;
 			}
 
@@ -121,7 +122,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 
 			// DB에 결과값 저장
 			target.setHttpSttusCd(httpSttusCd);
-			if (httpSttusCd == "02") {
+			if ("02".equals(httpSttusCd)) {
 				target.setLogInfo("Connection timed out: connect");
 			}
 
