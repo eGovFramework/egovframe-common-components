@@ -165,7 +165,7 @@ public class EgovValidationControllerAdvice {
 		// {키이름} 패턴을 찾아서 대체
 		Pattern pattern = java.util.regex.Pattern.compile("\\{([^}]+)\\}");
 		Matcher matcher = pattern.matcher(message);
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		while (matcher.find()) {
 			String messageKey = matcher.group(1);

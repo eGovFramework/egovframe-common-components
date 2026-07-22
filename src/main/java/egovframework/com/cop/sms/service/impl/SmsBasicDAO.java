@@ -37,7 +37,7 @@ public class SmsBasicDAO {
 	public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
 		List<SmsVO> list = new ArrayList<SmsVO>();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append("SELECT\n");
@@ -129,7 +129,7 @@ public class SmsBasicDAO {
 	 * @throws Exception
 	 */
 	public int selectSmsInfsCnt(SmsVO vo) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append("SELECT\n");
@@ -191,7 +191,7 @@ public class SmsBasicDAO {
 	public String insertSmsInf(Sms sms) throws Exception {
 		String smsId = null;
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append("INSERT INTO COMTNSMS\n");
@@ -237,7 +237,7 @@ public class SmsBasicDAO {
 	 * @throws Exception
 	 */
 	public void insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
 		buffer.append("INSERT INTO COMTNSMSRECPTN\n");
@@ -267,7 +267,7 @@ public class SmsBasicDAO {
 	public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
 		SmsVO smsVO = new SmsVO();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		// for mySql
 		buffer.append("SELECT\n");
 		buffer.append("  a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,\n");
@@ -318,7 +318,7 @@ public class SmsBasicDAO {
 	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
 		List<SmsRecptn> list = new ArrayList<SmsRecptn>();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
 		buffer.append("SELECT\n");
@@ -359,7 +359,7 @@ public class SmsBasicDAO {
 	 * @throws Exception
 	 */
 	public void updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
 		buffer.append("UPDATE COMTNSMSRECPTN SET\n");
@@ -388,7 +388,7 @@ public class SmsBasicDAO {
 	 * @throws Exception
 	 */
 	protected String getNextId(Connection conn) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append(

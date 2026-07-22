@@ -40,6 +40,7 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
  *   2018.03.21  신용호          getParameterMap()구현 추가
  *   2019.01.31  신용호          whiteList 태그 추가
  *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(부울 표현식 단순화), AvoidReassigningParameters(매개변수 재할당 방지)
+ *   2026.07.09  EricSeokgon      지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  *      </pre>
  */
@@ -141,7 +142,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	private String getSafeParamData(String value) {
-		StringBuffer strBuff = new StringBuffer();
+		StringBuilder strBuff = new StringBuilder();
 
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
