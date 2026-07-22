@@ -54,4 +54,27 @@ public class EgovWebUtilTest {
 		assertEquals("", EgovWebUtil.removeLDAPInjectionRisk(null));
 		assertEquals("", EgovWebUtil.removeLDAPInjectionRisk("   "));
 	}
+
+	@Test
+	public void fileInjectPathReplaceAll_removesParentDirectorySequence() {
+		assertEquals("etcpasswd", EgovWebUtil.fileInjectPathReplaceAll("../etc/passwd"));
+	}
+
+	@Test
+	public void fileInjectPathReplaceAll_keepsSingleDotAndFollowingCharacter() {
+		assertEquals("report.txt", EgovWebUtil.fileInjectPathReplaceAll("report.txt"));
+	}
+
+	/**
+	 * 구분자 제거 후 ".." 가 복원되지 않아야 한다.
+	 *
+	 * <p>정규식 오타만 고치면 ".\\." 처럼 구분자가 끼어든 입력은 ".." 가 인접하지 않아
+	 * 통과한 뒤, 역슬래시가 제거되면서 ".." 가 되살아난다. 같은 클래스의
+	 * filePathReplaceAll() 과 동일하게 구분자를 먼저 제거해야 한다.</p>
+	 */
+	@Test
+	public void fileInjectPathReplaceAll_doesNotReconstructParentSequence() {
+		assertEquals("", EgovWebUtil.fileInjectPathReplaceAll(".\\."));
+		assertEquals("etc", EgovWebUtil.fileInjectPathReplaceAll(".\\./etc"));
+	}
 }
