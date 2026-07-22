@@ -369,7 +369,7 @@ public class EgovFileMngUtil {
 			throw new FileNotFoundException(downFilePath);
 		}
 
-		int fSize = (int) file.length();
+		long fSize = file.length();
 		if (fSize > 0) {
 			try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));) {
 				String mimetype = "application/x-msdownload";
@@ -377,7 +377,7 @@ public class EgovFileMngUtil {
 				// response.setBufferSize(fSize);
 				response.setContentType(mimetype);
 				response.setHeader("Content-Disposition:", "attachment; filename=" + orgFileName);
-				response.setContentLength(fSize);
+				response.setContentLengthLong(fSize);
 				// response.setHeader("Content-Transfer-Encoding","binary");
 				// response.setHeader("Pragma","no-cache");
 				// response.setHeader("Expires","0");
