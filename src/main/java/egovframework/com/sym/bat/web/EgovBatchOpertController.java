@@ -59,7 +59,7 @@ public class EgovBatchOpertController {
 	@Resource(name = "propertiesService")
 	private EgovPropertyService propertyService;
 
-	/* 메세지 서비스 */
+	/* 메시지 서비스 */
 	@Resource(name = "egovMessageSource")
 	private EgovMessageSource egovMessageSource;
 
