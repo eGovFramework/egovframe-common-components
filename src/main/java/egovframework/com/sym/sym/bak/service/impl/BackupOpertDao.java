@@ -1,5 +1,8 @@
 package egovframework.com.sym.sym.bak.service.impl;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -91,11 +94,20 @@ public class BackupOpertDao extends EgovComAbstractDAO {
      */
     public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) {
         List<BackupOpert> resultList = selectList("BackupOpertDao.selectBackupOpertList", searchVO);
+        if (resultList.isEmpty()) {
+            return resultList;
+        }
+
+        // 스케줄요일정보를 백업작업ID 목록으로 한번에 조회한 뒤 ID별로 그룹핑한다. (행별 조회로 인한 N+1 제거)
+        List<String> backupOpertIds = resultList.stream()
+                .map(BackupOpert::getBackupOpertId).collect(Collectors.toList());
+        List<BackupSchdulDfk> dfkList = selectList("BackupOpertDao.selectBackupSchdulDfkListByIds", backupOpertIds);
+        Map<String, List<BackupSchdulDfk>> dfkMap = dfkList.stream()
+                .collect(Collectors.groupingBy(BackupSchdulDfk::getBackupOpertId));
 
         for (BackupOpert result : resultList) {
             // 스케줄요일정보를 가져온다.
-            List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList",
-                    result.getBackupOpertId());
+            List<BackupSchdulDfk> dfkSeList = dfkMap.getOrDefault(result.getBackupOpertId(), Collections.emptyList());
             result.setExecutSchdulDfkSes(
                     dfkSeList.stream().map(BackupSchdulDfk::getExecutSchdulDfkSe).toArray(String[]::new));
             // 화면표시용 실행스케줄 속성을 만든다.
