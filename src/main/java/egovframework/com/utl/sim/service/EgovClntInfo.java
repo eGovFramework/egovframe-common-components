@@ -129,27 +129,27 @@ public class EgovClntInfo {
 		String ua = userAgent.toUpperCase();
 		// 웹브라우저 종류 조회
 		String webKind = "";
-		if (ua.indexOf("GECKO") != -1) {
-			if (ua.indexOf("NESCAPE") != -1) {
+		if (ua.contains("GECKO")) {
+			if (ua.contains("NESCAPE")) {
 				webKind = "Netscape (Gecko/Netscape)";
-			} else if (ua.indexOf("FIREFOX") != -1) {
+			} else if (ua.contains("FIREFOX")) {
 				webKind = "Mozilla Firefox (Gecko/Firefox)";
 			} else {
 				webKind = "Mozilla (Gecko/Mozilla)";
 			}
-		} else if (ua.indexOf("MSIE") != -1) {
-			if (ua.indexOf("OPERA") != -1) {
+		} else if (ua.contains("MSIE")) {
+			if (ua.contains("OPERA")) {
 				webKind = "Opera (MSIE/Opera/Compatible)";
 			} else {
 				webKind = "Internet Explorer (MSIE/Compatible)";
 			}
-		} else if (ua.indexOf("SAFARI") != -1) {
-			if (ua.indexOf("CHROME") != -1) {
+		} else if (ua.contains("SAFARI")) {
+			if (ua.contains("CHROME")) {
 				webKind = "Google Chrome";
 			} else {
 				webKind = "Safari";
 			}
-		} else if (userAgent.toUpperCase().indexOf("THUNDERBIRD") != -1) {
+		} else if (userAgent.toUpperCase().contains("THUNDERBIRD")) {
 			webKind = "Thunderbird";
 		} else {
 			webKind = "Other Web Browsers";
