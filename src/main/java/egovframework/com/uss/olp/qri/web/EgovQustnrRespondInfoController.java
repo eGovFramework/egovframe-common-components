@@ -712,6 +712,8 @@ public class EgovQustnrRespondInfoController {
 
 		if (sCmd.equals("save")) {
 			if (bindingResult.hasErrors()) {
+				List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+				model.addAttribute("resultList", resultList);
 				return sLocationUrl;
 			}
 
