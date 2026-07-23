@@ -441,6 +441,8 @@ public class EgovCnsltManageController {
 
 		if (bindingResult.hasErrors()) {
 
+			// 검증 실패로 수정 폼을 다시 표시할 때 JSP가 참조하는 result(대상 식별자·첨부 등)를 표시 경로와 동일하게 복원한다.
+			model.addAttribute("result", cnsltManageService.selectCnsltListDetail(cnsltManageVO));
 			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsUpdt";
 
 		}
@@ -635,6 +637,8 @@ public class EgovCnsltManageController {
 
 			List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("resultList", resultList);
+			// 검증 실패로 답변 수정 폼을 다시 표시할 때 JSP가 참조하는 result(대상 식별자 등)를 표시 경로와 동일하게 복원한다.
+			model.addAttribute("result", cnsltManageService.selectCnsltListDetail(cnsltManageVO));
 			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsAnswerUpdt";
 
 		}
