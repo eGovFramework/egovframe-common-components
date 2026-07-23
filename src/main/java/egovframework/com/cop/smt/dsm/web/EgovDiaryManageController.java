@@ -254,7 +254,7 @@ public class EgovDiaryManageController {
 	public String diaryManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
-			RedirectAttributes redirectAttributes)
+			RedirectAttributes redirectAttributes, ModelMap model)
 			throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
@@ -279,8 +279,8 @@ public class EgovDiaryManageController {
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-		redirectAttributes.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-		redirectAttributes.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageModify";
 
@@ -389,7 +389,7 @@ public class EgovDiaryManageController {
 	public String diaryManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
-			RedirectAttributes redirectAttributes)
+			RedirectAttributes redirectAttributes, ModelMap model)
 			throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
@@ -406,8 +406,8 @@ public class EgovDiaryManageController {
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-		redirectAttributes.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-		redirectAttributes.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageRegist";
 
