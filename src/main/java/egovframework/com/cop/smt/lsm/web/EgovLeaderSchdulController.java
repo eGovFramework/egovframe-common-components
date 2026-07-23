@@ -865,8 +865,11 @@ public class EgovLeaderSchdulController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (bindingResult.hasErrors()) {
-			//LeaderSttus result = leaderSchdulService.selectLeaderSttus(leaderSttusVO);
-		    //model.addAttribute("leaderSttus", result);
+			// 검증 실패로 수정 화면을 다시 표시할 때 표시 경로(modifyLeaderSttus)와 동일하게 간부상태 공통코드 목록을 복원한다.
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM061");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("leaderSttus", listComCode);
 		    return "egovframework/com/cop/smt/lsm/EgovLeaderSttusUpdt";
 		}
 
@@ -901,6 +904,11 @@ public class EgovLeaderSchdulController {
 
 		//서버  validate 체크
 		if(bindingResult.hasErrors()){
+			// 검증 실패로 등록 화면을 다시 표시할 때 표시 경로(addLeaderSttus)와 동일하게 간부상태 공통코드 목록을 복원한다.
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM061");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("leaderSttus", listComCode);
 			return sLocationUrl;
 		}
 
