@@ -32,6 +32,7 @@ import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import java.util.Locale;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -539,7 +540,7 @@ public class EgovCommuManageController {
 
 		// 뷰 이름 인젝션 방지 - forward:/redirect: 등 스킴 접두사나 콜론이 포함된 값,
 		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
-		if (tmplatCours.contains(":") || tmplatCours.startsWith("/") || tmplatCours.toUpperCase().contains("WEB-INF")) {
+		if (tmplatCours.contains(":") || tmplatCours.startsWith("/") || tmplatCours.toUpperCase(Locale.ROOT).contains("WEB-INF")) {
 			LOGGER.debug("Template > Unsafe tmplatCours rejected: {}", tmplatCours);
 			return "egovframework/com/cmm/egovError";
 		}
