@@ -10,7 +10,6 @@ import org.springframework.ui.ModelMap;
 import egovframework.com.sym.log.slg.service.EgovSysHistoryService;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 
 /**
@@ -35,6 +34,8 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 	@Resource(name="sysHistoryDAO")
 	private SysHistoryDAO sysHistoryDAO;
 
+	private final SysHistoryIdGenerator sysHistoryIdGenerator = new SysHistoryIdGenerator();
+
 	/**
 	 * 시스템 이력정보를 등록한다.
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
@@ -43,10 +44,7 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 	 */
 	@Override
 	public Map<?, ?> insertSysHistory(SysHistory history) throws Exception {
-
-//		String histId = "HIST_"+20091021144553005; yyyyMMddhhmmssSSS
-		String histId = "HT_"+EgovStringUtil.getTimeStamp();
-		history.setHistId(histId);
+		history.setHistId(sysHistoryIdGenerator.getNextId());
 
 		sysHistoryDAO.insertSysHistory(history);
 
