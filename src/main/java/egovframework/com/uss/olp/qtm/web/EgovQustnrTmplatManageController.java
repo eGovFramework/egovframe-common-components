@@ -478,7 +478,8 @@ public class EgovQustnrTmplatManageController {
 		final MultipartHttpServletRequest multiRequest,
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		@Valid QustnrTmplatManageVO qustnrTmplatManageVO,BindingResult bindingResult,
-		RedirectAttributes redirectAttributes)
+		RedirectAttributes redirectAttributes,
+		ModelMap model)
 		throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -489,6 +490,11 @@ public class EgovQustnrTmplatManageController {
 		// 유효성 검증, 실패시 포워딩
 				if(bindingResult.hasErrors()) {
 					System.out.println("####파라미터검증에러"+ bindingResult.getAllErrors());//확인용 로그
+					String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+					String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+					model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+					model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 					return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
 				}
 				
@@ -518,6 +524,11 @@ public class EgovQustnrTmplatManageController {
 								"qestnrTmplatImage",
 								"file.invalid",
 								"유효한 이미지 파일이 아닙니다.");
+						String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+						String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+						model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+						model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 						return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
 					}
 					qustnrTmplatManageVO.setQestnrTmplatImagepathnm(fileBytes);
@@ -531,6 +542,11 @@ public class EgovQustnrTmplatManageController {
 					"qestnrTmplatImage",
 					"file.empty",// 메세지 파일에 해당 태그는 없지만 채워놓음
 					"템플릿 이미지를 선택해주세요.");
+			String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+			String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+			model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+			model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 			return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
 		}
 		
