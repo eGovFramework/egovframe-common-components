@@ -133,8 +133,11 @@ class EgovBBSSatisfactionControllerOwnershipTest {
 	void updateByNonOwnerDoesNotReachTheUpdateService() throws Exception {
 		Object[] r = callUpdate(OWNER, ATTACKER);
 		StubService service = (StubService) r[0];
+		ModelMap model = (ModelMap) r[2];
 		assertFalse(service.updateCalled,
 				"A logged-in non-owner must not be able to update another member's satisfaction record.");
+		assertEquals("forward:/cop/bbs/selectArticleDetail.do", r[1]);
+		assertTrue(model.containsAttribute("subMsg"), "The rejection must surface the checkerUser message.");
 	}
 
 	@Test
