@@ -561,6 +561,23 @@
 		</dependency>
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>test</id>
+			<properties>
+				<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
+			</properties>
+			<dependencies>
+				<dependency>
+					<groupId>org.glassfish.expressly</groupId>
+					<artifactId>expressly</artifactId>
+					<version>5.0.0</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
 	<build>
 		<defaultGoal>install</defaultGoal>
 		<directory>${basedir}/target</directory>
