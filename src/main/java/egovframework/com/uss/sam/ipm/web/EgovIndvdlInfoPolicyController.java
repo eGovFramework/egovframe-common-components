@@ -19,6 +19,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.ipm.service.EgovIndvdlInfoPolicyService;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
@@ -129,6 +130,11 @@ public class EgovIndvdlInfoPolicyController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 2026.08.09 KISA 보안취약점 조치 - 관리자만 삭제 가능
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 			egovIndvdlInfoPolicyService.deleteIndvdlInfoPolicy(indvdlInfoPolicy);
 			sLocationUrl = "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 		} else {
@@ -180,6 +186,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/ipm/updtIndvdlInfoPolicy.do")
+	@RequireAdmin
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			BindingResult bindingResult,
@@ -245,6 +252,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/ipm/registIndvdlInfoPolicy.do")
+	@RequireAdmin
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			BindingResult bindingResult,
