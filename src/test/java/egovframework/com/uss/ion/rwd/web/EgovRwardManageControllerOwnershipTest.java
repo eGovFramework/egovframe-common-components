@@ -351,4 +351,36 @@ class EgovRwardManageControllerOwnershipTest {
 		controller.updtRwardManageConfm(rm, bindingResult, new SimpleSessionStatus(), model);
 		assertTrue(service.confmCalled, "An admin must be able to confirm/reject any reward nomination.");
 	}
+
+	// ---- selectRwardConfm (승인상세 열람) ----
+
+	@Test
+	void viewConfirmDetailByNonSanctnerIsRejected() {
+		StubService service = new StubService(OWNER, SANCTNER);
+		EgovRwardManageController controller = controllerWith(service);
+		bindLoginUser(OUTSIDER, List.of());
+
+		RwardManageVO vo = new RwardManageVO();
+		vo.setRwardId("1");
+		RwardManage rm = requestFor("1");
+		ModelMap model = new ModelMap();
+
+		assertThrows(IllegalStateException.class, () -> controller.selectRwardConfm(vo, rm, model),
+				"A logged-in user who is not the designated approver must not be able to view someone else's reward confirmation detail.");
+	}
+
+	@Test
+	void viewConfirmDetailBySanctnerSucceeds() throws Exception {
+		StubService service = new StubService(OWNER, SANCTNER);
+		EgovRwardManageController controller = controllerWith(service);
+		bindLoginUser(SANCTNER, List.of());
+
+		RwardManageVO vo = new RwardManageVO();
+		vo.setRwardId("1");
+		RwardManage rm = requestFor("1");
+		ModelMap model = new ModelMap();
+
+		String view = assertDoesNotThrow(() -> controller.selectRwardConfm(vo, rm, model));
+		assertTrue(view.contains("EgovRwardConfm"));
+	}
 }
