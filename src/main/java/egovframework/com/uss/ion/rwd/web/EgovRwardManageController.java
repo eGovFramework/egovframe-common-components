@@ -390,6 +390,10 @@ public class EgovRwardManageController {
 		// 등록 상세정보
 		RwardManageVO rwardManageVOTemp = egovRwardManageService.selectRwardManage(rwardManageVO);
 
+		// 지정된 승인권자 또는 관리자만 승인상세를 열람 가능하도록 소유권 검증
+		// (EgovRwardConfmList.do가 SANCTNER_ID=로그인 uniqId로만 목록을 필터링하는 것과 동일한 경계)
+		egovAssertAdminOrOwner(rwardManageVOTemp == null ? null : rwardManageVOTemp.getSanctnerId());
+
 		RwardManage rwardManageTemp = new RwardManage();
 
 		rwardManageTemp.setRwardId(rwardManageVOTemp.getRwardId());
