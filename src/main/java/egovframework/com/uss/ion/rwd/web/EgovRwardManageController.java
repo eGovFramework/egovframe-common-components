@@ -248,6 +248,10 @@ public class EgovRwardManageController {
 			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
 
+		// 신청자 본인 또는 관리자만 수정 가능하도록 소유권 검증
+		RwardManageVO stored = egovRwardManageService.selectRwardManage(rwardManageVO);
+		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("rwardManageVO", rwardManageVO);
 			model.addAttribute("rwardManage", rwardManage);
@@ -298,6 +302,12 @@ public class EgovRwardManageController {
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
+
+		// 신청자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
+		RwardManageVO storedForDelete = new RwardManageVO();
+		storedForDelete.setRwardId(rwardManage.getRwardId());
+		RwardManageVO stored = egovRwardManageService.selectRwardManage(storedForDelete);
+		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
 
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 
@@ -415,6 +425,12 @@ public class EgovRwardManageController {
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		// 지정된 승인권자(SANCTNER_ID) 또는 관리자만 승인·반려 처리 가능하도록 검증
+		RwardManageVO storedForConfm = new RwardManageVO();
+		storedForConfm.setRwardId(rwardManage.getRwardId());
+		RwardManageVO storedConfm = egovRwardManageService.selectRwardManage(storedForConfm);
+		egovAssertAdminOrOwner(storedConfm == null ? null : storedConfm.getSanctnerId());
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("rwardManageVO", rwardManage);
