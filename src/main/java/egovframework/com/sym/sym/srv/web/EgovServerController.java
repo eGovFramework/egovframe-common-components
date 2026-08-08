@@ -166,6 +166,7 @@ public class EgovServerController {
 	 * @param serverEqpmn
 	 */
 	@PostMapping("/sym/sym/srv/addServerEqpmn.do")
+	@RequireAdmin
 	public String insertServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -209,6 +210,7 @@ public class EgovServerController {
 	 * @param serverEqpmn
 	 */
 	@PostMapping("/sym/sym/srv/updtServerEqpmn.do")
+	@RequireAdmin
 	public String updateServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -349,6 +351,7 @@ public class EgovServerController {
 	 * @param server
 	 */
 	@PostMapping("/sym/sym/srv/addServer.do")
+	@RequireAdmin
 	public String insertServer(@ModelAttribute("serverVO") ServerVO serverVO,
 			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -393,6 +396,7 @@ public class EgovServerController {
 	 * @param server
 	 */
 	@PostMapping("/sym/sym/srv/updtServer.do")
+	@RequireAdmin
 	public String updateServer(@ModelAttribute("serverVO") ServerVO serverVO,
 			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -482,6 +486,7 @@ public class EgovServerController {
 	 * @param serverEqpmnRelate
 	 */
 	@PostMapping("/sym/sym/srv/saveServerEqpmnRelate.do")
+	@RequireAdmin
 	public String saveServerEqpmnRelate(@RequestParam("serverId") String serverId,
 			@RequestParam("serverEqpmnIds") String serverEqpmnIds, @RequestParam("regYns") String regYns,
 			@ModelAttribute("serverEqpmnRelate") ServerEqpmnRelate serverEqpmnRelate, SessionStatus status,
