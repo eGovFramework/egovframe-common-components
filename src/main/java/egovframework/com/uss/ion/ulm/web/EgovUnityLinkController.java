@@ -19,6 +19,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
@@ -159,6 +160,11 @@ public class EgovUnityLinkController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 2026.08.09 KISA 보안취약점 조치 - 관리자만 삭제 가능
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 			egovUnityLinkService.deleteUnityLink(unityLink);
 			sLocationUrl = "forward:/uss/ion/ulm/listUnityLink.do";
 		} else {
@@ -208,6 +214,7 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ulm/updtUnityLink.do")
+	@RequireAdmin
 	public String egovUnityLinkModify(
 			@Valid @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -270,6 +277,7 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ulm/registUnityLink.do")
+	@RequireAdmin
 	public String egovUnityLinkRegist(
 			@Valid @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
 			throws Exception {
