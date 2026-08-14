@@ -8,6 +8,7 @@
  *   2009.01.13     박정규          최초 생성
  *   2009.02.13     이삼섭          내용 추가
  *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
+ *   2026.08.14     content_j      split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
  *
  * @author 공통 서비스 개발팀 박정규
  * @since 2009. 01. 13
@@ -558,17 +559,18 @@ public class EgovStringUtil {
 
 		int index = source.indexOf(separator);
 		int index0 = 0;
+		// 2026-08-14 content_j split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
 		while (index >= 0) {
 			cnt++;
-			index = source.indexOf(separator, index + 1);
+			index = source.indexOf(separator, index + separator.length());
 		}
 		returnVal = new String[cnt];
 		cnt = 0;
 		index = source.indexOf(separator);
 		while (index >= 0) {
 			returnVal[cnt] = source.substring(index0, index);
-			index0 = index + 1;
-			index = source.indexOf(separator, index + 1);
+			index0 = index + separator.length();
+			index = source.indexOf(separator, index + separator.length());
 			cnt++;
 		}
 		returnVal[cnt] = source.substring(index0);
@@ -733,11 +735,12 @@ public class EgovStringUtil {
 		String[] returnVal = new String[arraylength];
 		int cnt = 0;
 		int index0 = 0;
+		// 2026-08-14 content_j split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
 		int index = source.indexOf(separator);
 		while (index >= 0 && cnt < (arraylength - 1)) {
 			returnVal[cnt] = source.substring(index0, index);
-			index0 = index + 1;
-			index = source.indexOf(separator, index + 1);
+			index0 = index + separator.length();
+			index = source.indexOf(separator, index + separator.length());
 			cnt++;
 		}
 		returnVal[cnt] = source.substring(index0);
