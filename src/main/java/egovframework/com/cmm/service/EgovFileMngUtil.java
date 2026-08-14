@@ -75,7 +75,7 @@ public class EgovFileMngUtil {
 	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String keyStr, int fileKeyParam,
-	                                 String atchFileId, String storePath) throws Exception {
+			String atchFileId, String storePath) throws Exception {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -148,7 +148,7 @@ public class EgovFileMngUtil {
 	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(List<MultipartFile> files, String keyStr, int fileKeyParam, String atchFileId,
-	                                 String storePath) throws Exception {
+			String storePath) throws Exception {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -254,7 +254,8 @@ public class EgovFileMngUtil {
 		} else {
 			downFileName = (String) request.getAttribute("downFile");
 		}
-		// 2026-08-14 content_j downFile() orgFileName 조회 속성키 오타 수정(orginFile → orgFileName, NullPointerException 가능성 제거)
+
+		// 2026-08-14 content_j downFile() orgFileName 조회 속성키 오타 수정(orginFile→orgFileName, NullPointerException 가능성 제거)
 		if ((String) request.getAttribute("orgFileName") == null) {
 			orgFileName = "";
 		} else {
@@ -282,7 +283,7 @@ public class EgovFileMngUtil {
 		response.setHeader("Expires", "0");
 
 		try (BufferedInputStream fin = new BufferedInputStream(new FileInputStream(file));
-		     BufferedOutputStream outs = new BufferedOutputStream(response.getOutputStream());) {
+				BufferedOutputStream outs = new BufferedOutputStream(response.getOutputStream());) {
 			FileCopyUtils.copy(fin, outs);
 		}
 	}
@@ -339,8 +340,8 @@ public class EgovFileMngUtil {
 		}
 
 		try (InputStream stream = file.getInputStream();
-		     OutputStream bos = new FileOutputStream(EgovWebUtil
-					 .filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName)));) {
+				OutputStream bos = new FileOutputStream(EgovWebUtil
+						.filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName)));) {
 
 			FileCopyUtils.copy(stream, bos);
 		}
