@@ -863,14 +863,25 @@ public class EgovStringUtil {
 	 * @see
 	 */
 	public static String getTimeStamp() {
+		return getTimeStamp(System.currentTimeMillis());
+	}
+
+	/**
+	 * 지정한 시각(epoch millis)에 대한 17자리 TIMESTAMP 값을 구하는 기능 (테스트 가능하도록 분리)
+	 *
+	 * @param epochMillis 기준 시각(밀리초)
+	 * @return Timestamp 값
+	 */
+	static String getTimeStamp(long epochMillis) {
 
 		String rtnStr = null;
 
-		// 문자열로 변환하기 위한 패턴 설정(연도-월-일 시:분:초:초(자정이후 초))
-		String pattern = "yyyyMMddhhmmssSSS";
+		// 문자열로 변환하기 위한 패턴 설정(연도-월-일 시(24시간제):분:초:밀리초)
+		// 고유값 보장을 위해 24시간제(HH)를 사용한다. 12시간제(hh)는 오전/오후 값이 충돌한다.
+		String pattern = "yyyyMMddHHmmssSSS";
 
 		SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, Locale.KOREA);
-		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		Timestamp ts = new Timestamp(epochMillis);
 
 		rtnStr = sdfCurrent.format(ts.getTime());
 
