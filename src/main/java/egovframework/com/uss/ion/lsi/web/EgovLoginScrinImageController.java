@@ -42,6 +42,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
@@ -121,6 +122,7 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
+    @RequireAdmin
     @PostMapping("/uss/ion/lsi/getLoginScrinImage.do")
 	public String selectLoginScrinImage(@RequestParam("imageId") String imageId,
 			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
@@ -151,6 +153,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
+	@RequireAdmin
 	@PostMapping("/uss/ion/lsi/addLoginScrinImage.do")
 	public String insertLoginScrinImage(final MultipartHttpServletRequest multiRequest,
 			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
@@ -235,6 +238,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
+	@RequireAdmin
 	@PostMapping("/uss/ion/lsi/updtLoginScrinImage.do")
 	public String updateLoginScrinImage(final MultipartHttpServletRequest multiRequest,
 			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
@@ -311,6 +315,7 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
+    @RequireAdmin
     @PostMapping("/uss/ion/lsi/removeLoginScrinImage.do")
 	public String deleteLoginScrinImage(@RequestParam("imageId") String imageId,
 			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
@@ -332,6 +337,7 @@ public class EgovLoginScrinImageController {
 	 * @return String
 	 * @exception Exception
 	 */
+    @RequireAdmin
     @PostMapping("/uss/ion/lsi/removeLoginScrinImageList.do")
 	public String deleteLoginScrinImageList(@RequestParam("imageIds") String imageIds,
 			                                @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
