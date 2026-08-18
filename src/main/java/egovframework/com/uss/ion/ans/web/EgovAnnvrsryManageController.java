@@ -306,6 +306,15 @@ public class EgovAnnvrsryManageController {
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
 		} else {
 
+			// 2026.07.13 KISA 보안취약점 조치 - 조회·삭제와 동일하게 소유자 또는 관리자만 수정할 수 있다.
+			AnnvrsryManageVO ownerVO = new AnnvrsryManageVO();
+			ownerVO.setAnnId(annvrsryManage.getAnnId());
+			AnnvrsryManageVO storedVO = egovAnnvrsryManageService.selectAnnvrsryManage(ownerVO);
+			if (storedVO == null) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
+			egovAssertAdminOrOwner(storedVO.getUsid());
+
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			status.setComplete();
 			annvrsryManage.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
