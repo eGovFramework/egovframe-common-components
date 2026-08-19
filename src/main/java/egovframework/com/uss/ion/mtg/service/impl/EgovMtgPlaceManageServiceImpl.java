@@ -169,6 +169,16 @@ public class EgovMtgPlaceManageServiceImpl extends EgovAbstractServiceImpl imple
 
 
 	/**
+	 * 회의실에 등록된 예약 건수를 조회한다.
+	 * @param mtgPlaceManageVO - 회의실관리 VO
+	 * @return int - 예약건수
+	 */
+	@Override
+	public int selectMtgPlaceResveCnt(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+		return mtgPlaceManageDAO.selectMtgPlaceResveCnt(mtgPlaceManageVO);
+	}
+
+	/**
 	 * 회의실 중복여부 체크.
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int - 중복건수

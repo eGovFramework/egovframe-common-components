@@ -262,6 +262,13 @@ public class EgovMtgPlaceManageController {
 	@PostMapping("/uss/ion/mtg/deleteMtgPlaceManage.do")
 	public String deleteMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			SessionStatus status, ModelMap model) throws Exception {
+		// 예약이 남아 있으면 회의실을 삭제하지 않는다.
+		// 예약 조회는 회의실을 기준 테이블로 삼으므로 회의실이 없어지면 그 예약은 목록에도 상세에도 나오지 않는다.
+		if (egovMtgPlaceManageService.selectMtgPlaceResveCnt(mtgPlaceManageVO) > 0) {
+			model.addAttribute("mtgPlaceResveExist", "true");
+			return "forward:/uss/ion/mtg/selectMtgPlaceManageList.do";
+		}
+
 		String atchFileId = mtgPlaceManageVO.getAtchFileId();
 
 		egovMtgPlaceManageService.deleteMtgPlaceManage(mtgPlaceManageVO);

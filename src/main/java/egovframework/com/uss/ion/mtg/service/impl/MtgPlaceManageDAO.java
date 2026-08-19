@@ -132,6 +132,15 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	
 	
 	/**
+	 * 회의실에 등록된 예약 건수를 조회한다.
+	 * @param mtgPlaceManageVO - 회의실관리 VO
+	 * @return int - 예약건수
+	 */
+	public int selectMtgPlaceResveCnt(MtgPlaceManageVO mtgPlaceManageVO) {
+		return (Integer)selectOne("mtgPlaceManageDAO.selectMtgPlaceResveCnt", mtgPlaceManageVO);
+	}
+
+	/**
 	 * 회의실 중복여부 체크.
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int - 중복건수
