@@ -440,17 +440,8 @@ public class EgovMberManageController {
 			@ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, @RequestParam Map<String, Object> commandMap,
 			Model model) throws Exception {
 
-		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+		addSbscrbCodeListToModel(model);
 
-		// 패스워드힌트목록을 코드정보로부터 조회
-		comDefaultCodeVO.setCodeId("COM022");
-		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		// 성별구분코드를 코드정보로부터 조회
-		comDefaultCodeVO.setCodeId("COM014");
-		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-
-		model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
 		if (!"".equals(commandMap.get("realname"))) {
 			model.addAttribute("mberNm", commandMap.get("realname")); // 실명인증된 이름 - 주민번호 인증
 			model.addAttribute("ihidnum", commandMap.get("ihidnum")); // 실명인증된 주민등록번호 - 주민번호 인증
@@ -469,15 +460,17 @@ public class EgovMberManageController {
 	 *
 	 * @param mberManageInsertVO 일반회원가입신청정보 (비밀번호 검증 포함)
 	 * @param bindingResult      입력값검증용 bindingResult
+	 * @param model              화면모델
 	 * @return forward:/uat/uia/egovLoginUsr.do
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovMberSbscrb.do", method = RequestMethod.POST)
 	public String sbscrbMber(@Valid @ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO,
-			BindingResult bindingResult) throws Exception {
+			BindingResult bindingResult, Model model) throws Exception {
 
 		// 검증 오류 처리
 		if (bindingResult.hasErrors()) {
+			addSbscrbCodeListToModel(model);
 			return "egovframework/com/uss/umt/EgovMberSbscrb";
 		}
 
@@ -649,6 +642,26 @@ public class EgovMberManageController {
 			return;
 		}
 		throw new IllegalStateException("권한이 없습니다.");
+	}
+
+	/**
+	 * 일반회원가입신청 화면이 사용하는 코드목록을 화면모델에 담는다.
+	 *
+	 * @param model 화면모델
+	 * @throws Exception
+	 */
+	private void addSbscrbCodeListToModel(Model model) throws Exception {
+		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+
+		// 패스워드힌트목록을 코드정보로부터 조회
+		comDefaultCodeVO.setCodeId("COM022");
+		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		// 성별구분코드를 코드정보로부터 조회
+		comDefaultCodeVO.setCodeId("COM014");
+		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+
+		model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+		model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
 	}
 
 }
