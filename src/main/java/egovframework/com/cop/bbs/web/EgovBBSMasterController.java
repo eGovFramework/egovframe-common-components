@@ -100,6 +100,21 @@ public class EgovBBSMasterController {
     }
 
     /**
+     * 추가 선택사항(댓글, 만족도조사) 컴포넌트의 설치 여부를 모델에 담는다.
+     * 2011.09.15 : 2단계 기능 추가 반영 방법 변경
+     *
+     * @param model
+     */
+    private void addAddedOptionsAttribute(ModelMap model) {
+        if (EgovComponentChecker.hasComponent("EgovArticleCommentService")) {
+            model.addAttribute("useComment", "true");
+        }
+        if (EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")) {
+            model.addAttribute("useSatisfaction", "true");
+        }
+    }
+
+    /**
      * 신규 게시판 마스터 등록을 위한 등록페이지로 이동한다.
      *
      * @param boardMasterVO
@@ -118,17 +133,7 @@ public class EgovBBSMasterController {
 		model.addAttribute("boardMasterVO", boardMaster);
 
 
-		//---------------------------------
-		// 2011.09.15 : 2단계 기능 추가 반영 방법 변경
-		//---------------------------------
-
-
-		if(EgovComponentChecker.hasComponent("EgovArticleCommentService")){
-			model.addAttribute("useComment", "true");
-		}
-		if(EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){
-			model.addAttribute("useSatisfaction", "true");
-		}
+		addAddedOptionsAttribute(model);
 
 		return "egovframework/com/cop/bbs/EgovBBSMasterRegist";
     }
@@ -157,6 +162,7 @@ public class EgovBBSMasterController {
 		    vo.setCodeId("COM101");
 		    List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
 		    model.addAttribute("bbsTyCode", codeResult);
+		    addAddedOptionsAttribute(model);
 
 		    return "egovframework/com/cop/bbs/EgovBBSMasterRegist";
 		}
@@ -404,16 +410,7 @@ public class EgovBBSMasterController {
 
         model.addAttribute("boardMasterVO", existingBoard);
 
-		//---------------------------------
-		// 2011.09.15 : 2단계 기능 추가 반영 방법 변경
-		//---------------------------------
-
-		if(EgovComponentChecker.hasComponent("EgovArticleCommentService")){
-			model.addAttribute("useComment", "true");
-		}
-		if(EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){
-			model.addAttribute("useSatisfaction", "true");
-		}
+		addAddedOptionsAttribute(model);
 
         return "egovframework/com/cop/bbs/EgovBBSMasterUpdt";
     }
@@ -449,6 +446,7 @@ public class EgovBBSMasterController {
 	        comVo.setCodeId("COM101");
 	        List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(comVo);
 	        model.addAttribute("bbsTyCode", codeResult);
+		    addAddedOptionsAttribute(model);
 
 		    return "egovframework/com/cop/bbs/EgovBBSMasterUpdt";
 		}
