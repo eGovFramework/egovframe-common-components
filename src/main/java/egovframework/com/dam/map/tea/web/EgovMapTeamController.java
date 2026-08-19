@@ -175,6 +175,7 @@ public class EgovMapTeamController {
 		}
 
 		mapTeam.setFrstRegisterId(loginVO.getUniqId());
+		mapTeam.setLastUpdusrId(loginVO.getUniqId());
 		mapTeamService.updateMapTeam(mapTeam);
 		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
 	}

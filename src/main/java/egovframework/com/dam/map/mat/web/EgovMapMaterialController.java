@@ -210,6 +210,7 @@ public class EgovMapMaterialController {
 		}
 
 		mapMaterial.setFrstRegisterId(loginVO.getUniqId());
+		mapMaterial.setLastUpdusrId(loginVO.getUniqId());
 		mapMaterialService.updateMapMaterial(mapMaterial);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
