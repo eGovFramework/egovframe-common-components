@@ -224,6 +224,14 @@ public class EgovMemoTodoController {
 		if (bindingResult.hasErrors()) {
 			MemoTodo memoTodo = memoTodoService.selectMemoTodo(memoTodoVO);
 		    model.addAttribute("memoTodo", memoTodo);
+			//할일시작일자(시)
+			model.addAttribute("todoBeginHour", getTimeHH());
+			//할일시작일자(분)
+			model.addAttribute("todoBeginMin", getTimeMM());
+			//할일종료일자(시)
+			model.addAttribute("todoEndHour", getTimeHH());
+			//할일정료일자(분)
+			model.addAttribute("todoEndMin", getTimeMM());
 		    return "egovframework/com/cop/smt/mtm/EgovMemoTodoUpdt";
 		}
 
@@ -261,6 +269,14 @@ public class EgovMemoTodoController {
 
 		//서버  validate 체크
 		if(bindingResult.hasErrors()){
+			//할일시작일자(시)
+			model.addAttribute("todoBeginHour", getTimeHH());
+			//할일시작일자(분)
+			model.addAttribute("todoBeginMin", getTimeMM());
+			//할일종료일자(시)
+			model.addAttribute("todoEndHour", getTimeHH());
+			//할일정료일자(분)
+			model.addAttribute("todoEndMin", getTimeMM());
 			return sLocationUrl;
 		}
 
