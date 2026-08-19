@@ -145,23 +145,23 @@ function fnIdCheck1(){
     var retVal;
     var url = "<c:url value='/uss/umt/EgovIdDplctCnfirmView.do'/>";
     var varParam = new Object();
-    varParam.checkId = document.userManageVO.emplyrId.value;
+    varParam.checkId = document.emplyrManageVO.emplyrId.value;
     var openParam = "dialogWidth:303px;dialogHeight:250px;scroll:no;status:no;center:yes;resizable:yes;";
     retVal = window.showModalDialog(url, varParam, openParam);
     if(retVal) {
-        document.userManageVO.emplyrId.value = retVal;
+        document.emplyrManageVO.emplyrId.value = retVal;
     }
 }
 
 function showModalDialogCallback(retVal) {
 	if(retVal) {
-	    document.userManageVO.emplyrId.value = retVal;
+	    document.emplyrManageVO.emplyrId.value = retVal;
 	}
 }
 
 function fnListPage(){
-    document.userManageVO.action = "<c:url value='/uss/umt/EgovEmplyrManage.do'/>";
-    document.userManageVO.submit();
+    document.emplyrManageVO.action = "<c:url value='/uss/umt/EgovEmplyrManage.do'/>";
+    document.emplyrManageVO.submit();
 }
 
 function fnInsert(form){
@@ -193,7 +193,7 @@ function fn_egov_inqire_cert() {
 }
 
 function fn_egov_dn_info_setting(dn) {
-	var frm = document.userManageVO;
+	var frm = document.emplyrManageVO;
 
 	frm.subDn.value = dn;
 }
