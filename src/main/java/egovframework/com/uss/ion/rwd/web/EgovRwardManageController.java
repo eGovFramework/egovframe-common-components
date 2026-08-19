@@ -253,6 +253,10 @@ public class EgovRwardManageController {
 		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
+			// 수정화면 진입(EgovRwardManageDetail.do?cmd=updt)과 동일하게 포상구분 코드목록을 다시 담는다.
+			ComDefaultCodeVO rwardCdVo = new ComDefaultCodeVO();
+			rwardCdVo.setCodeId("COM055");
+			model.addAttribute("rwardCodeList", cmmUseService.selectCmmCodeDetail(rwardCdVo));
 			model.addAttribute("rwardManageVO", rwardManageVO);
 			model.addAttribute("rwardManage", rwardManage);
 			return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
