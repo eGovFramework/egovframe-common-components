@@ -46,6 +46,7 @@ import jakarta.annotation.Resource;
  *   2018.11.30  최두영          selectAnnvrsryManageBnde에서 annvrsryManageVO의 null처리 추가
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2025.08.02  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.21  z3rotig4r      getDateCount D-day fallback 경로 월 오프셋·자릿수 정정(0-based 월·미패딩으로 인한 SIOOBE/월 오류 제거)
  *
  *      </pre>
  */
@@ -204,9 +205,11 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 		// 매년반복일 경우
 		if ("1".equals(annvrsryManageVO.getReptitSe())) {
 			sAnnvrsryDe = Integer.toString(today.get(Calendar.YEAR))
-					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8 ? today.get(Calendar.MONTH)
+					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8
+							? String.format("%02d", today.get(Calendar.MONTH) + 1)
 							: sAnnvrsryDe.substring(4, 6))
-					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8 ? today.get(Calendar.DATE)
+					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8
+							? String.format("%02d", today.get(Calendar.DATE))
 							: sAnnvrsryDe.substring(6, 8));
 		}
 
@@ -219,7 +222,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 			targetDate.set(Integer.parseInt(sAnnvrsryDe.substring(0, 4)),
 					Integer.parseInt(sAnnvrsryDe.substring(4, 6)) - 1, Integer.parseInt(sAnnvrsryDe.substring(6, 8)));
 		} else {
-			targetDate.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DATE));
+			targetDate.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DATE));
 		}
 
 		long resultTime = targetDate.getTime().getTime() - today.getTime().getTime(); // 차이 구하기

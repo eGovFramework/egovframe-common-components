@@ -56,6 +56,7 @@ import jakarta.annotation.Resource;
  *   2025.07.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-InefficientStringBuffering(StringBuffer 함수내에서 비문자열 연산 이용하여 직접 결합하는 코드 사용을 탐지. append 메소드 사용을 권장)
  *   2025.07.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
  *   2025.07.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *   2026.07.08  EricSeokgon      외부 OpenAPI 호출 시 응답 지연에 대비한 연결/읽기 타임아웃 설정 추가(CWE-400 자원 고갈 방지)
  *
  *      </pre>
  */
@@ -188,6 +189,8 @@ public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl impl
 		conn.setRequestProperty("Accept", "*/*;q=0.9");
 		conn.setDoOutput(true);
 		conn.setUseCaches(false);
+		conn.setConnectTimeout(10000);
+		conn.setReadTimeout(30000);
 
 		if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 			JSONParser jsonParser = new JSONParser();
@@ -234,6 +237,8 @@ public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl impl
 			conn.setRequestProperty("Accept", "*/*;q=0.9");
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
+			conn.setConnectTimeout(10000);
+			conn.setReadTimeout(30000);
 
 			if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 				JSONParser jsonParser = new JSONParser();
