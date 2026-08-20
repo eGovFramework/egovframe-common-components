@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import jakarta.servlet.http.HttpSession;
@@ -119,7 +120,7 @@ public class EgovXOAuthService {
 
     /**
      * OAuth 인가 코드와 state를 이용해 액세스 토큰을 발급받는다.
-     * 세션에 임시 저장된 OAuth 컨텍스트는 사용 후 즉시 제거한다.
+     * 세션에 임시 저장된 OAuth 컨텍스트는 state 확인 직후 제거한다.
      *
      * @param session 현재 사용자 세션
      * @param code OAuth 인가 코드
@@ -138,6 +139,9 @@ public class EgovXOAuthService {
             throw new IllegalStateException("Invalid or expired state, cannot find oauth context");
         }
 
+        // state는 1회용이다. 토큰 발급 성공/실패와 무관하게 컨텍스트를 제거해 재사용을 막는다.
+        session.removeAttribute(attrKey);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setBasicAuth(context.clientId, context.clientSecret, StandardCharsets.UTF_8);
@@ -153,11 +157,14 @@ public class EgovXOAuthService {
 
         try {
             ResponseEntity<String> response = restTemplate.postForEntity(TOKEN_URL, entity, String.class);
-            session.removeAttribute(attrKey);
             return extractAccessToken(response.getBody());
         } catch (HttpStatusCodeException e) {
             LOGGER.error("Token API failed. status={}, body={}", e.getStatusCode(), e.getResponseBodyAsString());
             throw new IllegalStateException("토큰 발급 실패: " + e.getStatusCode());
+        } catch (ResourceAccessException e) {
+            // 타임아웃·DNS 실패·연결 거부 등 통신 오류. 콜백 화면이 처리하는 예외 타입으로 변환한다.
+            LOGGER.error("Token API 통신 실패", e);
+            throw new IllegalStateException("토큰 발급 통신 실패", e);
         }
     }
 
