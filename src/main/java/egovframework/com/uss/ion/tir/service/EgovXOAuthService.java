@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -37,7 +38,18 @@ public class EgovXOAuthService {
     private static final Pattern ACCESS_TOKEN_PATTERN =
             Pattern.compile("\"access_token\"\\s*:\\s*\"([^\"]+)\"");
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    // 안정성: 기본 RestTemplate 은 connect/read 타임아웃이 없어(무한 대기) 외부 X(Twitter)
+    // API 무응답 시 호출 스레드가 영구 블록될 수 있다(CWE-400). 타임아웃을 설정해 사용한다.
+    private static final int CONNECT_TIMEOUT_MS = 5000;
+    private static final int READ_TIMEOUT_MS = 30000;
+    private final RestTemplate restTemplate = createRestTemplate();
+
+    private static RestTemplate createRestTemplate() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(CONNECT_TIMEOUT_MS);
+        factory.setReadTimeout(READ_TIMEOUT_MS);
+        return new RestTemplate(factory);
+    }
 
     /**
      * state별로 PKCE verifier와 client 인증정보를 함께 보관하기 위한 컨텍스트 객체.
