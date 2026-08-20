@@ -54,7 +54,7 @@ public class EgovNumberCheckUtil {
 		}
 
 		// 출생 세기는 생년 앞자리가 아니라 성별구분 숫자(7번째 자리)가 결정한다.
-		// 0·9:1800년대, 1·2:1900년대, 3·4:2000년대. 5~8은 외국인등록번호의 성별구분 숫자로 checkForeignNumber에서 처리한다.
+		// 9·0:1800년대, 1·2:1900년대, 3·4:2000년대. 5~8은 외국인등록번호의 성별구분 숫자로 checkForeignNumber에서 처리한다.
 		String century;
 		switch (Character.getNumericValue(juminNumber.charAt(6))) {
 		case 9:
