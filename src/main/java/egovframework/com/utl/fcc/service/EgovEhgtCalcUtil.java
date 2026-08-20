@@ -76,6 +76,9 @@ public class EgovEhgtCalcUtil {
 			URL url = new URL(EHGT_URL + str);
 
 			con = (HttpURLConnection) url.openConnection();
+			// 안정성: 외부 URL 무응답 시 스레드 무한 블록 방지(CWE-400)
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(30000);
 
 			try (InputStream is = con.getInputStream();
 					InputStreamReader reader = new InputStreamReader(is, "euc-kr");) {
