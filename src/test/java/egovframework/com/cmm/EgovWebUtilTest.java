@@ -66,6 +66,20 @@ public class EgovWebUtilTest {
 	}
 
 	/**
+	 * '&' 제거 후에도 ".." 가 최종 결과에 남지 않아야 한다 (mochoping 리뷰).
+	 *
+	 * <p>기존 구현은 '&' 제거를 ".." 제거 이후에 수행해, ".&." 이 ".." 제거 단계에서는
+	 * 인접하지 않다가 '&' 가 빠지며 ".." 로 되살아났다. 구분자 제거 뒤 ".."를 반복 제거해 보완한다.</p>
+	 */
+	@Test
+	public void fileInjectPathReplaceAll_doesNotReconstructParentSequenceViaAmpersand() {
+		assertEquals("", EgovWebUtil.fileInjectPathReplaceAll(".&."));
+		assertEquals("etc", EgovWebUtil.fileInjectPathReplaceAll(".&./etc"));
+		assertFalse(EgovWebUtil.fileInjectPathReplaceAll(".&.").contains(".."),
+				"'&' 제거 후 '..' 가 최종 결과에 남으면 안 된다");
+	}
+
+	/**
 	 * 구분자 제거 후 ".." 가 복원되지 않아야 한다.
 	 *
 	 * <p>정규식 오타만 고치면 ".\\." 처럼 구분자가 끼어든 입력은 ".." 가 인접하지 않아
