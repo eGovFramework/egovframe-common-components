@@ -73,4 +73,13 @@ public class EgovWebUtilTest {
 		assertThrows(IllegalArgumentException.class,
 				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\\evil.example/popup"));
 	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_rejectsTabBypassProtocolRelativeUrl() {
+		// 브라우저는 URL 해석 전 탭(0x09)을 제거하므로 "/[TAB]/evil.example/popup" 은 "//evil.example/popup" 로 해석된다 (mochoping 리뷰)
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\t/evil.example/popup"));
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\t\t/evil.example/popup"));
+	}
 }
