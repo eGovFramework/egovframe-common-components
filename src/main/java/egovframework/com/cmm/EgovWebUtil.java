@@ -142,6 +142,10 @@ public class EgovWebUtil {
 		returnValue = returnValue.replaceAll("\\\\", "");// \
 		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
 		returnValue = returnValue.replaceAll("&", "");
+		// mochoping review: strip any ".." created after separator/& removal (e.g. ".&." otherwise becomes "..")
+		while (returnValue.contains("..")) {
+			returnValue = returnValue.replace("..", "");
+		}
 
 		return returnValue;
 	}
