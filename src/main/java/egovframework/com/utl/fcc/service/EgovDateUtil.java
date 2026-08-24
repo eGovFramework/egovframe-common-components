@@ -30,6 +30,8 @@ import com.ibm.icu.util.ChineseCalendar;
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *   2026.06.30  z3rotig4r      영업일(주말·공휴일 제외) 계산 getBusinessDaysBetween 추가
+ *   2026.07.07  z3rotig4r      getBusinessDaysBetween 실제 날짜 유효성 검증 추가(존재하지 않는 날짜 lenient 롤오버 방지)
  *
  *      </pre>
  */
@@ -890,6 +892,76 @@ public class EgovDateUtil {
 		}
 
 		return timeStr;
+	}
+
+	/**
+	 * 시작일부터 종료일까지 양끝 날짜를 포함하여 주말과 공휴일을 제외한 영업일 수를 구한다.
+	 * 공휴일은 yyyyMMdd 형식의 문자열 집합으로 전달하며, 시작일이 종료일보다 늦으면 0을 반환한다.
+	 * 공휴일 집합이 <code>null</code>이거나 비어 있으면 주말만 제외한다.
+	 *
+	 * @param fromDate 시작일(yyyyMMdd 또는 yyyy-MM-dd 형식)
+	 * @param toDate 종료일(yyyyMMdd 또는 yyyy-MM-dd 형식)
+	 * @param holidays yyyyMMdd 형식의 공휴일 문자열 집합
+	 * @return 주말과 공휴일을 제외한 영업일 수
+	 * @throws IllegalArgumentException 날짜 포맷이 정해진 바와 다르거나 입력 값이
+	 *                                  <code>null</code>인 경우
+	 */
+	public static int getBusinessDaysBetween(String fromDate, String toDate, java.util.Set<String> holidays) {
+		String f = validChkDate(fromDate);
+		String t = validChkDate(toDate);
+
+		// validChkDate는 길이만 확인하므로 20260230 같은 존재하지 않는 날짜가 통과한다.
+		// Calendar가 lenient 롤오버로 조용히 다른 날짜로 계산하는 것을 막기 위해 실제 날짜 유효성을 확인한다.
+		assertRealDate(f);
+		assertRealDate(t);
+
+		Calendar startDay = Calendar.getInstance();
+		startDay.set(Integer.parseInt(f.substring(0, 4)), Integer.parseInt(f.substring(4, 6)) - 1,
+				Integer.parseInt(f.substring(6, 8)));
+		startDay.set(Calendar.HOUR_OF_DAY, 0);
+		startDay.set(Calendar.MINUTE, 0);
+		startDay.set(Calendar.SECOND, 0);
+		startDay.set(Calendar.MILLISECOND, 0);
+
+		Calendar endDay = Calendar.getInstance();
+		endDay.set(Integer.parseInt(t.substring(0, 4)), Integer.parseInt(t.substring(4, 6)) - 1,
+				Integer.parseInt(t.substring(6, 8)));
+		endDay.set(Calendar.HOUR_OF_DAY, 0);
+		endDay.set(Calendar.MINUTE, 0);
+		endDay.set(Calendar.SECOND, 0);
+		endDay.set(Calendar.MILLISECOND, 0);
+
+		SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_DATE_PATTERN, Locale.getDefault());
+		int count = 0;
+		while (!startDay.after(endDay)) {
+			int dow = startDay.get(Calendar.DAY_OF_WEEK);
+			if (dow != 1 && dow != 7) {
+				String cur = sdf.format(startDay.getTime());
+				if (holidays == null || holidays.isEmpty() || !holidays.contains(cur)) {
+					count++;
+				}
+			}
+			startDay.add(Calendar.DATE, 1);
+		}
+
+		return count;
+	}
+
+	/**
+	 * yyyyMMdd 형식의 8자리 문자열이 실제로 존재하는 날짜인지 확인한다.
+	 * 존재하지 않는 날짜(예: 20260230, 윤년이 아닌 해의 0229)이면 예외를 던진다.
+	 *
+	 * @param yyyymmdd yyyyMMdd 형식의 8자리 날짜 문자열
+	 * @throws IllegalArgumentException 실제로 존재하지 않는 날짜인 경우
+	 */
+	private static void assertRealDate(String yyyymmdd) {
+		SimpleDateFormat strict = new SimpleDateFormat(SIMPLE_DATE_PATTERN, Locale.getDefault());
+		strict.setLenient(false);
+		try {
+			strict.parse(yyyymmdd);
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Invalid date: " + yyyymmdd);
+		}
 	}
 
 }
