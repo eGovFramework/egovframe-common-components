@@ -3,6 +3,7 @@ package egovframework.com.ext.oauth.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,6 +121,12 @@ public class OAuthLogin {
 			JsonNode resNode = rootNode.path("properties");
 			user.setUserId(rootNode.path("id").asText(""));
 			user.setNickName(resNode.path("nickname").asText(""));
+		}
+
+		// 사용자 식별자는 선택 동의 항목이 아니므로 누락 시 프로필 응답으로 취급하지 않는다.
+		// 이 메서드에는 제공자의 오류 응답도 전달되며, 기존에도 그 경우 예외가 콜백까지 전파됐다.
+		if (StringUtils.isEmpty(user.getUserId())) {
+			throw new IllegalStateException("OAuth 프로필 응답에 사용자 식별자가 없습니다. service=" + oauthVO.getOrigin());
 		}
 
 		return user;

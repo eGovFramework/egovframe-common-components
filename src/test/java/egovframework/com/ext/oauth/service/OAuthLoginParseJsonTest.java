@@ -1,6 +1,7 @@
 package egovframework.com.ext.oauth.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -16,6 +17,9 @@ import org.junit.jupiter.api.Test;
  * 응답 JSON에서 해당 필드가 통째로 빠질 수 있다. 기존 구현은 {@code get("email")} 등의
  * 반환값을 null 검사 없이 {@code asText()}로 역참조해
  * {@code /auth/{oauthService}/callback} 콜백에서 500 오류가 발생했다.</p>
+ *
+ * <p>반면 사용자 식별자는 선택 동의 항목이 아니다. {@code getUserProfile}은 제공자의 오류 응답도
+ * {@code parseJson}에 전달하므로, 식별자가 없는 응답이 사용자 객체로 반환되지 않는지도 함께 검증한다.</p>
  */
 class OAuthLoginParseJsonTest {
 
@@ -66,5 +70,32 @@ class OAuthLoginParseJsonTest {
 
 		assertEquals("g-1", user.getUserId());
 		assertEquals("", user.getUserName(), "미제공된 name은 빈 문자열이어야 한다");
+	}
+
+	@Test
+	@DisplayName("구글 오류 응답처럼 sub가 없으면 사용자 객체를 반환하지 않는다")
+	void googleWithoutUserId() {
+		String body = "{\"error\":\"invalid_token\",\"error_description\":\"Invalid Credentials\"}";
+
+		assertThrows(IllegalStateException.class, () -> invokeParseJson("google", body),
+				"식별자가 없는 응답은 프로필로 취급하지 않는다");
+	}
+
+	@Test
+	@DisplayName("네이버 오류 응답처럼 response.id가 없으면 사용자 객체를 반환하지 않는다")
+	void naverWithoutUserId() {
+		String body = "{\"resultcode\":\"024\",\"message\":\"Authentication failed\"}";
+
+		assertThrows(IllegalStateException.class, () -> invokeParseJson("naver", body),
+				"식별자가 없는 응답은 프로필로 취급하지 않는다");
+	}
+
+	@Test
+	@DisplayName("카카오 오류 응답처럼 id가 없으면 사용자 객체를 반환하지 않는다")
+	void kakaoWithoutUserId() {
+		String body = "{\"msg\":\"this access token does not exist\",\"code\":-401}";
+
+		assertThrows(IllegalStateException.class, () -> invokeParseJson("kakao", body),
+				"식별자가 없는 응답은 프로필로 취급하지 않는다");
 	}
 }
