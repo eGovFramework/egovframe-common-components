@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSessionBindingEvent;
 
 /**
  * EgovMultiLoginPreventor의 동시성 안전성 검증 테스트.
@@ -30,6 +32,7 @@ public class EgovMultiLoginPreventorTest {
 	@AfterEach
 	void clear() {
 		EgovMultiLoginPreventor.loginUsers.clear();
+		EgovMultiLoginPreventor.loginUsers = new ConcurrentHashMap<>();
 	}
 
 	/**
@@ -68,6 +71,32 @@ public class EgovMultiLoginPreventorTest {
 				EgovMultiLoginPreventorTest.class.getClassLoader(),
 				new Class<?>[] { HttpSession.class },
 				handler);
+	}
+
+	private static final class ContainsBarrierMap extends ConcurrentHashMap<String, HttpSession> {
+		private static final long serialVersionUID = 1L;
+		private final String loginId;
+		private final CountDownLatch containsCalls = new CountDownLatch(2);
+
+		private ContainsBarrierMap(String loginId) {
+			this.loginId = loginId;
+		}
+
+		@Override
+		public boolean containsKey(Object key) {
+			if (loginId.equals(key)) {
+				containsCalls.countDown();
+				try {
+					if (!containsCalls.await(5, TimeUnit.SECONDS)) {
+						throw new IllegalStateException("valueBound 동시 진입 대기 시간이 초과되었습니다");
+					}
+				} catch (InterruptedException ie) {
+					Thread.currentThread().interrupt();
+					throw new IllegalStateException(ie);
+				}
+			}
+			return super.containsKey(key);
+		}
 	}
 
 	@Test
@@ -135,5 +164,57 @@ public class EgovMultiLoginPreventorTest {
 		pool.shutdownNow();
 
 		assertFalse(failed.get(), "동시 제거 중 invalidateByLoginId에서 NPE가 발생하면 안 된다");
+	}
+
+	/**
+	 * 같은 로그인 아이디로 두 세션이 동시에 바인딩되어도 먼저 등록된 세션이 무효화되어야 한다.
+	 * 기존 valueBound 구현은 containsKey와 put 사이가 원자적이지 않아 두 요청이 모두
+	 * 기존 세션이 없다고 판단하면 어느 세션도 invalidate하지 못했다.
+	 */
+	@Test
+	void valueBound_동시로그인도_기존세션을_무효화함() throws InterruptedException {
+		String loginId = "raceUser";
+		AtomicInteger invalidateCount = new AtomicInteger();
+		EgovMultiLoginPreventor.loginUsers = new ContainsBarrierMap(loginId);
+
+		EgovHttpSessionBindingListener listener = new EgovHttpSessionBindingListener();
+		HttpSession firstSession = fakeSession(loginId, invalidateCount);
+		HttpSession secondSession = fakeSession(loginId, invalidateCount);
+
+		ExecutorService pool = Executors.newFixedThreadPool(2);
+		CountDownLatch start = new CountDownLatch(1);
+		CountDownLatch done = new CountDownLatch(2);
+		AtomicBoolean failed = new AtomicBoolean(false);
+
+		pool.submit(() -> {
+			try {
+				start.await();
+				listener.valueBound(new HttpSessionBindingEvent(firstSession, loginId, listener));
+			} catch (Exception e) {
+				failed.set(true);
+			} finally {
+				done.countDown();
+			}
+		});
+		pool.submit(() -> {
+			try {
+				start.await();
+				listener.valueBound(new HttpSessionBindingEvent(secondSession, loginId, listener));
+			} catch (Exception e) {
+				failed.set(true);
+			} finally {
+				done.countDown();
+			}
+		});
+
+		start.countDown();
+		assertTrue(done.await(5, TimeUnit.SECONDS), "동시 로그인 검증이 제한 시간 내에 완료되어야 한다");
+		pool.shutdownNow();
+
+		HttpSession retainedSession = EgovMultiLoginPreventor.loginUsers.get(loginId);
+		assertFalse(failed.get(), "동시 로그인 처리 중 예외가 발생하면 안 된다");
+		assertTrue(invalidateCount.get() == 1, "두 동시 로그인 중 먼저 등록된 세션 하나가 무효화되어야 한다");
+		assertTrue(retainedSession == firstSession || retainedSession == secondSession,
+				"마지막으로 등록된 세션이 로그인 사용자 맵에 남아야 한다");
 	}
 }
