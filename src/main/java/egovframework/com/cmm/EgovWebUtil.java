@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
+import org.springframework.util.StringUtils;
+
 /**
  * 교차접속 스크립트 공격 취약성 방지(파라미터 문자열 교체)
  *
@@ -21,13 +23,16 @@ import java.util.regex.Pattern;
  *  2022.06.09   김장하      NSR 보안조치 (removeOSCmdRisk 함수에 윈도우 다중 명령 실행 키워드 추가)
  *  2023.08.10   신용호      removeLDAPInjectionRisk() 오류 수정
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
+ *  2026.06.28   Chung10kr clearXSSMinimum() 공백 검사를 StringUtils.hasText()로 단순화
  *  2026.07.10   유지보수    NCSC 보안점검 반영 (XSS/SSRF/세션고정 대응 유틸 추가)
+ *  2026.07.15   EricSeokgon fileInjectPathReplaceAll() 상위 경로 정규식 수정
+ *  2026.07.15   EricSeokgon 팝업 프로토콜 상대 URL 검증 강화
  * </pre>
  */
 
 public class EgovWebUtil {
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (!StringUtils.hasText(value)) {
 			return "";
 		}
 
@@ -138,9 +143,13 @@ public class EgovWebUtil {
 		}
 
 		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\..", ""); // ..
 		returnValue = returnValue.replaceAll("\\\\", "");// \
+		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
 		returnValue = returnValue.replaceAll("&", "");
+		// mochoping review: strip any ".." created after separator/& removal (e.g. ".&." otherwise becomes "..")
+		while (returnValue.contains("..")) {
+			returnValue = returnValue.replace("..", "");
+		}
 
 		return returnValue;
 	}
@@ -185,8 +194,10 @@ public class EgovWebUtil {
 		if (requestUrl == null || requestUrl.isBlank()) {
 			throw new IllegalArgumentException("requestUrl is required");
 		}
-		String trimmed = requestUrl.trim();
-		if (!trimmed.startsWith("/") || trimmed.contains("://") || trimmed.contains("..")
+		// 브라우저가 URL 해석 전 제거하는 탭/개행(0x09/0x0A/0x0D)을 먼저 제거한 뒤 검증한다. (예: "/[TAB]/evil" 은 브라우저에서 "//evil" 로 해석됨)
+		String trimmed = requestUrl.replace("\t", "").replace("\n", "").replace("\r", "").trim();
+		if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\")
+				|| trimmed.contains("://") || trimmed.contains("..")
 				|| trimmed.contains("\"") || trimmed.contains("'") || trimmed.contains("<")
 				|| trimmed.contains(">") || trimmed.contains("\r") || trimmed.contains("\n")) {
 			throw new IllegalArgumentException("Invalid requestUrl");
