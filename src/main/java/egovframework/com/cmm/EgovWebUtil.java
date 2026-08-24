@@ -194,7 +194,7 @@ public class EgovWebUtil {
 		if (requestUrl == null || requestUrl.isBlank()) {
 			throw new IllegalArgumentException("requestUrl is required");
 		}
-		// mochoping 리뷰: 브라우저가 URL 해석 전 제거하는 탭/개행(0x09/0x0A/0x0D)을 먼저 제거한 뒤 검증한다 (예: "/[TAB]/evil" 은 브라우저에서 "//evil" 로 해석됨)
+		// 브라우저가 URL 해석 전 제거하는 탭/개행(0x09/0x0A/0x0D)을 먼저 제거한 뒤 검증한다. (예: "/[TAB]/evil" 은 브라우저에서 "//evil" 로 해석됨)
 		String trimmed = requestUrl.replace("\t", "").replace("\n", "").replace("\r", "").trim();
 		if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\")
 				|| trimmed.contains("://") || trimmed.contains("..")
