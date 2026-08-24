@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
  *  2026.06.28   Chung10kr clearXSSMinimum() 공백 검사를 StringUtils.hasText()로 단순화
  *  2026.07.10   유지보수    NCSC 보안점검 반영 (XSS/SSRF/세션고정 대응 유틸 추가)
+ *  2026.07.15   EricSeokgon fileInjectPathReplaceAll() 상위 경로 정규식 수정
  * </pre>
  */
 
@@ -141,9 +142,13 @@ public class EgovWebUtil {
 		}
 
 		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\..", ""); // ..
 		returnValue = returnValue.replaceAll("\\\\", "");// \
+		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
 		returnValue = returnValue.replaceAll("&", "");
+		// mochoping review: strip any ".." created after separator/& removal (e.g. ".&." otherwise becomes "..")
+		while (returnValue.contains("..")) {
+			returnValue = returnValue.replace("..", "");
+		}
 
 		return returnValue;
 	}
