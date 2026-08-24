@@ -31,8 +31,8 @@ public class BBSAddedOptionsDAO extends EgovComAbstractDAO {
      * 
      * @param BoardMaster
      */
-    public String insertAddedOptionsInf(BoardMaster boardMaster) {
-	return Integer.toString(insert("BBSAddedOptions.insertAddedOptionsInf", boardMaster));
+    public int insertAddedOptionsInf(BoardMaster boardMaster) {
+	return insert("BBSAddedOptions.insertAddedOptionsInf", boardMaster);
     }
     
     /**
