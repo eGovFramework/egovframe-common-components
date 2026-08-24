@@ -48,33 +48,39 @@ public class EgovDoubleSubmitHelper {
 
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
-		Object sessionTokenAttr = session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY);
-		// check session...
-		if (sessionTokenAttr == null) {
-			throw new RuntimeException("Double Submit Preventer TagLig isn't set. Check JSP.");
-		}
-
 		String parameter = request.getParameter(EgovDoubleSubmitHelper.PARAMETER_NAME);
 
-		// check parameter
-		if (parameter == null) {
-			throw new RuntimeException("Double Submit Preventer parameter isn't set. Check JSP.");
+		return checkAndSaveToken(session, tokenKey, parameter);
+	}
+
+	static boolean checkAndSaveToken(HttpSession session, String tokenKey, String parameter) {
+		synchronized (session) {
+			Object sessionTokenAttr = session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY);
+			// check session...
+			if (sessionTokenAttr == null) {
+				throw new RuntimeException("Double Submit Preventer TagLig isn't set. Check JSP.");
+			}
+
+			// check parameter
+			if (parameter == null) {
+				throw new RuntimeException("Double Submit Preventer parameter isn't set. Check JSP.");
+			}
+
+			@SuppressWarnings("unchecked")
+			Map<String, String> map = (Map<String, String>) sessionTokenAttr;
+
+			if (parameter.equals(map.get(tokenKey))) {
+
+				LOGGER.debug("[Double Submit] session token ({}) equals to parameter token.", tokenKey);
+
+				map.put(tokenKey, getNewUUID());
+
+				return true;
+			}
+
+			LOGGER.debug("[Double Submit] session token ({}) isn't equal to parameter token.", tokenKey);
+
+			return false;
 		}
-
-		@SuppressWarnings("unchecked")
-		Map<String, String> map = (Map<String, String>) sessionTokenAttr;
-
-		if (parameter.equals(map.get(tokenKey))) {
-
-			LOGGER.debug("[Double Submit] session token ({}) equals to parameter token.", tokenKey);
-
-			map.put(tokenKey, getNewUUID());
-
-			return true;
-		}
-
-		LOGGER.debug("[Double Submit] session token ({}) isn't equal to parameter token.", tokenKey);
-
-		return false;
 	}
 }

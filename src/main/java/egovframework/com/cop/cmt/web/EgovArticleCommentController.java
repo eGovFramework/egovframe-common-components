@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -177,12 +179,16 @@ public class EgovArticleCommentController {
      */
     @PostMapping("/cop/cmt/deleteArticleComment.do")
     public String deleteArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
-    		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
+    		ModelMap model, @RequestParam HashMap<String, String> map, HttpServletRequest request) throws Exception {
 		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+		    // 작성자 본인만 삭제 가능하도록 소유권 검증 (댓글은 로그인 사용자 명의로만 등록됨)
+		    CommentVO storedComment = egovArticleCommentService.selectArticleCommentDetail(commentVO);
+		    EgovXssChecker.checkerUserXss(request, storedComment == null ? null : storedComment.getFrstRegisterId());
+
 		    egovArticleCommentService.deleteArticleComment(commentVO);
 		}
 
@@ -265,7 +271,7 @@ public class EgovArticleCommentController {
      */
     @PostMapping("/cop/cmt/updateArticleComment.do")
     public String updateArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -277,6 +283,10 @@ public class EgovArticleCommentController {
 		}
 
 		if (isAuthenticated) {
+		    // 작성자 본인만 수정 가능하도록 소유권 검증 (댓글은 로그인 사용자 명의로만 등록됨)
+		    CommentVO storedComment = egovArticleCommentService.selectArticleCommentDetail(commentVO);
+		    EgovXssChecker.checkerUserXss(request, storedComment == null ? null : storedComment.getFrstRegisterId());
+
 		    comment.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    egovArticleCommentService.updateArticleComment(comment);

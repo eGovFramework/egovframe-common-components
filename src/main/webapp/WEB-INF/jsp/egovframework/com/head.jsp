@@ -61,10 +61,11 @@
 	}
 </script>
 
-<form name="selectOne">
+<form name="selectOne" method="post">
 <input name="menuNo" type="hidden" />
 <input name="chkURL" type="hidden" />
 <input name="vStartP" type="hidden" />
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <div id="gnb">
     <div id="top_logo"><a href="<c:url value='/sym/mnu/mpm/EgovMainMenuHome.do' />" target=_top><img src="<c:url value='/images/egovframework/com/cmm/main/logo_01.gif' />" alt="egovframe" /></a></div>
     <div id="use_descri">

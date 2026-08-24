@@ -562,6 +562,13 @@ public class EgovArticleController {
 		if (isAuthenticated) {
 			bmvo = egovBBSMasterService.selectBBSMasterInf(bmvo);
 			bdvo = egovArticleService.selectArticleDetail(boardVO);
+
+			// 비밀글은 작성자만 수정 폼을 볼 수 있음 (selectArticleDetail과 동일한 접근제어 적용)
+			if (!EgovStringUtil.isEmpty(bdvo.getSecretAt()) && bdvo.getSecretAt().equals("Y")
+					&& !((user == null || user.getUniqId() == null) ? "" : user.getUniqId())
+							.equals(bdvo.getFrstRegisterId())) {
+				return "forward:/cop/bbs/selectArticleList.do";
+			}
 		}
 
 		// ----------------------------
@@ -881,6 +888,13 @@ public class EgovArticleController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+			// 익명 게시글은 작성비밀번호가 유일한 인가 수단이므로 서버측에서 반드시 검증한다.
+			BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
+			if (vo.getPassword() == null || board.getPassword() == null
+					|| !vo.getPassword().equals(board.getPassword())) {
+				model.addAttribute("msg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+				return "forward:/cop/bbs/selectGuestArticleList.do";
+			}
 			egovArticleService.deleteArticle(boardVO);
 		}
 
@@ -1002,6 +1016,14 @@ public class EgovArticleController {
 			model.addAttribute("paginationInfo", paginationInfo);
 
 			return "egovframework/com/cop/bbs/EgovGuestArticleList";
+		}
+
+		// 익명 게시글은 작성비밀번호가 유일한 인가 수단이므로 서버측에서 반드시 검증한다.
+		BoardVO storedVo = egovArticleService.selectArticleDetail(boardVO);
+		if (storedVo.getPassword() == null || board.getPassword() == null
+				|| !storedVo.getPassword().equals(board.getPassword())) {
+			model.addAttribute("msg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+			return "forward:/cop/bbs/selectGuestArticleList.do";
 		}
 
 		// 2022.11.11 시큐어코딩 처리

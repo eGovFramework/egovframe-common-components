@@ -7,6 +7,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,7 +90,7 @@ public class EgovLoginLogController {
 	 * @return sym/log/clg/EgovLoginLogInqire
 	 * @throws Exception
 	 */
-	@PostMapping("/sym/log/clg/SelectLoginLogDetail.do")
+	@GetMapping("/sym/log/clg/SelectLoginLogDetail.do")
 	public String selectLoginLog(@ModelAttribute("searchVO") LoginLog loginLog, @RequestParam("logId") String logId,
 			ModelMap model) throws Exception {
 

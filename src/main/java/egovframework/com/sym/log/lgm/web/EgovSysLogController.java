@@ -7,6 +7,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -95,7 +96,7 @@ public class EgovSysLogController {
 	 * @return sym/log/lgm/EgovSysLogInqire
 	 * @throws Exception
 	 */
-	@PostMapping("/sym/log/lgm/SelectSysLogDetail.do")
+	@GetMapping("/sym/log/lgm/SelectSysLogDetail.do")
 	public String selectSysLog(@ModelAttribute("searchVO") SysLog sysLog, @RequestParam("requstId") String requstId,
 			ModelMap model) throws Exception {
 

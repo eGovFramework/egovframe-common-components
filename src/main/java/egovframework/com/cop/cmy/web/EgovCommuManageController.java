@@ -533,12 +533,20 @@ public class EgovCommuManageController {
 		// 안전한 경로 문자열로 조치
 		tmplatCours = EgovWebUtil.filePathBlackList(tmplatCours);
 
-		// 화이트 리스트 체크
-		List<TemplateInfVO> templateWhiteList = egovTemplateManageService.selectTemplateWhiteList();
-		LOGGER.debug("Template > WhiteList Count = {}",templateWhiteList.size());
 		if ( tmplatCours == null ) {
 			tmplatCours = "";
 		}
+
+		// 뷰 이름 인젝션 방지 - forward:/redirect: 등 스킴 접두사나 콜론이 포함된 값,
+		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
+		if (tmplatCours.contains(":") || tmplatCours.startsWith("/") || tmplatCours.toUpperCase().contains("WEB-INF")) {
+			LOGGER.debug("Template > Unsafe tmplatCours rejected: {}", tmplatCours);
+			return "egovframework/com/cmm/egovError";
+		}
+
+		// 화이트 리스트 체크
+		List<TemplateInfVO> templateWhiteList = egovTemplateManageService.selectTemplateWhiteList();
+		LOGGER.debug("Template > WhiteList Count = {}",templateWhiteList.size());
 		for(TemplateInfVO templateInfVO : templateWhiteList){
 			LOGGER.debug("Template > whiteList TmplatCours = "+templateInfVO.getTmplatCours());
             if ( tmplatCours.equals(templateInfVO.getTmplatCours()) ) {

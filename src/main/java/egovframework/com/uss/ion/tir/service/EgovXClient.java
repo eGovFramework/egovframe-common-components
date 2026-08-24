@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -30,7 +31,11 @@ public class EgovXClient {
      * REST API 호출용 RestTemplate을 초기화한다.
      */
     public EgovXClient() {
-        this.restTemplate = new RestTemplate();
+        // 안정성: 외부 X(Twitter) API 무응답 시 스레드 무한 블록 방지(CWE-400)
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(5000);
+        factory.setReadTimeout(30000);
+        this.restTemplate = new RestTemplate(factory);
     }
 
     /**

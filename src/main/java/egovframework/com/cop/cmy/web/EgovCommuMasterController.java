@@ -62,6 +62,24 @@ public class EgovCommuMasterController {
 
     //Logger log = Logger.getLogger(this.getClass());
 
+    /**
+     * 커뮤니티 개설자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
+     *
+     * @param user 현재 로그인한 사용자
+     * @param frstRegisterId 커뮤니티 개설자 ID(frstRegisterId)
+     * @return 소유자이거나 관리자이면 true
+     */
+    private boolean isOwner(LoginVO user, String frstRegisterId) {
+        if (user == null || user.getUniqId() == null) {
+            return false;
+        }
+        if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
+            return true;
+        }
+        List<String> authorities = EgovUserDetailsHelper.getAuthorities();
+        return authorities != null && authorities.contains("ROLE_ADMIN");
+    }
+
 	/**
      * 커뮤니티에 대한 목록을 조회한다.
      *
@@ -193,7 +211,17 @@ public class EgovCommuMasterController {
     public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model)
 	    throws Exception {
 
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
+
+		// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 수정폼을 조회할 수 있다.
+		if (result == null || !isOwner(user, result.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
 
 		model.addAttribute("commuMasterVO", result);
 
@@ -220,10 +248,14 @@ public class EgovCommuMasterController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
-		if (bindingResult.hasErrors()) {
+		// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 커뮤니티 설정을 수정할 수 있다.
+		CommunityVO existingCommu = egovCommuMasterService.selectCommuMaster(cmmntyVO);
+		if (existingCommu == null || !isOwner(user, existingCommu.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
 
-		    CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
-		    model.addAttribute("result", result);
+		if (bindingResult.hasErrors()) {
+		    model.addAttribute("result", existingCommu);
 
 		    return "egovframework/com/cop/cmy/EgovCommuMasterUpdt";
 		}
@@ -250,6 +282,12 @@ public class EgovCommuMasterController {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+    	// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 커뮤니티를 삭제할 수 있다.
+    	CommunityVO existingCommu = egovCommuMasterService.selectCommuMaster(cmmntyVO);
+    	if (existingCommu == null || !isOwner(user, existingCommu.getFrstRegisterId())) {
+    		return "egovframework/com/cmm/error/accessDenied";
+    	}
 
     	if (isAuthenticated) {
     		community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));

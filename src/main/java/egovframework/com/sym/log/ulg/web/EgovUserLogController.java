@@ -8,6 +8,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,7 +99,7 @@ public class EgovUserLogController {
 	 * @return sym/log/ulg/EgovUserLogInqire
 	 * @throws Exception
 	 */
-	@PostMapping("/sym/log/ulg/SelectUserLogDetail.do")
+	@GetMapping("/sym/log/ulg/SelectUserLogDetail.do")
 	public String selectUserLog(@ModelAttribute("searchVO") UserLog userLog,
 			@RequestParam("occrrncDe") String occrrncDe, @RequestParam("rqesterId") String rqesterId,
 			@RequestParam("srvcNm") String srvcNm, @RequestParam("methodNm") String methodNm, ModelMap model)

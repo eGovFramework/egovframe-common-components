@@ -90,9 +90,7 @@ String sTodate = formatter.format(new java.util.Date());
 	******************************************************** */
 	function fn_egov_detail_IndvdlSchdulManage(schdulId){
 
-		gOpener.schdulId.value = schdulId;
-		gOpener.action = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />";
-		gOpener.submit();
+		parent.location.href = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId);
 	}
 
 

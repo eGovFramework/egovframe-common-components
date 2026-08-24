@@ -68,7 +68,10 @@
 </head>
 <body>
 	<c:if test="${loginVO != null}">
-		${loginVO.name}(${loginVO.id})<spring:message code="comCmm.unitContent.2"/> <a href="${pageContext.request.contextPath }/uat/uia/actionLogout.do"><spring:message code="comCmm.unitContent.3"/></a>
+		${loginVO.name}(${loginVO.id})<spring:message code="comCmm.unitContent.2"/> <a href="#" onclick="document.egovUnitContentLogoutForm.submit(); return false;"><spring:message code="comCmm.unitContent.3"/></a>
+		<form name="egovUnitContentLogoutForm" method="post" action="${pageContext.request.contextPath}/uat/uia/actionLogout.do" style="display:none;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+		</form>
 		<!--
 		<br>passedDay = ${passedDay}
 		<br>expirePwdDay = ${expirePwdDay}

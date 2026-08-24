@@ -94,6 +94,7 @@ public class EgovProxySvcController {
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name = "프록시서비스", order = 2140, gid = 90)
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/pxy/selectProxySvcList.do")
 	public String selectProxySvcList(@ModelAttribute("proxySvc") ProxySvc proxySvc, Model model) throws Exception {
 

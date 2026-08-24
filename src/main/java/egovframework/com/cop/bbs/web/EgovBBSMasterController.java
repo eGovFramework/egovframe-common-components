@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -81,6 +82,24 @@ public class EgovBBSMasterController {
     //Logger log = Logger.getLogger(this.getClass());
 
     /**
+     * 게시판 개설자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
+     *
+     * @param user 현재 로그인한 사용자
+     * @param frstRegisterId 게시판 개설자 ID(frstRegisterId)
+     * @return 소유자이거나 관리자이면 true
+     */
+    private boolean isOwner(LoginVO user, String frstRegisterId) {
+        if (user == null || user.getUniqId() == null) {
+            return false;
+        }
+        if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
+            return true;
+        }
+        List<String> authorities = EgovUserDetailsHelper.getAuthorities();
+        return authorities != null && authorities.contains("ROLE_ADMIN");
+    }
+
+    /**
      * 신규 게시판 마스터 등록을 위한 등록페이지로 이동한다.
      *
      * @param boardMasterVO
@@ -123,6 +142,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
+    @RequireAdmin
     @PostMapping("/cop/bbs/insertBBSMaster.do")
     public String insertBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
@@ -365,10 +385,16 @@ public class EgovBBSMasterController {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
-
-
         BoardMasterVO boardMasterVO = new BoardMasterVO();
 
+        // Primary Key 값 세팅
+        boardMasterVO.setBbsId(bbsId);
+
+        // 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 수정폼을 조회할 수 있다.
+        BoardMasterVO existingBoard = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
+        if (existingBoard == null || !isOwner(_loginVO, existingBoard.getFrstRegisterId())) {
+            return "egovframework/com/cmm/error/accessDenied";
+        }
 
         //게시판유형코드
         ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -376,10 +402,7 @@ public class EgovBBSMasterController {
         List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("bbsTyCode", codeResult);
 
-        // Primary Key 값 세팅
-        boardMasterVO.setBbsId(bbsId);
-
-        model.addAttribute("boardMasterVO", egovBBSMasterService.selectBBSMasterInf(boardMasterVO));
+        model.addAttribute("boardMasterVO", existingBoard);
 
 		//---------------------------------
 		// 2011.09.15 : 2단계 기능 추가 반영 방법 변경
@@ -405,6 +428,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
+    @RequireAdmin
     @PostMapping("/cop/bbs/updateBBSMaster.do")
     public String updateBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
@@ -412,10 +436,14 @@ public class EgovBBSMasterController {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		if (bindingResult.hasErrors()) {
-		    BoardMasterVO vo = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
+		// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 게시판 설정을 수정할 수 있다.
+		BoardMasterVO existingBoard = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
+		if (existingBoard == null || !isOwner(user, existingBoard.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
 
-		    model.addAttribute("result", vo);
+		if (bindingResult.hasErrors()) {
+		    model.addAttribute("result", existingBoard);
 
 		    ComDefaultCodeVO comVo = new ComDefaultCodeVO();
 	        comVo.setCodeId("COM101");
@@ -442,12 +470,19 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
+    @RequireAdmin
     @PostMapping("/cop/bbs/deleteBBSMaster.do")
     public String deleteBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @ModelAttribute("boardMaster") BoardMaster boardMaster
 	    ) throws Exception {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+	// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 게시판을 삭제할 수 있다.
+	BoardMasterVO existingBoard = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
+	if (existingBoard == null || !isOwner(user, existingBoard.getFrstRegisterId())) {
+		return "egovframework/com/cmm/error/accessDenied";
+	}
 
 	if (isAuthenticated) {
 	    boardMaster.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));

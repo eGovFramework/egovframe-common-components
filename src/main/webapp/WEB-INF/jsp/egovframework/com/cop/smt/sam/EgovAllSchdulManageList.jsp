@@ -59,15 +59,12 @@ function fn_egov_modify_AllSchdulManage(){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_AllSchdulManage(schdulKindCode, schdulId){
-	var vFrom = document.listForm;
-	vFrom.schdulId.value = schdulId;
-
 	if(schdulKindCode == "1"){
-		vFrom.action = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />";
-	}else{
-		vFrom.action = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />";
+		location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId) + "&linkType=asm";
+		return;
 	}
-	vFrom.submit();
+
+	location.href = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId) + "&linkType=asm";
 }
 
 /* ********************************************************

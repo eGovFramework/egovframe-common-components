@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -132,6 +133,11 @@ public class EgovQustnrTmplatManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
+			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
+			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
+			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
+				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
+			}
 			egovQustnrTmplatManageService.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 		}
 
@@ -173,7 +179,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageImg"
 	 * @throws Exception
 	 */
-	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
+	@GetMapping("/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
 	public void egovQustnrTmplatManageImg(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -276,6 +282,11 @@ public class EgovQustnrTmplatManageController {
 			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
+			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
+			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
+				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
 			}
 			egovQustnrTmplatManageService.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 			sLocationUrl = "redirect:/uss/olp/qtm/EgovQustnrTmplatManageList.do";

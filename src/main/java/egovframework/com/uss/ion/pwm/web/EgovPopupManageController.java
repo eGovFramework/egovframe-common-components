@@ -387,11 +387,19 @@ public class EgovPopupManageController {
 
 		String fileUrl2 = EgovWebUtil.filePathBlackList(fileUrl);
 
-		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
-		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
 		if (fileUrl2 == null) {
 			fileUrl2 = "";
 		}
+
+		// 뷰 이름 인젝션 방지 - forward:/redirect: 등 스킴 접두사나 콜론이 포함된 값,
+		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
+		if (fileUrl2.contains(":") || fileUrl2.startsWith("/") || fileUrl2.toUpperCase().contains("WEB-INF")) {
+			LOGGER.debug("Open Popup > Unsafe fileUrl rejected: {}", fileUrl2);
+			return "egovframework/com/cmm/egovError";
+		}
+
+		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
+		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
 		for (Object obj : popupWhiteList) {
 			EgovMap map = (EgovMap) obj;
 			LOGGER.debug("Open Popup > whiteList fileUrl = " + map.get("fileUrl"));

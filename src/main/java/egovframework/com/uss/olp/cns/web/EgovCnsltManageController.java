@@ -178,13 +178,32 @@ public class EgovCnsltManageController {
 
 		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
 
+		// 비공개(othbcAt='N') 상담은 작성자 본인이거나, 사용자가 제출한 작성비밀번호가 저장값과 일치할 때만 열람 가능
+		// (passwordConfirmAt은 클라이언트가 임의로 조작 가능한 값이므로 인가 판단에 신뢰하지 않는다)
+		if ("N".equals(vo.getOthbcAt())) {
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			String loginUniqId = (loginVO == null || loginVO.getUniqId() == null) ? "" : loginVO.getUniqId();
+			boolean isOwner = !EgovStringUtil.isEmpty(loginUniqId) && !EgovStringUtil.isEmpty(vo.getFrstRegisterId())
+					&& loginUniqId.equals(vo.getFrstRegisterId());
+
+			if (!isOwner) {
+				String inputPassword = EgovStringUtil.isNullToString(cnsltManageVO.getWritngPassword());
+				String encodedInput = EgovStringUtil.isEmpty(inputPassword) ? "" : EgovFileScrty.encode(inputPassword);
+
+				if (EgovStringUtil.isEmpty(inputPassword) || vo.getWritngPassword() == null
+						|| !vo.getWritngPassword().equals(encodedInput)) {
+					model.addAttribute("subMsg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+					model.addAttribute("result", new CnsltManageVO());
+					return "egovframework/com/uss/olp/cns/EgovCnsltPasswordConfirm";
+				}
+			}
+		}
+
 		vo.setPasswordConfirmAt(passwordConfirmAt); // 작성비밀번호 확인여부
 
-		// 작성 비밀번호를 얻는다.
-		String writngPassword = vo.getWritngPassword();
-
-		// EgovFileScrty Util에 있는 암호화 모듈을 적용해서 복호화한다.
-		vo.setWritngPassword(EgovFileScrty.decode(writngPassword));
+		// 상세조회 화면(EgovCnsltDetailInqire.jsp)은 작성비밀번호를 사용하지 않으므로
+		// 복호화된 값을 응답 모델에 포함하지 않는다(불필요한 개인정보 노출 방지).
+		vo.setWritngPassword(null);
 
 		model.addAttribute("result", vo);
 

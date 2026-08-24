@@ -102,6 +102,7 @@
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>egovframe-rte-fdl-security</artifactId>
+			<version>5.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>

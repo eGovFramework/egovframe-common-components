@@ -157,6 +157,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
+	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
@@ -212,6 +213,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
+	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,

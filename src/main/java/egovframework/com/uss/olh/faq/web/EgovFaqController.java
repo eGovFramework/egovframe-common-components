@@ -137,6 +137,7 @@ public class EgovFaqController {
 	 * @return "/uss/olh/faq/EgovFaqRegist"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/faq/insertFaqView.do")
 	public String insertFaqView(@ModelAttribute("searchVO") FaqVO searchVO, Model model) throws Exception {
 
@@ -163,12 +164,16 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/faq/insertFaq.do")
 	public String insertFaqCn(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
-			BindingResult bindingResult) throws Exception {
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 파일업로드 제한 - 재표시 JSP 가 자바스크립트 인자로 그대로 출력한다
+			model.addAttribute("fileUploadExtensions", Globals.FILE_UP_EXTS);
+			model.addAttribute("fileUploadMaxSize", Globals.FILE_UP_MAX_SIZE);
 			return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 		}
 
@@ -209,6 +214,7 @@ public class EgovFaqController {
 	 * @return "/uss/olh/faq/EgovFaqUpdt"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/faq/updateFaqView.do")
 	public String updateFaqView(@RequestParam("faqId") String faqId, @ModelAttribute("searchVO") FaqVO searchVO,
 			ModelMap model) throws Exception {
@@ -243,12 +249,16 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/faq/updateFaq.do")
 	public String updateFaqCn(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 파일업로드 제한 - 재표시 JSP 가 자바스크립트 인자로 그대로 출력한다
+			model.addAttribute("fileUploadExtensions", Globals.FILE_UP_EXTS);
+			model.addAttribute("fileUploadMaxSize", Globals.FILE_UP_MAX_SIZE);
 			return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 		}
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
@@ -126,6 +127,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/cop/tpl/insertTemplateInf.do")
 	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
@@ -184,6 +186,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/cop/tpl/updateTemplateInf.do")
 	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
@@ -224,6 +227,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/cop/bbs/deleteTemplateInf.do")
 	public String deleteTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("tmplatInf") TemplateInf tmplatInf, SessionStatus status, ModelMap model)
 			throws Exception {

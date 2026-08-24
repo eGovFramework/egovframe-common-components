@@ -147,17 +147,19 @@ function fn_egov_list(){
 			</c:if>
 			<c:if test="${searchList == '1'}">
 				<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-					<tr style="cursor:pointer;cursor:pointer;" onclick="fn_egov_return_Zip( '${resultInfo.zip}', '${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm}');">
+					<c:set var="addr1">${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm}</c:set>
+					<tr style="cursor:pointer;cursor:pointer;" data-zip="<c:out value='${resultInfo.zip}'/>" data-addr="<c:out value='${addr1}'/>" onclick="fn_egov_return_Zip(this.dataset.zip, this.dataset.addr);">
 						<td><c:out value='${fn:substring(resultInfo.zip, 0,3)}'/>-<c:out value='${fn:substring(resultInfo.zip, 3,6)}'/></td>
-						<td>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm} ${resultInfo.lnbrDongHo}</td>
+						<td><c:out value="${addr1}"/> <c:out value="${resultInfo.lnbrDongHo}"/></td>
 					</tr>
 				</c:forEach>
 			</c:if>
 			<c:if test="${searchList == '2'}">
 				<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-					<tr style="cursor:pointer;cursor:pointer;" onclick="fn_egov_return_Zip( '${resultInfo.zip}', '${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}');">
+					<c:set var="addr2"><c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if></c:set>
+					<tr style="cursor:pointer;cursor:pointer;" data-zip="<c:out value='${resultInfo.zip}'/>" data-addr="<c:out value='${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} ${addr2} ${resultInfo.buldNm} ${resultInfo.detailBuldNm}'/>" onclick="fn_egov_return_Zip(this.dataset.zip, this.dataset.addr);">
 						<td><c:out value='${fn:substring(resultInfo.zip, 0,3)}'/>-<c:out value='${fn:substring(resultInfo.zip, 3,6)}'/></td>
-						<td>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}</td>
+						<td><c:out value="${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} ${addr2} ${resultInfo.buldNm} ${resultInfo.detailBuldNm}"/></td>
 					</tr>
 				</c:forEach>
 			</c:if>

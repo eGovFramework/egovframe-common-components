@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
@@ -57,6 +58,7 @@ public class EgovServerResrceMntrngController {
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name = "서버자원모니터링-대상목록", order = 2170, gid = 90)
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/srm/selectMntrngServerList.do")
 	public String selectMntrngServerList(
 			@ModelAttribute("serverResrceMntrngVO") ServerResrceMntrngVO serverResrceMntrngVO, ModelMap model)
@@ -89,6 +91,7 @@ public class EgovServerResrceMntrngController {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/srm/selectServerResrceMntrngListView.do")
 	public String selectServerResrceMntrngListView(
 			@ModelAttribute("pmServerResrceMntrng") ServerResrceMntrngVO pmServerResrceMntrng, ModelMap model)
@@ -108,6 +111,7 @@ public class EgovServerResrceMntrngController {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/srm/selectServerResrceMntrngList.do")
 	public String selectServerResrceMntrngList(
 			@ModelAttribute("serverResrceMntrngVO") ServerResrceMntrngVO serverResrceMntrngVO,
@@ -153,6 +157,7 @@ public class EgovServerResrceMntrngController {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/srm/getServerResrceMntrng.do")
 	public String selectServerResrceMntrng(@RequestParam("logId") String logId,
 			@RequestParam("strStartDt") String strStartDt, @RequestParam("strEndDt") String strEndDt,

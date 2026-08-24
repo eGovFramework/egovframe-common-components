@@ -57,10 +57,7 @@ function fn_egov_modify_DeptSchdulManage(){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_DeptSchdulManage(schdulId){
-	var vFrom = document.listForm;
-	vFrom.schdulId.value = schdulId;
-	vFrom.action = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />";
-	vFrom.submit();
+	location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId);
 }
 
 /* ********************************************************

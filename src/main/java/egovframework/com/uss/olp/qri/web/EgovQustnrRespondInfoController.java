@@ -139,6 +139,20 @@ public class EgovQustnrRespondInfoController {
 	}
 
 	/**
+	 * 설문응답 관리(응답자결과 조회/수정/삭제)는 관리자만 수행할 수 있도록 검증한다.
+	 * (KISA 보안취약점 조치: 응답 내용·응답자 개인정보를 담고 있어 관리자 전용 기능으로 제한)
+	 */
+	private void egovAssertAdmin() {
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
+		if (authorities == null || !authorities.contains("ROLE_ADMIN")) {
+			throw new IllegalStateException("권한이 없습니다.");
+		}
+	}
+
+	/**
 	 * 설문템플릿을 적용한다.
 	 *
 	 * @param searchVO
@@ -610,6 +624,9 @@ public class EgovQustnrRespondInfoController {
 			QustnrRespondInfoVO qustnrRespondInfoVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 
+		// KISA 보안취약점 조치: 객체 수준 접근제어 누락 - 관리자만 응답 상세를 조회/삭제할 수 있다.
+		egovAssertAdmin();
+
 		String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoDetail";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
@@ -651,6 +668,9 @@ public class EgovQustnrRespondInfoController {
 			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		// KISA 보안취약점 조치: 객체 수준 접근제어 누락 - 관리자만 응답을 수정할 수 있다.
+		egovAssertAdmin();
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

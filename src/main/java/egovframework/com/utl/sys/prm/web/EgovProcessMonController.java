@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -68,6 +69,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO
 	 */
 	@IncludedInfo(name = "프로세스모니터링", order = 2110, gid = 90)
+	@RequireAdmin
 	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMonList.do")
 	public String selectProcessMonList(@ModelAttribute("searchVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
@@ -102,6 +104,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param processMonVO
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMon.do")
 	public String selectProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
@@ -120,6 +123,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonRegistView.do")
 	public String insertProcessMonView(
 		@ModelAttribute("searchVO") ProcessMonVO searchVO,
@@ -142,6 +146,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonRegist.do")
 	public String insertProcessMon(
 		@ModelAttribute("searchVO") ProcessMonVO searchVO,
@@ -178,6 +183,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonModifyView.do")
 	public String updateProcessMonView(
 		@ModelAttribute("searchVO") ProcessMonVO searchVO,
@@ -200,6 +206,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonModify.do")
 	public String updateProcessMon(
 		@ModelAttribute("searchVO") ProcessMonVO searchVO,
@@ -236,6 +243,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param processNm
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonRemove.do")
 	public String deleteProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model,
 			RedirectAttributes redirectAttributes) throws Exception {
@@ -259,6 +267,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param processSttus
 	 */
+	@RequireAdmin
 	@RequestMapping("/utl/sys/prm/selectProcessSttus.do")
 	public String selectProcessSttus(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
@@ -280,6 +289,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param processMonVO
 	 */
+	@RequireAdmin
 	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMonLogList.do")
 	public String selectProcessMonLogList(@ModelAttribute("searchVO") ProcessMonLogVO processMonLogVO, ModelMap model)
 			throws Exception {
@@ -330,6 +340,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param fileSysMntrngLogVO
 	 */
+	@RequireAdmin
 	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonLog.do")
 	public String selectProcessMonLog(@ModelAttribute("processMonLogVO") ProcessMonLogVO processMonLogVO,
 			ModelMap model) throws Exception {
