@@ -140,4 +140,31 @@ public class EgovWebUtilTest {
 		assertEquals("", EgovWebUtil.fileInjectPathReplaceAll(".\\."));
 		assertEquals("etc", EgovWebUtil.fileInjectPathReplaceAll(".\\./etc"));
 	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_acceptsContextRelativePath() {
+		assertEquals("/cop/bbs/SelectBBSMasterInfsPop.do",
+				EgovWebUtil.sanitizeRelativeRequestUrl("/cop/bbs/SelectBBSMasterInfsPop.do"));
+	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_rejectsProtocolRelativeUrl() {
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("//evil.example/popup"));
+	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_rejectsBackslashProtocolRelativeUrl() {
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\\evil.example/popup"));
+	}
+
+	@Test
+	public void sanitizeRelativeRequestUrl_rejectsTabBypassProtocolRelativeUrl() {
+		// 브라우저는 URL 해석 전 탭(0x09)을 제거하므로 "/[TAB]/evil.example/popup" 은 "//evil.example/popup" 로 해석된다 (mochoping 리뷰)
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\t/evil.example/popup"));
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\t\t/evil.example/popup"));
+	}
 }
