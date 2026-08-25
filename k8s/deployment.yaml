@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: egov-common-components
+  labels:
+    app.kubernetes.io/name: egov-common-components
+    app.kubernetes.io/part-of: egovframe
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: egov-common-components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: egov-common-components
+        app.kubernetes.io/part-of: egovframe
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: app
+          # Replace with your registry/tag, e.g. ghcr.io/<org>/egov-common-components:5.0.0
+          image: egovframe-common-components:5.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+          # 헬스 경로는 정적 리소스(/css/**)를 사용한다.
+          # ROOT('/')와 '/index.do'는 DispatcherServlet/스프링 시큐리티/DB에 의존해
+          # 기동 시점에 302(로그인 리다이렉트)나 500을 반환할 수 있어 프로브에 부적합하다.
+          # /css/** 는 egov-security-config.properties의 permitAllList에 포함된
+          # 정적 경로로, 톰캣 DefaultServlet이 인증/DB 없이 200을 반환한다.
+          startupProbe:
+            httpGet:
+              path: /css/egovframework/com/com12.css
+              port: http
+            # 기동이 느린 경우를 대비해 최대 5분(30 x 10s)까지 대기한다.
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 30
+          readinessProbe:
+            httpGet:
+              path: /css/egovframework/com/com12.css
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /css/egovframework/com/com12.css
+              port: http
+            periodSeconds: 20
+            failureThreshold: 3
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: tomcat-work
+              mountPath: /usr/local/tomcat/work
+            - name: tomcat-temp
+              mountPath: /usr/local/tomcat/temp
+            - name: tomcat-logs
+              mountPath: /usr/local/tomcat/logs
+      volumes:
+        - name: tomcat-work
+          emptyDir: {}
+        - name: tomcat-temp
+          emptyDir: {}
+        - name: tomcat-logs
+          emptyDir: {}
