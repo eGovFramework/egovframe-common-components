@@ -19,7 +19,7 @@ import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovDbMntrngScheduling.java
- * @Description : DB서비스모니터링을 위한 스케쥴링 클래스
+ * @Description : DB서비스모니터링을 위한 스케줄링 클래스
  * @Modification Information
  *
  *    수정일       수정자         수정내용

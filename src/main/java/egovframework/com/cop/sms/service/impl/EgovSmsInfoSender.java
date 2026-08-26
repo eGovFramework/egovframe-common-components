@@ -88,8 +88,8 @@ public class EgovSmsInfoSender {
     /**
      * SMS 연결을 위한 Connection 및 Session 생성한다.
      * 발송건이 있을 경우만 open()을 호출하고 close()를 호출하여 종료한다.
-     * 만약 DB 와 연동시 select로 데이타 검출시 데이타가 없으면
-     * open()을 호출하지 않는다. (중요!!! 꼭 데이타가 있을 경우만 open() 을 하여 접속)
+     * 만약 DB 와 연동시 select로 데이터 검출시 데이터가 없으면
+     * open()을 호출하지 않는다. (중요!!! 꼭 데이터가 있을 경우만 open() 을 하여 접속)
      *
      * @throws SMEException
      */
@@ -129,11 +129,11 @@ public class EgovSmsInfoSender {
 
 	    // callbackurl
 	    // 무선인터넷 주소  휴대전화 인터넷 (WAP) 페이지 접속용 URL
-	    // 단문자메세지 외의 별도 과금이 되므로 WAP 페이지가 있는 기관에서만 사용
+	    // 단문자메시지 외의 별도 과금이 되므로 WAP 페이지가 있는 기관에서만 사용
 	    // 해당 URL 접속시 수신자에게 과금이 되므로 주의.
 	    request.setCallbackURL(smsConn.getCallBackUrl()); //CallbackURL은 선택사항 입니다.
 
-	    // message (메세지내용)
+	    // message (메시지내용)
 	    request.setText(smsConn.getText());
 
 	    // serial *MUST* be unique number in single SME.

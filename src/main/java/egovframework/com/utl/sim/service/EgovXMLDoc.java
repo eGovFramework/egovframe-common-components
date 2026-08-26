@@ -60,23 +60,16 @@ public class EgovXMLDoc {
 	 * @return SndngMailDocument mailDoc 메일발송 클래스(XML스키마를 통해 생성된 자바클래스)
 	 */
 	public static SndngMailDocument getXMLToClass(String file) throws Exception {
-		FileInputStream fis = null;
 		SndngMailDocument mailDoc = null;
 
 		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
-		try {
-			File xmlFile = new File(storePathString,FilenameUtils.getName(file));
-			if (xmlFile.exists() && xmlFile.isFile()) {
-				fis = new FileInputStream(xmlFile);
-				// XXE 방지: DOCTYPE 선언 차단 및 외부 DTD 로딩 비활성화 (getXMLDocument/getXMLFile와 동일 수준)
-				XmlOptions xmlOptions = new XmlOptions();
-				xmlOptions.setDisallowDocTypeDeclaration(true);
-				xmlOptions.setLoadExternalDTD(false);
-				mailDoc = (SndngMailDocument) SndngMailDocument.Factory.parse(xmlFile, xmlOptions);
-
-			}
-		} finally {
-			EgovResourceCloseHelper.close(fis);
+		File xmlFile = new File(storePathString,FilenameUtils.getName(file));
+		if (xmlFile.exists() && xmlFile.isFile()) {
+			// XXE 방지: DOCTYPE 선언 차단 및 외부 DTD 로딩 비활성화 (getXMLDocument/getXMLFile와 동일 수준)
+			XmlOptions xmlOptions = new XmlOptions();
+			xmlOptions.setDisallowDocTypeDeclaration(true);
+			xmlOptions.setLoadExternalDTD(false);
+			mailDoc = (SndngMailDocument) SndngMailDocument.Factory.parse(xmlFile, xmlOptions);
 		}
 
 		return mailDoc;
