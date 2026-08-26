@@ -209,6 +209,9 @@ public class EgovRequestOfferController {
 		if (!sCmd.equals("del")) {
 			// 상세정보 불러오기
 			RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+			if (requestOfferVOs == null) {
+				return "forward:/dam/spe/req/listRequestOffer.do";
+			}
 			model.addAttribute("requestOfferVO", requestOfferVOs);
 
 			// 조직유형 불러오기
@@ -271,6 +274,9 @@ public class EgovRequestOfferController {
 
 		// 수정정보 불러오기
 		RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+		if (requestOfferVOs == null) {
+			return "forward:/dam/spe/req/listRequestOffer.do";
+		}
 		model.addAttribute("requestOfferVO", requestOfferVOs);
 
 		// 조직유형 불러오기
