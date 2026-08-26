@@ -279,7 +279,7 @@ public class EgovAnnvrsryManageController {
 				model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 				model.addAttribute("annvrsryManageVO", annvrsryManageVO);
 				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));
-				// 이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요"
+				// 이미 등록된 데이터입니다. 해당 데이터를 확인해 주세요"
 				return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
 			}
 		}
@@ -324,7 +324,7 @@ public class EgovAnnvrsryManageController {
 				model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 				model.addAttribute("annvrsryManageVO", annvrsryManageVO);
 				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));
-				// 이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요"
+				// 이미 등록된 데이터입니다. 해당 데이터를 확인해 주세요"
 				return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
 			}
 		}
@@ -576,7 +576,7 @@ public class EgovAnnvrsryManageController {
 		// }else{
 		// String sTempMessage =
 		// annvrsryManageVO.getBndtDe().substring(0,4)+"년"+bndtManageVO.getBndtDe().substring(4,6)+"월
-		// 데이타가 존재합니다.";
+		// 데이터가 존재합니다.";
 		// model.addAttribute("message", sTempMessage);
 		// return "egovframework/com/uss/ion/bnt/EgovBndtManageBndeListPop";
 		// }
