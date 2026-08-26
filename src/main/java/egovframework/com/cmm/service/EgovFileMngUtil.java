@@ -377,7 +377,7 @@ public class EgovFileMngUtil {
 
 				// response.setBufferSize(fSize);
 				response.setContentType(mimetype);
-				response.setHeader("Content-Disposition:", "attachment; filename=" + orgFileName);
+				response.setHeader("Content-Disposition", "attachment; filename=" + orgFileName);
 				response.setContentLengthLong(fSize);
 				// response.setHeader("Content-Transfer-Encoding","binary");
 				// response.setHeader("Pragma","no-cache");
