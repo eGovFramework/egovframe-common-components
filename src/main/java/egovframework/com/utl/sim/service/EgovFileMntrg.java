@@ -241,7 +241,7 @@ public class EgovFileMntrg extends Thread {
 			EgovBasicLogger.debug("Checking error", e);
 		}
 
-		if (changedList.size() > 0) {
+		if (!changedList.isEmpty()) {
 			// log.debug("change occur , changed file check count:"+cnt+ " , changed file
 			// count:"+changedList.size());
 			doOnChange(changedList);

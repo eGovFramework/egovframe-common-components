@@ -165,7 +165,7 @@ public class FileSystemChecker {
 	 * @param path
 	 */
 	long totalSpaceUnix(String path) throws IOException {
-		if (path.length() == 0) {
+		if (path.isEmpty()) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
 		// 2026.02.28 KISA 보안약점 조치
@@ -271,7 +271,7 @@ public class FileSystemChecker {
 				// os command problem, throw exception
 				throw new IOException("Command line returned OS error code '" + p.exitValue() + "' for command " + Arrays.asList(cmdAttribs));
 			}
-			if (lines.size() == 0) {
+			if (lines.isEmpty()) {
 				// unknown problem, throw exception
 				throw new IOException("Command line did not return any info " + "for command " + Arrays.asList(cmdAttribs));
 			}

@@ -21,6 +21,7 @@ import jakarta.annotation.Resource;
  *    -------        -------     -------------------
  *    2009. 3. 25.     이삼섭    최초생성
  *    2024.10.29.	LeeBaekHaeng	@Override 표기
+ *    2026.07.09.	EricSeokgon	PMD UseCollectionIsEmpty: size() != 0 대신 !isEmpty() 사용
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 25.
@@ -67,7 +68,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	public String insertFileInfs(List<FileVO> fvoList) throws Exception {
 		String atchFileId = "";
 
-		if (fvoList.size() != 0) {
+		if (!fvoList.isEmpty()) {
 			atchFileId = fileMngDAO.insertFileInfs(fvoList);
 		}
 		if (StringUtils.isEmpty(atchFileId)) {
