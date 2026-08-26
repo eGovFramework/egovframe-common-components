@@ -177,7 +177,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/deleteArticleComment.do")
+    @PostMapping("/cop/cmt/deleteArticleComment.do")
     public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
     		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 		@SuppressWarnings("unused")
@@ -266,7 +266,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/updateArticleComment.do")
+    @PostMapping("/cop/cmt/updateArticleComment.do")
     public String updateArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
