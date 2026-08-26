@@ -880,7 +880,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteGuestArticle.do")
+	@PostMapping("/cop/bbs/deleteGuestArticle.do")
 	public String deleteGuestList(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@Valid @ModelAttribute("articleVO") Board board, ModelMap model) throws Exception {
 		@SuppressWarnings("unused")
@@ -890,6 +890,13 @@ public class EgovArticleController {
 		if (isAuthenticated) {
 			BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
 			EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+
+			// 익명 게시글은 작성비밀번호가 유일한 인가 수단이므로 서버측에서 반드시 검증한다.
+			if (vo.getPassword() == null || board.getPassword() == null
+					|| !vo.getPassword().equals(board.getPassword())) {
+				model.addAttribute("msg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+				return "forward:/cop/bbs/selectGuestArticleList.do";
+			}
 
 			egovArticleService.deleteArticle(boardVO);
 		}
@@ -906,7 +913,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateGuestArticleView.do")
+	@PostMapping("/cop/bbs/updateGuestArticleView.do")
 	public String updateGuestArticleView(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("boardMasterVO") BoardMasterVO brdMstrVO, ModelMap model) throws Exception {
 
@@ -961,7 +968,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateGuestArticle.do")
+	@PostMapping("/cop/bbs/updateGuestArticle.do")
 	public String updateGuestArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@Valid @ModelAttribute Board board, BindingResult bindingResult, ModelMap model) throws Exception {
 
