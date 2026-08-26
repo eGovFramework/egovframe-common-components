@@ -7,7 +7,7 @@ import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovUserLogScheduling.java
- * @Description : 사용로그 요약을 위한 스케쥴링 클래스
+ * @Description : 사용로그 요약을 위한 스케줄링 클래스
  * @Modification Information
  *
  *    수정일         수정자        수정내용
