@@ -1,5 +1,10 @@
 package egovframework.com.sym.sym.bak.service.impl;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +30,12 @@ import egovframework.com.sym.sym.bak.service.BackupSchdulDfk;
  */
 @Repository("backupOpertDao")
 public class BackupOpertDao extends EgovComAbstractDAO {
+
+	/**
+	 * 요일정보 일괄조회 IN 절에 한번에 넣는 백업작업ID 개수.
+	 * 지원 DB 중 Oracle의 IN 절 항목 상한(1000개)이 가장 낮고 초과 시 ORA-01795가 발생하므로 그 값을 기준으로 나눈다.
+	 */
+	private static final int DFK_SELECT_ID_SIZE = 1000;
 
 	/**
 	 * 백업작업을 삭제한다.
@@ -91,11 +102,26 @@ public class BackupOpertDao extends EgovComAbstractDAO {
      */
     public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) {
         List<BackupOpert> resultList = selectList("BackupOpertDao.selectBackupOpertList", searchVO);
+        if (resultList.isEmpty()) {
+            return resultList;
+        }
+
+        // 스케줄요일정보를 백업작업ID 목록으로 일괄 조회한 뒤 ID별로 그룹핑한다. (행별 조회로 인한 N+1 제거)
+        List<String> backupOpertIds = resultList.stream()
+                .map(BackupOpert::getBackupOpertId).collect(Collectors.toList());
+        Map<String, List<BackupSchdulDfk>> dfkMap = new HashMap<>();
+        for (int fromIndex = 0; fromIndex < backupOpertIds.size(); fromIndex += DFK_SELECT_ID_SIZE) {
+            int toIndex = Math.min(fromIndex + DFK_SELECT_ID_SIZE, backupOpertIds.size());
+            List<BackupSchdulDfk> dfkList = selectList("BackupOpertDao.selectBackupSchdulDfkListByIds",
+                    backupOpertIds.subList(fromIndex, toIndex));
+            for (BackupSchdulDfk dfk : dfkList) {
+                dfkMap.computeIfAbsent(dfk.getBackupOpertId(), key -> new ArrayList<>()).add(dfk);
+            }
+        }
 
         for (BackupOpert result : resultList) {
             // 스케줄요일정보를 가져온다.
-            List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList",
-                    result.getBackupOpertId());
+            List<BackupSchdulDfk> dfkSeList = dfkMap.getOrDefault(result.getBackupOpertId(), Collections.emptyList());
             result.setExecutSchdulDfkSes(
                     dfkSeList.stream().map(BackupSchdulDfk::getExecutSchdulDfkSe).toArray(String[]::new));
             // 화면표시용 실행스케줄 속성을 만든다.

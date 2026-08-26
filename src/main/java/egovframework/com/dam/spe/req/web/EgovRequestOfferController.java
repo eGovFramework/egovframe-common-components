@@ -209,6 +209,9 @@ public class EgovRequestOfferController {
 		if (!sCmd.equals("del")) {
 			// 상세정보 불러오기
 			RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+			if (requestOfferVOs == null) {
+				return "forward:/dam/spe/req/listRequestOffer.do";
+			}
 			model.addAttribute("requestOfferVO", requestOfferVOs);
 
 			// 조직유형 불러오기
@@ -271,6 +274,9 @@ public class EgovRequestOfferController {
 
 		// 수정정보 불러오기
 		RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+		if (requestOfferVOs == null) {
+			return "forward:/dam/spe/req/listRequestOffer.do";
+		}
 		model.addAttribute("requestOfferVO", requestOfferVOs);
 
 		// 조직유형 불러오기
@@ -506,17 +512,6 @@ public class EgovRequestOfferController {
 			return "egovframework/com/dam/spe/req/EgovComDamRequestOfferRegist";
 		}
 
-		// 첨부파일 관련 첨부파일ID 생성
-		String atchFileId = "";
-
-		final List<MultipartFile> files = multiRequest.getFiles("file_1");
-
-		if (!files.isEmpty()) {
-			List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-			atchFileId = fileMngService.insertFileInfs(fvoList);
-			requestOfferVO.setAtchFileId(atchFileId);
-		}
-
 		// 아이디 설정
 		requestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		requestOfferVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
@@ -552,6 +547,17 @@ public class EgovRequestOfferController {
 		// 일반사용자일때
 		} else {
 			requestOfferVO.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		}
+
+		// 첨부파일 관련 첨부파일ID 생성
+		String atchFileId = "";
+
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
+
+		if (!files.isEmpty()) {
+			List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList);
+			requestOfferVO.setAtchFileId(atchFileId);
 		}
 
 		// 저장

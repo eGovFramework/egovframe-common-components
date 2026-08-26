@@ -453,9 +453,6 @@ public class EgovVcatnManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			System.out.println("#########################");
-			System.out.println("#########################");
-			System.out.println("#########################");
 
 			vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 			vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));

@@ -132,7 +132,7 @@ public class EgovWebUtilTest {
 	 * 구분자 제거 후 ".." 가 복원되지 않아야 한다.
 	 *
 	 * <p>정규식 오타만 고치면 ".\\." 처럼 구분자가 끼어든 입력은 ".." 가 인접하지 않아
-	 * 통과한 뒤, 역슬래시가 제거되면서 ".." 가 되살아난다. 같은 클래스의
+	 * 통과한 뒤, 역슬래시가 제거되서 ".." 가 되살아난다. 같은 클래스의
 	 * filePathReplaceAll() 과 동일하게 구분자를 먼저 제거해야 한다.</p>
 	 */
 	@Test
@@ -167,4 +167,28 @@ public class EgovWebUtilTest {
 		assertThrows(IllegalArgumentException.class,
 				() -> EgovWebUtil.sanitizeRelativeRequestUrl("/\t\t/evil.example/popup"));
 	}
+
+	@Test
+	public void filePathReplaceAll_removesParentDirectorySequence() {
+		assertEquals("etcpasswd", EgovWebUtil.filePathReplaceAll("../etc/passwd"));
+	}
+
+	/**
+	 * filePathReplaceAll() 도 fileInjectPathReplaceAll() 과 동일하게, 구분자/'&' 제거 과정에서
+	 * 새로 생성된 ".."( 예: ".&." )가 최종 결과에 남지 않아야 한다 (mochoping 리뷰).
+	 */
+	@Test
+	public void filePathReplaceAll_doesNotReconstructParentSequenceViaAmpersand() {
+		assertEquals("", EgovWebUtil.filePathReplaceAll(".&."));
+		assertEquals("etc", EgovWebUtil.filePathReplaceAll(".&./etc"));
+		assertFalse(EgovWebUtil.filePathReplaceAll(".&.").contains(".."),
+				"'&' 제거 후 '..' 가 최종 결과에 남으면 안 된다");
+	}
+
+	@Test
+	public void filePathReplaceAll_doesNotReconstructParentSequence() {
+		assertEquals("", EgovWebUtil.filePathReplaceAll(".\\."));
+		assertEquals("etc", EgovWebUtil.filePathReplaceAll(".\\./etc"));
+	}
+
 }

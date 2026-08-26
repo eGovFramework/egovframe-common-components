@@ -191,7 +191,7 @@ public class EgovFormatCheckUtil {
      */
     public static boolean checkFormatMail(String mail1, String mail2) {
 
-	 if(mail1 == null || mail2 == null || mail1.length() == 0 || mail2.length() == 0) {
+	 if(mail1 == null || mail2 == null || mail1.isEmpty() || mail2.isEmpty()) {
 		return false;
 	}
 

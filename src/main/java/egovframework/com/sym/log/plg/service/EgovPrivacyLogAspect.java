@@ -32,6 +32,7 @@ import jakarta.annotation.Resource;
  *   2014.09.11  표준프레임워크  최초 생성
  *   2025.07.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
  *   2025.07.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *   2026.07.09  EricSeokgon      PMD UseCollectionIsEmpty: size() > 0 대신 !isEmpty() 사용
  *
  *      </pre>
  */
@@ -88,7 +89,7 @@ public class EgovPrivacyLogAspect {
 					list = getItemValues(item, serviceName);
 				}
 
-				if (list.size() > 0) {
+				if (!list.isEmpty()) {
 					privacyLogService.innerInsertPrivacyLog(getPrivacyLogFromItemList(list, serviceName));
 
 					++count;
@@ -101,12 +102,12 @@ public class EgovPrivacyLogAspect {
 			}
 		} else if (returnVal instanceof Map) {
 			List<String> list = getItemValues((Map<?, ?>) returnVal, serviceName);
-			if (list.size() > 0) {
+			if (!list.isEmpty()) {
 				privacyLogService.innerInsertPrivacyLog(getPrivacyLogFromItemList(list, serviceName));
 			}
 		} else { // general VO
 			List<String> list = getItemValues(returnVal, serviceName);
-			if (list.size() > 0) {
+			if (!list.isEmpty()) {
 				privacyLogService.innerInsertPrivacyLog(getPrivacyLogFromItemList(list, serviceName));
 			}
 		}

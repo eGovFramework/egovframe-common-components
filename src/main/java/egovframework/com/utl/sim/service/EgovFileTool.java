@@ -52,6 +52,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2022.11.11   김혜준       시큐어코딩 처리
  *  2024.10.29   win777	    디렉토리 생성 성공 시 생성된 절대경로를 리턴하도록 변경
  *  2025.02.06   신용호       deleteFile() KISA 시큐어코딩 처리
+ *  2026.07.09   EricSeokgon  지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * </pre>
  */
@@ -366,9 +367,9 @@ public class EgovFileTool {
 			// 파일이며, 존재하면 파싱 시작
 			if (file.exists() && file.isFile()) {
 
-				// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
+				// 1. 파일 텍스트 내용을 읽어서 StringBuilder에 쌓는다.
 				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				StringBuffer strBuff = new StringBuffer();
+				StringBuilder strBuff = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
 					if (line.length() < MAX_STR_LEN) {

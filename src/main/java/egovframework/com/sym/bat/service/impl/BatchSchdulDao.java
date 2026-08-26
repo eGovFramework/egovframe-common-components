@@ -1,5 +1,8 @@
 package egovframework.com.sym.bat.service.impl;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +28,12 @@ import egovframework.com.sym.bat.service.BatchSchdulDfk;
  */
 @Repository("batchSchdulDao")
 public class BatchSchdulDao extends EgovComAbstractDAO {
+
+	/**
+	 * 요일정보 일괄조회 IN 절에 한번에 넣는 배치스케줄ID 개수.
+	 * 지원 DB 중 Oracle의 IN 절 항목 상한(1000개)이 가장 낮고 초과 시 ORA-01795가 발생하므로 그 값을 기준으로 나눈다.
+	 */
+	private static final int DFK_SELECT_ID_SIZE = 1000;
 
 	/**
 	 * 배치스케줄을 삭제한다.
@@ -89,10 +98,28 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 */
 	public List<BatchSchdul> selectBatchSchdulList(BatchSchdul searchVO) {
 		List<BatchSchdul> resultList = selectList("BatchSchdulDao.selectBatchSchdulList", searchVO);
+		if (resultList.isEmpty()) {
+			return resultList;
+		}
+
+		// 스케줄요일정보를 배치스케줄ID 목록으로 일괄 조회한 뒤 ID별로 그룹핑한다. (행별 조회로 인한 N+1 제거)
+		List<String> batchSchdulIds = new ArrayList<>();
+		for (BatchSchdul result : resultList) {
+			batchSchdulIds.add(result.getBatchSchdulId());
+		}
+		Map<String, List<BatchSchdulDfk>> dfkMap = new HashMap<>();
+		for (int fromIndex = 0; fromIndex < batchSchdulIds.size(); fromIndex += DFK_SELECT_ID_SIZE) {
+			int toIndex = Math.min(fromIndex + DFK_SELECT_ID_SIZE, batchSchdulIds.size());
+			List<BatchSchdulDfk> dfkList = selectList("BatchSchdulDao.selectBatchSchdulDfkListByIds",
+					batchSchdulIds.subList(fromIndex, toIndex));
+			for (BatchSchdulDfk dfk : dfkList) {
+				dfkMap.computeIfAbsent(dfk.getBatchSchdulId(), key -> new ArrayList<>()).add(dfk);
+			}
+		}
 
 		for (BatchSchdul result : resultList) {
 			// 스케줄요일정보를 가져온다.
-			List<BatchSchdulDfk> dfkSeList = selectList("BatchSchdulDao.selectBatchSchdulDfkList", result.getBatchSchdulId());
+			List<BatchSchdulDfk> dfkSeList = dfkMap.getOrDefault(result.getBatchSchdulId(), new ArrayList<>());
 			String [] dfkSes = new String [dfkSeList.size()];
 			for (int j = 0; j < dfkSeList.size(); j++) {
 				dfkSes[j] = dfkSeList.get(j).getExecutSchdulDfkSe();

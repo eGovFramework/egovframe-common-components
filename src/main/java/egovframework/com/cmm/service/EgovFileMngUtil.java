@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,7 +55,9 @@ import egovframework.com.cmm.EgovWebUtil;
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2024.12.04  신용호          downFile() KISA 시큐어코딩 처리
  *   2025.05.26  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(공식 매개변수 명명 규칙), CloseResource(리소스 닫기), LocalVariableNamingConventions(지역 변수 명명 규칙), AssignmentInOperand(피연산자의 할당)
- * 
+ *   2026.07.15  EricSeokgon     다운로드 Content-Disposition 헤더 이름 수정
+ *   2026.08.25  이기하          downFile(request, response) 원본 파일명 속성키를 가이드 기준(orginFile)으로 통일
+ *
  *      </pre>
  */
 @Component("EgovFileMngUtil")
@@ -245,22 +248,7 @@ public class EgovFileMngUtil {
 	 */
 	public static void downFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		String downFileName = "";
-		String orgFileName = "";
-
-		if ((String) request.getAttribute("downFile") == null) {
-			downFileName = "";
-		} else {
-			downFileName = (String) request.getAttribute("downFile");
-		}
-
-		if ((String) request.getAttribute("orgFileName") == null) {
-			orgFileName = "";
-		} else {
-			orgFileName = (String) request.getAttribute("orginFile");
-		}
-
-		orgFileName = orgFileName.replaceAll("\r", "").replaceAll("\n", "");
+		String downFileName = resolveRequestAttribute(request, "downFile");
 
 		File file = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH + downFileName));
 		// File file = new File(EgovWebUtil.filePathBlackList(downFileName,FILE_STORE_PATH));
@@ -274,8 +262,7 @@ public class EgovFileMngUtil {
 		}
 
 		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition:",
-				"attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
+		response.setHeader("Content-Disposition", buildContentDispositionHeader(request));
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Expires", "0");
@@ -284,6 +271,32 @@ public class EgovFileMngUtil {
 				BufferedOutputStream outs = new BufferedOutputStream(response.getOutputStream());) {
 			FileCopyUtils.copy(fin, outs);
 		}
+	}
+
+	/**
+	 * request attribute 값을 조회한다. 값이 없으면 빈 문자열을 반환한다.
+	 *
+	 * @param request
+	 * @param attributeName
+	 * @return
+	 */
+	static String resolveRequestAttribute(HttpServletRequest request, String attributeName) {
+		Object attributeValue = request.getAttribute(attributeName);
+		return (attributeValue == null) ? "" : (String) attributeValue;
+	}
+
+	/**
+	 * 표준프레임워크 파일 다운로드 가이드가 안내하는 request attribute("orginFile")에서 원본 파일명을 읽어
+	 * Content-Disposition 응답 헤더값을 구성한다.
+	 *
+	 * @param request
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
+	static String buildContentDispositionHeader(HttpServletRequest request) throws UnsupportedEncodingException {
+		String orgFileName = resolveRequestAttribute(request, "orginFile").replaceAll("\r", "").replaceAll("\n", "");
+
+		return "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8");
 	}
 
 	/**
@@ -369,15 +382,15 @@ public class EgovFileMngUtil {
 			throw new FileNotFoundException(downFilePath);
 		}
 
-		int fSize = (int) file.length();
+		long fSize = file.length();
 		if (fSize > 0) {
 			try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));) {
 				String mimetype = "application/x-msdownload";
 
 				// response.setBufferSize(fSize);
 				response.setContentType(mimetype);
-				response.setHeader("Content-Disposition:", "attachment; filename=" + orgFileName);
-				response.setContentLength(fSize);
+				response.setHeader("Content-Disposition", "attachment; filename=" + orgFileName);
+				response.setContentLengthLong(fSize);
 				// response.setHeader("Content-Transfer-Encoding","binary");
 				// response.setHeader("Pragma","no-cache");
 				// response.setHeader("Expires","0");
@@ -416,7 +429,7 @@ public class EgovFileMngUtil {
 
 		/*
 		 * response.setContentType("application/x-msdownload");
-		 * response.setHeader("Content-Disposition:", "attachment; filename=" + new
+		 * response.setHeader("Content-Disposition", "attachment; filename=" + new
 		 * String(orgFileName.getBytes(),"UTF-8" ));
 		 * response.setHeader("Content-Transfer-Encoding","binary");
 		 * response.setHeader("Pragma","no-cache"); response.setHeader("Expires","0");
