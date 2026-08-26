@@ -1,6 +1,5 @@
 package egovframework.com.sym.log.lgm.web;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
