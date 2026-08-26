@@ -32,7 +32,7 @@ import org.springframework.util.StringUtils;
 
 public class EgovWebUtil {
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().isEmpty()) {
+		if (!StringUtils.hasText(value)) {
 			return "";
 		}
 
