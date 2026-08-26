@@ -8,6 +8,7 @@
  *   2009.01.13     박정규          최초 생성
  *   2009.02.13     이삼섭          내용 추가
  *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
+ *   2026.07.09     EricSeokgon     지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * @author 공통 서비스 개발팀 박정규
  * @since 2009. 01. 13
@@ -194,7 +195,7 @@ public class EgovStringUtil {
 	 * @return sb.toString() 새로운 문자열로 변환된 문자열
 	 */
 	public static String replace(String source, String subject, String object) {
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 		String srcStr = source;
@@ -218,7 +219,7 @@ public class EgovStringUtil {
 	 * @return sb.toString() 새로운 문자열로 변환된 문자열 / source 특정문자열이 없는 경우 원본 문자열
 	 */
 	public static String replaceOnce(String source, String subject, String object) {
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 		if (source.indexOf(subject) >= 0) {
@@ -241,7 +242,7 @@ public class EgovStringUtil {
 	 * @return sb.toString() 새로운 문자열로 변환된 문자열
 	 */
 	public static String replaceChar(String source, String subject, String object) {
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 		String srcStr = source;
@@ -509,7 +510,7 @@ public class EgovStringUtil {
 	public static String checkHtmlView(String strString) {
 		String strNew = "";
 
-		StringBuffer strTxt = new StringBuffer("");
+		StringBuilder strTxt = new StringBuilder("");
 
 		char chrBuff;
 		int len = strString.length();
@@ -826,7 +827,7 @@ public class EgovStringUtil {
 
 		String rtnStr = null;
 
-		StringBuffer strTxt = new StringBuffer("");
+		StringBuilder strTxt = new StringBuilder("");
 
 		char chrBuff;
 		int len = srcString.length();

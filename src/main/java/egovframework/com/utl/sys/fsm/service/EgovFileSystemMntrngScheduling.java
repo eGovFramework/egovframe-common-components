@@ -38,6 +38,7 @@ import jakarta.annotation.Resource;
  *  2017.03.03 	 조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
  *  2022.11.11   김혜준   시큐어코딩 처리
  *  2024.05.02   김수용   NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
+ *  2026.07.10   EricSeokgon   이메일 본문 생성 시 문자열 연결(+=)을 StringBuilder로 변경(불필요한 중간 String 생성 제거)
  *
  */
 
@@ -164,36 +165,38 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
         // 2022.11.11 시큐어코딩 처리
      	if (StringUtils.isNotEmpty(text)) {
 	        text = EgovStringUtil.replace(text, "{모니터링종류}", "파일시스템모니터링");
-	        errorContents = "파일시스템명 : ";
-	        errorContents += target.getFileSysNm();
-	        errorContents += "\n";
-	        errorContents += "파일시스템관리명 : ";
-	        errorContents += target.getFileSysManageNm();
-	        errorContents += "\n";
+	        StringBuilder errorContentsBuilder = new StringBuilder();
+	        errorContentsBuilder.append("파일시스템명 : ");
+	        errorContentsBuilder.append(target.getFileSysNm());
+	        errorContentsBuilder.append("\n");
+	        errorContentsBuilder.append("파일시스템관리명 : ");
+	        errorContentsBuilder.append(target.getFileSysManageNm());
+	        errorContentsBuilder.append("\n");
 	        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
-	        	errorContents += "해당파일의 파일시스템 정보를 가져오는중 에러가 발생하였습니다.";
+	        	errorContentsBuilder.append("해당파일의 파일시스템 정보를 가져오는중 에러가 발생하였습니다.");
 	        }else{
-		        errorContents += "크기 : ";
-		        errorContents += target.getFileSysMg();
-		        errorContents += "GB\n";
-		        errorContents += "임계치 : ";
-		        errorContents += target.getFileSysThrhld();
-		        errorContents += "GB\n";
-		        errorContents += "사용량 : ";
-		        errorContents += target.getFileSysUsgQty();
-		        errorContents += "GB\n";
+		        errorContentsBuilder.append("크기 : ");
+		        errorContentsBuilder.append(target.getFileSysMg());
+		        errorContentsBuilder.append("GB\n");
+		        errorContentsBuilder.append("임계치 : ");
+		        errorContentsBuilder.append(target.getFileSysThrhld());
+		        errorContentsBuilder.append("GB\n");
+		        errorContentsBuilder.append("사용량 : ");
+		        errorContentsBuilder.append(target.getFileSysUsgQty());
+		        errorContentsBuilder.append("GB\n");
 	        }
-	        errorContents += "상태 : ";
-	        errorContents += target.getMntrngSttus();
-	        errorContents += "\n";
-	        errorContents += "모니터링 시각 : ";
-	        errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
-	        errorContents += "\n";
+	        errorContentsBuilder.append("상태 : ");
+	        errorContentsBuilder.append(target.getMntrngSttus());
+	        errorContentsBuilder.append("\n");
+	        errorContentsBuilder.append("모니터링 시각 : ");
+	        errorContentsBuilder.append(EgovDateUtil.convertDate(target.getCreatDt(), "", "", ""));
+	        errorContentsBuilder.append("\n");
 	        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
-	        	errorContents += target.getFileSysManageNm() + " 의 파일시스템 상태가 비정상입니다.  \n로그를 확인해주세요.";
+	        	errorContentsBuilder.append(target.getFileSysManageNm()).append(" 의 파일시스템 상태가 비정상입니다.  \n로그를 확인해주세요.");
 	        }else{
-	        	errorContents += target.getFileSysManageNm() + " 의 파일시스템이 임계치를 넘었습니다.";
+	        	errorContentsBuilder.append(target.getFileSysManageNm()).append(" 의 파일시스템이 임계치를 넘었습니다.");
 	        }
+	        errorContents = errorContentsBuilder.toString();
 	        text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
 	        msg.setText(text);
      	}
