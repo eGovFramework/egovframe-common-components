@@ -219,11 +219,7 @@ public class EgovFormatCheckUtil {
 		}
 	 }	// 메일 주소의 형식 체크(xxx.xxx 형태)
 
-	 if(count == 1) {
-		return true;
-	} else {
-		return false;
-	}
+	 return count == 1;
 
     }
 
