@@ -55,6 +55,7 @@ import egovframework.com.cmm.EgovWebUtil;
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2024.12.04  신용호          downFile() KISA 시큐어코딩 처리
  *   2025.05.26  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(공식 매개변수 명명 규칙), CloseResource(리소스 닫기), LocalVariableNamingConventions(지역 변수 명명 규칙), AssignmentInOperand(피연산자의 할당)
+ *   2026.07.15  EricSeokgon     다운로드 Content-Disposition 헤더 이름 수정
  *   2026.08.25  이기하          downFile(request, response) 원본 파일명 속성키를 가이드 기준(orginFile)으로 통일
  *
  *      </pre>
@@ -389,7 +390,7 @@ public class EgovFileMngUtil {
 				// response.setBufferSize(fSize);
 				response.setContentType(mimetype);
 				response.setHeader("Content-Disposition", "attachment; filename=" + orgFileName);
-				response.setContentLength(fSize);
+				response.setContentLengthLong(fSize);
 				// response.setHeader("Content-Transfer-Encoding","binary");
 				// response.setHeader("Pragma","no-cache");
 				// response.setHeader("Expires","0");
