@@ -432,6 +432,9 @@ public class EgovAnnvrsryManageController {
 		 * annvrsryManageVO.setAnnvrsryDe(sAnnvrsryDe_Temp); }
 		 */
 		AnnvrsryManageVO resultVO = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
+		if (resultVO == null) {
+			throw new IllegalStateException("권한이 없습니다.");
+		}
 		sAnnvrsryDe = EgovStringUtil.removeMinusChar(resultVO.getAnnvrsryDe());
 		if ("1".equals(resultVO.getCldrSe())) {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");// 양
