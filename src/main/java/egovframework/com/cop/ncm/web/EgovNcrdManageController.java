@@ -114,7 +114,7 @@ public class EgovNcrdManageController {
      * @throws Exception
      */
 
-    @RequestMapping("/cop/ncm/deleteNcrdInf.do")
+    @PostMapping("/cop/ncm/deleteNcrdInf.do")
     public String deleteNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
 	    ModelMap model) throws Exception {
 
@@ -195,7 +195,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/selectNcrdInf.do")
+    @PostMapping("/cop/ncm/selectNcrdInf.do")
     public String selectNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
             ModelMap model) throws Exception {
 
@@ -226,7 +226,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/updateNcrdInf.do")
+    @PostMapping("/cop/ncm/updateNcrdInf.do")
     public String updateNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, @RequestParam("ncrdNm") String ncrdNm,
 	    @Valid @ModelAttribute("nameCard") NameCard nameCard, BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
