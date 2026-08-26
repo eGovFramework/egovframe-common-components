@@ -173,7 +173,7 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 	        errorContentsBuilder.append(target.getFileSysManageNm());
 	        errorContentsBuilder.append("\n");
 	        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
-	        	errorContentsBuilder.append("해당파일의 파일시스템 정보를 가져오는중 에러가 발생하였습니다.");
+		        errorContentsBuilder.append("해당파일의 파일시스템 정보를 가져오는중 에러가 발생하였습니다.");
 	        }else{
 		        errorContentsBuilder.append("크기 : ");
 		        errorContentsBuilder.append(target.getFileSysMg());
@@ -192,9 +192,9 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 	        errorContentsBuilder.append(EgovDateUtil.convertDate(target.getCreatDt(), "", "", ""));
 	        errorContentsBuilder.append("\n");
 	        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
-	        	errorContentsBuilder.append(target.getFileSysManageNm()).append(" 의 파일시스템 상태가 비정상입니다.  \n로그를 확인해주세요.");
+		        errorContentsBuilder.append(target.getFileSysManageNm()).append(" 의 파일시스템 상태가 비정상입니다.  \n로그를 확인해주세요.");
 	        }else{
-	        	errorContentsBuilder.append(target.getFileSysManageNm()).append(" 의 파일시스템이 임계치를 넘었습니다.");
+		        errorContentsBuilder.append(target.getFileSysManageNm()).append(" 의 파일시스템이 임계치를 넘었습니다.");
 	        }
 	        errorContents = errorContentsBuilder.toString();
 	        text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
