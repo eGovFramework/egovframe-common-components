@@ -3,8 +3,6 @@ package egovframework.com.cop.bbs.service;
 import java.util.List;
 import java.util.Map;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-
 import egovframework.com.cmm.LoginVO;
 
 /**
@@ -14,6 +12,7 @@ import egovframework.com.cmm.LoginVO;
  *   수정일			수정자		수정내용
  *  -------			--------	---------------------------
  *   2024.10.29		inganyoyo	Controller는 Transaction 처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
+ *   2026.07.06		이백행		[2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
@@ -23,13 +22,13 @@ public interface EgovBBSMasterService {
 
 	void deleteBBSMasterInf(BoardMaster boardMaster);
 
-	void updateBBSMasterInf(BoardMaster boardMaster) throws Exception;
+	void updateBBSMasterInf(BoardMaster boardMaster);
 
 	BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) throws Exception;
 
 	Map<String, Object> selectBBSMasterInfs(BoardMasterVO boardMasterVO);
 	
-	void insertBBSMasterInf(BoardMaster boardMaster) throws Exception;
+	void insertBBSMasterInf(BoardMaster boardMaster);
 
 	/*
 	 * 블로그 관련
@@ -42,14 +41,14 @@ public interface EgovBBSMasterService {
 
 	void insertBoardBlogUserRqst(BlogUser blogUser);
 	
-	void insertBlogMaster(Blog blog) throws FdlException;
+	void insertBlogMaster(Blog blog);
 
-  void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user) throws Exception;
+  void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user);
 
 	BlogVO selectBlogDetail(BlogVO blogVO) throws Exception;
 
-	List<BlogVO> selectBlogListPortlet(BlogVO blogVO) throws Exception;
+	List<BlogVO> selectBlogListPortlet(BlogVO blogVO);
 
-	List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO) throws Exception;
+	List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO);
 
 }
