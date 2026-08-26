@@ -121,8 +121,9 @@ public class EgovPrivacyLogAspect {
 
 		for (Map.Entry<String, String> entry : target.entrySet()) {
 			String key = entry.getKey();
+			Object value = data.get(key);
 			// 조회된 데이터가 없으면 생략
-			if (data.containsKey(key) && data.get(key) != null && !data.get(key).toString().trim().equals("")) {
+			if (value != null && !value.toString().trim().equals("")) {
 				list.add(entry.getValue());
 				LOGGER.debug("Service ('{}') : inquired data = {}", serviceName, key);
 			}

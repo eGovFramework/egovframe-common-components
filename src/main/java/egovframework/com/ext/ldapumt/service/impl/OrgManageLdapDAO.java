@@ -126,13 +126,14 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	private void introspect(LdapObject vo, Executable e) {
 		Map<Object, Object> introspected = new BeanMap(vo);
 
-		for (Object key : introspected.keySet()) {
-			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
-					|| introspected.get(key).equals("")) {
+		for (Map.Entry<Object, Object> entry : introspected.entrySet()) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			if (key.equals("dn") || key.equals("class") || value == null || value.equals("")) {
 				continue;
 			}
 
-			e.execute((String) key, introspected.get(key));
+			e.execute((String) key, value);
 		}
 
 	}
