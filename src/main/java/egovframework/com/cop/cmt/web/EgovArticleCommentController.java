@@ -178,17 +178,14 @@ public class EgovArticleCommentController {
      * @throws Exception
      */
     @PostMapping("/cop/cmt/deleteArticleComment.do")
-    public String deleteArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
-    		ModelMap model, @RequestParam HashMap<String, String> map, HttpServletRequest request) throws Exception {
+    public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
+    		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
-		    // 작성자 본인만 삭제 가능하도록 소유권 검증 (댓글은 로그인 사용자 명의로만 등록됨)
-		    CommentVO storedComment = egovArticleCommentService.selectArticleCommentDetail(commentVO);
-		    EgovXssChecker.checkerUserXss(request, storedComment == null ? null : storedComment.getFrstRegisterId());
-
+		    checkCommentOwner(request, commentVO.getCommentNo());
 		    egovArticleCommentService.deleteArticleComment(commentVO);
 		}
 
@@ -270,8 +267,8 @@ public class EgovArticleCommentController {
      * @throws Exception
      */
     @PostMapping("/cop/cmt/updateArticleComment.do")
-    public String updateArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
-	    BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
+    public String updateArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
+	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -283,10 +280,7 @@ public class EgovArticleCommentController {
 		}
 
 		if (isAuthenticated) {
-		    // 작성자 본인만 수정 가능하도록 소유권 검증 (댓글은 로그인 사용자 명의로만 등록됨)
-		    CommentVO storedComment = egovArticleCommentService.selectArticleCommentDetail(commentVO);
-		    EgovXssChecker.checkerUserXss(request, storedComment == null ? null : storedComment.getFrstRegisterId());
-
+		    checkCommentOwner(request, comment.getCommentNo());
 		    comment.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    egovArticleCommentService.updateArticleComment(comment);
@@ -296,6 +290,14 @@ public class EgovArticleCommentController {
 		}
 
 		return "forward:/cop/bbs/selectArticleDetail.do";
+    }
+
+    private void checkCommentOwner(HttpServletRequest request, String commentNo) throws Exception {
+		CommentVO ownerVO = new CommentVO();
+		ownerVO.setCommentNo(commentNo);
+
+		CommentVO data = egovArticleCommentService.selectArticleCommentDetail(ownerVO);
+		EgovXssChecker.checkerUserXss(request, data == null ? null : data.getWrterId());
     }
 
 

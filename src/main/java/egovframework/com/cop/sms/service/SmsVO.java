@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * 문자메시지 서비스를 위한 VO 클래스
  * @author 공통컴포넌트개발팀 한성곤

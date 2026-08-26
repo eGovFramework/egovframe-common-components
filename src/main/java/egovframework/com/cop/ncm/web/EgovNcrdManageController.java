@@ -16,12 +16,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.ncm.service.EgovNcrdManageService;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
 import egovframework.com.cop.ncm.service.NameCardVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -113,7 +115,7 @@ public class EgovNcrdManageController {
      */
 
     @PostMapping("/cop/ncm/deleteNcrdInf.do")
-    public String deleteNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
+    public String deleteNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
 	    ModelMap model) throws Exception {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -122,6 +124,9 @@ public class EgovNcrdManageController {
     if(!isAuthenticated) {
         return "redirect:/uat/uia/egovLoginUsr.do";
     }
+
+	NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
+	EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
 
 	ncrdVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -191,7 +196,8 @@ public class EgovNcrdManageController {
      * @throws Exception
      */
     @PostMapping("/cop/ncm/selectNcrdInf.do")
-    public String selectNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
+    public String selectNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
+            ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -203,6 +209,7 @@ public class EgovNcrdManageController {
 		ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
+		EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
 
 		model.addAttribute("ncrdVO", vo);
 
@@ -220,7 +227,7 @@ public class EgovNcrdManageController {
      * @throws Exception
      */
     @PostMapping("/cop/ncm/updateNcrdInf.do")
-    public String updateNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, @RequestParam("ncrdNm") String ncrdNm,
+    public String updateNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, @RequestParam("ncrdNm") String ncrdNm,
 	    @Valid @ModelAttribute("nameCard") NameCard nameCard, BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -228,6 +235,9 @@ public class EgovNcrdManageController {
 	    if(!isAuthenticated) {
 	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
+
+		NameCardVO owner = ncrdService.selectNcrdItem(ncrdVO);
+		EgovXssChecker.checkerUserXss(request, owner == null ? null : owner.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 		    ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -341,15 +351,17 @@ public class EgovNcrdManageController {
     @PostMapping("/cop/ncm/updateNcrdUseInf.do")
     public String updateNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
-		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		ncrdUser.setUseAt("N");
-
-		if (isAuthenticated) {
-		    ncrdService.updateNcrdUseInf(ncrdUser);
+		if(!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		ncrdUser.setUseAt("N");
+		ncrdUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+
+		ncrdService.updateNcrdUseInf(ncrdUser);
 
 		return "forward:/cop/ncm/selectMyNcrdUseInf.do";
     }

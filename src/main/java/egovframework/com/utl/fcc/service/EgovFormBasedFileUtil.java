@@ -241,8 +241,8 @@ public class EgovFormBasedFileUtil {
 		if (mimeType != null) {
 			Map<String, String> contentTypeWL = getContentTypeWL();
 			if (contentTypeWL != null) {
-				for (String ext : contentTypeWL.keySet()) {
-					String matchMimeType = contentTypeWL.get(ext);
+				for (Map.Entry<String, String> entry : contentTypeWL.entrySet()) {
+					String matchMimeType = entry.getValue();
 					if (matchMimeType.equals(mimeType)) {
 						response.setContentType(matchMimeType); // 지정된 값이므로 안전
 						contentTypeFlag = true;

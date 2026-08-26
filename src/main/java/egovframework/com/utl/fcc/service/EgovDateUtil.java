@@ -259,11 +259,7 @@ public class EgovDateUtil {
 
 			Date result = formatter.parse(year + "." + month + "." + day);
 			String resultStr = formatter.format(result);
-			if (resultStr.equalsIgnoreCase(year + "." + month + "." + day)) {
-				return true;
-			} else {
-				return false;
-			}
+			return resultStr.equalsIgnoreCase(year + "." + month + "." + day);
 		} catch (ParseException e) {
 			return false;
 		}

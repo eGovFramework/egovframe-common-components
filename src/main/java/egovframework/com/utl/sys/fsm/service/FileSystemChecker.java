@@ -179,17 +179,17 @@ public class FileSystemChecker {
 		// build and run the 'dir' command
 		String flags = "-";
 
-		if (osName.indexOf("hp-ux") == -1) {
+		if (!osName.contains("hp-ux")) {
 			flags += "k";
 		}
 
-		if (osName.indexOf("aix") != -1) {
+		if (osName.contains("aix")) {
 			flags += "P";
 		}
 
 		String dfCommand = "df";
 
-		if (osName.indexOf("hp-ux") != -1) {
+		if (osName.contains("hp-ux")) {
 			dfCommand = "bdf";
 		}
 

@@ -113,11 +113,7 @@ public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 		if(cmmntyUser==null) {
 			return false;
-		} else if(cmmntyUser.getMngrAt().equals("Y")) {
-			return true;
-		} else {
-			return false;
-		}
+		} else return cmmntyUser.getMngrAt().equals("Y");
 	}
 
 	@Override

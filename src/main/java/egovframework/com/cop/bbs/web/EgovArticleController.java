@@ -881,20 +881,23 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/deleteGuestArticle.do")
-	public String deleteGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("articleVO") Board board,
-			ModelMap model) throws Exception {
+	public String deleteGuestList(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
+			@Valid @ModelAttribute("articleVO") Board board, ModelMap model) throws Exception {
 		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
-			// 익명 게시글은 작성비밀번호가 유일한 인가 수단이므로 서버측에서 반드시 검증한다.
 			BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
+			EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+
+			// 익명 게시글은 작성비밀번호가 유일한 인가 수단이므로 서버측에서 반드시 검증한다.
 			if (vo.getPassword() == null || board.getPassword() == null
 					|| !vo.getPassword().equals(board.getPassword())) {
 				model.addAttribute("msg", egovMessageSource.getMessage("cop.password.not.same.msg"));
 				return "forward:/cop/bbs/selectGuestArticleList.do";
 			}
+
 			egovArticleService.deleteArticle(boardVO);
 		}
 
@@ -911,7 +914,7 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/updateGuestArticleView.do")
-	public String updateGuestArticleView(@ModelAttribute("searchVO") BoardVO boardVO,
+	public String updateGuestArticleView(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("boardMasterVO") BoardMasterVO brdMstrVO, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -925,6 +928,7 @@ public class EgovArticleController {
 		model.addAttribute("sessionUniqId", (user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
 		BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
+		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
 
 		boardVO.setBbsId(boardVO.getBbsId());
 		boardVO.setBbsNm(boardVO.getBbsNm());
@@ -965,8 +969,8 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/updateGuestArticle.do")
-	public String updateGuestArticle(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute Board board,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+	public String updateGuestArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
+			@Valid @ModelAttribute Board board, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// BBST02, BBST04
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -975,6 +979,9 @@ public class EgovArticleController {
 		if (!isAuthenticated) { // KISA 보안취약점 조치 (2018-12-10, 이정은)
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		BoardVO article = egovArticleService.selectArticleDetail(boardVO);
+		EgovXssChecker.checkerUserXss(request, article.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 
