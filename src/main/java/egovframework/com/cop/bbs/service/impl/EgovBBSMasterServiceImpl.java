@@ -195,7 +195,7 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 		bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
 	} catch (FdlException e) {
 		throw new BaseRuntimeException(e);
-	} 
+	}
 
     blog.setRegistSeCode("REGC02");
     blog.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
