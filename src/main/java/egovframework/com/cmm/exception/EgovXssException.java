@@ -26,7 +26,7 @@ public class EgovXssException extends BaseRuntimeException {
 	/**
 	 * EgovXssException 생성자.
 	 *
-	 * @param defaultMessage 메세지 지정
+	 * @param defaultMessage 메시지 지정
 	 * @param wrappedException 원인 Exception
 	 */
 	public EgovXssException(String message, String messageKey) {
