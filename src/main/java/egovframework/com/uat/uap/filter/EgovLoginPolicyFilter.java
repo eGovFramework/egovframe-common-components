@@ -87,6 +87,7 @@ public class EgovLoginPolicyFilter implements Filter {
 
 		if (id == null || userSe == null) {
 			((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/uat/uia/egovLoginUsr.do");
+			return;
 		}
 
 		// 1. LoginVO를 DB로 부터 가져오는 과정
