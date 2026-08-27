@@ -489,7 +489,6 @@ public class EgovQustnrTmplatManageController {
 		}
 		// 유효성 검증, 실패시 포워딩
 				if(bindingResult.hasErrors()) {
-					System.out.println("####파라미터검증에러"+ bindingResult.getAllErrors());//확인용 로그
 					String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 					String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
