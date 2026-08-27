@@ -415,6 +415,12 @@ public class EgovAddressBookController {
 
         AddressBookVO tempAdbkVO = adbkService.selectAdressBook(adbkVO);
 
+        // 서비스가 조회 결과 없음을 그대로 돌려주므로(EgovAddressBookServiceImpl 의 null 검사)
+        // 확인한 뒤 사용한다. 없는 주소록이면 목록으로 돌려보낸다.
+        if (tempAdbkVO == null) {
+            return "forward:/cop/adb/selectAdbkList.do";
+        }
+
         AddressBookUserVO adbkUserVO = new AddressBookUserVO();
 
         boolean writer = false;
