@@ -30,6 +30,7 @@ class EgovVcatnManageControllerOwnershipTest {
 
 	private static final String OWNER_UNIQ_ID = "USRCNFRM_00000000001";
 	private static final String VICTIM_UNIQ_ID = "USRCNFRM_00000000009";
+	private static final String ADMIN_UNIQ_ID = "USRCNFRM_00000000002";
 
 	/** updtVcatnManage에 실제로 전달된 VO를 그대로 기록하는 스텁. */
 	private static final class StubService implements EgovVcatnManageService {
@@ -98,6 +99,10 @@ class EgovVcatnManageControllerOwnershipTest {
 	}
 
 	private static void bindLoginUser(String uniqId) {
+		bindLoginUser(uniqId, List.of());
+	}
+
+	private static void bindLoginUser(String uniqId, List<String> authorities) {
 		LoginVO login = new LoginVO();
 		login.setUniqId(uniqId);
 		EgovUserDetailsService stub = new EgovUserDetailsService() {
@@ -108,7 +113,7 @@ class EgovVcatnManageControllerOwnershipTest {
 
 			@Override
 			public List<String> getAuthorities() {
-				return List.of();
+				return authorities;
 			}
 
 			@Override
@@ -137,7 +142,7 @@ class EgovVcatnManageControllerOwnershipTest {
 	}
 
 	@Test
-	void updtVcatnManageForcesApplcntIdToTheLoggedInUserEvenIfTheFormClaimsSomeoneElse() throws Exception {
+	void updtVcatnManageIgnoresAForgedApplcntIdAndKeepsTheRecordOwner() throws Exception {
 		StubService service = new StubService();
 		EgovVcatnManageController controller = controllerWith(service);
 		bindLoginUser(OWNER_UNIQ_ID);
@@ -159,6 +164,34 @@ class EgovVcatnManageControllerOwnershipTest {
 		controller.updtVcatnManage(vcatnManageVO, bindingResult, status, model);
 
 		assertEquals(OWNER_UNIQ_ID, service.lastUpdtArg.getApplcntId(),
-				"수정 경로는 재등록되는 신청자ID를 폼 제출값이 아니라 로그인 사용자로 강제해야 한다.");
+				"수정 경로는 재등록되는 신청자ID를 폼 제출값이 아니라 삭제 대상 레코드의 소유자로 강제해야 한다.");
+	}
+
+	@Test
+	void updtVcatnManageKeepsTheOriginalOwnerWhenAnAdministratorEditsSomeoneElsesLeave() throws Exception {
+		StubService service = new StubService();
+		EgovVcatnManageController controller = controllerWith(service);
+		bindLoginUser(ADMIN_UNIQ_ID, List.of("ROLE_ADMIN"));
+
+		VcatnManageVO vcatnManageVO = new VcatnManageVO();
+		// 관리자가 타인(VICTIM)의 휴가를 수정한다. 삭제는 서비스 계층에서 ROLE_ADMIN 으로 허용된다.
+		vcatnManageVO.setApplcntIdKey(VICTIM_UNIQ_ID);
+		vcatnManageVO.setVcatnSeKey("01");
+		vcatnManageVO.setBgndeKey("20260101");
+		vcatnManageVO.setEnddeKey("20260101");
+		vcatnManageVO.setApplcntId(VICTIM_UNIQ_ID);
+		vcatnManageVO.setVcatnSe("01");
+		vcatnManageVO.setBgnde("20260102");
+		vcatnManageVO.setEndde("20260102");
+
+		BindingResult bindingResult = new BeanPropertyBindingResult(vcatnManageVO, "vcatnManageVO");
+		SessionStatus status = new SimpleSessionStatus();
+		ModelMap model = new ModelMap();
+
+		controller.updtVcatnManage(vcatnManageVO, bindingResult, status, model);
+
+		assertEquals(VICTIM_UNIQ_ID, service.lastUpdtArg.getApplcntId(),
+				"관리자가 타인의 휴가를 수정해도 재등록되는 신청자ID는 원래 소유자여야 한다."
+						+ " 로그인 사용자로 덮으면 소유자와 연차 차감 대상이 관리자로 바뀐다.");
 	}
 }
