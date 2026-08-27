@@ -259,7 +259,10 @@ public class EgovMenuManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageListDetailSelect.do";
+			// 검증 실패 시 수정 폼을 다시 그린다. 입력값과 오류 메시지는 menuManageVO로 유지된다.
+			// 형제 핸들러(insertMenuManage)와 동일하게 뷰 이름을 직접 반환한다 —
+			// 재표시 forward 대상 selectMenuManage는 수정 폼이 보내지 않는 req_menuNo를 필수로 요구한다.
+			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuDetailSelectUpdt";
 			return sLocationUrl;
 		}
 		ComDefaultVO searchVO = new ComDefaultVO();
