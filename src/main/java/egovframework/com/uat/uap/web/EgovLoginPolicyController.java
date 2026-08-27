@@ -143,6 +143,7 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/addLoginPolicy.do")
+	@RequireAdmin
 	public String insertLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
                                      ModelMap model) throws Exception {
@@ -173,6 +174,7 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/updtLoginPolicy.do")
+	@RequireAdmin
 	public String updateLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
                                      ModelMap model) throws Exception {
@@ -201,6 +203,7 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/removeLoginPolicy.do")
+	@RequireAdmin
 	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
                                      ModelMap model) throws Exception {
 
