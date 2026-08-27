@@ -248,7 +248,15 @@ public class EgovRwardManageController {
 			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
 
+		// 신청자 본인 또는 관리자만 수정 가능하도록 소유권 검증
+		RwardManageVO stored = egovRwardManageService.selectRwardManage(rwardManageVO);
+		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+
 		if (bindingResult.hasErrors()) {
+			// 수정화면 진입(EgovRwardManageDetail.do?cmd=updt)과 동일하게 포상구분 코드목록을 다시 담는다.
+			ComDefaultCodeVO rwardCdVo = new ComDefaultCodeVO();
+			rwardCdVo.setCodeId("COM055");
+			model.addAttribute("rwardCodeList", cmmUseService.selectCmmCodeDetail(rwardCdVo));
 			model.addAttribute("rwardManageVO", rwardManageVO);
 			model.addAttribute("rwardManage", rwardManage);
 			return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
@@ -298,6 +306,12 @@ public class EgovRwardManageController {
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
+
+		// 신청자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
+		RwardManageVO storedForDelete = new RwardManageVO();
+		storedForDelete.setRwardId(rwardManage.getRwardId());
+		RwardManageVO stored = egovRwardManageService.selectRwardManage(storedForDelete);
+		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
 
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 
@@ -380,6 +394,10 @@ public class EgovRwardManageController {
 		// 등록 상세정보
 		RwardManageVO rwardManageVOTemp = egovRwardManageService.selectRwardManage(rwardManageVO);
 
+		// 지정된 승인권자 또는 관리자만 승인상세를 열람 가능하도록 소유권 검증
+		// (EgovRwardConfmList.do가 SANCTNER_ID=로그인 uniqId로만 목록을 필터링하는 것과 동일한 경계)
+		egovAssertAdminOrOwner(rwardManageVOTemp == null ? null : rwardManageVOTemp.getSanctnerId());
+
 		RwardManage rwardManageTemp = new RwardManage();
 
 		rwardManageTemp.setRwardId(rwardManageVOTemp.getRwardId());
@@ -415,6 +433,12 @@ public class EgovRwardManageController {
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		// 지정된 승인권자(SANCTNER_ID) 또는 관리자만 승인·반려 처리 가능하도록 검증
+		RwardManageVO storedForConfm = new RwardManageVO();
+		storedForConfm.setRwardId(rwardManage.getRwardId());
+		RwardManageVO storedConfm = egovRwardManageService.selectRwardManage(storedForConfm);
+		egovAssertAdminOrOwner(storedConfm == null ? null : storedConfm.getSanctnerId());
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("rwardManageVO", rwardManage);
