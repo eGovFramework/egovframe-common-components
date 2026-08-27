@@ -378,21 +378,7 @@ public class EgovEntrprsManageController {
 			@ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
 			@RequestParam Map<String, Object> commandMap, Model model) throws Exception {
 
-		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
-
-		comDefaultCodeVO.setCodeId("COM022");
-		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		comDefaultCodeVO.setCodeId("COM014");
-		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		comDefaultCodeVO.setCodeId("COM026");
-		List<CmmnDetailCode> entrprsSeCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		comDefaultCodeVO.setCodeId("COM027");
-		List<CmmnDetailCode> indutyCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-
-		model.addAttribute("passwordHint_result", passwordHintResult);
-		model.addAttribute("sexdstnCode_result", sexdstnCodeResult);
-		model.addAttribute("entrprsSeCode_result", entrprsSeCodeResult);
-		model.addAttribute("indutyCode_result", indutyCodeResult);
+		addEntrprsSbscrbCodeListToModel(model);
 
 		if (!"".equals(commandMap.get("realname"))) {
 			model.addAttribute("applcntNm", commandMap.get("realname"));
@@ -411,15 +397,17 @@ public class EgovEntrprsManageController {
 	 * 
 	 * @param entrprsManageInsertVO 기업회원가입신청정보 (비밀번호 검증 포함)
 	 * @param bindingResult         입력값검증용 bindingResult
+	 * @param model                 화면모델
 	 * @return forward:/uat/uia/egovLoginUsr.do
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovEntrprsSbscrb.do", method = RequestMethod.POST)
 	public String sbscrbEntrprsMber(@Valid @ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
-			BindingResult bindingResult)
+			BindingResult bindingResult, Model model)
 			throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			addEntrprsSbscrbCodeListToModel(model);
 			return "egovframework/com/uss/umt/EgovEntrprsSbscrb";
 		}
 
@@ -534,6 +522,24 @@ public class EgovEntrprsManageController {
 		model.addAttribute("entrprsPasswordManageVO", entrprsPasswordManageVO);
 		model.addAttribute("userSearchVO", userSearchVO);
 		return "egovframework/com/uss/umt/EgovEntrprsPasswordUpdt";
+	}
+
+	private void addEntrprsSbscrbCodeListToModel(Model model) {
+		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+
+		comDefaultCodeVO.setCodeId("COM022");
+		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		comDefaultCodeVO.setCodeId("COM014");
+		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		comDefaultCodeVO.setCodeId("COM026");
+		List<CmmnDetailCode> entrprsSeCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		comDefaultCodeVO.setCodeId("COM027");
+		List<CmmnDetailCode> indutyCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+
+		model.addAttribute("passwordHint_result", passwordHintResult);
+		model.addAttribute("sexdstnCode_result", sexdstnCodeResult);
+		model.addAttribute("entrprsSeCode_result", entrprsSeCodeResult);
+		model.addAttribute("indutyCode_result", indutyCodeResult);
 	}
 
 	private void addEntrprsCodeListToModel(Model model) throws Exception {
