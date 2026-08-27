@@ -626,7 +626,7 @@ public class EgovArticleController {
 		BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
 
 		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(multiRequest, vo.getFrstRegisterId());
+		EgovXssChecker.checkerUserXss(multiRequest, vo == null ? null : vo.getFrstRegisterId());
 		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
 		// --------------------------------------------------------
 		// @ XSS 대응 권한체크 체크 END
@@ -699,7 +699,7 @@ public class EgovArticleController {
 		BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
 
 		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+		EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
 		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
 		// --------------------------------------------------------
 		// @ XSS 대응 권한체크 체크 END
@@ -889,7 +889,7 @@ public class EgovArticleController {
 
 		if (isAuthenticated) {
 			BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
-			EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+			EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
 
 			// 익명 게시글은 작성비밀번호가 유일한 인가 수단이므로 서버측에서 반드시 검증한다.
 			if (vo.getPassword() == null || board.getPassword() == null
@@ -928,7 +928,7 @@ public class EgovArticleController {
 		model.addAttribute("sessionUniqId", (user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
 		BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+		EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
 
 		boardVO.setBbsId(boardVO.getBbsId());
 		boardVO.setBbsNm(boardVO.getBbsNm());
@@ -981,7 +981,7 @@ public class EgovArticleController {
 		}
 
 		BoardVO article = egovArticleService.selectArticleDetail(boardVO);
-		EgovXssChecker.checkerUserXss(request, article.getFrstRegisterId());
+		EgovXssChecker.checkerUserXss(request, article == null ? null : article.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 
