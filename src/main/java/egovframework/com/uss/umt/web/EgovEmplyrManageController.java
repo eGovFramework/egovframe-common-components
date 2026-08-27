@@ -192,7 +192,7 @@ public class EgovEmplyrManageController {
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrInsert.do")
 	@RequireAdmin
-	public String insertUser(@Valid @ModelAttribute("userManageVO") EmplyrManageInsertVO emplyrManageInsertVO, 
+	public String insertUser(@Valid @ModelAttribute("emplyrManageVO") EmplyrManageInsertVO emplyrManageInsertVO, 
 			BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -203,6 +203,35 @@ public class EgovEmplyrManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
+
+			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+
+			// 패스워드힌트목록을 코드정보로부터 조회
+			comDefaultCodeVO.setCodeId("COM022");
+			List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 성별구분코드를 코드정보로부터 조회
+			comDefaultCodeVO.setCodeId("COM014");
+			List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 사용자상태코드를 코드정보로부터 조회
+			comDefaultCodeVO.setCodeId("COM013");
+			List<CmmnDetailCode> emplyrSttusCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 소속기관코드를 코드정보로부터 조회 - COM025
+			comDefaultCodeVO.setCodeId("COM025");
+			List<CmmnDetailCode> insttCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 조직정보를 조회 - ORGNZT_ID정보
+			comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+			List<CmmnDetailCode> orgnztIdResult = cmmUseService.selectOgrnztIdDetail(comDefaultCodeVO);
+			// 그룹정보를 조회 - GROUP_ID정보
+			comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+			List<CmmnDetailCode> groupIdResult = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
+
+			model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+			model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
+			model.addAttribute("emplyrSttusCode_result", emplyrSttusCodeResult);// 사용자상태코드목록
+			model.addAttribute("insttCode_result", insttCodeResult); // 소속기관코드목록
+			model.addAttribute("orgnztId_result", orgnztIdResult); // 조직정보 목록
+			model.addAttribute("groupId_result", groupIdResult); // 그룹정보 목록
+
 			return "egovframework/com/uss/umt/EgovEmplyrInsert";
 		} else {
 			if ("".equals(emplyrManageInsertVO.getOrgnztId())) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
