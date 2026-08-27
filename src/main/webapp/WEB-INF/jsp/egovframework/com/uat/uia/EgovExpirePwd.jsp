@@ -44,7 +44,7 @@ function fnPasswordMoveMber(){
 }
 // 업무사용자 (TEST1/webmaster)
 function fnPasswordMoveUser(){
-	document.pwdManage.action = "<c:url value='/uss/umt/EgovUserPasswordUpdtView.do'/>";
+	document.pwdManage.action = "<c:url value='/uss/umt/EgovEmplyrPasswordUpdtView.do'/>";
     document.pwdManage.submit();
 }
 
