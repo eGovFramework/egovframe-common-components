@@ -126,6 +126,7 @@ public class EgovBackupOpertController {
 	 * @exception Exception Exception
 	 */
     @PostMapping("/sym/sym/bak/addBackupOpert.do")
+	@RequireAdmin
 	public String insertBackupOpert(@ModelAttribute("searchVO") BackupOpert searchVO,
 			@Valid @ModelAttribute("backupOpert") BackupOpert backupOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
@@ -274,6 +275,7 @@ public class EgovBackupOpertController {
 	 * @exception Exception Exception
 	 */
 	@PostMapping("/sym/sym/bak/updateBackupOpert.do")
+	@RequireAdmin
 	public String updateBackupOpert(@ModelAttribute("searchVO") BackupOpert searchVO,
 			@Valid @ModelAttribute("backupOpert") BackupOpert backupOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
