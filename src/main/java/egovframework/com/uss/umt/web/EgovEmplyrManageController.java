@@ -192,7 +192,7 @@ public class EgovEmplyrManageController {
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrInsert.do")
 	@RequireAdmin
-	public String insertUser(@Valid @ModelAttribute("emplyrManageVO") EmplyrManageInsertVO emplyrManageInsertVO, 
+	public String insertUser(@Valid @ModelAttribute("emplyrManageVO") EmplyrManageInsertVO emplyrManageInsertVO,
 			BindingResult bindingResult,
 			Model model) throws Exception {
 
