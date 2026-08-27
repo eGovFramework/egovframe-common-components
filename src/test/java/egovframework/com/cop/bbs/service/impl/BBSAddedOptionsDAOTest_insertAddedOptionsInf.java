@@ -1,6 +1,6 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
@@ -37,7 +37,7 @@ public class BBSAddedOptionsDAOTest_insertAddedOptionsInf extends EgovAbstractTe
 		log.debug("result={}", result);
 
 		// then
-		assertThat(result).isGreaterThan(0);
+		assertTrue(result > 0);
 	}
 
 }
