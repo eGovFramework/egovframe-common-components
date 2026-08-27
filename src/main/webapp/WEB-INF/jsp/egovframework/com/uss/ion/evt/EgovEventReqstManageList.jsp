@@ -40,6 +40,15 @@
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
+ * 초기화 함수
+ ******************************************************** */
+function fn_egov_init_evt(){
+	if("${eventAtdrnExist}" == "true"){
+		alert("<spring:message code="comUssIonEvt.eventReqstManageList.eventAtdrnExist" />");/* 참가신청자가 있는 행사는 삭제할 수 없습니다. */
+	}
+}
+
+/* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
  /*설명 : 행사 목록 페이지 조회 */
@@ -111,7 +120,7 @@ function fncEventReqstAtdrnList(eventId){
 -->
 </script>
 </head>
-<body>
+<body onLoad="fn_egov_init_evt()">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
