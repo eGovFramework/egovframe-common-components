@@ -466,6 +466,17 @@ public class EgovDeptJobController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+		// 함에 부서업무가 남아 있으면 삭제하지 않는다.
+		// 함을 지우면 그 업무들이 목록 조회의 부서 조건에 걸리지 않아 화면에서 회수하거나 지울 수 없다.
+		DeptJobVO childVO = new DeptJobVO();
+		childVO.setSearchDeptJobBxId(deptJobBx.getDeptJobBxId());
+		Map<String, Object> childMap = deptJobService.selectDeptJobList(childVO);
+
+		if (Integer.parseInt((String) childMap.get("resultCnt")) > 0) {
+			model.addAttribute("deptJobBxNotEmpty", "true");
+			return "forward:/cop/smt/djm/selectDeptJobBxList.do";
+		}
+
 		deptJobService.deleteDeptJobBx(deptJobBx);
 		return "forward:/cop/smt/djm/selectDeptJobBxList.do";
 	}
