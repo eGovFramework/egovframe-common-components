@@ -497,6 +497,15 @@ public class EgovBBSSatisfactionController {
 		}
 
 		if (isAuthenticated) {
+		    // 작성자 본인만 수정 가능하도록 소유권 검증 (회원 만족도조사는 로그인 사용자 명의로만 등록됨)
+		    Satisfaction stored = bbsSatisfactionService.selectSatisfaction(satisfactionVO);
+		    String loginUniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
+		    if (stored == null || stored.getFrstRegisterId() == null
+			    || !stored.getFrstRegisterId().equals(loginUniqId)) {
+			model.addAttribute("subMsg", egovMessageSource.getMessage("errors.xss.checkerUser"));
+			return "forward:/cop/bbs/selectArticleDetail.do";
+		    }
+
 		    satisfaction.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    satisfaction.setStsfdgPassword("");	// dummy
