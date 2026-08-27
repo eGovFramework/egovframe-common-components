@@ -111,6 +111,13 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
 		BndtManageVO bndtManageVOTemp = new BndtManageVO();
 		bndtManageVOTemp = bndtManageDAO.selectBndtManage(bndtManageVO);
+
+		// 해당 당직 행이 없으면 조회 결과가 없다. 같은 클래스의 엑셀 일괄등록 경로와 동일하게
+		// 결과를 확인한 뒤 사용한다.
+		if (bndtManageVOTemp == null) {
+			return null;
+		}
+
 		bndtManageVOTemp.setBndtDe(EgovDateUtil.formatDate(bndtManageVOTemp.getBndtDe(), "-"));
 
 		return bndtManageVOTemp;
