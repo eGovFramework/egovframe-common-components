@@ -715,6 +715,10 @@ public class EgovArticleController {
 
 		if (isAuthenticated) {
 			board.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+			// 삭제 폼(EgovArticleDetail.jsp의 formDelete)은 atchFileId를 전송하지 않아 요청 바인딩 값이
+			// 비어 있다. 그대로 넘기면 deleteArticle의 첨부그룹 정리 분기가 실행되지 않으므로,
+			// updateBoardArticle과 동일하게 조회·권한검증을 마친 원본(vo)의 값을 사용한다.
+			board.setAtchFileId(vo.getAtchFileId());
 
 			egovArticleService.deleteArticle(board);
 		}
