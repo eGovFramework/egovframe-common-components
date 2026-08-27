@@ -466,6 +466,15 @@ public class EgovCnsltManageController {
 
 		}
 
+		// 2026.08.08 KISA 보안취약점 조치 - 소유권 검증(관리자 또는 작성자 본인만 수정 가능)
+		CnsltManageVO stored = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
+		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+
+		// updateCnsltDtls.do는 등록자ID를 폼으로 받지 않아 바인딩되지 않는다.
+		// 수정 매퍼가 FRST_REGISTER_ID를 매번 재기록하므로, 원래 등록자 값을 그대로 보존해야
+		// 다음 수정 시점에도 소유권 검증이 계속 유효하다(비워두면 다음 수정부터 관리자만 통과).
+		cnsltManageVO.setFrstRegisterId(stored == null ? null : stored.getFrstRegisterId());
+
 		// 첨부파일 관련 ID 생성 start....
 		String atchFileId = cnsltManageVO.getAtchFileId();
 
