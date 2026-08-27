@@ -96,6 +96,15 @@ public class EgovWikiBookmarkController {
 
         	for(String checkData : checkList) {
         		LOGGER.debug("===>>> checkData = "+checkData);
+
+        		// 작성자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
+        		String loginUniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+        		WikiBookmark ownershipCheck = new WikiBookmark();
+        		ownershipCheck.setWikiBkmkId(checkData);
+        		ownershipCheck.setFrstRegisterId(loginUniqId);
+        		boolean owns = egovWikiBookmarkService.selectWikiBookmarkListCnt(ownershipCheck) > 0;
+        		egovAssertAdminOrOwner(owns ? loginUniqId : null);
+
                 wikiBookmark.setWikiBkmkId(checkData);
 	            egovWikiBookmarkService.deleteWikiBookmark(wikiBookmark);
             }
