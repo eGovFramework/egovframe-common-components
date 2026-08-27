@@ -358,4 +358,11 @@
 		  RESVE_ID <> #{resveId}    ]]>
 		 </if>	       
     </select>
+    <select id="selectMtgPlaceResveCnt" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="int">
+        
+			SELECT count(resve_id) from COMTNMTGPLACERESVE
+			WHERE  MTGRUM_ID  = #{mtgPlaceId}
+        
+    </select>
+
 </mapper>
