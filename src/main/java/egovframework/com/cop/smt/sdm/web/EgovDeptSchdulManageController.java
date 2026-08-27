@@ -535,6 +535,11 @@ public class EgovDeptSchdulManageController {
 	@PostMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageDetail.do", params = "cmd=del")
 	public String egovDeptSchdulManageDelete(DeptSchdulManageVO deptSchdulManageVO) throws Exception {
 
+		// 담당자·등록자 또는 관리자만 삭제 가능하도록 소유권 검증
+		DeptSchdulManageVO stored = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
+		egovAssertAdminOrChargerOrOwner(stored == null ? null : stored.getSchdulChargerId(),
+				stored == null ? null : stored.getFrstRegisterId());
+
 		egovDeptSchdulManageService.deleteDeptSchdulManage(deptSchdulManageVO);
 		return "redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do";
 	}
@@ -556,6 +561,12 @@ public class EgovDeptSchdulManageController {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
+		// 담당자·등록자 또는 관리자만 수정폼에 접근 가능하도록 소유권 검증 (불필요한 조회 전에 먼저 확인)
+		DeptSchdulManageVO resultDeptSchdulManageVOReuslt = egovDeptSchdulManageService
+				.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
+		egovAssertAdminOrChargerOrOwner(
+				resultDeptSchdulManageVOReuslt == null ? null : resultDeptSchdulManageVOReuslt.getSchdulChargerId(),
+				resultDeptSchdulManageVOReuslt == null ? null : resultDeptSchdulManageVOReuslt.getFrstRegisterId());
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify";
 
@@ -583,9 +594,6 @@ public class EgovDeptSchdulManageController {
 		model.addAttribute("schdulEnddeHH", getTimeHH());
 		// 일정종료일자(분)
 		model.addAttribute("schdulEnddeMM", getTimeMM());
-
-		DeptSchdulManageVO resultDeptSchdulManageVOReuslt = egovDeptSchdulManageService
-				.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
 
 		String sSchdulBgnde = resultDeptSchdulManageVOReuslt.getSchdulBgnde();
 		String sSchdulEndde = resultDeptSchdulManageVOReuslt.getSchdulEndde();
@@ -631,6 +639,12 @@ public class EgovDeptSchdulManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// 담당자·등록자 또는 관리자만 수정 가능하도록 소유권 검증
+		DeptSchdulManageVO storedBeforeUpdate = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
+		egovAssertAdminOrChargerOrOwner(
+				storedBeforeUpdate == null ? null : storedBeforeUpdate.getSchdulChargerId(),
+				storedBeforeUpdate == null ? null : storedBeforeUpdate.getFrstRegisterId());
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify";
 
@@ -945,6 +959,25 @@ public class EgovDeptSchdulManageController {
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
+	/**
+	 * 관리자 또는 담당자 또는 등록자만 통과 (부서일정은 EgovDeptSchdulManageMainList의
+	 * "SCHDUL_CHARGER_ID = uniqId OR FRST_REGISTER_ID = uniqId" 조건이 실제 소유권 정의라
+	 * 담당자·등록자 둘 다 owner로 인정한다)
+	 */
+	private void egovAssertAdminOrChargerOrOwner(String chargerUniqId, String registerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		String uniqId = loginVO.getUniqId();
+		if ((chargerUniqId != null && chargerUniqId.equals(uniqId))
+				|| (registerUniqId != null && registerUniqId.equals(uniqId))) {
 			return;
 		}
 		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
