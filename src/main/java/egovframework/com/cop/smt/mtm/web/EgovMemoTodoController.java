@@ -198,6 +198,8 @@ public class EgovMemoTodoController {
     	model.addAttribute("todoEndMin", getTimeMM());
 
     	MemoTodoVO resultVO = memoTodoService.selectMemoTodo(memoTodoVO);
+		// 작성자 본인 또는 관리자만 수정폼에 접근 가능하도록 소유권 검증 (2026.07.13 KISA 조치의 selectMemoTodo와 동일 관례)
+		egovAssertAdminOrOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
 		resultVO.setSearchCnd(memoTodoVO.getSearchCnd());
 		resultVO.setSearchWrd(memoTodoVO.getSearchWrd());
 		resultVO.setSearchBgnDe(memoTodoVO.getSearchBgnDe());
@@ -228,6 +230,11 @@ public class EgovMemoTodoController {
 		}
 
 		if (isAuthenticated) {
+		    // 작성자 본인 또는 관리자만 수정 가능하도록 소유권 검증 (selectMemoTodo의 KISA 조치와 동일하게
+		    // 이 파일이 이미 정의해 둔 egovAssertAdminOrOwner를 사용)
+		    MemoTodoVO stored = memoTodoService.selectMemoTodo(memoTodoVO);
+		    egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+
 			memoTodoVO.setTodoBeginTime(memoTodoVO.getTodoDe() + memoTodoVO.getTodoBeginHour() + memoTodoVO.getTodoBeginMin());
 			memoTodoVO.setTodoEndTime(memoTodoVO.getTodoDe() + memoTodoVO.getTodoEndHour() + memoTodoVO.getTodoEndMin());
 
@@ -291,6 +298,11 @@ public class EgovMemoTodoController {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+
+		// 작성자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
+		MemoTodoVO stored = memoTodoService.selectMemoTodo(memoTodoVO);
+		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+
     	memoTodoService.deleteMemoTodo(memoTodoVO);
 		return "forward:/cop/smt/mtm/selectMemoTodoList.do";
 	}

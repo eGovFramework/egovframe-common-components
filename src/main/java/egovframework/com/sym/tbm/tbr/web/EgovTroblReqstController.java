@@ -223,6 +223,12 @@ public class EgovTroblReqstController {
 			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
 			return "egovframework/com/sym/tbm/tbr/EgovTroblReqstUpdt";
 		} else {
+			// 2026.08.08 KISA 보안취약점 조치 - 소유권 검증(관리자 또는 신청자 본인만 수정 가능)
+			TroblReqstVO lookup = new TroblReqstVO();
+			lookup.setTroblId(troblReqst.getTroblId());
+			TroblReqstVO stored = egovTroblReqstService.selectTroblReqst(lookup);
+			egovAssertAdminOrOwnerById(stored == null ? null : stored.getFrstRegisterId());
+
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			troblReqst.setTroblOccrrncTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblOccrrncTime()));
 			troblReqst.setTroblRequstTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblRequstTime()));
@@ -263,6 +269,12 @@ public class EgovTroblReqstController {
 			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
 			throws Exception {
 
+		// 2026.08.08 KISA 보안취약점 조치 - 소유권 검증(관리자 또는 신청자 본인만 처리요청 가능)
+		TroblReqstVO lookup = new TroblReqstVO();
+		lookup.setTroblId(troblId);
+		TroblReqstVO stored = egovTroblReqstService.selectTroblReqst(lookup);
+		egovAssertAdminOrOwnerById(stored == null ? null : stored.getFrstRegisterId());
+
 		troblReqst.setTroblId(troblId);
 		troblReqst.setProcessSttus("R");
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -283,6 +295,12 @@ public class EgovTroblReqstController {
 	public String requstTroblReqstCancl(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
 			throws Exception {
+
+		// 2026.08.08 KISA 보안취약점 조치 - 소유권 검증(관리자 또는 신청자 본인만 처리취소 가능)
+		TroblReqstVO lookup = new TroblReqstVO();
+		lookup.setTroblId(troblId);
+		TroblReqstVO stored = egovTroblReqstService.selectTroblReqst(lookup);
+		egovAssertAdminOrOwnerById(stored == null ? null : stored.getFrstRegisterId());
 
 		troblReqst.setTroblId(troblId);
 		troblReqst.setProcessSttus("A");
@@ -325,6 +343,24 @@ public class EgovTroblReqstController {
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
+	/**
+	 * 2026.08.08 KISA 보안취약점 조치 - 관리자 또는 소유자(로그인ID 기준)
+	 * 이 컨트롤러는 등록자ID를 loginVO.getUniqId()가 아니라 loginVO.getId()(로그인 아이디)로 저장한다
+	 * (insertTroblReqst 참조). 위 egovAssertAdminOrOwner를 그대로 쓰면 필드가 어긋나 실제
+	 * 신청자까지 항상 차단되므로, 이 컨트롤러 전용으로 getId() 기준 비교를 별도로 둔다.
+	 */
+	private void egovAssertAdminOrOwnerById(String ownerLoginId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerLoginId != null && ownerLoginId.equals(loginVO.getId())) {
 			return;
 		}
 		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();

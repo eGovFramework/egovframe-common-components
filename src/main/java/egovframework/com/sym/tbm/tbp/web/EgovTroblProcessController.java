@@ -15,6 +15,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -142,6 +143,7 @@ public class EgovTroblProcessController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbp/addTroblProcess.do")
+	@RequireAdmin
 	public String insertTroblProcess(@ModelAttribute("troblProcessVO") TroblProcessVO troblProcessVO,
 			@Valid @ModelAttribute("troblProcess") TroblProcess troblProcess,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
@@ -168,6 +170,7 @@ public class EgovTroblProcessController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbp/removeTroblProcess.do")
+	@RequireAdmin
 	public String deleteTroblProcess(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblProcess") TroblProcess troblProcess, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치

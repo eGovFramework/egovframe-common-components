@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.stp.service.EgovStplatManageService;
 import egovframework.com.uss.sam.stp.service.StplatManageDefaultVO;
@@ -164,6 +165,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/stp/StplatCnRegist.do")
+	@RequireAdmin
 	public String insertStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
 			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -228,6 +230,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/stp/StplatCnUpdt.do")
+	@RequireAdmin
 	public String updateStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
 			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult)
 			throws Exception {
@@ -261,6 +264,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/stp/StplatCnDelete.do")
+	@RequireAdmin
 	public String deleteStplatCn(StplatManageVO stplatManageVO,
 			@ModelAttribute("searchVO") StplatManageDefaultVO searchVO) throws Exception {
 

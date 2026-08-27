@@ -15,6 +15,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.sit.service.EgovSiteService;
@@ -147,6 +148,7 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/insertSite.do")
+	@RequireAdmin
 	public String insertSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -192,6 +194,7 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/updateSite.do")
+	@RequireAdmin
 	public String updateSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -219,6 +222,7 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/deleteSite.do")
+	@RequireAdmin
 	public String deleteSite(@ModelAttribute("siteVO") SiteVO siteVO) throws Exception {
 		egovSiteService.deleteSite(siteVO);
 
