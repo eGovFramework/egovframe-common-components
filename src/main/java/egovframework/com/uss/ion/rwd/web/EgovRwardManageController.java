@@ -250,7 +250,10 @@ public class EgovRwardManageController {
 
 		// 신청자 본인 또는 관리자만 수정 가능하도록 소유권 검증
 		RwardManageVO stored = egovRwardManageService.selectRwardManage(rwardManageVO);
-		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+		if (stored == null) {
+			throw new IllegalStateException("포상 정보가 없습니다.");
+		}
+		egovAssertAdminOrOwner(stored.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 			// 수정화면 진입(EgovRwardManageDetail.do?cmd=updt)과 동일하게 포상구분 코드목록을 다시 담는다.
@@ -262,14 +265,17 @@ public class EgovRwardManageController {
 			return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
 		} else {
 			// 첨부파일 관련 ID 생성 start....
-			String atchFileId = rwardManage.getAtchFileId();
+			// 첨부파일 ID 는 폼 값이 아니라 권한 확인에 사용한 조회 결과를 사용한다.
+			String atchFileId = stored.getAtchFileId();
+			rwardManage.setAtchFileId(atchFileId);
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			// System.out.println("updtRwardManage 1");
 			if (!files.isEmpty()) {
 				// System.out.println("updtRwardManage 2");
-				if ("N".equals(atchFileAt)) {
+				// 신규 생성 여부도 요청값(atchFileAt)이 아니라 조회한 첨부파일 ID 의 존재 여부로 판단한다.
+				if (atchFileId == null || atchFileId.isEmpty()) {
 
 					// System.out.println("updtRwardManage 3");
 					List<FileVO> fvoList = fileUtil.parseFileInf(files, "RWD_", 0, atchFileId, "");
@@ -311,12 +317,18 @@ public class EgovRwardManageController {
 		RwardManageVO storedForDelete = new RwardManageVO();
 		storedForDelete.setRwardId(rwardManage.getRwardId());
 		RwardManageVO stored = egovRwardManageService.selectRwardManage(storedForDelete);
-		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+		if (stored == null) {
+			throw new IllegalStateException("포상 정보가 없습니다.");
+		}
+		egovAssertAdminOrOwner(stored.getFrstRegisterId());
+		// 약식결재 삭제 대상도 권한 확인에 사용한 레코드로 고정한다.
+		rwardManage.setInfrmlSanctnId(stored.getInfrmlSanctnId());
 
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = rwardManage.getAtchFileId();
+		// 삭제 대상 첨부파일 ID 도 폼 값이 아니라 조회 결과를 사용한다.
+		String atchFileId = stored.getAtchFileId();
 
 		// 포상 삭제 처리
 		egovRwardManageService.deleteRwardManage(rwardManage);
@@ -438,7 +450,12 @@ public class EgovRwardManageController {
 		RwardManageVO storedForConfm = new RwardManageVO();
 		storedForConfm.setRwardId(rwardManage.getRwardId());
 		RwardManageVO storedConfm = egovRwardManageService.selectRwardManage(storedForConfm);
-		egovAssertAdminOrOwner(storedConfm == null ? null : storedConfm.getSanctnerId());
+		if (storedConfm == null) {
+			throw new IllegalStateException("포상 정보가 없습니다.");
+		}
+		egovAssertAdminOrOwner(storedConfm.getSanctnerId());
+		// 결재 갱신 대상을 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+		rwardManage.setInfrmlSanctnId(storedConfm.getInfrmlSanctnId());
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("rwardManageVO", rwardManage);
