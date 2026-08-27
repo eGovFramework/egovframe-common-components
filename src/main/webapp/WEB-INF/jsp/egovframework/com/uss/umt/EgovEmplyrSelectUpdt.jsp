@@ -87,7 +87,7 @@ function fn_egov_inqire_cert() {
 }
 
 function fn_egov_dn_info_setting(dn) {
-	var frm = document.userManageVO;
+	var frm = document.emplyrManageVO;
 
 	frm.subDn.value = dn;
 }
@@ -363,7 +363,7 @@ function fn_egov_dn_info_setting(dn) {
 		<span class="btn_s"><a href="<c:url value='/uss/umt/EgovEmplyrManage.do' />"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 		<button class="btn_s2" onClick="fnPasswordMove(); return false;" title="<spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /></button>
 		<button class="btn_s2" onClick="fnLockIncorrect(); return false;" title="<spring:message code="comUssUmt.common.lockAtBtn" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.common.lockAtBtn" /></button>
-		<button class="btn_s2" onClick="document.userManageVO.reset(); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
+		<button class="btn_s2" onClick="document.emplyrManageVO.reset(); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
 	</div><div style="clear:both;"></div>
 
 </div>
