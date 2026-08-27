@@ -395,6 +395,9 @@ public class EgovVcatnManageController {
 					model.addAttribute("errorMessage", sTempMessage);
 
 					VcatnManageVO vcatnManageVO1 = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
+					if (vcatnManageVO1 == null) {
+						vcatnManageVO1 = new VcatnManageVO();
+					}
 					vcatnManageVO1.setApplcntId(user.getUniqId());
 					vcatnManageVO1.setApplcntNm(user.getName());
 					vcatnManageVO1.setOrgnztNm(user.getOrgnztNm());
@@ -416,6 +419,9 @@ public class EgovVcatnManageController {
 
 				VcatnManageVO vcatnManageVO1 = egovVcatnManageService
 						.selectIndvdlYrycManage(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+				if (vcatnManageVO1 == null) {
+					vcatnManageVO1 = new VcatnManageVO();
+				}
 				vcatnManageVO1.setApplcntId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 				vcatnManageVO1.setApplcntNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
 				vcatnManageVO1.setOrgnztNm(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
@@ -508,6 +514,9 @@ public class EgovVcatnManageController {
 				model.addAttribute("errorMessage", sTempMessage);
 
 				VcatnManageVO vcatnManageVO1 = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
+				if (vcatnManageVO1 == null) {
+					vcatnManageVO1 = new VcatnManageVO();
+				}
 				vcatnManageVO1.setApplcntId(user.getUniqId());
 				vcatnManageVO1.setApplcntNm(user.getName());
 				vcatnManageVO1.setOrgnztNm(user.getOrgnztNm());

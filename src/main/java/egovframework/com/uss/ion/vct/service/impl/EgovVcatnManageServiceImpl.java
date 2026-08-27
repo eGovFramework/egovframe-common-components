@@ -154,6 +154,9 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// vcatnManageVO);
 		vcatnManageVO.setInfrmlSanctnId(infrmlSanctn.getInfrmlSanctnId());
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(uniqId);
+		if (vcatnManageVO1 == null) {
+			vcatnManageVO1 = new VcatnManageVO();
+		}
 		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
 		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
@@ -314,6 +317,9 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 		// 개인연차조회
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
+		if (vcatnManageVO1 == null) {
+			vcatnManageVO1 = new VcatnManageVO();
+		}
 		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
 		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
@@ -432,6 +438,9 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 			// 연차 반환처리
 			// 개인연차조회
 			VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
+			if (vcatnManageVO1 == null) {
+				vcatnManageVO1 = new VcatnManageVO();
+			}
 			double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
 			double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 			double iCountYryc = 0.0;
