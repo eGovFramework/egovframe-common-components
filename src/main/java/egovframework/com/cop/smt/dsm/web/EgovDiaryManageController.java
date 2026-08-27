@@ -180,6 +180,20 @@ public class EgovDiaryManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 첨부파일 삭제 start....
+			// 삭제 폼은 atchFileId를 전송하지 않으므로, 소유권 검증을 위해 이미 조회해 둔 원본의
+			// 첨부파일ID를 사용한다. 형제 핸들러(mrm·wmr·djm)와 동일하게 레코드를 지우기 전에
+			// 첨부그룹을 미사용 처리한다.
+			String atchFileId = existingDiary.getAtchFileId();
+
+			if (atchFileId != null && !atchFileId.isEmpty()) {
+				FileVO fvo = new FileVO();
+				fvo.setAtchFileId(atchFileId);
+
+				fileMngService.deleteAllFileInf(fvo);
+			}
+			// 첨부파일 삭제 End.............
+
 			egovDiaryManageService.deleteDiaryManage(diaryManageVO);
 			sLocationUrl = "redirect:/cop/smt/dsm/EgovDiaryManageList.do";
 		} else {
