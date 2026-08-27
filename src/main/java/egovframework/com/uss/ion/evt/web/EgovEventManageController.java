@@ -255,6 +255,15 @@ public class EgovEventManageController {
 	public String deleteEventManage(@ModelAttribute("eventManage") EventManage eventManage, SessionStatus status,
 			ModelMap model) throws Exception {
 
+		// 참가신청이 있는 행사는 삭제하지 않는다.(EgovEventReqstDetail.jsp 의 삭제버튼 노출조건과 같은 값을 서버에서도 확인)
+		EventManageVO eventManageVO = new EventManageVO();
+		eventManageVO.setEventId(eventManage.getEventId());
+		EventManageVO eventManageVO1 = egovEventManageService.selectEventManage(eventManageVO);
+		if (eventManageVO1 != null && eventManageVO1.getEventAtdrnCount() > 0) {
+			model.addAttribute("eventAtdrnExist", "true");
+			return "forward:/uss/ion/evt/EgovEventReqstManageList.do";
+		}
+
 		egovEventManageService.deleteEventManage(eventManage);
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));

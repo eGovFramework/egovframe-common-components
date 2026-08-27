@@ -217,7 +217,19 @@ public class EgovSysHistoryController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		if (loginVO != null) {
+			// 첨부파일 ID는 삭제 폼에 실려오지 않으므로 저장본에서 가져온다.
+			SysHistoryVO searchVO = new SysHistoryVO();
+			searchVO.setHistId(history.getHistId());
+			SysHistoryVO storedHistory = sysHistoryService.selectSysHistory(searchVO);
+			String atchFileId = storedHistory == null ? "" : storedHistory.getAtchFileId();
+
 			sysHistoryService.deleteSysHistory(history);
+
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
+
+			fileMngService.deleteAllFileInf(fvo);
 		}
 
 		status.setComplete();

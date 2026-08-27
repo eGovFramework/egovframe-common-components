@@ -403,7 +403,16 @@ public class EgovKnoPersonalController {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
+		String atchFileId = existing.getAtchFileId();
+
 		knoPersonalService.deleteKnoPersonal(knoPersonal);
+
+		// 첨부파일을 삭제하기 위한 Vo
+		FileVO fvo = new FileVO();
+		fvo.setAtchFileId(atchFileId);
+
+		fileMngService.deleteAllFileInf(fvo);
+
 		return "forward:/dam/per/EgovComDamPersonalList.do";
 	}
 

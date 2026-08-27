@@ -17,6 +17,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.awm.service.AdministrationWordVO;
@@ -213,6 +214,7 @@ public class EgovAdministrationWordController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/awm/insertAdministrationWord.do")
+	@RequireAdmin
 	public String insertAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
 			BindingResult bindingResult,
@@ -279,6 +281,7 @@ public class EgovAdministrationWordController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/awm/updateAdministrationWord.do")
+	@RequireAdmin
 	public String updateAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
 			BindingResult bindingResult,
@@ -313,6 +316,7 @@ public class EgovAdministrationWordController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/awm/deleteAdministrationWord.do")
+	@RequireAdmin
 	public String deleteAdministrationWord(AdministrationWordVO administrationWordVO,
 			@ModelAttribute("searchVO") AdministrationWordVO searchVO) throws Exception {
 

@@ -83,6 +83,7 @@ public class EgovProxySvcController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/utl/sys/pxy/selectProxySvcListView.do")
+	@RequireAdmin
 	public String selectProxySvcListView() throws Exception {
 		return "egovframework/com/utl/sys/pxy/EgovProxySvcList";
 	}
@@ -250,6 +251,7 @@ public class EgovProxySvcController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/utl/sys/pxy/selectProxyLogListView.do")
+	@RequireAdmin
 	public String selectProxyLogListView(@ModelAttribute("proxyLog") ProxyLog proxyLog, Model model) throws Exception {
 		proxyLog.setStrStartDate(EgovStringUtil.addMinusChar(EgovDateUtil.addMonth(EgovDateUtil.getToday(), -1)));
 		proxyLog.setStrEndDate(EgovStringUtil.addMinusChar(EgovDateUtil.getToday()));

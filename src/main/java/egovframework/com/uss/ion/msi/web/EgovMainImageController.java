@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
@@ -81,6 +82,7 @@ public class EgovMainImageController {
 	/**
 	 * 등록된 메인이미지의 상세정보를 조회한다.
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/ion/msi/getMainImage.do")
 	public String selectMainImage(@RequestParam("imageId") String imageId,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, ModelMap model) throws Exception {
@@ -103,6 +105,7 @@ public class EgovMainImageController {
 	 * 메인이미지정보를 신규로 등록한다.
 	 */
 	@SuppressWarnings("unused")
+	@RequireAdmin
 	@PostMapping("/uss/ion/msi/addMainImage.do")
 	public String insertMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
@@ -148,6 +151,7 @@ public class EgovMainImageController {
 	 * 기 등록된 메인이미지정보를 수정한다.
 	 */
 	@SuppressWarnings("unused")
+	@RequireAdmin
 	@PostMapping("/uss/ion/msi/updtMainImage.do")
 	public String updateMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
@@ -196,6 +200,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보를 삭제한다.
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/ion/msi/removeMainImage.do")
 	public String deleteMainImage(@RequestParam("imageId") String imageId,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
@@ -209,6 +214,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보 목록을 일괄 삭제한다.
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/ion/msi/removeMainImageList.do")
 	public String deleteMainImageList(@RequestParam("imageIds") String imageIds,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
