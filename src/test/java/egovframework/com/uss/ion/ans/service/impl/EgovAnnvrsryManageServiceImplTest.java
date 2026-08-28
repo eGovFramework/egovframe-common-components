@@ -17,7 +17,9 @@ package egovframework.com.uss.ion.ans.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.Test;
@@ -77,5 +79,31 @@ class EgovAnnvrsryManageServiceImplTest {
         vo.setAnnvrsryDe(todayStr);
 
         assertEquals(0L, callGetDateCount(vo), "오늘 날짜(8자리) 기념일의 D-day는 0이어야 한다");
+    }
+
+    /** selectOne이 결과 0건에서 null을 돌려주는 상황(존재하지 않는 기념일 ID)을 재현한다. */
+    static class NullSelectOneAnnvrsryManageDAO extends AnnvrsryManageDAO {
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T selectOne(String queryId, Object parameterObject) {
+            return null;
+        }
+    }
+
+    @Test
+    void selectAnnvrsryManage_missingRow_returnsNullInsteadOfNpe() throws Exception {
+        // 조회 결과가 없으면 null을 돌려주어야 한다. 수정 전에는 곧바로
+        // annvrsryManageVOTemp.setAnnvrsryDe(...)를 호출해 NullPointerException이 났고,
+        // 그 때문에 호출자들이 두고 있는 null 검사가 실행될 수 없었다.
+        EgovAnnvrsryManageServiceImpl service = new EgovAnnvrsryManageServiceImpl();
+        Field daoField = EgovAnnvrsryManageServiceImpl.class.getDeclaredField("annvrsryManageDAO");
+        daoField.setAccessible(true);
+        daoField.set(service, new NullSelectOneAnnvrsryManageDAO());
+
+        AnnvrsryManageVO annvrsryManageVO = new AnnvrsryManageVO();
+        annvrsryManageVO.setAnnId("nonexistent-id");
+
+        assertNull(service.selectAnnvrsryManage(annvrsryManageVO),
+                "존재하지 않는 기념일 ID는 NPE 없이 null이어야 한다");
     }
 }

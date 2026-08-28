@@ -104,6 +104,9 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 	public AnnvrsryManageVO selectAnnvrsryManage(AnnvrsryManageVO annvrsryManageVO) throws Exception {
 		annvrsryManageVO.setAnnvrsryDe(EgovStringUtil.removeMinusChar(annvrsryManageVO.getAnnvrsryDe()));
 		AnnvrsryManageVO annvrsryManageVOTemp = annvrsryManageDAO.selectAnnvrsryManage(annvrsryManageVO);
+		if (annvrsryManageVOTemp == null) {
+			return null;
+		}
 		annvrsryManageVOTemp.setAnnvrsryDe(EgovDateUtil.formatDate(annvrsryManageVOTemp.getAnnvrsryDe(), "-"));
 		return annvrsryManageVOTemp;
 	}
