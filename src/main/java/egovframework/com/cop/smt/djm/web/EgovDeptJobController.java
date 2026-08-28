@@ -345,6 +345,13 @@ public class EgovDeptJobController {
 		}
 
 		DeptJobBxVO resultVO = deptJobService.selectDeptJobBx(deptJobBxVO);
+
+		// 삭제 경로와 동일하게, 서버 조회 결과가 없으면 목록으로 돌려보낸다.
+		if (resultVO == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/cop/smt/djm/selectDeptJobBxList.do";
+		}
+
 		resultVO.setSearchCnd(deptJobBxVO.getSearchCnd());
 		resultVO.setSearchWrd(deptJobBxVO.getSearchWrd());
 		resultVO.setPageIndex(deptJobBxVO.getPageIndex());
@@ -580,6 +587,13 @@ public class EgovDeptJobController {
 		}
 
 		DeptJobVO resultVO = deptJobService.selectDeptJob(deptJobVO);
+
+		// 삭제 경로와 동일하게, 서버 조회 결과가 없으면 목록으로 돌려보낸다.
+		if (resultVO == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/cop/smt/djm/selectDeptJobList.do";
+		}
+
 		resultVO.setSearchCnd(deptJobVO.getSearchCnd());
 		resultVO.setSearchWrd(deptJobVO.getSearchWrd());
 		resultVO.setSearchDeptId(deptJobVO.getSearchDeptId());
