@@ -486,6 +486,13 @@ public class EgovVcatnManageController {
 		if (user != null) {
 			// 221116 김혜준 2022 시큐어코딩 조치
 			vcatnManageVO.setFrstRegisterId(EgovStringUtil.isNullToString(user.getUniqId()));
+			// 2026.08.09 KISA 보안취약점 조치: 삭제(소유자 검증됨) 후 재등록되는 신규 레코드의 신청자ID를
+			// 폼 제출값이 아니라 삭제 대상 레코드의 소유자(applcntIdKey)로 강제한다. 그대로 두면 자기 신청
+			// 건을 지우고 신청자ID만 타인 것으로 재등록해 소유권을 위조하고 그 사람의 연차 잔여일수까지
+			// 건드릴 수 있었다. deleteVcatnManage 가 applcntIdKey 로 조회한 레코드의 소유자를 검증하므로
+			// 일반 사용자는 자기 것만 이 경로에 태울 수 있고, 관리자가 타인 휴가를 수정하는 경우에도
+			// 소유자와 연차 차감 대상이 원래 신청자로 유지된다.
+			vcatnManageVO.setApplcntId(EgovStringUtil.isNullToString(vcatnManageVO.getApplcntIdKey()));
 			sTemp = egovVcatnManageService.updtVcatnManage(vcatnManageVO);
 
 			if (sTemp.equals("01")) {
