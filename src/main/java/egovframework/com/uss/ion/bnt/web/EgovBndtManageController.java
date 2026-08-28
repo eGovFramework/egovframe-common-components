@@ -201,6 +201,13 @@ public class EgovBndtManageController {
 
 		BndtManageVO resultVO = egovBndtManageService.selectBndtManage(bndtManageVO);
 
+		// 조회 결과가 없으면 화면을 그리지 않고 목록으로 돌려보낸다.
+		// 그대로 두면 상세 화면은 빈 값으로, 수정 화면은 form 바인딩 대상 없이 렌더된다.
+		if (resultVO == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/uss/ion/bnt/EgovBndtManageList.do";
+		}
+
 		model.addAttribute("bndtManageVO", resultVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
@@ -289,6 +296,11 @@ public class EgovBndtManageController {
 		} else {
 
 			bndtManageVO = egovBndtManageService.selectBndtManage(bndtManageVO);
+
+			if (bndtManageVO == null) {
+				model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+				return "forward:/uss/ion/bnt/EgovBndtManageList.do";
+			}
 
 			model.addAttribute("bndtManageVO", bndtManageVO);
 			model.addAttribute("errorMessage", "당직일지를 삭제하신 후 당직정보를 삭제 하세요.");
