@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -422,6 +423,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaAnswerUpdt"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/qna/updateQnaAnswerView.do")
 	public String updateQnaAnswerView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
@@ -447,6 +449,7 @@ public class EgovQnaController {
 	 * @return "forward:/uss/olh/qnm/selectQnaAnswerList.do"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/qna/updateQnaAnswer.do")
 	public String updateQnaAnswer(@Valid QnaVO qnaVO, BindingResult bindingResult,
 			 @ModelAttribute("searchVO") QnaVO searchVO,
