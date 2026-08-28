@@ -1,46 +1,43 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardMaster;
-import egovframework.com.test.EgovTestV1;
+import egovframework.com.test.EgovAbstractTestJUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ContextConfiguration(classes = { BBSAddedOptionsDAOTest_Configuration.class })
-public class BBSAddedOptionsDAOTest_insertAddedOptionsInf extends EgovTestV1 {
+public class BBSAddedOptionsDAOTest_insertAddedOptionsInf extends EgovAbstractTestJUnit {
 
 	@Autowired
-	private BBSAddedOptionsDAO bbsAddedOptionsDAO;
+	BBSAddedOptionsDAO bbsAddedOptionsDAO;
 
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
-	private EgovIdGnrService egovBBSMstrIdGnrService;
+	EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Test
-	@Rollback(true)
-//	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
-
+	public void test() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		// when
-		String addedOptionsInf = bbsAddedOptionsDAO.insertAddedOptionsInf(boardMaster);
+		int result = bbsAddedOptionsDAO.insertAddedOptionsInf(boardMaster);
 
-		log.debug("addedOptionsInf={}", addedOptionsInf);
+		log.debug("result={}", result);
 
 		// then
-		assertEquals(addedOptionsInf, "1");
+		assertTrue(result > 0);
 	}
 
 }
