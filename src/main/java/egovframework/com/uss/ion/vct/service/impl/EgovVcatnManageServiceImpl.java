@@ -153,7 +153,15 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn("003",
 		// vcatnManageVO);
 		vcatnManageVO.setInfrmlSanctnId(infrmlSanctn.getInfrmlSanctnId());
-		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(uniqId);
+		// 연차 잔여일수는 차감 대상과 같은 사람 것을 읽어야 한다. 아래 갱신은 applcntId 앞으로 걸리는데
+		// (setUsid) 조회만 로그인 사용자로 하면, 관리자가 타인의 휴가를 수정할 때 관리자의 잔여일수로 계산한
+		// 값이 그 사람의 연차 행에 덮인다. 등록 경로는 컨트롤러가 applcntId 를 로그인 사용자로 세팅하므로
+		// 동작이 같다.
+		String yrycOwnerId = EgovStringUtil.isNullToString(vcatnManageVO.getApplcntId());
+		if ("".equals(yrycOwnerId)) {
+			yrycOwnerId = uniqId;
+		}
+		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(yrycOwnerId);
 		if (vcatnManageVO1 == null) {
 			vcatnManageVO1 = new VcatnManageVO();
 		}
