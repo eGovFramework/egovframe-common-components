@@ -111,6 +111,13 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
 		BndtManageVO bndtManageVOTemp = new BndtManageVO();
 		bndtManageVOTemp = bndtManageDAO.selectBndtManage(bndtManageVO);
+
+		// 해당 당직 행이 없으면 조회 결과가 없다. 같은 클래스의 엑셀 일괄등록 경로와 동일하게
+		// 결과를 확인한 뒤 사용한다.
+		if (bndtManageVOTemp == null) {
+			return null;
+		}
+
 		bndtManageVOTemp.setBndtDe(EgovDateUtil.formatDate(bndtManageVOTemp.getBndtDe(), "-"));
 
 		return bndtManageVOTemp;
@@ -456,8 +463,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 					sTempId = getCellValueAsString(cell);
 					cell = row.getCell(2); // 당직자명
 					sTempNm = getCellValueAsString(cell);
-					checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
-					checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+					checkBndtManageVO.setTempBndtId(sTempId); // 당직자ID
+					checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자명
 
 					// 최두영 로직변경
 					bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
@@ -526,8 +533,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 							sTempId = getCellValueAsString(cell);
 							cell = row.getCell(2); // 당직자명
 							sTempNm = getCellValueAsString(cell);
-							checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
-							checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+							checkBndtManageVO.setTempBndtId(sTempId); // 당직자ID
+							checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자명
 
 							// 최두영 로직변경
 							bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);

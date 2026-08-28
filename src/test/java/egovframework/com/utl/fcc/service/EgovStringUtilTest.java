@@ -95,5 +95,50 @@ public class EgovStringUtilTest {
         Assertions.assertEquals(EgovStringUtil.getAuxiliaryParticle(""), "는");
     }
 
+    // === split(String, String): 구분자 길이별 동작 검증 ===
+
+    // 한글자 구분자: 기존 동작 유지 확인(회귀 방지)
+    @Test
+    void splitWithSingleCharSeparator(){
+        String[] result = EgovStringUtil.split("a,b,c", ",");
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 수정 전엔 index+1로 이동해 구분자의 두번째 글자가 다음 필드에 남았음
+    @Test
+    void splitWithTwoCharSeparator_noResidualChar(){
+        String[] result = EgovStringUtil.split("a::b::c", "::");
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 동일한 수정을 3글자 구분자로도 검증
+    @Test
+    void splitWithThreeCharSeparator_noResidualChar(){
+        String[] result = EgovStringUtil.split("a###b###c", "###");
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 구분자가 없으면 원본 문자열이 단일 요소로 반환되어야 함
+    @Test
+    void splitReturnsWholeStringWhenSeparatorNotFound(){
+        String[] result = EgovStringUtil.split("abc", "::");
+        Assertions.assertArrayEquals(new String[]{"abc"}, result);
+    }
+
+    // === split(String, String, int): 구분자 길이별 동작 검증 ===
+
+    // 다중글자 구분자 + 배열 길이가 전체 필드 수와 정확히 일치하는 경우
+    @Test
+    void splitWithLimit_twoCharSeparator(){
+        String[] result = EgovStringUtil.split("a::b::c", "::", 3);
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 배열 길이를 초과하는 나머지는 구분자를 포함한 채 마지막 필드에 남아야 함
+    @Test
+    void splitWithLimit_remainderKeptInLastField(){
+        String[] result = EgovStringUtil.split("a::b::c::d", "::", 2);
+        Assertions.assertArrayEquals(new String[]{"a", "b::c::d"}, result);
+    }
 
 }
