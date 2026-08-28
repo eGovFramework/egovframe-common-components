@@ -456,8 +456,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 					sTempId = getCellValueAsString(cell);
 					cell = row.getCell(2); // 당직자명
 					sTempNm = getCellValueAsString(cell);
-					checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
-					checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+					checkBndtManageVO.setTempBndtId(sTempId); // 당직자ID
+					checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자명
 
 					// 최두영 로직변경
 					bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
@@ -526,8 +526,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 							sTempId = getCellValueAsString(cell);
 							cell = row.getCell(2); // 당직자명
 							sTempNm = getCellValueAsString(cell);
-							checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
-							checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+							checkBndtManageVO.setTempBndtId(sTempId); // 당직자ID
+							checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자명
 
 							// 최두영 로직변경
 							bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
