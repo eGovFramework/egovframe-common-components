@@ -483,6 +483,7 @@ public class EgovArticleController {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("boardMasterVO", master);
+			model.addAttribute("result", egovArticleService.selectArticleDetail(boardVO));
 			//// -----------------------------
 
 			return "egovframework/com/cop/bbs/EgovArticleReply";
