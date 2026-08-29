@@ -459,6 +459,10 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 					HSSFCell cell = null;
 					cell = row.getCell(0); // 당직일자
 					sBndtDe = getCellValueAsString(cell);
+					// 당직일자가 비어 있거나 8자리 미만이면 해당 행 스킵 (xlsx 처리와 동일)
+					if (sBndtDe == null || sBndtDe.trim().isEmpty() || sBndtDe.trim().length() < 8) {
+						continue;
+					}
 					cell = row.getCell(1); // 당직자ID
 					sTempId = getCellValueAsString(cell);
 					cell = row.getCell(2); // 당직자명

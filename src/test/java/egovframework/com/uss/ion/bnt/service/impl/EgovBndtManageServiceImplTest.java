@@ -19,7 +19,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.List;
+
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.egovframe.rte.fdl.excel.EgovExcelService;
+
+import egovframework.com.uss.ion.bnt.service.BndtManageVO;
 
 import org.junit.jupiter.api.Test;
 
@@ -59,5 +72,79 @@ class EgovBndtManageServiceImplTest {
 		assertTrue(week >= 1 && week <= 7, "정상 8자리 날짜는 1~7의 요일 값을 반환해야 한다: " + week);
 		assertEquals(callGetDateWeekInt("20250815"), callGetDateWeekInt("2025-08-15"),
 				"yyyyMMdd와 yyyy-MM-dd 입력은 동일한 요일을 반환해야 한다");
+	}
+
+	/** 첫 열이 당직일자인 .xls 통합문서를 메모리에서 만든다. */
+	private static byte[] xlsWithBndtDates(String... bndtDates) throws Exception {
+		try (HSSFWorkbook workbook = new HSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+			HSSFSheet sheet = workbook.createSheet("당직자");
+			HSSFRow header = sheet.createRow(0);
+			header.createCell(0).setCellValue("당직일자");
+			header.createCell(1).setCellValue("당직자ID");
+			header.createCell(2).setCellValue("당직자명");
+			for (int i = 0; i < bndtDates.length; i++) {
+				HSSFRow row = sheet.createRow(i + 1);
+				row.createCell(0).setCellValue(bndtDates[i]);
+				row.createCell(1).setCellValue("user" + i);
+				row.createCell(2).setCellValue("홍길동" + i);
+			}
+			workbook.write(out);
+			return out.toByteArray();
+		}
+	}
+
+	/** loadWorkbook만 응답하는 EgovExcelService 대역. */
+	private static EgovExcelService excelServiceReturning(byte[] xls) {
+		return (EgovExcelService) Proxy.newProxyInstance(
+				EgovExcelService.class.getClassLoader(),
+				new Class<?>[] { EgovExcelService.class },
+				(proxy, method, args) -> {
+					if ("loadWorkbook".equals(method.getName())) {
+						return new HSSFWorkbook(new ByteArrayInputStream(xls));
+					}
+					return null;
+				});
+	}
+
+	/** 조회 결과가 없는 상황을 재현하는 DAO 대역. */
+	private static class NoMatchDao extends BndtManageDAO {
+		@Override
+		public BndtManageVO selectBndtManageBnde(BndtManageVO bndtManageVO) {
+			return null;
+		}
+	}
+
+	private static void inject(Object target, String fieldName, Object value) throws Exception {
+		Field field = target.getClass().getDeclaredField(fieldName);
+		field.setAccessible(true);
+		field.set(target, value);
+	}
+
+	private static List<BndtManageVO> readXls(String... bndtDates) throws Exception {
+		EgovBndtManageServiceImpl service = new EgovBndtManageServiceImpl();
+		inject(service, "excelZipService", excelServiceReturning(xlsWithBndtDates(bndtDates)));
+		inject(service, "bndtManageDAO", new NoMatchDao());
+
+		try (InputStream in = new ByteArrayInputStream(new byte[0])) {
+			return service.selectBndtManageBnde(in);
+		}
+	}
+
+	@Test
+	void selectBndtManageBnde_xls_skipsRowsWithShortBndtDate() throws Exception {
+		// .xlsx 처리와 동일하게 8자리 미만 당직일자 행은 목록에서 제외돼야 한다.
+		List<BndtManageVO> list = readXls("20260101", "2026", "", "20260103");
+
+		assertEquals(2, list.size());
+		assertEquals("20260101", list.get(0).getBndtDe());
+		assertEquals("20260103", list.get(1).getBndtDe());
+	}
+
+	@Test
+	void selectBndtManageBnde_xls_validRowsKeepWeekday() throws Exception {
+		List<BndtManageVO> list = readXls("20260101");
+
+		assertEquals(1, list.size());
+		assertTrue(list.get(0).getDateWeek() >= 1 && list.get(0).getDateWeek() <= 7);
 	}
 }
