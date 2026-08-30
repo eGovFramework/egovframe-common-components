@@ -271,4 +271,12 @@
 	</select>	
 	
 	
+	<update id="updateNcrdUseInf" parameterType="egovframework.com.cop.ncm.service.NameCardUser">
+            UPDATE COMTNNCRDUSER
+            SET REGIST_SE_CODE = #{registSeCode}
+            WHERE
+                EMPLYR_ID = #{emplyrId}
+                AND NCRD_ID = #{ncrdId}
+    </update>
+	
 </mapper>
