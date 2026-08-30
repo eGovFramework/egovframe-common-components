@@ -68,7 +68,7 @@ function fn_egov_list_DeptSchdulManage(){
 
 	<%-- 전체일정목록 이동 --%>
 	<c:if test="${sLinkType eq 'asm'}">
-		location.href = "<c:url value='/cop/smt/asm/EgovAllSchdulManageList.do' />";
+		location.href = "<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do' />";
 	</c:if>
 }
 /* ********************************************************

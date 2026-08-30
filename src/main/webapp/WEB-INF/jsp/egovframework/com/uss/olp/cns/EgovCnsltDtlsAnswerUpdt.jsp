@@ -85,7 +85,7 @@ function fn_egov_inqire_qnaanswerlist() {
  ******************************************************** */
 function fn_egov_pop_mailform() {
 
-	var url 	= "<c:url value='/ems/insertSndngMailView.do'/>";
+	var url 	= "<c:url value='/cop/ems/insertSndngMailView.do'/>";
 	var	status 	= "width=640,height=480,top=200,left=200";
 
 	window.open(url,'popup', status);
