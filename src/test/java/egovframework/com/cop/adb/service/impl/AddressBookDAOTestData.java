@@ -5,11 +5,11 @@ import java.time.LocalDateTime;
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookUser;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,11 +20,11 @@ public class AddressBookDAOTestData {
 
 	private final AddressBookDAO addressBookDAO;
 
-	@Qualifier("egovAdbkIdGnrService")
-	private final EgovIdGnrService egovAdbkIdGnrService;
+	@Resource(name = "egovAdbkIdGnrService")
+	private EgovIdGnrService egovAdbkIdGnrService;
 
-	@Qualifier("egovAdbkUserIdGnrService")
-	private final EgovIdGnrService egovAdbkUserIdGnrService;
+	@Resource(name = "egovAdbkUserIdGnrService")
+	private EgovIdGnrService egovAdbkUserIdGnrService;
 
 	public AddressBook insertAdressBookTestData() {
 		// given

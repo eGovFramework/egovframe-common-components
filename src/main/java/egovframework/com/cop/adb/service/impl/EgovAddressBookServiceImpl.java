@@ -8,7 +8,6 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.adb.service.AddressBook;
@@ -16,6 +15,7 @@ import egovframework.com.cop.adb.service.AddressBookUser;
 import egovframework.com.cop.adb.service.AddressBookUserVO;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.cop.adb.service.EgovAddressBookService;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,11 +43,11 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 
     private final AddressBookDAO adbkDAO;
 
-	@Qualifier("egovAdbkIdGnrService")
-	private final EgovIdGnrService egovAdbkIdGnrService;
+	@Resource(name = "egovAdbkIdGnrService")
+	private EgovIdGnrService egovAdbkIdGnrService;
 
-	@Qualifier("egovAdbkUserIdGnrService")
-	private final EgovIdGnrService egovAdbkUserIdGnrService;
+	@Resource(name = "egovAdbkUserIdGnrService")
+	private EgovIdGnrService egovAdbkUserIdGnrService;
 
     /**
      * 주소록 목록을 조회한다.
