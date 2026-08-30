@@ -181,7 +181,9 @@ public class EgovFormBasedUUID implements Serializable {
 		// 2011.10.10 보안점검 후속조치 끝
 
 		md5Bytes[6] &= 0x0f; /* clear version */
-		md5Bytes[6] |= 0x30; /* set to version 3 */
+		// 2014.09.20 보안점검으로 매 호출 SecureRandom salt가 섞이면서 같은 이름이라도 결과가 달라진다.
+		// 이름 기반(version 3/5)의 전제인 결정성이 성립하지 않으므로 무작위 기반인 version 4로 표기한다.
+		md5Bytes[6] |= 0x40; /* set to version 4 */
 		md5Bytes[8] &= 0x3f; /* clear variant */
 		md5Bytes[8] |= 0x80; /* set to IETF variant */
 
