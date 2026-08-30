@@ -860,6 +860,9 @@ public class EgovDateUtil {
 	 * @param dateStr
 	 * @return
 	 */
+	/** HHmm 또는 HH:mm 형식만 허용한다. 길이만 보면 "12345"처럼 형식이 다른 값도 통과한다. */
+	private static final java.util.regex.Pattern TIME_PATTERN = java.util.regex.Pattern.compile("^\\d{2}:?\\d{2}$");
+
 	public static String validChkDate(String dateStr) {
 		if (dateStr == null || !(dateStr.trim().length() == 8 || dateStr.trim().length() == 10)) {
 			throw new IllegalArgumentException("Invalid date format: " + dateStr);
@@ -879,15 +882,20 @@ public class EgovDateUtil {
 	 * @return
 	 */
 	public static String validChkTime(String timeStr) {
-		if (timeStr == null || !(timeStr.trim().length() == 4 || timeStr.trim().length() == 5)) {
+		if (timeStr == null) {
 			throw new IllegalArgumentException("Invalid time format: " + timeStr);
 		}
 
-		if (timeStr.length() == 5) {
-			return EgovStringUtil.remove(timeStr, ':');
+		String trimmed = timeStr.trim();
+		if (!TIME_PATTERN.matcher(trimmed).matches()) {
+			throw new IllegalArgumentException("Invalid time format: " + timeStr);
 		}
 
-		return timeStr;
+		if (trimmed.length() == 5) {
+			return EgovStringUtil.remove(trimmed, ':');
+		}
+
+		return trimmed;
 	}
 
 	/**

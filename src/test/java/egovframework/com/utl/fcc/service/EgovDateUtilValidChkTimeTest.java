@@ -50,4 +50,21 @@ class EgovDateUtilValidChkTimeTest {
 		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime(null),
 				"널 입력은 예외여야 한다");
 	}
+
+	@Test
+	void validChkTime_surroundingWhitespace_isNormalized() {
+		// 공백이 섞인 입력도 검사를 통과했으나 공백이 남은 채 반환됐다.
+		assertEquals("1230", EgovDateUtil.validChkTime(" 12:30"));
+		assertEquals("1230", EgovDateUtil.validChkTime("12:30 "));
+		assertEquals("1230", EgovDateUtil.validChkTime("  1230  "));
+	}
+
+	@Test
+	void validChkTime_lengthMatchesButFormatDoes_not_throws() {
+		// 길이만 맞고 시간 형식이 아닌 값은 거부한다.
+		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("12345"));
+		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("1:230"));
+		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("ab:cd"));
+		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("12-30"));
+	}
 }
