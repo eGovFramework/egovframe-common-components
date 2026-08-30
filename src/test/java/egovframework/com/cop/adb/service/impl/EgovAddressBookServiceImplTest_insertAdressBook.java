@@ -1,6 +1,6 @@
 package egovframework.com.cop.adb.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +9,6 @@ import java.util.List;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.adb.service.AddressBookUser;
@@ -20,16 +19,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-public class EgovAddressBookServiceImplTest_insertAdressBook extends EgovTestV1 {
+class EgovAddressBookServiceImplTest_insertAdressBook extends EgovTestV1 {
 
 	@Autowired
 	private EgovAddressBookService egovAddressBookService;
 
 	@Test
-	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
-
+	void insertAdressBook() {
 		// given
 		AddressBookVO adbkVO = new AddressBookVO();
 
@@ -50,18 +46,12 @@ public class EgovAddressBookServiceImplTest_insertAdressBook extends EgovTestV1 
 		adbkVO.setAdbkMan(adbkMan);
 
 		// when
-		boolean result = false;
-		try {
-			egovAddressBookService.insertAdressBook(adbkVO);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		int result = egovAddressBookService.insertAdressBook(adbkVO);
 
 		log.debug("result={}", result);
 
 		// then
-		assertEquals(result, true);
+		assertTrue(result > 0);
 	}
 
 }

@@ -25,64 +25,56 @@ public interface EgovAddressBookService {
      * 주소록 목록을 조회한다.
      * @param AddressBookVO
      * @return  Map<String, Object>
-     * @exception Exception
      */
-    public Map<String, Object> selectAdressBookList(AddressBookVO addressBookVO) throws Exception;
+    Map<String, Object> selectAdressBookList(AddressBookVO addressBookVO);
     
     /**
      * 주소록 정보를 조회한다.
      * @param AddressBookVO
      * @return  AdressBookVO
-     * @exception Exception
      */
-    public AddressBookVO selectAdressBook(AddressBookVO addressBookVO) throws Exception;
+    AddressBookVO selectAdressBook(AddressBookVO addressBookVO);
     
     /**
      * 주소록 정보를 삭제한다.
      * @param AddressBook
      * @return 
-     * @exception Exception
      */
-    public void deleteAdressBook(AddressBook addressBook) throws Exception;
+    int deleteAdressBook(AddressBook addressBook);
     
     /**
      * 사용자 목록을 조회한다.
      * @param AddressBookUserVO
      * @return Map<String, Object>
-     * @exception Exception
      */
-    public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) throws Exception;
+    Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO);
     
     /**
      * 명함 목록을 조회한다.
      * @param AddressBookUserVO
      * @return Map<String, Object>
-     * @exception Exception
      */
-    public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) throws Exception;
+    Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO);
     
     /**
      * 주소록 정보를 등록한다.
      * 
      * @param AddressBook
-     * @throws Exception
      */
-    public void insertAdressBook(AddressBookVO adbkVO) throws Exception;   
+    int insertAdressBook(AddressBookVO adbkVO);   
           
     /**
      * 주소록 정보를 수정한다.
      * @param AddressBookVO
      * @return 
-     * @exception Exception
      */
-    public void updateAdressBook(AddressBookVO addressBookVO) throws Exception;
+    int updateAdressBook(AddressBookVO addressBookVO);
     
     /**
      * 주소록 구성원 정보를 불러온다.
      * @param String
      * @return 
-     * @exception Exception
      */
-    public AddressBookUser selectAdbkUser(String id) throws Exception;
+    AddressBookUser selectAdbkUser(String id);
 
 }

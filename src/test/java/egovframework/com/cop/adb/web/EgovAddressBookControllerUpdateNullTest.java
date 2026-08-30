@@ -50,7 +50,7 @@ class EgovAddressBookControllerUpdateNullTest {
 				getClass().getClassLoader(), new Class<?>[] { EgovAddressBookService.class },
 				(proxy, method, args) -> null);
 
-		controller = new EgovAddressBookController();
+		controller = new EgovAddressBookController(service, null);
 		ReflectionTestUtils.setField(controller, "adbkService", service);
 	}
 
@@ -60,7 +60,7 @@ class EgovAddressBookControllerUpdateNullTest {
 	}
 
 	@Test
-	void addressBookUpdateViewFallsBackToTheListWhenTheRecordIsGone() throws Exception {
+	void addressBookUpdateViewFallsBackToTheListWhenTheRecordIsGone() {
 		AddressBookVO vo = new AddressBookVO();
 		vo.setAdbkId("ADBK_00000000000000");
 

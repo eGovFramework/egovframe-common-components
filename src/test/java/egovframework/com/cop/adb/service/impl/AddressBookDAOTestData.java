@@ -1,34 +1,32 @@
 package egovframework.com.cop.adb.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.time.LocalDateTime;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookUser;
-import egovframework.com.test.EgovTestV1;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Service
+@RequiredArgsConstructor
 @Slf4j
-@ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-class AddressBookDAOTest_insertAdressBookUser extends EgovTestV1 {
+public class AddressBookDAOTestData {
 
-	@Autowired
-	private AddressBookDAO addressBookDAO;
+	private final AddressBookDAO addressBookDAO;
 
-	@Autowired
-	private EgovIdGnrService egovAdbkIdGnrService;
+	@Qualifier("egovAdbkIdGnrService")
+	private final EgovIdGnrService egovAdbkIdGnrService;
 
-	@Autowired
-	private EgovIdGnrService egovAdbkUserIdGnrService;
+	@Qualifier("egovAdbkUserIdGnrService")
+	private final EgovIdGnrService egovAdbkUserIdGnrService;
 
-	@Test
-	void insertAdressBookUser() {
+	public AddressBook insertAdressBookTestData() {
 		// given
 		AddressBook addressBook = new AddressBook();
 
@@ -40,25 +38,41 @@ class AddressBookDAOTest_insertAdressBookUser extends EgovTestV1 {
 
 		addressBook.setUseAt("Y");
 
+		LocalDateTime now = LocalDateTime.now();
+		String test = "test 이백행 " + now + " ";
+
+		addressBook.setAdbkNm(test + "주소록명");
+
+		// when
+		int result = addressBookDAO.insertAdressBook(addressBook);
+
+		log.debug("result={}", result);
+
+		// then
+
+		return addressBook;
+	}
+
+	public AddressBookUser insertAdressBookUserTestData(String adbkId) {
+		// given
 		AddressBookUser addressBookUser = new AddressBookUser();
+
 		try {
 			addressBookUser.setAdbkUserId(egovAdbkUserIdGnrService.getNextStringId());
 		} catch (FdlException e) {
 			throw new BaseRuntimeException(e);
 		}
 
-		addressBookUser.setAdbkId(addressBook.getAdbkId());
+		addressBookUser.setAdbkId(adbkId);
 
 		// when
-		int insertAdressBookResult = addressBookDAO.insertAdressBook(addressBook);
 		int result = addressBookDAO.insertAdressBookUser(addressBookUser);
 
-		log.debug("insertAdressBookResult={}", insertAdressBookResult);
 		log.debug("result={}", result);
 
 		// then
-		assertTrue(insertAdressBookResult > 0);
-		assertTrue(result > 0);
+
+		return addressBookUser;
 	}
 
 }

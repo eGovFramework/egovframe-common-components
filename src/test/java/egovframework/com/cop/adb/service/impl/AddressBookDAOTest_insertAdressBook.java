@@ -1,15 +1,15 @@
 package egovframework.com.cop.adb.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.adb.service.AddressBook;
@@ -18,24 +18,24 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-public class AddressBookDAOTest_insertAdressBook extends EgovTestV1 {
+class AddressBookDAOTest_insertAdressBook extends EgovTestV1 {
 
 	@Autowired
 	private AddressBookDAO addressBookDAO;
 
 	@Autowired
-	@Qualifier("egovAdbkIdGnrService")
 	private EgovIdGnrService egovAdbkIdGnrService;
 
 	@Test
-	@Rollback(true)
-	public void test() throws Exception {
-		log.debug("test");
-
+	void insertAdressBook() {
 		// given
 		AddressBook addressBook = new AddressBook();
 		log.debug("getAdbkId={}", addressBook.getAdbkId());
-		addressBook.setAdbkId(egovAdbkIdGnrService.getNextStringId());
+		try {
+			addressBook.setAdbkId(egovAdbkIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		log.debug("getAdbkId={}", addressBook.getAdbkId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
@@ -43,18 +43,12 @@ public class AddressBookDAOTest_insertAdressBook extends EgovTestV1 {
 		addressBook.setAdbkNm("test 주소록명" + today);
 
 		// when
-		boolean result = false;
-		try {
-			addressBookDAO.insertAdressBook(addressBook);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		int result = addressBookDAO.insertAdressBook(addressBook);
 
 		log.debug("result={}", result);
 
 		// then
-		assertEquals(result, true);
+		assertTrue(result > 0);
 	}
 
 }

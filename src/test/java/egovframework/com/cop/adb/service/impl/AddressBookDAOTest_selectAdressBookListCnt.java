@@ -1,36 +1,37 @@
 package egovframework.com.cop.adb.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
+import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.test.EgovTestV1;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-public class AddressBookDAOTest_selectAdressBookListCnt extends EgovTestV1 {
+class AddressBookDAOTest_selectAdressBookListCnt extends EgovTestV1 {
 
 	@Autowired
 	private AddressBookDAO addressBookDAO;
 
+	@Autowired
+	private AddressBookDAOTestData addressBookDAOTestData;
+
 	@Test
-	@Rollback(true)
-//	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
+	void selectAdressBookListCnt() {
+		AddressBook insertAdressBookTestData = addressBookDAOTestData.insertAdressBookTestData();
 
 		// given
 		AddressBookVO adbkVO = new AddressBookVO();
-		adbkVO.setWrterId("test 작성자ID");
-		adbkVO.setTrgetOrgnztId("test 대상조직ID");
+//		adbkVO.setWrterId("test 작성자ID");
+//		adbkVO.setTrgetOrgnztId("test 대상조직ID");
 
 		adbkVO.setSearchCnd("0");
-		adbkVO.setSearchWrd("test 주소록명");
+		adbkVO.setSearchWrd(insertAdressBookTestData.getAdbkNm());
 
 //		adbkVO.setSearchCnd("1");
 //		adbkVO.setSearchWrd("test 공개범위");
@@ -44,7 +45,7 @@ public class AddressBookDAOTest_selectAdressBookListCnt extends EgovTestV1 {
 		log.debug("adressBookListCnt={}", adressBookListCnt);
 
 		// then
-		assertEquals(true, true);
+		assertTrue(adressBookListCnt > 0);
 	}
 
 }

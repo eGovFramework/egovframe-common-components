@@ -26,7 +26,7 @@ import egovframework.com.cop.adb.service.AddressBookVO;
  * @see
  *
  */
-@Repository("AdressBookDAO")
+@Repository
 public class AddressBookDAO extends EgovComAbstractDAO{
     
     /**
@@ -76,7 +76,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @return
      */
     public AddressBookVO selectAdressBook(AddressBookVO adbkVO) {
-        return (AddressBookVO)selectOne("AdressBookDAO.selectAdressBook", adbkVO);
+        return selectOne("AdressBookDAO.selectAdressBook", adbkVO);
     }        
     
     /**
@@ -84,8 +84,8 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * 
      * @param AddressBook
      */
-    public void insertAdressBook(AddressBook addressBook) {
-        insert("AdressBookDAO.insertAdressBook", addressBook);
+    public int insertAdressBook(AddressBook addressBook) {
+        return insert("AdressBookDAO.insertAdressBook", addressBook);
     }
     
     /**
@@ -93,8 +93,8 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * 
      * @param AddressBookUser
      */
-    public void insertAdressBookUser(AddressBookUser addressBookUser) {
-        insert("AdressBookDAO.insertAdressBookUser", addressBookUser);
+    public int insertAdressBookUser(AddressBookUser addressBookUser) {
+        return insert("AdressBookDAO.insertAdressBookUser", addressBookUser);
     }
 
     /**
@@ -102,8 +102,8 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * 
      * @param AddressBook
      */
-    public void updateAdressBook(AddressBook addressBook) {
-        update("AdressBookDAO.updateAdressBook", addressBook);
+    public int updateAdressBook(AddressBook addressBook) {
+        return update("AdressBookDAO.updateAdressBook", addressBook);
     }
     
     /**
@@ -111,8 +111,8 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * 
      * @param AddressBookUser
      */
-    public void deleteAdressBookUser(AddressBookUser adbkUser) {
-        delete("AdressBookDAO.deleteAdressBookUser", adbkUser);
+    public int deleteAdressBookUser(AddressBookUser adbkUser) {
+        return delete("AdressBookDAO.deleteAdressBookUser", adbkUser);
     }    
     
     /**
@@ -121,7 +121,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @param AddressBookUser
      */
     public int selectAdressBookListCnt(AddressBookVO adbkVO) {
-        return (Integer)selectOne("AdressBookDAO.selectAdressBookListCnt", adbkVO);
+        return selectOne("AdressBookDAO.selectAdressBookListCnt", adbkVO);
     }
     
     /**
@@ -130,7 +130,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @param AddressBookUser
      */
     public int selectManListCnt(AddressBookUserVO adbkUserVO) {
-        return (Integer)selectOne("AdressBookDAO.selectManListCnt", adbkUserVO);
+        return selectOne("AdressBookDAO.selectManListCnt", adbkUserVO);
     }
     
     /**
@@ -139,7 +139,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @param AddressBookUser
      */
     public int selectCardListCnt(AddressBookUserVO adbkUserVO) {
-        return (Integer)selectOne("AdressBookDAO.selectCardListCnt", adbkUserVO);
+        return selectOne("AdressBookDAO.selectCardListCnt", adbkUserVO);
     }
     
     /**
@@ -148,7 +148,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @param AddressBookUser
      */
     public AddressBookUser selectManUser(String id) {
-        return (AddressBookUser)selectOne("AdressBookDAO.selectManUser", id);
+        return selectOne("AdressBookDAO.selectManUser", id);
     }
     
     /**
@@ -157,7 +157,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @param AddressBookUser
      */
     public AddressBookUser selectCardUser(String id) {
-        return (AddressBookUser)selectOne("AdressBookDAO.selectCardUser", id);
+        return selectOne("AdressBookDAO.selectCardUser", id);
     }
 
 }

@@ -6,36 +6,36 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.test.EgovTestV1;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-public class AddressBookDAOTest_selectAdressBook extends EgovTestV1 {
+class AddressBookDAOTest_selectAdressBook extends EgovTestV1 {
 
 	@Autowired
 	private AddressBookDAO addressBookDAO;
 
+	@Autowired
+	private AddressBookDAOTestData addressBookDAOTestData;
+
 	@Test
-	public void test() throws Exception {
-		log.debug("test");
+	void selectAdressBook() {
+		AddressBook insertAdressBookTestData = addressBookDAOTestData.insertAdressBookTestData();
 
 		// given
 		AddressBookVO adbkVO = new AddressBookVO();
-		adbkVO.setAdbkId("test 주소록ID");
+		adbkVO.setAdbkId(insertAdressBookTestData.getAdbkId());
 
 		// when
 		AddressBookVO adressBook = addressBookDAO.selectAdressBook(adbkVO);
 
 		log.debug("adressBook={}", adressBook);
 
-		if (adressBook == null) {
-			return;
-		}
-
 		// then
-		assertEquals(adressBook.getAdbkId(), adbkVO.getAdbkId());
+		assertEquals(adbkVO.getAdbkId(), adressBook.getAdbkId());
 	}
 
 }

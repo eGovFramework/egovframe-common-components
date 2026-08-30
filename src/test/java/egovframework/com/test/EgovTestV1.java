@@ -1,9 +1,9 @@
 package egovframework.com.test;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -37,7 +37,7 @@ public class EgovTestV1 {
 	private ApplicationContext context;
 
 	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
+	static void setUpBeforeClass() {
 		log.info("setUpBeforeClass");
 		log.info("");
 
@@ -47,7 +47,7 @@ public class EgovTestV1 {
 	}
 
 	@AfterAll
-	static void tearDownAfterClass() throws Exception {
+	static void tearDownAfterClass() {
 		log.info("tearDownAfterClass");
 		log.info("");
 
@@ -60,7 +60,7 @@ public class EgovTestV1 {
 	}
 
 	@BeforeEach
-	void setUp() throws Exception {
+	void setUp() {
 		log.info("setUp");
 		log.info("");
 
@@ -78,7 +78,7 @@ public class EgovTestV1 {
 	}
 
 	@AfterEach
-	void tearDown() throws Exception {
+	void tearDown() {
 		log.info("tearDown");
 		log.info("");
 

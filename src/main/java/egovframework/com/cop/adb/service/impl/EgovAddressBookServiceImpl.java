@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.adb.service.AddressBook;
@@ -13,7 +16,8 @@ import egovframework.com.cop.adb.service.AddressBookUser;
 import egovframework.com.cop.adb.service.AddressBookUserVO;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.cop.adb.service.EgovAddressBookService;
-import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 주소록정보를 관리하기 위한 서비스 구현  클래스
@@ -32,27 +36,27 @@ import jakarta.annotation.Resource;
  *
  * </pre>
  */
-@Service("EgovAdressBookService")
+@Service
+@RequiredArgsConstructor
+@Slf4j
 public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implements EgovAddressBookService{
 
+    private final AddressBookDAO adbkDAO;
 
-    @Resource(name = "AdressBookDAO")
-    private AddressBookDAO adbkDAO;
+	@Qualifier("egovAdbkIdGnrService")
+	private final EgovIdGnrService egovAdbkIdGnrService;
 
-    @Resource(name = "egovAdbkIdGnrService")
-    private EgovIdGnrService idgenService;
-
-    @Resource(name = "egovAdbkUserIdGnrService")
-    private EgovIdGnrService idgenService2;
+	@Qualifier("egovAdbkUserIdGnrService")
+	private final EgovIdGnrService egovAdbkUserIdGnrService;
 
     /**
      * 주소록 목록을 조회한다.
      * @param AddressBookVO
      * @return  Map<String, Object>
-     * @exception Exception
      */
     @Override
-	public Map<String, Object> selectAdressBookList(AddressBookVO adbkVO) throws Exception {
+	public Map<String, Object> selectAdressBookList(AddressBookVO adbkVO) {
+    	log.debug("getWrterId={}", adbkVO.getWrterId());
 
         List<AddressBookVO> result = adbkDAO.selectAdressBookList(adbkVO);
 
@@ -70,10 +74,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
      * 주소록 정보를 조회한다.
      * @param AddressBookVO
      * @return  AdressBookVO
-     * @exception Exception
      */
     @Override
-	public AddressBookVO selectAdressBook(AddressBookVO addressBookVO)throws Exception {
+	public AddressBookVO selectAdressBook(AddressBookVO addressBookVO) {
 
         AddressBookVO adbkVO = adbkDAO.selectAdressBook(addressBookVO);
 
@@ -88,21 +91,19 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
      * 주소록 정보를 삭제한다.
      * @param AddressBook
      * @return
-     * @exception Exception
      */
     @Override
-	public void deleteAdressBook(AddressBook addressBook) throws Exception {
-        adbkDAO.updateAdressBook(addressBook);
+	public int deleteAdressBook(AddressBook addressBook) {
+        return adbkDAO.updateAdressBook(addressBook);
     }
 
     /**
      * 사용자 목록을 조회한다.
      * @param AddressBookUserVO
      * @return Map<String, Object>
-     * @exception Exception
      */
     @Override
-	public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) throws Exception{
+	public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) {
 
         List<AddressBookUserVO> result = adbkDAO.selectManList(addressBookUserVO);
         int cnt = adbkDAO.selectManListCnt(addressBookUserVO);
@@ -119,10 +120,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
      * 명함 목록을 조회한다.
      * @param AddressBookUserVO
      * @return Map<String, Object>
-     * @exception Exception
      */
     @Override
-	public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) throws Exception {
+	public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) {
 
         List<AddressBookUserVO> result = adbkDAO.selectCardList(addressBookUserVO);
         int cnt = adbkDAO.selectCardListCnt(addressBookUserVO);
@@ -139,33 +139,43 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
      * 주소록 정보를 등록한다.
      * @param AddressBookVO
      * @return M
-     * @exception Exception
      */
     @Override
-	public void insertAdressBook(AddressBookVO adbkVO) throws Exception {
+	public int insertAdressBook(AddressBookVO adbkVO) {
+    	int result = 0;
 
-        adbkVO.setAdbkId(idgenService.getNextStringId());
+        try {
+			adbkVO.setAdbkId(egovAdbkIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
         adbkVO.setUseAt("Y");
 
-        adbkDAO.insertAdressBook(adbkVO);
+        result += adbkDAO.insertAdressBook(adbkVO);
 
         for (AddressBookUser element : adbkVO.getAdbkMan()) {
-            element.setAdbkUserId(idgenService2.getNextStringId());
+            try {
+				element.setAdbkUserId(egovAdbkUserIdGnrService.getNextStringId());
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
             element.setAdbkId(adbkVO.getAdbkId());
-            adbkDAO.insertAdressBookUser(element);
+            result += adbkDAO.insertAdressBookUser(element);
         }
+        
+        return result;
     }
 
     /**
      * 주소록 정보를 수정한다.
      * @param AddressBookVO
      * @return
-     * @exception Exception
      */
     @Override
-	public void updateAdressBook(AddressBookVO adbkVO) throws Exception {
+	public int updateAdressBook(AddressBookVO adbkVO) {
+    	int result = 0;
 
-        adbkDAO.updateAdressBook(adbkVO);
+    	result += adbkDAO.updateAdressBook(adbkVO);
 
         List<AddressBookUser> temp = adbkDAO.selectUserList(adbkVO);
 
@@ -207,9 +217,13 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
                 }
             }
             if(!check){
-                element.setAdbkUserId(idgenService2.getNextStringId());
+                try {
+					element.setAdbkUserId(egovAdbkUserIdGnrService.getNextStringId());
+				} catch (FdlException e) {
+					throw new BaseRuntimeException(e);
+				}
                 element.setAdbkId(adbkVO.getAdbkId());
-                adbkDAO.insertAdressBookUser(element);
+                result += adbkDAO.insertAdressBookUser(element);
             }
         }
 
@@ -225,20 +239,20 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
                 }
             }
             if(!check){
-                adbkDAO.deleteAdressBookUser(element);
+            	result += adbkDAO.deleteAdressBookUser(element);
             }
         }
+        
+        return result;
     }
 
     /**
      * 주소록 구성원 정보를 불러온다.
      * @param String
      * @return
-     * @exception Exception
      */
     @Override
-	public AddressBookUser selectAdbkUser(String id)
-            throws Exception {
+	public AddressBookUser selectAdbkUser(String id) {
 
         AddressBookUser adbkUser = new AddressBookUser();
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookUser;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.cop.adb.service.EgovAddressBookService;
@@ -16,18 +17,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-public class EgovAddressBookServiceImplTest_selectAdressBook extends EgovTestV1 {
+class EgovAddressBookServiceImplTest_selectAdressBook extends EgovTestV1 {
 
 	@Autowired
 	private EgovAddressBookService egovAddressBookService;
 
+	@Autowired
+	private AddressBookDAOTestData addressBookDAOTestData;
+
 	@Test
-	public void test() throws Exception {
-		log.debug("test");
+	void selectAdressBook() {
+		AddressBook insertAdressBookTestData = addressBookDAOTestData.insertAdressBookTestData();
 
 		// given
 		AddressBookVO adbkVO = new AddressBookVO();
-		adbkVO.setAdbkId("test 주소록ID");
+		adbkVO.setAdbkId(insertAdressBookTestData.getAdbkId());
 
 		// when
 		AddressBookVO adressBook = egovAddressBookService.selectAdressBook(adbkVO);
