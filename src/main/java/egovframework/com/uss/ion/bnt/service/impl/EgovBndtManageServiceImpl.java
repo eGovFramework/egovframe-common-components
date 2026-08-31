@@ -459,6 +459,10 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 					HSSFCell cell = null;
 					cell = row.getCell(0); // 당직일자
 					sBndtDe = getCellValueAsString(cell);
+					// 당직일자가 비어 있거나 8자리 미만이면 해당 행 스킵 (xlsx 처리와 동일)
+					if (sBndtDe == null || sBndtDe.trim().isEmpty() || sBndtDe.trim().length() < 8) {
+						continue;
+					}
 					cell = row.getCell(1); // 당직자ID
 					sTempId = getCellValueAsString(cell);
 					cell = row.getCell(2); // 당직자명
@@ -619,7 +623,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		int iWeek = 0;
 		sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
 		// KISA 보안약점 조치 - 널(null) 값 체크
-		if (sDayOfWeek == null) {
+		// getDateWeekString과 동일하게 8자리 미만이면 substring 파싱 예외를 피하고 0을 반환한다.
+		if (sDayOfWeek == null || sDayOfWeek.length() < 8) {
 			return 0;
 		}
 		targetDate.set(Integer.parseInt(sDayOfWeek.substring(0, 4)), Integer.parseInt(sDayOfWeek.substring(4, 6)) - 1,
