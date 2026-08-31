@@ -143,7 +143,7 @@ public class EgovFormBasedUUID implements Serializable {
 	}
 
 	/**
-	 * Static factory to retrieve a type 3 (name based) <tt>UUID</tt> based on the
+	 * Static factory to retrieve a type 4 (random) <tt>UUID</tt> based on the
 	 * specified byte array.
 	 *
 	 * 2014.09.20 보안점검 후속조치로 SecureRandom salt를 혼합한다.
