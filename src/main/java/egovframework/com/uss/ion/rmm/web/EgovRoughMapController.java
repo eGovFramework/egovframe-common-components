@@ -154,7 +154,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/insertRoughMap.do")
-	public String insertRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
+	public String insertRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
 			throws Exception {
 
 		// 권한 체크
