@@ -340,7 +340,7 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
 	 @PostMapping("/uss/ion/ctn/updtCtsnnConfm.do")
-	 public String updateCtsnnManageConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
+	 public String updateCtsnnManageConfm(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                               BindingResult bindingResult,
 			                               SessionStatus status,
 		                                   ModelMap model) throws Exception {

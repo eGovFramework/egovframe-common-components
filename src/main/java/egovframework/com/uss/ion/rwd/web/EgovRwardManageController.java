@@ -435,7 +435,7 @@ public class EgovRwardManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/updtRwardConfm.do")
-	public String updtRwardManageConfm(@ModelAttribute("rwardManage") RwardManage rwardManage,
+	public String updtRwardManageConfm(@Valid @ModelAttribute("rwardManage") RwardManage rwardManage,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -458,8 +458,8 @@ public class EgovRwardManageController {
 		rwardManage.setInfrmlSanctnId(storedConfm.getInfrmlSanctnId());
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("rwardManageVO", rwardManage);
-			return "egovframework/com/uss/ion/vct/EgovRwardConfm";
+			model.addAttribute("rwardManageVO", storedConfm);
+			return "egovframework/com/uss/ion/rwd/EgovRwardConfm";
 		} else {
 
 			rwardManage.setSanctnerId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());

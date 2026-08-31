@@ -163,6 +163,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>6.3.3</version>
+		</dependency>
 
 		<!-- Jakarta -->
 		<dependency>
