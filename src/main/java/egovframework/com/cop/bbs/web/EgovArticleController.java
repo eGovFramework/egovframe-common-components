@@ -483,7 +483,9 @@ public class EgovArticleController {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("boardMasterVO", master);
-			model.addAttribute("result", egovArticleService.selectArticleDetail(boardVO));
+			// 재표시 화면의 hidden(parnts·sortOrdr·replyLc·nttId)은 제출된 요청값에 이미 있다.
+			// selectArticleDetail 은 조회수를 올리므로(updateInqireCo) 여기서는 요청값을 그대로 쓴다.
+			model.addAttribute("result", boardVO);
 			//// -----------------------------
 
 			return "egovframework/com/cop/bbs/EgovArticleReply";

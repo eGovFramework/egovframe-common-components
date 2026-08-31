@@ -52,7 +52,10 @@ class EgovArticleControllerReplyValidationTest {
 				new Class<?>[] { EgovArticleService.class },
 				(proxy, method, args) -> {
 					if ("selectArticleDetail".equals(method.getName())) {
-						return detail;
+						// 검증 실패 재표시는 이 메서드(내부에서 updateInqireCo 로 조회수 증가)를
+						// 부르면 안 된다. 부르면 테스트가 실패하도록 예외를 던진다.
+						throw new AssertionError(
+								"검증 실패 재표시가 selectArticleDetail 을 호출해 조회수를 올렸다");
 					}
 					throw new UnsupportedOperationException(method.getName());
 				});
@@ -115,14 +118,18 @@ class EgovArticleControllerReplyValidationTest {
 	}
 
 	private static BoardVO searchVO() {
+		// 답변 화면이 hidden 으로 제출하는 부모 라우팅 값들. 재표시는 이것으로 복원한다.
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId("BBSMSTR_TEST00001");
 		boardVO.setNttId(PARENT_NTT_ID);
+		boardVO.setParnts("0");
+		boardVO.setSortOrdr(0L);
+		boardVO.setReplyLc("0");
 		return boardVO;
 	}
 
 	@Test
-	void 검증실패_재표시가_부모_게시물을_모델에_담는다() throws Exception {
+	void 검증실패_재표시가_조회수를_올리지_않고_요청값으로_hidden을_복원한다() throws Exception {
 		bindLoginUser();
 		BoardVO parent = parentArticle();
 		ModelMap model = new ModelMap();
@@ -143,26 +150,4 @@ class EgovArticleControllerReplyValidationTest {
 		assertEquals("0", result.getParnts());
 	}
 
-	@Test
-	void 검증실패_재표시가_정상_진입경로와_같은_부모를_담는다() throws Exception {
-		bindLoginUser();
-		BoardVO parent = parentArticle();
-
-		ModelMap opened = new ModelMap();
-		controller(parent).addReplyBoardArticle(searchVO(), opened);
-
-		ModelMap redisplayed = new ModelMap();
-		BoardVO submitted = new BoardVO();
-		BindingResult bindingResult = new BeanPropertyBindingResult(submitted, "articleVO");
-		bindingResult.rejectValue("nttSj", "Size", "제목이 너무 깁니다");
-		controller(parent).replyBoardArticle(null, searchVO(), new BoardMasterVO(), submitted, bindingResult,
-				redisplayed);
-
-		BoardVO fromOpen = (BoardVO) opened.get("result");
-		BoardVO fromRedisplay = (BoardVO) redisplayed.get("result");
-		assertNotNull(fromRedisplay, "정상 진입 경로는 result를 담는데 재표시 분기는 담지 않는다");
-		assertEquals(fromOpen.getNttId(), fromRedisplay.getNttId());
-		assertEquals(fromOpen.getReplyLc(), fromRedisplay.getReplyLc());
-		assertEquals(fromOpen.getSortOrdr(), fromRedisplay.getSortOrdr());
-	}
 }
