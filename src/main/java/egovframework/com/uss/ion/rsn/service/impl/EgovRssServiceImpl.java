@@ -70,12 +70,12 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl implements EgovR
 			String smBdtTag = sBdtTag == null ? "" : sBdtTag;
 			String smBdtEtc = sBdtEtc == null ? "" : sBdtEtc;
 
-			for (Map.Entry<String, String> entry : mapRow.entrySet()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
-				// null 처리
-				if (value != null && key != null) {
-					String cellValue = EgovWebUtil.escapeXml(value);
+			for (Map.Entry<?, ?> entry : ((Map<?, ?>) mapRow).entrySet()) {
+				Object key = entry.getKey();
+				Object rawValue = entry.getValue();
+				// 조회 결과에는 컬럼 타입에 따라 숫자·일시 값도 담길 수 있으므로, 기존과 같이 문자열 값만 치환 대상으로 한다
+				if (rawValue instanceof String && key != null) {
+					String cellValue = EgovWebUtil.escapeXml((String) rawValue);
 					// 2026.07.13 KISA 보안취약점 조치 - replaceAll의 대체문자열은 정규식으로 해석되므로
 					// $, \\ 등이 역참조/이스케이프로 처리되어 예외나 의도치 않은 치환이 발생할 수 있음.
 					// Matcher.quoteReplacement()로 감싸 리터럴 문자열로 안전하게 치환한다.
