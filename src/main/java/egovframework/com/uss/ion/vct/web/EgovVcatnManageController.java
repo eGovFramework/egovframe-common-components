@@ -641,7 +641,7 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/updtVcatnConfm.do")
-	public String updtVcatnManageConfm(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult, SessionStatus status,
+	public String updtVcatnManageConfm(@Valid @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
