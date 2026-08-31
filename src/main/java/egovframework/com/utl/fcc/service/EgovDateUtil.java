@@ -37,6 +37,9 @@ import com.ibm.icu.util.ChineseCalendar;
  */
 public class EgovDateUtil {
     private static final  String SIMPLE_DATE_PATTERN = "yyyyMMdd";
+	/** HHmm 또는 HH:mm 형식만 허용한다. 길이만 보면 "12345"처럼 형식이 다른 값도 통과한다. */
+	private static final java.util.regex.Pattern TIME_PATTERN = java.util.regex.Pattern.compile("^\\d{2}:?\\d{2}$");
+
 	/**
 	 * <p>
 	 * yyyyMMdd 혹은 yyyy-MM-dd 형식의 날짜 문자열을 입력 받아 년, 월, 일을 증감한다. 년, 월, 일은 가감할 수를 의미하며,
@@ -860,9 +863,6 @@ public class EgovDateUtil {
 	 * @param dateStr
 	 * @return
 	 */
-	/** HHmm 또는 HH:mm 형식만 허용한다. 길이만 보면 "12345"처럼 형식이 다른 값도 통과한다. */
-	private static final java.util.regex.Pattern TIME_PATTERN = java.util.regex.Pattern.compile("^\\d{2}:?\\d{2}$");
-
 	public static String validChkDate(String dateStr) {
 		if (dateStr == null || !(dateStr.trim().length() == 8 || dateStr.trim().length() == 10)) {
 			throw new IllegalArgumentException("Invalid date format: " + dateStr);
