@@ -16,7 +16,9 @@
 package egovframework.com.utl.fcc.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -66,5 +68,19 @@ class EgovDateUtilValidChkTimeTest {
 		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("1:230"));
 		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("ab:cd"));
 		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkTime("12-30"));
+	}
+
+	@Test
+	void validTime_acceptsTheFormatsValidChkTimeNormalizes() {
+		assertTrue(EgovDateUtil.validTime("12:30"),
+				"validChkTime이 \"1230\"으로 정규화하는 입력은 validTime도 유효로 봐야 한다");
+		assertTrue(EgovDateUtil.validTime("  1230  "), "앞뒤 공백이 있어도 유효해야 한다");
+		assertTrue(EgovDateUtil.validTime("1230"));
+	}
+
+	@Test
+	void validTime_stillRejectsOutOfRange() {
+		assertFalse(EgovDateUtil.validTime("2599"), "형식이 맞아도 범위를 벗어나면 false여야 한다");
+		assertFalse(EgovDateUtil.validTime("2400"));
 	}
 }

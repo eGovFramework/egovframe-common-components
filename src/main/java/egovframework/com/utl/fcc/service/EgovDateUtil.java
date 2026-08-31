@@ -759,7 +759,7 @@ public class EgovDateUtil {
 
 		String retTime = retHH + retMM;
 
-		if (sTime.equals(retTime)) {
+		if (timeStr.equals(retTime)) {
 			ret = true;
 		}
 
