@@ -458,7 +458,7 @@ public class EgovRwardManageController {
 		rwardManage.setInfrmlSanctnId(storedConfm.getInfrmlSanctnId());
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("rwardManageVO", rwardManage);
+			model.addAttribute("rwardManageVO", storedConfm);
 			return "egovframework/com/uss/ion/rwd/EgovRwardConfm";
 		} else {
 
