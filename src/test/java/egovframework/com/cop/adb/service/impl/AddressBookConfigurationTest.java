@@ -12,16 +12,9 @@ import egovframework.com.cop.adb.service.EgovAddressBookService;
 
 @ImportResource({
 
-//	"classpath*:egovframework/spring/com/**/context-*.xml",
+		"classpath*:egovframework/spring/com/context-*.xml",
 
-		"classpath*:/egovframework/spring/com/context-crypto.xml",
-		"classpath*:/egovframework/spring/com/context-datasource.xml",
-		"classpath*:/egovframework/spring/com/context-mapper.xml",
-		"classpath*:/egovframework/spring/com/context-transaction.xml",
-
-		"classpath*:/egovframework/spring/com/idgn/context-idgn-Adbk.xml",
-
-		"classpath*:/egovframework/spring/com/test-context-common.xml",
+		"classpath*:egovframework/spring/com/idgn/context-*.xml",
 
 })
 
