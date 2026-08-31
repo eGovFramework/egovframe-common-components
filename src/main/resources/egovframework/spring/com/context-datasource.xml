@@ -18,103 +18,106 @@
 	
 	<!-- MySQL -->
 	<beans profile="mysql">  
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.mysql.DriverClassName}"/>
-		<property name="url" value="${Globals.mysql.Url}" />
+		<property name="jdbcUrl" value="${Globals.mysql.Url}" />
 		<property name="username" value="${Globals.mysql.UserName}"/>
 		<!-- 암호화(Crypto) 관련 서비스 https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte2:fdl:crypto_simplify_v3_8 참조 -->
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.mysql.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 	
 	<!-- oracle -->
 	<beans profile="oracle">
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.oracle.DriverClassName}"/>
-		<property name="url" value="${Globals.oracle.Url}" />
+		<property name="jdbcUrl" value="${Globals.oracle.Url}" />
 		<property name="username" value="${Globals.oracle.UserName}"/>
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.oracle.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 
 	<!-- altibase -->
 	<beans profile="altibase">
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.altibase.DriverClassName}"/>
-		<property name="url" value="${Globals.altibase.Url}" />
+		<property name="jdbcUrl" value="${Globals.altibase.Url}" />
 		<property name="username" value="${Globals.altibase.UserName}"/>
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.altibase.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 		
-		<property name="validationQuery" value="select 1"/>
-        <property name="testWhileIdle" value="true"/>
+		<property name="connectionTestQuery" value="select 1"/>
 	</bean>
 	</beans>
 
 	<!-- tibero -->
 	<beans profile="tibero">
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.tibero.DriverClassName}"/>
-		<property name="url" value="${Globals.tibero.Url}" />
+		<property name="jdbcUrl" value="${Globals.tibero.Url}" />
 		<property name="username" value="${Globals.tibero.UserName}"/>
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.tibero.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 
     <!-- cubrid -->
     <beans profile="cubrid">
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="${Globals.cubrid.DriverClassName}"/>
-        <property name="url" value="${Globals.cubrid.Url}" />
+        <property name="jdbcUrl" value="${Globals.cubrid.Url}" />
         <property name="username" value="${Globals.cubrid.UserName}"/>
         <property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.cubrid.Password')}"/>
+        <property name="maximumPoolSize" value="10"/>
         
-        <property name="validationQuery" value="select 1"/>
-        <property name="testOnBorrow" value="false"/>
+        <property name="connectionTestQuery" value="select 1"/>
     </bean>
     </beans>
     <!--
     	CUBRID 가이드 참조
     	https://www.cubrid.com/tutorial/3794188
-    	* DBCP를 통해 최초 connection 시 해당 connection이 유효한지 체크하는 isValid를 호출
+        * HikariCP의 connectionTestQuery를 통해 connection 유효성을 확인
      -->
 
 	<!-- MariaDB -->
 	<beans profile="maria">
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.maria.DriverClassName}"/>
-		<property name="url" value="${Globals.maria.Url}" />
+		<property name="jdbcUrl" value="${Globals.maria.Url}" />
 		<property name="username" value="${Globals.maria.UserName}"/>
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.maria.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 
 	<!-- PostresSQL -->
 	<beans profile="postgres">  
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.postgres.DriverClassName}"/>
-		<property name="url" value="${Globals.postgres.Url}" />
+		<property name="jdbcUrl" value="${Globals.postgres.Url}" />
 		<property name="username" value="${Globals.postgres.UserName}"/>
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.postgres.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 	
 	<!-- GOLDILOCKS -->
 	<beans profile="goldilocks">  
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.goldilocks.DriverClassName}"/>
-		<property name="url" value="${Globals.goldilocks.Url}" />
+		<property name="jdbcUrl" value="${Globals.goldilocks.Url}" />
 		<property name="username" value="${Globals.goldilocks.UserName}"/>
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.goldilocks.Password')}"/>
+		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 
-    <!-- DB Pool이 생성이 되더라고 특정 시간 호출되지 않으면 DBMS 설정에 따라 연결을 끊어질 때
-		이 경우 DBCP를 사용하셨다면.. 다음과 같은 설정을 추가하시면 연결을 유지시켜 줍니다. -->
+	<!-- DBMS가 유휴 connection을 종료하는 경우 다음 HikariCP 설정으로 연결 유지 주기를 지정할 수 있습니다. -->
 	<!--
-	<property name="validationQuery" value="select 1 from dual" />
-	<property name="testWhileIdle" value="true" />
-	<property name="timeBetweenEvictionRunsMillis" value="60000" /> -->  <!-- 1분 -->
+	<property name="keepaliveTime" value="60000" /> -->  <!-- 1분 -->
 
-	<!-- DBCP가 아닌 WAS의 DataSource를 사용하시는 경우도 WAS별로 동일한 설정을 하실 수 있습니다.
+	<!-- HikariCP가 아닌 WAS의 DataSource를 사용하시는 경우도 WAS별로 동일한 설정을 하실 수 있습니다.
 		(WAS별 구체적인 설정은 WAS document 확인) -->
 </beans>
