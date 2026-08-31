@@ -146,6 +146,9 @@ public class EgovFormBasedUUID implements Serializable {
 	 * Static factory to retrieve a type 3 (name based) <tt>UUID</tt> based on the
 	 * specified byte array.
 	 *
+	 * 2014.09.20 보안점검 후속조치로 SecureRandom salt를 혼합한다.
+	 * 따라서 동일한 name을 전달해도 호출할 때마다 서로 다른 UUID가 반환된다.
+	 *
 	 * @param name a byte array to be used to construct a <tt>UUID</tt>.
 	 * @return a <tt>UUID</tt> generated from the specified array.
 	 */
@@ -173,12 +176,14 @@ public class EgovFormBasedUUID implements Serializable {
 		md.update(randomBytes);
 		byte[] sha = md.digest(name);
 
-		byte[] md5Bytes = new byte[8];
-		System.arraycopy(sha, 0, md5Bytes, 0, 8);
+		byte[] md5Bytes = new byte[16];
+		System.arraycopy(sha, 0, md5Bytes, 0, 16);
 		// 2011.10.10 보안점검 후속조치 끝
 
 		md5Bytes[6] &= 0x0f; /* clear version */
-		md5Bytes[6] |= 0x30; /* set to version 3 */
+		// 2014.09.20 보안점검으로 매 호출 SecureRandom salt가 섞이면서 같은 이름이라도 결과가 달라진다.
+		// 이름 기반(version 3/5)의 전제인 결정성이 성립하지 않으므로 무작위 기반인 version 4로 표기한다.
+		md5Bytes[6] |= 0x40; /* set to version 4 */
 		md5Bytes[8] &= 0x3f; /* clear variant */
 		md5Bytes[8] |= 0x80; /* set to IETF variant */
 
