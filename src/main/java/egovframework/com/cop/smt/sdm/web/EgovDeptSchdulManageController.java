@@ -408,6 +408,12 @@ public class EgovDeptSchdulManageController {
 
 		model.addAttribute("listWeekGrop", listWeekGrop);
 
+		// 2026.09.01 인덱스 사용 전 범위 검증(IndexOutOfBoundsException 방지)
+		if (iNowWeek < 0 || iNowWeek >= listWeekGrop.size()) {
+			iNowWeek = 0;
+			model.addAttribute("week", iNowWeek);
+		}
+
 		List<String> listWeek = listWeekGrop.get(iNowWeek);
 		commandMap.put("searchMode", "WEEK");
 		commandMap.put("schdulBgnde", listWeek.get(0));
