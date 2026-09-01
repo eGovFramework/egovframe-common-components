@@ -120,7 +120,6 @@ public class EgovBndtManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name = "당직관리", order = 910, gid = 50)
 	@RequestMapping("/uss/ion/bnt/EgovBndtManageList.do")
 	public String selectBndtManageListView(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
@@ -133,7 +132,6 @@ public class EgovBndtManageController {
 
 		int iYear = cal.get(java.util.Calendar.YEAR);
 		int iMonth = cal.get(java.util.Calendar.MONTH);
-		int iDate = cal.get(java.util.Calendar.DATE);
 
 		// 검색 설정
 		String sSearchDate = "";
@@ -375,12 +373,9 @@ public class EgovBndtManageController {
 	 *
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/bnt/EgovBndtCeckManageRegist.do")
 	public String insertViewBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			ModelMap model) throws Exception {
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		model.addAttribute("bndtCeckSeList", bndtCeckSeCode());
 

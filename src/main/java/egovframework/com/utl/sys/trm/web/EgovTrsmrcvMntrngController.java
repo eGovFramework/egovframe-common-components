@@ -218,15 +218,11 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="송수신모니터링",order = 2080 ,gid = 90)
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngList.do")
 	public String selectTrsmrcvMntrngList(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO, ModelMap model)
 	  throws Exception{
 		LOGGER.debug(" 조회조건 : {}", searchVO);
-
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
 		searchVO.setPageSize(propertyService.getInt("pageSize")/2);

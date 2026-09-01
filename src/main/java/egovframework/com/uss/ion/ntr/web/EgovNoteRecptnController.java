@@ -180,15 +180,12 @@ public class EgovNoteRecptnController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@PostMapping("/uss/ion/ntr/detailNoteRecptn.do")
     public String EgovNoteRecptnDetail(
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
     		EgovSecurityMap securityMap,
             ModelMap model) throws Exception {
-
-		String sLocationUrl = "egovframework/com/uss/ion/nts/EgovNoteTrnsmitDetail";
 
         String sCmd = securityMap.get("cmd") == null ? "" : (String) securityMap.get("cmd");
 

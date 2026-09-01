@@ -156,7 +156,6 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
@@ -173,7 +172,6 @@ public class EgovBannerController {
 
 	    	String uploadFolder = "";
 	    	String bannerImage = "";
-	    	String bannerImageFile = "";
 	    	String atchFileId = "";
 
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -188,7 +186,6 @@ public class EgovBannerController {
 	        	while (iter.hasNext()) {
 	        	    vo = iter.next();
 	        	    bannerImage = vo.getOrignlFileNm();
-	        	    bannerImageFile = vo.getStreFileNm();
 	        	}
 	    	}
 
@@ -212,7 +209,6 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
@@ -230,7 +226,6 @@ public class EgovBannerController {
 
 			String uploadFolder = "";
 			String bannerImage = "";
-			String bannerImageFile = "";
 			String atchFileId = "";
 
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -245,7 +240,6 @@ public class EgovBannerController {
 				while (iter.hasNext()) {
 					vo = iter.next();
 					bannerImage = vo.getOrignlFileNm();
-					bannerImageFile = vo.getStreFileNm();
 				}
 
 				if (vo == null) {
@@ -303,7 +297,6 @@ public class EgovBannerController {
 			                        SessionStatus status,
 			                        ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
 
     	// 2026.03.23 kisa 보안점검 대응 조치
     	  if (ObjectUtils.isEmpty(bannerIds)) {
@@ -383,21 +376,6 @@ public class EgovBannerController {
 			throw new IllegalStateException("인증 정보가 없습니다.");
 		}
 		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

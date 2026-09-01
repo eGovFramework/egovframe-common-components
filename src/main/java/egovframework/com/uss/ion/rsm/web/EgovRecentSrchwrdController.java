@@ -79,7 +79,6 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name = "최근검색어 조회", order = 760, gid = 50)
 	@RequestMapping("/uss/ion/rsm/listRecentSrchwrd.do")
 	public String egovRecentSrchwrdList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, ModelMap model)
@@ -123,8 +122,6 @@ public class EgovRecentSrchwrdController {
 	public String egovRecentSrchwrdDetail(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
-
 
 		String sLocationUrl = "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail";
 
@@ -272,12 +269,10 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovOnlinePollList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/rsm/listRecentSrchwrdResult.do")
 	public String egovRecentSrchwrdResultList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		/** EgovPropertyService.sample */

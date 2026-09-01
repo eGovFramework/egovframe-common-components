@@ -9,25 +9,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import lombok.extern.slf4j.Slf4j;
 /**
  * 프록시 스레드 클래스는 클라이언트와 서버 간의 통신을 중계합니다.
  */
+@Slf4j
 public class ProxyThread implements Runnable {
 
 	/** 로그 출력을 위한 로거 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProxyThread.class);
 
 	/** 클라이언트 소켓 */
-	@SuppressWarnings("unused")
 	private Socket client = null;
 
 	/** 클라이언트로부터의 입력 스트림 */
 	private InputStream streamFromClient = null;
 	/** 클라이언트로의 출력 스트림 */
-	@SuppressWarnings("unused")
 	private OutputStream streamToClient = null;
 	/** 서버로부터의 입력 스트림 */
-	@SuppressWarnings("unused")
 	private InputStream streamFromServer = null;
 	/** 서버로의 출력 스트림 */
 	private OutputStream streamToServer = null;
@@ -47,6 +46,7 @@ public class ProxyThread implements Runnable {
 	 */
 	public ProxyThread(Socket client) {
 		this.client = client;
+		log.debug("{}", this.client);
 	}
 
 	/**
@@ -62,7 +62,9 @@ public class ProxyThread implements Runnable {
 		this.client = client;
 		this.streamFromClient = streamFromClient;
 		this.streamToClient = streamToClient;
+		log.debug("{}", this.streamToClient);
 		this.streamFromServer = streamFromServer;
+		log.debug("{}", this.streamFromServer);
 		this.streamToServer = streamToServer;
 	}
 

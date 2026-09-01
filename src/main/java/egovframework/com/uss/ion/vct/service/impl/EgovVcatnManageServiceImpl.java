@@ -293,10 +293,8 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	@SuppressWarnings("unused")
 	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO == null || loginVO.getUniqId() == null) {

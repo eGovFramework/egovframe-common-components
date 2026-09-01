@@ -214,7 +214,6 @@ public class EgovDiaryManageController {
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModify"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageModify.do")
 	public String diaryManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, BindingResult bindingResult,
@@ -359,7 +358,6 @@ public class EgovDiaryManageController {
 	 * @return "/cop/smt/dsm/EgovDiaryManageRegist"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@GetMapping("/cop/smt/dsm/EgovDiaryManageRegist.do")
 	public String diaryManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO,

@@ -173,7 +173,6 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="질문관리", order = 630 ,gid = 50)
 	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do")
 	public String egovQustnrQestnManageList(
@@ -189,9 +188,6 @@ public class EgovQustnrQestnManageController {
     		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");

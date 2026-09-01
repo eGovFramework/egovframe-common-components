@@ -7,6 +7,8 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
+import lombok.extern.slf4j.Slf4j;
 //import java.net.MalformedURLException;
 //import java.rmi.registry.LocateRegistry;
 //import java.rmi.registry.Registry;
@@ -26,7 +28,7 @@ import java.lang.reflect.Modifier;
  *   -------    --------    ---------------------------
  * 2017.02.07 	이정은 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-210]
  */
-
+@Slf4j
 public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 
 	private Object getOSInfo(String getMethod) {
@@ -62,12 +64,12 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 
 		long bfprocesstime = (Long)getOSInfo("getProcessCpuTime");
 		long bfuptime = runbean.getUptime();
-		@SuppressWarnings("unused")
 		long ncpus = osbean.getAvailableProcessors();
 
 		for (int i = 0; i < 1000000; ++i) {
 			ncpus = osbean.getAvailableProcessors();
 		}
+		log.debug("{}", ncpus);
 
 		long afprocesstime = (Long)getOSInfo("getProcessCpuTime");
 		long afuptime = runbean.getUptime();
