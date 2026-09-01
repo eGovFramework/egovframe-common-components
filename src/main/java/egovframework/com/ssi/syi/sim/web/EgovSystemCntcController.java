@@ -183,6 +183,10 @@ public class EgovSystemCntcController {
 		model.addAttribute("selfUri", selfUri);
 
 		SystemCntc vo = systemCntcService.selectSystemCntcDetail(systemCntc);
+		if (vo == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/ssi/syi/sim/getSystemCntcList.do";
+		}
 		model.addAttribute("result", vo);
 
 		// 드롭다운 리스트 데이터 설정 (상세 조회용)
@@ -257,6 +261,10 @@ public class EgovSystemCntcController {
 
 
 		SystemCntc vo = systemCntcService.selectSystemCntcDetail(systemCntc);
+		if (vo == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/ssi/syi/sim/getSystemCntcList.do";
+		}
 		model.addAttribute("systemCntc", vo);
 
 		// 드롭다운 리스트 데이터 설정 (상세 조회용)
@@ -379,6 +387,10 @@ public class EgovSystemCntcController {
 		model.addAttribute("selfUri", selfUri);
 
 		SystemCntc vo = systemCntcService.selectSystemCntcDetail(systemCntc);
+		if (vo == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/ssi/syi/scm/getConfirmSystemCntcList.do";
+		}
 		model.addAttribute("result", vo);
 
 		// 드롭다운 리스트 데이터 설정 (상세 조회용)
