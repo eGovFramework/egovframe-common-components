@@ -69,13 +69,13 @@ public class SysHistory implements Serializable {
 	 */
 	private String atchFileId = "";
 	/**
-	 * @return the creatDt
+	 * @return the histId
 	 */
 	public String getHistId() {
 		return histId;
 	}
 	/**
-	 * @param creatDt the creatDt to set
+	 * @param histId the histId to set
 	 */
 	public void setHistId(String histId) {
 		this.histId = histId;
