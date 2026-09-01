@@ -92,6 +92,12 @@ public class EgovCntcMessageController {
 	 */
 	@PostMapping("/ssi/syi/ims/removeCntcMessage.do")
 	public String deleteCntcMessage(CntcMessage cntcMessage, ModelMap model) throws Exception {
+
+		// 로그인VO에서 사용자 정보 가져오기
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+		cntcMessage.setLastUpdusrId(uniqId);
+
 		cntcMessageService.deleteCntcMessage(cntcMessage);
 		return "forward:/ssi/syi/ims/getCntcMessageList.do";
 	}
@@ -107,6 +113,12 @@ public class EgovCntcMessageController {
 	 */
 	@PostMapping("/ssi/syi/ims/removeCntcMessageItem.do")
 	public String deleteCntcMessageItem(CntcMessageItem cntcMessageItem, ModelMap model) throws Exception {
+
+		// 로그인VO에서 사용자 정보 가져오기
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+		cntcMessageItem.setLastUpdusrId(uniqId);
+
 		cntcMessageService.deleteCntcMessageItem(cntcMessageItem);
 		return "forward:/ssi/syi/ims/getCntcMessageList.do";
 	}
