@@ -272,7 +272,6 @@ public class EgovProcessMonController {
 	public String selectProcessSttus(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
 
-		// System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		model.addAttribute("processSttus",
 				ProcessMonChecker.getProcessId(EgovStringUtil.isNullToString(processMonVO.getProcessNm())));

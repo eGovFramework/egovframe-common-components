@@ -408,7 +408,6 @@ public class EgovPopupManageController {
 				return fileUrl2;
 			}
 		}
-		// System.out.println("===>>> "+popupWhiteList.size());
 		LOGGER.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
 		return "egovframework/com/cmm/egovError";
 	}

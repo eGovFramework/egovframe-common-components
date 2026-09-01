@@ -395,9 +395,6 @@ public class EgovRecentSrchwrdController {
 		recentSrchwrd.setFrstRegisterId(uniqId);
 		recentSrchwrd.setLastUpdusrId(uniqId);
 
-		// System.out.println("recentSrchwrd.getSrchwrdNm() : "+
-		// recentSrchwrd.getSrchwrdNm());
-
 		// 검색어가 없을 시 미저장
 		if (recentSrchwrd.getSrchwrdNm() != null && !recentSrchwrd.getSrchwrdNm().equals("")) {
 			egovRecentSrchwrdService.insertRecentSrchwrdResult(recentSrchwrd);
