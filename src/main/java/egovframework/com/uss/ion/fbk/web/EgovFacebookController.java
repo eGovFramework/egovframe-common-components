@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.uss.olp.qim.web.EgovQustnrItemManageController;
 
 /**
  * Facebook을 처리하는 Controller Class 구현
@@ -50,7 +49,7 @@ import egovframework.com.uss.olp.qim.web.EgovQustnrItemManageController;
 @Controller
 public class EgovFacebookController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrItemManageController.class);	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFacebookController.class);	
 	/**
 	 * facebook 로그인 버튼을 보여준 후, 로그인이 완료되면 연동을 위한 목록을 보여준다.
 	 * @return String - 리턴 Url

@@ -41,6 +41,7 @@ import jakarta.validation.Valid;
  *   2011.8.26	 정진오		 IncludedInfo annotation 추가
  *   2016.12.13  최두영      클래스명 변경
  *   2022.11.11  김혜준      시큐어코딩 처리
+ *   2026.08.31  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
@@ -60,11 +61,10 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="주소록관리", order = 380, gid = 40)
     @RequestMapping("/cop/adb/selectAdbkList.do")
-    public String selectAdressBookList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+    public String selectAdressBookList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -110,10 +110,9 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/adb/selectAdbkMainList.do")
-    public String selectAdressBookmainList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+    public String selectAdressBookmainList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -157,13 +156,12 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/adb/addAdbkInf.do")
     public String addAdressBook(
     		@ModelAttribute("searchVO") AddressBookVO adbkVO,
     		@ModelAttribute("adbk") AddressBookVO addressBookVO,
-    		ModelMap model) throws Exception {
+    		ModelMap model) {
         return "egovframework/com/cop/adb/EgovAddressBookRegist";
     }
 
@@ -174,11 +172,10 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @SuppressWarnings("unused")
 	@PostMapping("/cop/adb/deleteAdbkInf.do")
-    public String deleteAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+    public String deleteAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -207,12 +204,11 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @SuppressWarnings("unused")
 	@PostMapping("/cop/adb/addUser.do")
     public String addUser(@ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-            @RequestParam("checkCnd")String checkCnd, ModelMap model) throws Exception {
+            @RequestParam("checkCnd")String checkCnd, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -245,11 +241,10 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/adb/deleteUser.do")
     public String deleteUser( @ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-            @RequestParam("checkWord")String checkWord, @RequestParam("checkCnd")String checkCnd, ModelMap model) throws Exception {
+            @RequestParam("checkWord")String checkWord, @RequestParam("checkCnd")String checkCnd, ModelMap model) {
 
         @SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -296,10 +291,9 @@ public class EgovAddressBookController {
      * @param commandMap
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/adb/openPopup.do")
-    public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+    public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) {
 
         String requestUrl = (String)commandMap.get("requestUrl");
 
@@ -349,10 +343,9 @@ public class EgovAddressBookController {
      * @param commandMap
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/adb/selectManList.do")
-    public String selectUserList(@ModelAttribute("searchVO") AddressBookUserVO adbkUserVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+    public String selectUserList(@ModelAttribute("searchVO") AddressBookUserVO adbkUserVO, @RequestParam Map<String, Object> commandMap, ModelMap model) {
 
         if(adbkUserVO.getSearchCnd() == null || adbkUserVO.getSearchCnd().equals("")){
             adbkUserVO.setSearchCnd("0");
@@ -401,10 +394,9 @@ public class EgovAddressBookController {
      * @param commandMap
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/adb/updateAdbkInf.do")
-    public String updateAdbkInf(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+    public String updateAdbkInf(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -467,12 +459,11 @@ public class EgovAddressBookController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/adb/RegistAdbkInf.do")
     public String registadbk(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult, 
     		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-    		ModelMap model) throws Exception {
+    		ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -515,12 +506,11 @@ public class EgovAddressBookController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/adb/UpdateAddressBook.do")
     public String updateAdressBook(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult,
     		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-    		ModelMap model) throws Exception {
+    		ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

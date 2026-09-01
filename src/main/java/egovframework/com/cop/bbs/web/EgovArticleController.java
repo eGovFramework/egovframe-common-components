@@ -129,10 +129,10 @@ public class EgovArticleController {
 		ret = ret.replaceAll("</(A|a)(P|p)(P|p)(L|l)(E|e)(T|t)", "&lt;/applet");
 
 		ret = ret.replaceAll("<(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;embed");
-		ret = ret.replaceAll("</(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;embed");
+		ret = ret.replaceAll("</(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;/embed");
 
 		ret = ret.replaceAll("<(F|f)(O|o)(R|r)(M|m)", "&lt;form");
-		ret = ret.replaceAll("</(F|f)(O|o)(R|r)(M|m)", "&lt;form");
+		ret = ret.replaceAll("</(F|f)(O|o)(R|r)(M|m)", "&lt;/form");
 
 		return ret;
 	}
@@ -483,6 +483,9 @@ public class EgovArticleController {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("boardMasterVO", master);
+			// 재표시 화면의 hidden(parnts·sortOrdr·replyLc·nttId)은 제출된 요청값에 이미 있다.
+			// selectArticleDetail 은 조회수를 올리므로(updateInqireCo) 여기서는 요청값을 그대로 쓴다.
+			model.addAttribute("result", boardVO);
 			//// -----------------------------
 
 			return "egovframework/com/cop/bbs/EgovArticleReply";

@@ -474,8 +474,7 @@ public class EgovProgrmManageController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (EgovStringUtil.isNullToString(progrmManageDtlVO.getRqesterPersonId())
-				.equals(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getId()))) {
-			// progrmManageDtlVO.setRqesterPersonId(user.getId());
+				.equals(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()))) {
 			model.addAttribute("resultMsg", egovMessageSource.getMessage("success.common.delete"));
 			progrmManageService.deleteProgrmChangeRequst(progrmManageDtlVO);
 			sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstSelect.do";
@@ -553,6 +552,10 @@ public class EgovProgrmManageController {
 			progrmManageDtlVO.setRqesterNo(progrmManageDtlVO.getTmpRqesterNo());
 		}
 		ProgrmManageDtlVO resultVO = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
+		if (resultVO == null) {
+			model.addAttribute("resultMsg", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do";
+		}
 		if (resultVO.getProcessDe() != null) {
 			resultVO.setProcessDe(resultVO.getProcessDe().trim());// 2011.08.22
 		}

@@ -214,7 +214,7 @@ public class BackupScheduler {
 
 	/**
 	 * 백업작업서비스 리턴
-	 * @return the egovBackupSchdulService
+	 * @return the egovBackupOpertService
 	 */
 	public EgovBackupOpertService getEgovBackupOpertService() {
 		return egovBackupOpertService;

@@ -105,6 +105,12 @@ public class EgovCntcInsttController {
 	 */
 	@PostMapping("/ssi/syi/iis/removeCntcInstt.do")
 	public String deleteCntcInstt(CntcInstt cntcInstt, ModelMap model) throws Exception {
+
+		// 로그인VO에서 사용자 정보 가져오기
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+
+		cntcInstt.setLastUpdusrId(uniqId);
 		cntcInsttService.deleteCntcInstt(cntcInstt);
 		return "forward:/ssi/syi/iis/getCntcInsttList.do";
 	}
@@ -120,6 +126,12 @@ public class EgovCntcInsttController {
 	 */
 	@PostMapping("/ssi/syi/iis/removeCntcSystem.do")
 	public String deleteCntcSystem(CntcSystem cntcSystem, ModelMap model) throws Exception {
+
+		// 로그인VO에서 사용자 정보 가져오기
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+
+		cntcSystem.setLastUpdusrId(uniqId);
 		cntcInsttService.deleteCntcSystem(cntcSystem);
 		return "forward:/ssi/syi/iis/getCntcInsttList.do";
 	}
@@ -135,6 +147,12 @@ public class EgovCntcInsttController {
 	 */
 	@PostMapping("/ssi/syi/iis/removeCntcService.do")
 	public String deleteCntcService(CntcService cntcService, ModelMap model) throws Exception {
+
+		// 로그인VO에서 사용자 정보 가져오기
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+
+		cntcService.setLastUpdusrId(uniqId);
 		cntcInsttService.deleteCntcService(cntcService);
 		return "forward:/ssi/syi/iis/getCntcInsttList.do";
 	}

@@ -29,8 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import egovframework.com.cmm.service.EgovProperties;
-
 /**
  * Created by guava on 1/20/14.
  *  이미지 저장 처리 클래스
@@ -51,7 +49,7 @@ import egovframework.com.cmm.service.EgovProperties;
  */
 public class DefaultFileSaveManager implements FileSaveManager {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovProperties.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFileSaveManager.class);
 
 	@Override
 	public String saveFile(FileItem fileItem, String imageBaseDir) {
