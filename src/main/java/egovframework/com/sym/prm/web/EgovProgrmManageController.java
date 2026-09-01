@@ -474,8 +474,7 @@ public class EgovProgrmManageController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (EgovStringUtil.isNullToString(progrmManageDtlVO.getRqesterPersonId())
-				.equals(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getId()))) {
-			// progrmManageDtlVO.setRqesterPersonId(user.getId());
+				.equals(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()))) {
 			model.addAttribute("resultMsg", egovMessageSource.getMessage("success.common.delete"));
 			progrmManageService.deleteProgrmChangeRequst(progrmManageDtlVO);
 			sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstSelect.do";
