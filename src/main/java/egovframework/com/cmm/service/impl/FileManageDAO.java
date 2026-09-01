@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.com.cmm.service.FileVO;
 
 /**
- * @Class Name : EgovFileMngDAO.java
+ * @Class Name : FileManageDAO.java
  * @Description : 파일정보 관리를 위한 데이터 처리 클래스
  * @Modification Information
  *
