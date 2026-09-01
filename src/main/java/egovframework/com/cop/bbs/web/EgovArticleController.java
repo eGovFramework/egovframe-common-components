@@ -129,10 +129,10 @@ public class EgovArticleController {
 		ret = ret.replaceAll("</(A|a)(P|p)(P|p)(L|l)(E|e)(T|t)", "&lt;/applet");
 
 		ret = ret.replaceAll("<(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;embed");
-		ret = ret.replaceAll("</(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;embed");
+		ret = ret.replaceAll("</(E|e)(M|m)(B|b)(E|e)(D|d)", "&lt;/embed");
 
 		ret = ret.replaceAll("<(F|f)(O|o)(R|r)(M|m)", "&lt;form");
-		ret = ret.replaceAll("</(F|f)(O|o)(R|r)(M|m)", "&lt;form");
+		ret = ret.replaceAll("</(F|f)(O|o)(R|r)(M|m)", "&lt;/form");
 
 		return ret;
 	}
