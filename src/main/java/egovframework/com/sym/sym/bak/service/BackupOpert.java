@@ -160,7 +160,7 @@ public class BackupOpert extends ComDefaultVO implements Serializable {
 		return executSchdulDe;
 	}
 	/**
-	 * @return the executSchdulOur
+	 * @return the executSchdulHour
 	 */
 	public String getExecutSchdulHour() {
 		return executSchdulHour;
@@ -283,7 +283,7 @@ public class BackupOpert extends ComDefaultVO implements Serializable {
 		this.executSchdulDe = executSchdulDe;
 	}
 	/**
-	 * @param executSchdulOur the executSchdulOur to set
+	 * @param executSchdulHour the executSchdulHour to set
 	 */
 	public void setExecutSchdulHour(String executSchdulHour) {
 		this.executSchdulHour = executSchdulHour;

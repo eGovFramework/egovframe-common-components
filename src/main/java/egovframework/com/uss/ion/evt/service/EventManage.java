@@ -327,14 +327,14 @@ public class EventManage extends ComDefaultVO {
 	}
 
 	/**
-	 * @return the garden
+	 * @return the psncpa
 	 */
 	public int getPsncpa() {
 		return psncpa;
 	}
 
 	/**
-	 * @param garden the garden to set
+	 * @param psncpa the psncpa to set
 	 */
 	public void setPsncpa(int psncpa) {
 		this.psncpa = psncpa;
