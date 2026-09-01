@@ -279,6 +279,12 @@ public class EgovValidationControllerAdvice {
 	 */
 	private String resolveSizeConstraintMessage(String defaultMessage, String fieldName, String annotationMessage, ConstraintViolation<Object> violation) {
 
+		// 사용자가 message 속성을 명시한 경우에는 공용 size 메시지로 덮어쓰지 않는다.
+		// null을 반환하면 resolveMessage()가 형제 제약과 동일하게 사용자 메시지를 처리한다.
+		if (annotationMessage != null) {
+			return null;
+		}
+
 		Integer max = getAnnotationValue(violation, "max");
 		Integer min = getAnnotationValue(violation, "min");
 		int valueLength = getValueLength(violation.getInvalidValue());
