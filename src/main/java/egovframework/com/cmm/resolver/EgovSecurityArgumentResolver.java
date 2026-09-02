@@ -38,7 +38,7 @@ public class EgovSecurityArgumentResolver implements HandlerMethodArgumentResolv
 	public Object resolveArgument(MethodParameter parameter
 									, ModelAndViewContainer mavContainer
 									, NativeWebRequest webRequest
-									, WebDataBinderFactory binderFactory) throws Exception {
+									, WebDataBinderFactory binderFactory) {
 		
 		EgovSecurityMap securityMap = new EgovSecurityMap();
 		for(Iterator<String> iterator = webRequest.getParameterNames(); iterator.hasNext();) {

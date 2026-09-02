@@ -54,9 +54,10 @@ public class AuthenticInterceptor implements HandlerInterceptor {
 	/**
 	 * 인증된 사용자 여부로 인증 여부를 체크한다.
 	 * 관리자 권한에 따라 접근 페이지 권한을 체크한다.
+	 * @throws ModelAndViewDefiningException 
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ModelAndViewDefiningException {
 		//인증된사용자 여부
 		boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		//미민증사용자 체크

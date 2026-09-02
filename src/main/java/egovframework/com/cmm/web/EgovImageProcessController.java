@@ -1,20 +1,18 @@
 package egovframework.com.cmm.web;
 
-import egovframework.com.cmm.LoginVO;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
@@ -64,8 +63,6 @@ public class EgovImageProcessController extends HttpServlet {
 	@Resource(name = "EgovFileMngService")
 	private EgovFileMngService fileService;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovImageProcessController.class);
-
 	/** getImage.do가 인라인(image/*)으로 제공할 수 있는 안전한 이미지 확장자 화이트리스트 */
 	private static final List<String> SAFE_INLINE_IMAGE_EXTENSIONS =
 			Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
@@ -78,11 +75,10 @@ public class EgovImageProcessController extends HttpServlet {
 	 * @param sessionVO
 	 * @param model
 	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/getImage.do")
 	public void getImageInf(SessionVO sessionVO, ModelMap model, @RequestParam Map<String, Object> commandMap,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
@@ -171,6 +167,8 @@ public class EgovImageProcessController extends HttpServlet {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			EgovResourceCloseHelper.close(bStream);
 		}
@@ -190,6 +188,7 @@ public class EgovImageProcessController extends HttpServlet {
 	/**
 	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
 	 */
+	@SuppressWarnings("unused")
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
