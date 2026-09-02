@@ -52,8 +52,10 @@ import egovframework.com.uss.ion.bnr.service.EgovBannerService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 public class EgovBannerController {
 
     @Resource(name="egovMessageSource")
@@ -129,7 +131,7 @@ public class EgovBannerController {
 			                   ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
-
+		log.debug("getUserSe={}", _loginVO.getUserSe());
 
     	bannerVO.setBannerId(bannerId);
 
@@ -156,7 +158,6 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
@@ -173,7 +174,6 @@ public class EgovBannerController {
 
 	    	String uploadFolder = "";
 	    	String bannerImage = "";
-	    	String bannerImageFile = "";
 	    	String atchFileId = "";
 
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -188,7 +188,6 @@ public class EgovBannerController {
 	        	while (iter.hasNext()) {
 	        	    vo = iter.next();
 	        	    bannerImage = vo.getOrignlFileNm();
-	        	    bannerImageFile = vo.getStreFileNm();
 	        	}
 	    	}
 
@@ -212,7 +211,6 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
@@ -230,7 +228,6 @@ public class EgovBannerController {
 
 			String uploadFolder = "";
 			String bannerImage = "";
-			String bannerImageFile = "";
 			String atchFileId = "";
 
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -245,7 +242,6 @@ public class EgovBannerController {
 				while (iter.hasNext()) {
 					vo = iter.next();
 					bannerImage = vo.getOrignlFileNm();
-					bannerImageFile = vo.getStreFileNm();
 				}
 
 				if (vo == null) {
@@ -304,6 +300,7 @@ public class EgovBannerController {
 			                        ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
+		log.debug("getUserSe={}", _loginVO.getUserSe());
 
     	// 2026.03.23 kisa 보안점검 대응 조치
     	  if (ObjectUtils.isEmpty(bannerIds)) {
@@ -388,6 +385,7 @@ public class EgovBannerController {
 	/**
 	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
 	 */
+	@SuppressWarnings("unused")
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {

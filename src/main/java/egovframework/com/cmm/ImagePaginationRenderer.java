@@ -23,9 +23,6 @@ import jakarta.servlet.ServletContext;
  */
 public class ImagePaginationRenderer extends AbstractPaginationRenderer implements ServletContextAware{
 
-	@SuppressWarnings("unused")
-	private ServletContext servletContext;
-
 	public ImagePaginationRenderer() {
 
 	}
@@ -47,7 +44,6 @@ public class ImagePaginationRenderer extends AbstractPaginationRenderer implemen
 
 	@Override
 	public void setServletContext(ServletContext servletContext) {
-		this.servletContext = servletContext;
 		initVariables();
 	}
 

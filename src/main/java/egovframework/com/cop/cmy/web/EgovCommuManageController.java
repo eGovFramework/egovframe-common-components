@@ -597,8 +597,6 @@ public class EgovCommuManageController {
     @RequestMapping("/cop/cmy/previewCmmntyMainContents.do")
     public String previewCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		@SuppressWarnings("unused")
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		cmmntyVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 

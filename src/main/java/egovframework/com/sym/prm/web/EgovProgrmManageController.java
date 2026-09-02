@@ -576,13 +576,11 @@ public class EgovProgrmManageController {
 	 *         "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do"
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do")
 	public String updateProgrmChangRequstProcess(
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
-		boolean result = true;
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -640,7 +638,7 @@ public class EgovProgrmManageController {
 																															// 처리
 																															// 되었습니다
 				sndngMailVO.setAtchFileId(null);
-				result = sndngMailRegistService.insertSndngMail(sndngMailVO);
+				sndngMailRegistService.insertSndngMail(sndngMailVO);
 				sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do";
 			} else {
 				model.addAttribute("resultMsg", egovMessageSource

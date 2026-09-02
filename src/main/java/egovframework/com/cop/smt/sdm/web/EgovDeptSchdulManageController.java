@@ -878,10 +878,8 @@ public class EgovDeptSchdulManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 24; i++) {
 			String sHH = "";
 			String strI = String.valueOf(i);

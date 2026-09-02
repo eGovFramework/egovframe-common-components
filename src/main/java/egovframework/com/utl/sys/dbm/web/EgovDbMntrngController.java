@@ -240,13 +240,10 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="DB서비스모니터링", order = 2090 ,gid = 90)
 	@RequestMapping("/utl/sys/dbm/getDbMntrngList.do")
 	public String selectDbMntrngList(@ModelAttribute("searchVO") DbMntrng searchVO, ModelMap model)
 	  throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 		//searchVO.setUniqId(user.getUniqId());
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
 		searchVO.setPageSize(propertyService.getInt("pageSize"));
@@ -280,12 +277,9 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping("/utl/sys/dbm/getDbMntrngLogList.do")
 	public String selectDbMntrngLogList(@ModelAttribute("searchVO") DbMntrngLog searchVO, ModelMap model)
 	  throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 		//searchVO.setUniqId(user.getUniqId());
         // DB서비스모니터링 정보 조회.
 		LOGGER.debug(" 조회조건 : {}", searchVO);

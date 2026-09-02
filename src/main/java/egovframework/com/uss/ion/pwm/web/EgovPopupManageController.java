@@ -435,10 +435,8 @@ public class EgovPopupManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
 		ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i < 24; i++) {
 			String sHH = "";
 			String strI = String.valueOf(i);
@@ -464,10 +462,8 @@ public class EgovPopupManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeMM() {
 		ArrayList<ComDefaultCodeVO> listMM = new ArrayList<ComDefaultCodeVO>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i < 60; i++) {
 
 			String sMM = "";

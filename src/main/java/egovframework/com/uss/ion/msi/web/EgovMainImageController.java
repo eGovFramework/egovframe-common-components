@@ -104,7 +104,6 @@ public class EgovMainImageController {
 	/**
 	 * 메인이미지정보를 신규로 등록한다.
 	 */
-	@SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/msi/addMainImage.do")
 	public String insertMainImage(final MultipartHttpServletRequest multiRequest,
@@ -150,7 +149,6 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보를 수정한다.
 	 */
-	@SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/msi/updtMainImage.do")
 	public String updateMainImage(final MultipartHttpServletRequest multiRequest,

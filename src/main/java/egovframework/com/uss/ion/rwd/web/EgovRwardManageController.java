@@ -30,6 +30,7 @@ import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -59,6 +60,7 @@ import jakarta.validation.Valid;
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovRwardManageController {
 
 	@Resource(name = "egovMessageSource")
@@ -242,7 +244,6 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/rwd/updtRwardManage.do")
 	public String updtRwardManage(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
@@ -291,6 +292,7 @@ public class EgovRwardManageController {
 			}
 			// 첨부파일 관련 ID 생성 end...
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			log.debug("getUserSe={}", user.getUserSe());
 			rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 			egovRwardManageService.updtRwardManage(rwardManage);
 			return "forward:/uss/ion/rwd/selectRwardManageList.do";
@@ -308,6 +310,7 @@ public class EgovRwardManageController {
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
+		log.debug("getUserSe={}", _loginVO.getUserSe());
 
 		// 신청자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
 		RwardManageVO storedForDelete = new RwardManageVO();

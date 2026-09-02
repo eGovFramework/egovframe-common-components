@@ -202,11 +202,8 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping("/sym/mnu/bmm/selectMenuList.do")
     public String selectMenuList(@ModelAttribute("bkmkMenuManageVO") BkmkMenuManageVO bkmkMenuManageVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-        String popFlag = (String)commandMap.get("PopFlag");
-
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         bkmkMenuManageVO.setPageUnit(propertyService.getInt("pageUnit"));

@@ -152,7 +152,6 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/lsi/addLoginScrinImage.do")
 	public String insertLoginScrinImage(final MultipartHttpServletRequest multiRequest,
@@ -169,7 +168,6 @@ public class EgovLoginScrinImageController {
 
 	    	String uploadFolder = "";
 	    	String image = "";
-	    	String imageFile = "";
 	    	String atchFileId = "";
 
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -197,7 +195,6 @@ public class EgovLoginScrinImageController {
 		        	while (iter.hasNext()) {
 		        	    vo = iter.next();
 		        	    image = vo.getOrignlFileNm();
-		        	    imageFile = vo.getStreFileNm();
 		        	}
 		        	
 		        	if (vo == null) {
@@ -237,7 +234,6 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/lsi/updtLoginScrinImage.do")
 	public String updateLoginScrinImage(final MultipartHttpServletRequest multiRequest,
@@ -254,7 +250,6 @@ public class EgovLoginScrinImageController {
 
 	    	String uploadFolder = "";
 	    	String image = "";
-	    	String imageFile = "";
 	    	String atchFileId = "";
 
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -282,7 +277,6 @@ public class EgovLoginScrinImageController {
 		        	while (iter.hasNext()) {
 		        	    vo = iter.next();
 		        	    image = vo.getOrignlFileNm();
-		        	    imageFile = vo.getStreFileNm();
 		        	}
 
 		        	if (vo == null) {

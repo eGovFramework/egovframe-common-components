@@ -551,7 +551,6 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModify"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageModify.do")
 	public String indvdlSchdulManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, BindingResult bindingResult,
@@ -572,8 +571,6 @@ public class EgovIndvdlSchdulManageController {
 		}
 
 		String sLocationUrl = "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModify";
-
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		// 공통코드 중요도 조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -894,10 +891,8 @@ public class EgovIndvdlSchdulManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 24; i++) {
 			String sHH = "";
 			String strI = String.valueOf(i);
@@ -923,10 +918,8 @@ public class EgovIndvdlSchdulManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeMM() {
     	ArrayList<ComDefaultCodeVO> listMM = new ArrayList<>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 60; i++) {
 
 			String sMM = "";
