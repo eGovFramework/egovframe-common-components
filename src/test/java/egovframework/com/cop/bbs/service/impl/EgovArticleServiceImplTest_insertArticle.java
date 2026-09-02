@@ -2,6 +2,7 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -10,6 +11,7 @@ import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
 import lombok.extern.slf4j.Slf4j;
+
 /**
  * <pre>
  * << 개정이력(Modification Information) >>
@@ -22,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
+class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -31,9 +33,7 @@ public class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void insertArticle() {
 		// given
 		Board board = egovArticleServiceImplTest_AAC_TestData.insertArticle();
 
@@ -41,8 +41,10 @@ public class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
 
 		// when
 		try {
-      egovArticleService.insertArticleAndFiles(board, null);
-    } catch (Exception e) {
+			egovArticleService.insertArticleAndFiles(board, null);
+		} catch (BaseRuntimeException e) {
+			throw e;
+		} catch (Exception e) {
 			log.error(e.getMessage());
 			result = false;
 		}

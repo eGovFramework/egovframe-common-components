@@ -14,19 +14,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleDetailDefault extends EgovTestV1 {
+class EgovArticleDAOTest_selectArticleDetailDefault extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
-	
+
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
-//	@Commit
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectArticleDetailDefault() {
 		// given
 		BoardVO boardVO = egovArticleDAOTest_AaaTestData.selectArticleDetailDefaultCnt();
 

@@ -1,14 +1,13 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Date;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
@@ -19,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_updateArticle extends EgovTestV1 {
+class EgovArticleDAOTest_updateArticle extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
@@ -28,30 +27,33 @@ public class EgovArticleDAOTest_updateArticle extends EgovTestV1 {
 	private EgovArticleDAO egovArticleDAO;
 
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Autowired
-	@Qualifier("egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
 	@Test
-//	@Commit
-	void test() throws Exception {
-		log.debug("test");
-
+	void test() {
 		// given
 
 		// insertBBSMasterInf
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		// insertArticle
 		Board boardInsertArticle = new Board();
 
-		boardInsertArticle.setNttId((long) egovNttIdGnrService.getNextIntegerId());
+		try {
+			boardInsertArticle.setNttId((long) egovNttIdGnrService.getNextIntegerId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		boardInsertArticle.setBbsId(boardMaster.getBbsId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
@@ -73,17 +75,9 @@ public class EgovArticleDAOTest_updateArticle extends EgovTestV1 {
 		selectArticleDetail.setNttSj(selectArticleDetail.getNttSj() + " 수정");
 
 		// when
-
-		boolean result = false;
-		try {
-			egovArticleDAO.updateArticle(selectArticleDetail);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		egovArticleDAO.updateArticle(selectArticleDetail);
 
 		// then
-		assertEquals(result, true);
 	}
 
 }

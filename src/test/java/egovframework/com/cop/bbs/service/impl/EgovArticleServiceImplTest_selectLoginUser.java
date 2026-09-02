@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectLoginUser extends EgovTestV1 {
+class EgovArticleServiceImplTest_selectLoginUser extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
@@ -25,9 +25,7 @@ public class EgovArticleServiceImplTest_selectLoginUser extends EgovTestV1 {
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void selectLoginUser() {
 		// given
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Blog blog = null;

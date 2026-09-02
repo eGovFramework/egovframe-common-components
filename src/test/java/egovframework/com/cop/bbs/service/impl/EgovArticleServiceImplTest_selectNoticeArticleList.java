@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectNoticeArticleList extends EgovTestV1 {
+class EgovArticleServiceImplTest_selectNoticeArticleList extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -24,9 +24,7 @@ public class EgovArticleServiceImplTest_selectNoticeArticleList extends EgovTest
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void selectNoticeArticleList() {
 		// given
 		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
 

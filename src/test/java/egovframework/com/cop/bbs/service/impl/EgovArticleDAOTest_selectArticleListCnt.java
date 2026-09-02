@@ -1,10 +1,9 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardVO;
@@ -13,17 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleListCnt extends EgovTestV1 {
+class EgovArticleDAOTest_selectArticleListCnt extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
 
 	@Test
-	@Rollback(true)
-//	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectArticleListCnt() {
 		// given
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId("");
@@ -40,7 +35,7 @@ public class EgovArticleDAOTest_selectArticleListCnt extends EgovTestV1 {
 		log.debug("selectArticleListCnt={}", selectArticleListCnt);
 
 		// then
-		assertEquals(true, true);
+		assertTrue(selectArticleListCnt >= 0);
 	}
 
 }

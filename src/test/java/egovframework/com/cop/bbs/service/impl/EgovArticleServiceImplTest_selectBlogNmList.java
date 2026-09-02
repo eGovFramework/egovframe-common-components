@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardVO;
@@ -16,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectBlogNmList extends EgovTestV1 {
+class EgovArticleServiceImplTest_selectBlogNmList extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
@@ -25,13 +24,9 @@ public class EgovArticleServiceImplTest_selectBlogNmList extends EgovTestV1 {
 	private EgovArticleService egovArticleService;
 
 	@Test
-	@Commit
-	public void test() {
-		log.debug("test");
-
+	void selectBlogNmList() {
 		// given
-		BoardVO boardVO = null;
-		boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
+		BoardVO boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
 
 		// when
 		List<BoardVO> blogNmList = egovArticleService.selectBlogNmList(boardVO);
