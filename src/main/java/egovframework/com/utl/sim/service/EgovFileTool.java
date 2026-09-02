@@ -326,7 +326,7 @@ public class EgovFileTool {
 			return "";
 		}
 		String result = "";
-		File file = new File(EgovWebUtil.filePathBlackList(fileDeletePath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath + fileDeletePath));
 		if (file.isFile()) {
 			result = deletePath(basePath, fileDeletePath);
 		} else {
