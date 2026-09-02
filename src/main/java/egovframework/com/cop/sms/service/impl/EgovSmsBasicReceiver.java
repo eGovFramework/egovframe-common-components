@@ -1,7 +1,5 @@
 package egovframework.com.cop.sms.service.impl;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -264,16 +262,8 @@ public class EgovSmsBasicReceiver implements SMEListener {
 					recptn.setResultCode(Integer.toString(nRes));
 					recptn.setResultMssage(resultMsg);
 
-					try {
-						smsDao.updateSmsRecptnInf(recptn);
+					smsDao.updateSmsRecptnInf(recptn);
 						// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-					} catch (IOException ex) {
-//						LOGGER.error("Exception: {}", ex.getClass().getName());
-//						LOGGER.error("Exception  Message: {}", ex.getMessage());
-						LOGGER.error("[IOException] : Connection Close");
-					} catch (Exception ex) {
-						LOGGER.error("[" + ex.getClass() + "] Connection Close : ", ex.getMessage());
-					}
 				}
 			} else {
 				LOGGER.debug("SMEReceiver Disconnected!!");

@@ -13,6 +13,7 @@ import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,8 @@ public class SmsBasicDBUtil {
 	// 반납을 반복한다.)
 	// 이후 최소 IDLE까지 줄어들수 있다.
 	/** 커넥션 timeout */
-	private static final int MAX_WAIT_MILLIS = 20000;
+	/** 커넥션 획득 최대 대기 시간 */
+	private static final Duration MAX_WAIT = Duration.ofSeconds(20);
 	/** auto commit 여부 */
 	private static final boolean DEFAULT_AUTOCOMMIT = true;
 	/** read only 여부 */
@@ -123,7 +125,7 @@ public class SmsBasicDBUtil {
 		bds.setMaxTotal(MAX_TOTAL);
 		bds.setMaxIdle(MAX_IDLE);
 		bds.setMinIdle(MIN_IDLE);
-		bds.setMaxWaitMillis(MAX_WAIT_MILLIS);
+		bds.setMaxWait(MAX_WAIT);
 		bds.setDefaultAutoCommit(DEFAULT_AUTOCOMMIT);
 		bds.setDefaultReadOnly(DEFAULT_READONLY);
 
@@ -132,12 +134,17 @@ public class SmsBasicDBUtil {
 		LOGGER.info("Initialized pool : {}", JDBC_ALIAS);
 	}
 
-	public static Connection getConnection() throws Exception {
+	public static Connection getConnection() {
 		if (!isDriverLoaded) {
 			loadDriver();
 		}
 
-		Connection connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:" + JDBC_ALIAS);
+		Connection connection;
+		try {
+			connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:" + JDBC_ALIAS);
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
+		}
 		return connection;
 	}
 
