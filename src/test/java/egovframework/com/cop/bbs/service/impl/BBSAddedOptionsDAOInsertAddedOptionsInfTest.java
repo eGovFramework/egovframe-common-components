@@ -13,16 +13,16 @@ import egovframework.com.test.EgovAbstractTestJUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BBSAddedOptionsDAOTest_insertAddedOptionsInf extends EgovAbstractTestJUnit {
+class BBSAddedOptionsDAOInsertAddedOptionsInfTest extends EgovAbstractTestJUnit {
 
 	@Autowired
-	BBSAddedOptionsDAO bbsAddedOptionsDAO;
+	private BBSAddedOptionsDAO bbsAddedOptionsDAO;
 
 	@Autowired
-	EgovIdGnrService egovBBSMstrIdGnrService;
+	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Test
-	public void test() {
+	void insertAddedOptionsInf() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
 		try {
