@@ -10,7 +10,6 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
@@ -21,28 +20,22 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
+class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
-	
+
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Autowired
-	@Qualifier("egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
 	@Test
-//	@Rollback(true)
-//	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
-		
+	void selectArticleList() {
 		Board board = testData();
 
 		// given
@@ -70,7 +63,7 @@ public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 			log.debug("getNttId={}", result.getNttId());
 			log.debug("getNttSj={}", result.getNttSj());
 		}
-		
+
 		log.debug("board={}", board);
 		log.debug("getBbsId={}", board.getBbsId());
 		log.debug("getNttId={}", board.getNttId());
@@ -81,7 +74,7 @@ public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 		assertEquals(results.get(0).getBbsId(), board.getBbsId());
 		assertEquals(results.get(0).getNttSj(), board.getNttSj());
 	}
-	
+
 	private Board testData() {
 		log.debug("testData");
 

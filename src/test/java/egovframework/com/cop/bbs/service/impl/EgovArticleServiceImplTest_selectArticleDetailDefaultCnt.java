@@ -2,7 +2,6 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectArticleDetailDefaultCnt extends EgovTestV1 {
+class EgovArticleServiceImplTest_selectArticleDetailDefaultCnt extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -23,9 +22,7 @@ public class EgovArticleServiceImplTest_selectArticleDetailDefaultCnt extends Eg
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() throws FdlException {
-		log.debug("test");
-
+	void selectArticleDetailDefaultCnt() {
 		// given
 		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
 

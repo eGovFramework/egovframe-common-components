@@ -2,9 +2,6 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import jakarta.annotation.Resource;
-
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,28 +12,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleDetailDefaultCnt extends EgovTestV1 {
-
-	@Resource(name = "egovBBSMstrIdGnrService")
-	private EgovIdGnrService egovBBSMstrIdGnrService;
-
-	@Resource(name = "egovNttIdGnrService")
-	private EgovIdGnrService egovNttIdGnrService;
-
-	@Resource(name = "egovBlogIdGnrService")
-	private EgovIdGnrService egovBlogIdGnrService;
+class EgovArticleDAOTest_selectArticleDetailDefaultCnt extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
-	
+
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
-//	@Commit
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectArticleDetailDefaultCnt() {
 		// given
 		BoardVO boardVO = egovArticleDAOTest_AaaTestData.selectArticleDetailDefaultCnt();
 

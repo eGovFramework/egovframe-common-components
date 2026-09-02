@@ -1,7 +1,5 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Date;
 
 import org.egovframe.rte.fdl.string.EgovDateUtil;
@@ -16,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_updateArticle extends EgovTestV1 {
+class EgovArticleServiceImplTest_updateArticle extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -25,16 +23,14 @@ public class EgovArticleServiceImplTest_updateArticle extends EgovTestV1 {
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void updateArticle() {
 		// given
 		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
 
 		String today = " 수정 " + EgovDateUtil.toString(new Date(), null, null);
 
 		boardVO.setNttSj("test 게시물제목" + today); // 게시물제목
-		
+
 //		boardVO.setNttSj("");
 //		boardVO.setNttCn("");
 //		boardVO.setNtceBgnde("");
@@ -48,16 +44,9 @@ public class EgovArticleServiceImplTest_updateArticle extends EgovTestV1 {
 //		boardVO.setNttId(0l);
 
 		// when
-		boolean result = true;
-		try {
-			egovArticleService.updateArticle(boardVO);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			result = false;
-		}
+		egovArticleService.updateArticle(boardVO);
 
 		// then
-		assertEquals(result, true);
 	}
 
 }
