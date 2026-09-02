@@ -4,15 +4,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
+
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 
 @Configuration
 
 @ImportResource({
 
-//	"classpath*:egovframework/spring/com/**/context-*.xml",
-
-		"classpath*:/egovframework/spring/com/context-crypto.xml",
 		"classpath*:/egovframework/spring/com/context-datasource.xml",
 		"classpath*:/egovframework/spring/com/context-mapper.xml",
 		"classpath*:/egovframework/spring/com/context-transaction.xml",
@@ -23,10 +23,36 @@ import org.springframework.context.annotation.ImportResource;
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.bbs.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { BBSAddedOptionsDAO.class }) })
+@Import(EgovConfigCryptoTest.class)
 
-public class BBSAddedOptionsDAOTest_Configuration {
+@ComponentScan(
+
+		useDefaultFilters = false,
+
+		basePackages = {
+
+				"egovframework.com.cop.bbs.service.impl",
+
+		},
+
+		includeFilters = {
+
+				@Filter(
+
+						type = FilterType.ASSIGNABLE_TYPE,
+
+						classes = {
+
+								BBSAddedOptionsDAO.class,
+
+						}
+
+				)
+
+		}
+
+)
+
+public class BBSAddedOptionsDAOConfigTest {
 
 }

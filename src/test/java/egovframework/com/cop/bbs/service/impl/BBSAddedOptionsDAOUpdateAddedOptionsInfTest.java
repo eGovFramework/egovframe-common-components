@@ -2,11 +2,11 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardMaster;
@@ -14,23 +14,18 @@ import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.test.EgovTestV1;
 import lombok.extern.slf4j.Slf4j;
 
+@ContextConfiguration(classes = { BBSAddedOptionsDAOConfigTest.class })
 @Slf4j
-@ContextConfiguration(classes = { BBSAddedOptionsDAOTest_Configuration.class })
-@Rollback(true)
-//@Rollback(false)
-public class BBSAddedOptionsDAOTest_updateAddedOptionsInf extends EgovTestV1 {
+class BBSAddedOptionsDAOUpdateAddedOptionsInfTest extends EgovTestV1 {
 
 	@Autowired
 	private BBSAddedOptionsDAO bbsAddedOptionsDAO;
 
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Test
-	public void test() throws Exception {
-		log.debug("test");
-
+	void test() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
 
@@ -42,9 +37,7 @@ public class BBSAddedOptionsDAOTest_updateAddedOptionsInf extends EgovTestV1 {
 	}
 
 	@Test
-	public void test2() throws Exception {
-		log.debug("test2");
-
+	void test2() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
 
@@ -54,9 +47,7 @@ public class BBSAddedOptionsDAOTest_updateAddedOptionsInf extends EgovTestV1 {
 	}
 
 	@Test
-	public void test3() throws Exception {
-		log.debug("test3");
-
+	void test3() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
 
@@ -66,9 +57,7 @@ public class BBSAddedOptionsDAOTest_updateAddedOptionsInf extends EgovTestV1 {
 	}
 
 	@Test
-	public void test4() throws Exception {
-		log.debug("test4");
-
+	void test4() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
 
@@ -77,11 +66,16 @@ public class BBSAddedOptionsDAOTest_updateAddedOptionsInf extends EgovTestV1 {
 		boardMaster.setOption("stsfdg"); // 댓글여부 N, 만족도여부 Y
 	}
 
-	public void test(BoardMaster boardMaster) throws Exception {
-		log.debug("test");
-
+	@Test
+	void updateAddedOptionsInf() {
 		// given
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		BoardMaster boardMaster = new BoardMaster();
+
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		boardMaster.setFrstRegisterId("USRCNFRM_00000000000"); // TEST1
 
@@ -90,28 +84,27 @@ public class BBSAddedOptionsDAOTest_updateAddedOptionsInf extends EgovTestV1 {
 		// when
 		bbsAddedOptionsDAO.insertAddedOptionsInf(boardMaster);
 		bbsAddedOptionsDAO.updateAddedOptionsInf(boardMaster);
-		BoardMasterVO addedOptionsInf = bbsAddedOptionsDAO.selectAddedOptionsInf(boardMaster);
+		BoardMasterVO result = bbsAddedOptionsDAO.selectAddedOptionsInf(boardMaster);
 
-		log.debug("addedOptionsInf={}", addedOptionsInf);
-		log.debug("getBbsId={}", addedOptionsInf.getBbsId());
-		log.debug("getCommentAt={}", addedOptionsInf.getCommentAt());
-		log.debug("getStsfdgAt={}", addedOptionsInf.getStsfdgAt());
-		log.debug("getFrstRegisterId={}", addedOptionsInf.getFrstRegisterId());
-		log.debug("getFrstRegisterNm={}", addedOptionsInf.getFrstRegisterNm());
-		log.debug("getFrstRegisterPnttm={}", addedOptionsInf.getFrstRegisterPnttm());
+		log.debug("getBbsId={}", result.getBbsId());
+		log.debug("getCommentAt={}", result.getCommentAt());
+		log.debug("getStsfdgAt={}", result.getStsfdgAt());
+		log.debug("getFrstRegisterId={}", result.getFrstRegisterId());
+		log.debug("getFrstRegisterNm={}", result.getFrstRegisterNm());
+		log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
 
 		// then
-		assertEquals(addedOptionsInf.getBbsId(), boardMaster.getBbsId());
+		assertEquals(boardMaster.getBbsId(), result.getBbsId());
 
 		if ("".equals(boardMaster.getOption())) {
-			assertEquals(addedOptionsInf.getCommentAt(), "N");
-			assertEquals(addedOptionsInf.getStsfdgAt(), "N");
+			assertEquals("N", result.getCommentAt());
+			assertEquals("N", result.getStsfdgAt());
 		} else if ("comment".equals(boardMaster.getOption())) {
-			assertEquals(addedOptionsInf.getCommentAt(), "Y");
-			assertEquals(addedOptionsInf.getStsfdgAt(), "N");
+			assertEquals("Y", result.getCommentAt());
+			assertEquals("N", result.getStsfdgAt());
 		} else if ("stsfdg".equals(boardMaster.getOption())) {
-			assertEquals(addedOptionsInf.getCommentAt(), "N");
-			assertEquals(addedOptionsInf.getStsfdgAt(), "Y");
+			assertEquals("N", result.getCommentAt());
+			assertEquals("Y", result.getStsfdgAt());
 		}
 	}
 
