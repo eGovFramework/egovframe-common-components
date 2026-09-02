@@ -152,9 +152,6 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				String doneTime = rpt.getDeliverTime(); // 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
 				String netCode = rpt.getDestination(); // 이동통신사 정보
 
-				// System.out.println("Receiver Number is :" +
-				// ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
-
 				String resultMsg = "";
 
 				switch (nRes) {
@@ -244,16 +241,12 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				}
 
 				if (nRes != SMEMessage.RESULT_SUCCESS) {
-					// System.out.println("SMSMessage (msgId = " + msgId + ") report = " +
-					// rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
 					LOGGER.info("Done Time   : {}", doneTime);
 					LOGGER.info("Net Code    : {}", netCode);
 				} else {
-					// System.out.println("SMEMessage (msgId = " + msgId + ") report = " +
-					// rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);

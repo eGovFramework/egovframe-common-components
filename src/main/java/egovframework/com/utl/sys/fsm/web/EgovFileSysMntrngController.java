@@ -284,8 +284,6 @@ public class EgovFileSysMntrngController {
 	 */
 	@PostMapping("/utl/sys/fsm/selectFileSysMg.do")
 	public String selectFileSysMg(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
-		//System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
-
 		int totalSpaceFileSys = 0;
 		// 2026.02.28 KISA 취약점 조치
 		String safeFileSysNm = EgovWebUtil.removeCRLF(EgovStringUtil.isNullToString(fileSysMntrngVO.getFileSysNm()));
@@ -348,7 +346,6 @@ public class EgovFileSysMntrngController {
 			}
 
 			list.set(k, logVO);
-			//System.out.println(list.get(k).getCreatDt());
 		}
 
 		// 조회시작시

@@ -91,9 +91,6 @@ public class EgovQustnrQestnManageController {
         HashMap<String, String> mapParam = new HashMap<>();
         mapParam.put("qestnrQesitmId", qustnrQestnManageVO.getQestnrQesitmId());
 
-        // System.out.println("qustnrQestnManageVO.getQestnTyCode() :
-        // "+qustnrQestnManageVO.getQestnTyCode());
-
         if ("2".equals(qustnrQestnManageVO.getQestnTyCode())) {
             // 주관식 설문통계
             List<EgovMap> statisticsList2 = egovQustnrQestnManageService.selectQustnrManageStatistics2(mapParam);

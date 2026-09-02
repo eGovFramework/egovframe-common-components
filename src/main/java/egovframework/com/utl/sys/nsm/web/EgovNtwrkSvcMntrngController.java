@@ -359,7 +359,6 @@ public class EgovNtwrkSvcMntrngController {
 			}
 
 			list.set(k, logVO);
-			//System.out.println(list.get(k).getCreatDt());
 		}
 
 		// 조회시작시

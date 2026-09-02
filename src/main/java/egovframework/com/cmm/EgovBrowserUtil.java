@@ -118,9 +118,6 @@ public class EgovBrowserUtil {
 		String encodedFilename = null;
 		HashMap<String,String> result = EgovBrowserUtil.getBrowser(userAgent);
 		float version = Float.parseFloat(result.get(EgovBrowserUtil.VERSIONKEY));
-		//System.out.println("=====>>>>> browser type = "+result.get(TYPEKEY));
-		//System.out.println("=====>>>>> browser version = "+result.get(VERSIONKEY));
-		//System.out.println("=====>>>>> filename = "+filename);
 		
 		if ( EgovBrowserUtil.MSIE.equals(result.get(EgovBrowserUtil.TYPEKEY)) && version <= 8.0f ) {
 			encodedFilename = "Content-Disposition: attachment; filename="+URLEncoder.encode(filename, charSet).replaceAll("\\+", "%20");
@@ -180,11 +177,6 @@ public class EgovBrowserUtil {
 		HashMap<String,String> result = null;
 		for (int i = 0; i < testUserAgent.length; i++) {
 			result = getBrowser(testUserAgent[i]);
-			System.out.println("1. User Agent : "+testUserAgent[i]);
-			System.out.println("2. Browser Type : "+result.get(TYPEKEY));
-			System.out.println("2. Browser Version : "+result.get(VERSIONKEY));
-			//System.out.println("2. Browser Version convert: "+Float.parseFloat(result.get(VERSIONKEY)));
-			System.out.println("");
 		}
 
 	}*/

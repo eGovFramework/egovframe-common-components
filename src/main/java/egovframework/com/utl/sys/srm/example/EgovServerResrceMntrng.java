@@ -47,7 +47,6 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 				} catch (InvocationTargetException e) {
 					value = e;
 				}
-				//System.out.println(method.getName() + " = " + value);
 				return value;
 			} // if
 		} // for
@@ -76,9 +75,6 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 
 		double usage = Math.min(99f, cal);
 
-		//System.out.println("Calculation: " + cal);
-		//System.out.println("CPU Usage: " + usage);
-
 		return usage;
 	}
 
@@ -95,8 +91,6 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 		try {
 
 			Registry rmi = LocateRegistry.createRegistry(9999);
-
-			System.out.println("RMI Server started : " + rmi.toString());
 
 			MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
 

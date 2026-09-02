@@ -271,13 +271,10 @@ public class EgovRwardManageController {
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
-			// System.out.println("updtRwardManage 1");
 			if (!files.isEmpty()) {
-				// System.out.println("updtRwardManage 2");
 				// 신규 생성 여부도 요청값(atchFileAt)이 아니라 조회한 첨부파일 ID 의 존재 여부로 판단한다.
 				if (atchFileId == null || atchFileId.isEmpty()) {
 
-					// System.out.println("updtRwardManage 3");
 					List<FileVO> fvoList = fileUtil.parseFileInf(files, "RWD_", 0, atchFileId, "");
 					atchFileId = fileMngService.insertFileInfs(fvoList);
 
@@ -285,7 +282,6 @@ public class EgovRwardManageController {
 					rwardManage.setAtchFileId(atchFileId); // 첨부파일 ID
 
 				} else {
-					// System.out.println("updtRwardManage 4");
 					FileVO fvo = new FileVO();
 					fvo.setAtchFileId(atchFileId);
 					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
