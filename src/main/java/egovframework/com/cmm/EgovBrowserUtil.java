@@ -1,9 +1,12 @@
 package egovframework.com.cmm;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 /**
  * 웹브라우저 종류및 버전 파악하기 ( IE및 Edge, Safari, Chrome, Firefox, Opera )
@@ -113,18 +116,26 @@ public class EgovBrowserUtil {
 		return result;
 	}
 	
-	public static String getDisposition(String filename, String userAgent, String charSet) throws Exception {
+	public static String getDisposition(String filename, String userAgent, String charSet) {
 		
 		String encodedFilename = null;
 		HashMap<String,String> result = EgovBrowserUtil.getBrowser(userAgent);
 		float version = Float.parseFloat(result.get(EgovBrowserUtil.VERSIONKEY));
 		
 		if ( EgovBrowserUtil.MSIE.equals(result.get(EgovBrowserUtil.TYPEKEY)) && version <= 8.0f ) {
-			encodedFilename = "Content-Disposition: attachment; filename="+URLEncoder.encode(filename, charSet).replaceAll("\\+", "%20");
+			try {
+				encodedFilename = "Content-Disposition: attachment; filename="+URLEncoder.encode(filename, charSet).replaceAll("\\+", "%20");
+			} catch (UnsupportedEncodingException e) {
+				throw new BaseRuntimeException(e);
+			}
 		} else if ( EgovBrowserUtil.OTHER.equals(result.get(EgovBrowserUtil.TYPEKEY)) ) {
 			throw new RuntimeException("Not supported browser");
 		} else {
-			encodedFilename = "attachment; filename*="+charSet+"''"+URLEncoder.encode(filename, charSet);
+			try {
+				encodedFilename = "attachment; filename*="+charSet+"''"+URLEncoder.encode(filename, charSet);
+			} catch (UnsupportedEncodingException e) {
+				throw new BaseRuntimeException(e);
+			}
 		}
 		
 		return encodedFilename;

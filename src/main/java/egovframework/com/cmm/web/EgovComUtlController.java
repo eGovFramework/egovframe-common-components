@@ -95,10 +95,9 @@ public class EgovComUtlController {
     /**
 	 * 모달조회
 	 * @return String
-	 * @exception Exception
 	 */
     @RequestMapping(value = "/EgovModal.do")
-    public String selectUtlJsonInquire()  throws Exception {
+    public String selectUtlJsonInquire() {
         return "egovframework/com/cmm/EgovModal";
     }
 
