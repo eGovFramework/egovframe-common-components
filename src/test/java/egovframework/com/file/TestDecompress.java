@@ -1,9 +1,12 @@
 package egovframework.com.file;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.File;
 
 import egovframework.com.utl.sim.service.EgovFileCmprs;
 
+@Slf4j
 public class TestDecompress {
 
 	public static void main(String[] args) {
@@ -12,7 +15,7 @@ public class TestDecompress {
 		//String strDirPath = "C:\\eGovFrameDev-4.0.0-64bit\\workspace\\test.simple_homepage";
 	    String strDirPath = "";
 		strDirPath = System.getProperty("user.dir");
-	    System.out.println("Working Directory = " + strDirPath);
+	    log.debug("Working Directory = {}", strDirPath);
 
 	    //Path relativePath = Paths.get("");
 	    //strDirPath = relativePath.toAbsolutePath().toString();
@@ -21,8 +24,8 @@ public class TestDecompress {
 	    String source = strDirPath + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + "egovframework" + File.separator + "file" + File.separator + "sample.zip";
 	    String target = strDirPath + File.separator + "target" + File.separator + "result";
 	    String moved = target + File.separator + "sample.zip.bak";
-	    System.out.println("source = " + source);
-	    System.out.println("target = " + target);
+	    log.debug("source = {}", source);
+	    log.debug("target = {}", target);
 	    boolean result = false;
 	    try {
 	    	result = EgovFileCmprs.decmprsFile(source, target);
@@ -30,7 +33,7 @@ public class TestDecompress {
 			e.printStackTrace();
 		}
 	    
-	    System.out.println("result = " + result);
+	    log.debug("result = {}", result);
 
 	    // source => target 파일 이동
 	    // sample.zip => sample.zip.bak

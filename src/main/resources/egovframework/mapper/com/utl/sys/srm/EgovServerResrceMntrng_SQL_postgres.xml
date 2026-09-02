@@ -157,6 +157,10 @@
               <if test="strServerNm != null">AND
                     SERVER_EQPMN_NM LIKE CONCAT('%' , #{strServerNm}, '%')
               </if>
+              ORDER BY A.SERVER_EQPMN_ID, A.SERVER_ID
+              <if test="recordCountPerPage != null">
+              LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+              </if>
     </select>
 
     <select id="selectMntrngServerListTotCnt" parameterType="egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO" resultType="int">

@@ -1,5 +1,7 @@
 package egovframework.com.validation.nullcheck;
 
+import lombok.extern.slf4j.Slf4j;
+
 import egovframework.com.cmm.LoginVO;
 
 /**
@@ -18,6 +20,7 @@ import egovframework.com.cmm.LoginVO;
  * </pre>
  */
 
+@Slf4j
 public class NullCheckTest {
 
 	public static void main(String[] args) {
@@ -32,7 +35,7 @@ public class NullCheckTest {
 		}*/
 		
 		if ( loginVO == null || loginVO.getName() == null || loginVO.getName().equals("") && loginVO.getEmail() == null || loginVO.getEmail().equals("") ) {
-			System.out.println("Null Check = 조건에 걸림");
+			log.debug("Null Check = 조건에 걸림");
 		}
 
 	}

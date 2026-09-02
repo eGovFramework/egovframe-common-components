@@ -1,5 +1,7 @@
 package egovframework.com.db;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -45,6 +47,7 @@ import egovframework.com.uss.olh.hpc.service.HpcmVO;
 
 @WebAppConfiguration
 @ActiveProfiles({"mysql","session"})
+@Slf4j
 public class TestService {
 
 	@Resource(name = "EgovHpcmService")
@@ -56,11 +59,11 @@ public class TestService {
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
 		
-		System.out.println("start test~~~");
+		log.debug("start test~~~");
 		HpcmVO searchVO = new HpcmVO();
 		searchVO.setFirstIndex(0);
 		List<HpcmVO> HpcmList = egovHpcmService.selectHpcmList(searchVO);
-		System.out.println("====> count = "+HpcmList.size());
+		log.debug("====> count = {}", HpcmList.size());
 	}
 
 	// 도움말 Insert 테스트

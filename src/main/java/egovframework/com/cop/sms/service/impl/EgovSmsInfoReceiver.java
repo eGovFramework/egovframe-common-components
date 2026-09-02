@@ -127,19 +127,16 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 		tmp = SMEConfig.getLogLevel();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogLevel(tmp);
-			// System.out.println(tmp);
 		}
 
 		tmp = SMEConfig.getLogLayout();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogLayout(tmp);
-			// System.out.println(tmp);
 		}
 
 		tmp = SMEConfig.getLogPath();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogPath(tmp);
-			// System.out.println(tmp);
 		}
 
 		SMELogger.setUseConsoleLogger(SMEConfig.getUseConsoleLogger());
@@ -158,8 +155,6 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				int nRes = rpt.getResult(); 						// 결과코드
 				String doneTime = rpt.getDeliverTime(); 	// 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
 				String netCode = rpt.getDestination(); 		// 이동통신사 정보
-
-				//System.out.println("Receiver Number is :" + ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
 
 				String resultMsg = "";
 
@@ -250,14 +245,12 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				}
 
 				if (nRes != SMEMessage.RESULT_SUCCESS) {
-					//System.out.println("SMSMessage (msgId = " + msgId + ") report = " + rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
 					LOGGER.info("Done Time   : {}", doneTime);
 					LOGGER.info("Net Code    : {}", netCode);
 				} else {
-					//System.out.println("SMEMessage (msgId = " + msgId + ") report = " + rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
@@ -285,7 +278,6 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 					}
 				}
 			} else {
-				//System.out.println("SMEReceiver Disconnected!!"); // 주석처리
 				LOGGER.debug("SMEReceiver Disconnected!!");
 				synchronized (this) {				// 221111	김혜준	2022 시큐어코딩 조치
 					this.isConnected = false;

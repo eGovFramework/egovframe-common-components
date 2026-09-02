@@ -3,8 +3,11 @@ package egovframework.com.cop.sms.service.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsRecptn;
@@ -34,7 +37,7 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsVO
 	 */
-	public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
+	public List<SmsVO> selectSmsInfs(SmsVO vo) {
 		List<SmsVO> list = new ArrayList<SmsVO>();
 
 		StringBuilder buffer = new StringBuilder();
@@ -118,6 +121,8 @@ public class SmsBasicDAO {
 			}
 
 			return list;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -128,7 +133,7 @@ public class SmsBasicDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public int selectSmsInfsCnt(SmsVO vo) throws Exception {
+	public int selectSmsInfsCnt(SmsVO vo) {
 		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
@@ -178,6 +183,8 @@ public class SmsBasicDAO {
 			}
 
 			return 0;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -188,7 +195,7 @@ public class SmsBasicDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public String insertSmsInf(Sms sms) throws Exception {
+	public String insertSmsInf(Sms sms) {
 		String smsId = null;
 
 		StringBuilder buffer = new StringBuilder();
@@ -227,6 +234,8 @@ public class SmsBasicDAO {
 			conn.commit();
 
 			return smsId;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -236,7 +245,7 @@ public class SmsBasicDAO {
 	 * @param smsRecptn
 	 * @throws Exception
 	 */
-	public void insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
+	public void insertSmsRecptnInf(SmsRecptn smsRecptn) {
 		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
@@ -255,6 +264,8 @@ public class SmsBasicDAO {
 			pstmt.setString(++index, smsRecptn.getResultMssage());
 
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -264,7 +275,7 @@ public class SmsBasicDAO {
 	 * @param searchVO
 	 * @return
 	 */
-	public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
+	public SmsVO selectSmsInf(SmsVO searchVO) {
 		SmsVO smsVO = new SmsVO();
 
 		StringBuilder buffer = new StringBuilder();
@@ -307,6 +318,8 @@ public class SmsBasicDAO {
 			}
 
 			return smsVO;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -315,7 +328,7 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsRecptn
 	 */
-	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
+	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) {
 		List<SmsRecptn> list = new ArrayList<SmsRecptn>();
 
 		StringBuilder buffer = new StringBuilder();
@@ -348,6 +361,8 @@ public class SmsBasicDAO {
 			}
 
 			return list;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -358,7 +373,7 @@ public class SmsBasicDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
+	public void updateSmsRecptnInf(SmsRecptn smsRecptn) {
 		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
@@ -378,6 +393,8 @@ public class SmsBasicDAO {
 			pstmt.setString(++index, smsRecptn.getRecptnTelno());
 
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -387,7 +404,7 @@ public class SmsBasicDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	protected String getNextId(Connection conn) throws Exception {
+	protected String getNextId(Connection conn) {
 		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
@@ -410,6 +427,8 @@ public class SmsBasicDAO {
 			}
 
 			return null;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 }

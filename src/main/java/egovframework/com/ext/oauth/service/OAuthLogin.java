@@ -57,10 +57,6 @@ public class OAuthLogin {
 	}
 
 	public OAuthUniversalUser getUserProfile(String code) throws Exception {
-		// System.out.println("===>>> oauthService.getApiKey() =
-		// "+oauthService.getApiKey());
-		// System.out.println("===>>> oauthService.getApiSecret() =
-		// "+oauthService.getApiSecret());
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 
 		OAuthRequest request = new OAuthRequest(Verb.GET, this.oauthVO.getProfileUrl());

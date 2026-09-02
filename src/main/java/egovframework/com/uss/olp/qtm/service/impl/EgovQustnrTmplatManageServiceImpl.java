@@ -48,8 +48,6 @@ public class EgovQustnrTmplatManageServiceImpl extends EgovAbstractServiceImpl i
 	 */
 	@Override
 	public Map<?,?> selectQustnrTmplatManageTmplatImagepathnm(QustnrTmplatManageVO qustnrTmplatManageVO) throws Exception{
-		//System.out.println("EgovQustnrTmplatManageServiceImpl QestnrTmplatId >>> "+ qustnrTmplatManageVO.getQestnrTmplatId());
-
 		return dao.selectQustnrTmplatManageTmplatImagepathnm(qustnrTmplatManageVO);
 	}
 

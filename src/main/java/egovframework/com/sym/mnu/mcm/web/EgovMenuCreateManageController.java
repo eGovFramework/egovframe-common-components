@@ -236,13 +236,8 @@ public class EgovMenuCreateManageController {
 	 * null ? "" :
 	 * EgovStringUtil.isNullToString(EgovMenuCreateManageController.class.
 	 * getProtectionDomain().getCodeSource().getLocation().getPath());
-	 * //System.out.println("===>>> currentPath = "+currentPath); String path =
-	 * currentPath.substring(0, currentPath.lastIndexOf("WEB-INF"));
 	 * menuSiteMapVO.setTmpRootPath(path);
 	 * menuSiteMapVO.setBndeFilePath("/html/egovframework/com/sym/mnu/mcm/");
-	 * //System.out.println("===>>> path = "+path);
-	 * //System.out.println("===>>> menuSiteMapVO.getMapCreatId() = "+menuSiteMapVO.
-	 * getMapCreatId());
 	 * 
 	 * // 사이트맵 파일 생성 위치 지정 if ("WINDOWS".equals(Globals.OS_TYPE)) { // menuSiteMapVO
 	 * // .setTmp_rootPath("D:/egovframework/workspace/egovcmm/src/main/webapp" //

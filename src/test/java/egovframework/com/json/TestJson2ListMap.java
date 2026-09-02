@@ -1,5 +1,7 @@
 package egovframework.com.json;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 
+@Slf4j
 public class TestJson2ListMap {
 
 	@SuppressWarnings("unchecked")
@@ -26,7 +29,7 @@ public class TestJson2ListMap {
 				MapUtils.debugPrint(System.out, "map", map);
 				List<String> friends = (List<String>) map.get("friends");
 				for (String friend : friends) {
-					System.out.println(friend);
+					log.debug(friend);
 				}
 			}
 		} catch (JsonParseException e) {
