@@ -2,15 +2,14 @@ package egovframework.com.test;
 
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import egovframework.com.cmm.EgovMessageSource;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -31,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 
 @ExtendWith(SpringExtension.class)
-@TestMethodOrder(MethodOrderer.MethodName.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
 @ActiveProfiles({ "mysql", "dummy" })
 //@ActiveProfiles({ "oracle", "dummy" })
@@ -48,128 +46,124 @@ import lombok.extern.slf4j.Slf4j;
 
 @ImportResource({
 
-//		"classpath*:egovframework/spring/com/**/context-*.xml",
+		"classpath*:egovframework/spring/com/test-context-common.xml",
 
-        "classpath*:egovframework/spring/com/test-context-common.xml",
-
-        "classpath*:egovframework/spring/com/context-crypto.xml",
-        "classpath*:egovframework/spring/com/context-datasource.xml",
-        "classpath*:egovframework/spring/com/context-egovuserdetailshelper.xml",
-        "classpath*:egovframework/spring/com/context-mapper.xml",
-        "classpath*:egovframework/spring/com/context-transaction.xml",
+		"classpath*:egovframework/spring/com/context-crypto.xml",
+		"classpath*:egovframework/spring/com/context-datasource.xml",
+		"classpath*:egovframework/spring/com/context-egovuserdetailshelper.xml",
+		"classpath*:egovframework/spring/com/context-mapper.xml",
+		"classpath*:egovframework/spring/com/context-transaction.xml",
 
 })
 
-@RequiredArgsConstructor
 @Slf4j
 
 public class EgovTestAbstractDAO {
 
-    /**
-     * BeforeClass AfterClass
-     */
-    private static final StopWatch STOP_WATCH = new StopWatch();
+	/**
+	 * BeforeClass AfterClass
+	 */
+	private static final StopWatch STOP_WATCH = new StopWatch();
 
-    /**
-     * Before After
-     */
-    private final StopWatch stopWatch = new StopWatch();
+	/**
+	 * Before After
+	 */
+	private final StopWatch stopWatch = new StopWatch();
 
-    /**
-     * beanDefinitionNames
-     */
-    private static String[] beanDefinitionNames;
+	/**
+	 * beanDefinitionNames
+	 */
+	private static String[] beanDefinitionNames;
 
-    /**
-     * ApplicationContext
-     */
-    @Autowired
-    private ApplicationContext context;
+	/**
+	 * ApplicationContext
+	 */
+	@Autowired
+	private ApplicationContext context;
 
-    /**
-     * 메시지 리소스 사용을 위한 MessageSource 인터페이스 및 ReloadableResourceBundleMessageSource 클래스의 구현체
-     */
-//    @Resource(name = "egovMessageSource")
-    @Autowired
-    @Qualifier("egovMessageSource")
-    protected EgovMessageSource egovMessageSource;
+	/**
+	 * 메시지 리소스 사용을 위한 MessageSource 인터페이스 및 ReloadableResourceBundleMessageSource
+	 * 클래스의 구현체
+	 */
+	@Autowired
+	protected EgovMessageSource egovMessageSource;
 
-    /**
-     * 조회에 실패하였습니다.
-     */
-    protected static final String FAIL_COMMON_SELECT = "fail.common.select";
+	/**
+	 * 조회에 실패하였습니다.
+	 */
+	protected static final String FAIL_COMMON_SELECT = "fail.common.select";
 
-    /**
-     * setUpBeforeClass
-     */
-    @BeforeAll
-    static void setUpBeforeClass() {
-        STOP_WATCH.start();
+	/**
+	 * setUpBeforeClass
+	 */
+	@BeforeAll
+	static void setUpBeforeClass() {
+		STOP_WATCH.start();
 
-        log.debug("setUpBeforeClass start");
-    }
+		log.debug("setUpBeforeClass start");
+	}
 
-    /**
-     * tearDownAfterClass
-     */
-    @AfterAll
-    static void tearDownAfterClass() {
-        STOP_WATCH.stop();
+	/**
+	 * tearDownAfterClass
+	 */
+	@AfterAll
+	static void tearDownAfterClass() {
+		STOP_WATCH.stop();
 
-        if (log.isDebugEnabled()) {
-            log.debug("tearDownAfterClass stop");
+		if (log.isDebugEnabled()) {
+			log.debug("tearDownAfterClass stop");
 
-            log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
-            log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
-        }
-    }
+			log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+			log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+		}
+	}
 
-    /**
-     * setUp
-     */
-    @BeforeEach
-    void setUp() {
-        stopWatch.start();
+	/**
+	 * setUp
+	 */
+	@BeforeEach
+	void setUp() {
+		stopWatch.start();
 
-        log.debug("setUp start");
+		log.debug("setUp start");
 
-        if (beanDefinitionNames == null) {
-            beanDefinitionNames = context.getBeanDefinitionNames();
-            for (final String beanDefinitionName : beanDefinitionNames) {
-                log.debug("beanDefinitionName={}", beanDefinitionName);
-            }
-            log.debug("length={}", beanDefinitionNames.length);
-        }
-    }
+		if (beanDefinitionNames == null) {
+			beanDefinitionNames = context.getBeanDefinitionNames();
+			for (final String beanDefinitionName : beanDefinitionNames) {
+				log.debug("beanDefinitionName={}", beanDefinitionName);
+			}
+			log.debug("length={}", beanDefinitionNames.length);
+		}
+	}
 
-    /**
-     * tearDown
-     */
-    @AfterEach
-    void tearDown() {
-        stopWatch.stop();
+	/**
+	 * tearDown
+	 */
+	@AfterEach
+	void tearDown() {
+		stopWatch.stop();
 
-        if (log.isDebugEnabled()) {
-            log.debug("tearDown stop");
+		if (log.isDebugEnabled()) {
+			log.debug("tearDown stop");
 
-            log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
-            log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
-        }
-    }
+			log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+			log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+		}
+	}
 
-    /**
-     * error
-     * 
-     * @param e
-     */
-    protected void error(final DataAccessException e) {
-        final SQLException sqlException = (SQLException) e.getCause();
-        if (log.isErrorEnabled()) {
-            log.error(egovMessageSource.getMessageArgs("fail.common.sql",
-                    new Object[] { sqlException.getErrorCode(), sqlException.getMessage() }));
-            log.error(egovMessageSource.getMessageArgs("fail.common.sql",
-                    new Object[] { sqlException.getSQLState(), sqlException.getMessage() }));
-        }
-    }
+	/**
+	 * error
+	 * 
+	 * @param e
+	 */
+	protected void error(final DataAccessException e) {
+		final SQLException sqlException = (SQLException) e.getCause();
+		if (log.isErrorEnabled()) {
+			log.error(egovMessageSource.getMessageArgs("fail.common.sql",
+					new Object[] { sqlException.getErrorCode(), sqlException.getMessage() }));
+			log.error(egovMessageSource.getMessageArgs("fail.common.sql",
+					new Object[] { sqlException.getSQLState(), sqlException.getMessage() }));
+		}
+	}
 
 }
