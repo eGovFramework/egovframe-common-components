@@ -1,5 +1,7 @@
 package egovframework.com.cop.bbs.service;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
@@ -7,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
+@Slf4j
 public class BlogTest_JavaParser {
 
 	@Test
@@ -37,7 +40,7 @@ public class BlogTest_JavaParser {
 			});
 		});
 
-		System.out.println(sb);
+		log.debug(sb.toString());
 	}
 
 }

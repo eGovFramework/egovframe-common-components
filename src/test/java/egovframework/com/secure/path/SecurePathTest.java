@@ -35,7 +35,7 @@ public class SecurePathTest {
 		
 		String resultPath = EgovWebUtil.filePathBlackList(filePath, basePath);
 		
-		System.out.println(resultPath);
+		log.debug(resultPath);
 		assertEquals(resultPath, "/egovframe/upload/etc/hosts");
 	}
 

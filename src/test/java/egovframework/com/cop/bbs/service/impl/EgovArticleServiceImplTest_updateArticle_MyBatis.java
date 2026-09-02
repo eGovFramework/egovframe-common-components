@@ -128,7 +128,7 @@ public class EgovArticleServiceImplTest_updateArticle_MyBatis {
 				sb.append("\n");
 			});
 
-			System.out.println(sb);
+			log.debug(sb.toString());
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		} finally {

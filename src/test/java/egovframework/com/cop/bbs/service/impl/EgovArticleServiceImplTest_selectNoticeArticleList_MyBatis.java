@@ -56,8 +56,8 @@ public class EgovArticleServiceImplTest_selectNoticeArticleList_MyBatis {
 				sb2.append("());\n");
 			});
 
-			System.out.println(sb);
-			System.out.println(sb2);
+			log.debug(sb.toString());
+			log.debug(sb2.toString());
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			EgovResourceCloseHelper.close(inputStream);

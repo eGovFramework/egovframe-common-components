@@ -1,5 +1,7 @@
 package egovframework.com.utl.message;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
@@ -22,6 +24,7 @@ import egovframework.com.utl.cas.service.EgovMessageUtil;
  */
 
 
+@Slf4j
 public class TestMessage {
 	
 	@Test
@@ -32,11 +35,11 @@ public class TestMessage {
 		// 1. 정보메시지
 		// 일반 정보 메시지 취득
 		message1 = EgovMessageUtil.getInfoMsg("test.message");
-		System.out.println("Info Message Test = "+message1);
+		log.debug("Info Message Test = {}", message1);
 		
 		// 파라미터 처리 정보 메시지 취득 : String 배열의 값이 각각 {0}, {1}로 대치됨
 		message2 = EgovMessageUtil.getInfoMsg("param.message", new String[] {"Information", "No expected value."});
-		System.out.println("Info Message Test = "+message2);
+		log.debug("Info Message Test = {}", message2);
 		
 		assertEquals(message1,"Hello, Test~!");
 		assertEquals(message2,"Information : No expected value.");
@@ -51,11 +54,11 @@ public class TestMessage {
 		// 2. 경고 메시지
 		// 일반 경고 메시지 취득
 		message1 = EgovMessageUtil.getWarnMsg("test.message");
-		System.out.println("Warn Message Test = "+message1);
+		log.debug("Warn Message Test = {}", message1);
 		
 		// 파라미터 처리 경고 메시지 취득 : String 배열의 값이 각각 {0}, {1}로 대치됨
 		message2 = EgovMessageUtil.getWarnMsg("param.message", new String[] {"Warn", "No expected value."});
-		System.out.println("Warn Message Test = "+message2);
+		log.debug("Warn Message Test = {}", message2);
 		
 		assertEquals(message1,"Hello, Test~!");
 		assertEquals(message2,"Warn : No expected value.");
@@ -70,11 +73,11 @@ public class TestMessage {
 		// 3. 에러 메시지
 		// 일반 에러 메시지 취득
 		message1 = EgovMessageUtil.getErrorMsg("test.message");
-		System.out.println("Error Message Test = "+message1);
+		log.debug("Error Message Test = {}", message1);
 		
 		// 파라미터 처리 에러 메시지 취득 : String 배열의 값이 각각 {0}, {1}로 대치됨
 		message2 = EgovMessageUtil.getErrorMsg("param.message", new String[] {"Error", "No expected value."});
-		System.out.println("Error Message Test = "+message2);
+		log.debug("Error Message Test = {}", message2);
 		
 		assertEquals(message1,"Hello, Test~!");
 		assertEquals(message2,"Error : No expected value.");
@@ -89,11 +92,11 @@ public class TestMessage {
 		// 4. 확인 메시지
 		// 일반 정보 메시지 취득
 		message1 = EgovMessageUtil.getConfirmMsg("test.message");
-		System.out.println("Confirm Message Test = "+message1);
+		log.debug("Confirm Message Test = {}", message1);
 		
 		// 파라미터 처리 정보 메시지 취득 : String 배열의 값이 각각 {0}, {1}로 대치됨
 		message2 = EgovMessageUtil.getConfirmMsg("param.message", new String[] {"Confirm", "No expected value."});
-		System.out.println("Confirm Message Test = "+message2);
+		log.debug("Confirm Message Test = {}", message2);
 		
 		assertEquals(message1,"Hello, Test~!");
 		assertEquals(message2,"Confirm : No expected value.");
