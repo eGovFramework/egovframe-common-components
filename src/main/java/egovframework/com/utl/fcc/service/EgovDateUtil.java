@@ -453,7 +453,9 @@ public class EgovDateUtil {
 				+ ((date < 10) ? "0" + Integer.toString(date) : Integer.toString(date));
 
 		if (!"".equals(dateType)) {
-			strDate = convertDate(strDate, SIMPLE_DATE_PATTERN, dateType);
+			// 2026.09.03 포맷 변환용 4-인자 convertDate를 호출한다.
+			// (3-인자 오버로드는 두 번째 인자를 "시간"으로 해석하여 항상 IllegalArgumentException이 발생한다.)
+			strDate = convertDate(strDate, SIMPLE_DATE_PATTERN, dateType, "");
 		}
 
 		return strDate;
