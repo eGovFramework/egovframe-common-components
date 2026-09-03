@@ -110,7 +110,7 @@
 		<if test="searchCondition == 'A.HDER_LINK'">
 		AND A.HDER_LINK LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 'A.HDER_DC'">
+		<if test="searchCondition == 'A.HDER_DESCRIPTION'">
 		AND A.HDER_DC LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 		<if test="searchCondition == 'A.HDER_TAG'">
@@ -122,13 +122,13 @@
 		<if test="searchCondition == 'A.BDT_LINK'">
 		AND A.BDT_LINK LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 'A.BDT_DC'">
+		<if test="searchCondition == 'A.BDT_DESCRIPTION'">
 		AND A.BDT_DC LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 		<if test="searchCondition == 'A.BDT_TAG'">
 		AND A.BDT_TAG LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 'A.BDT_ETC_TAG'">
+		<if test="searchCondition == 'A.BDT_ETC'">
 		AND A.BDT_ETC_TAG LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 	 	
