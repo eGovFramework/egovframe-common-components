@@ -70,8 +70,8 @@
 			target = "<c:url value='/cop/cmy/previewCmmntyMainPage.do' />";
 			width = "980";
 		} else if (frm.tmplatSeCode.value == 'TMPT03') {
-			target = "<c:url value='/cop/cus/previewClubMainPage.do' />";
-			width = "980";
+			target = "<c:url value='/cop/bbs/previewBlogMainPage.do' />";
+			width = "1020";
 		} else {
 			alert('<spring:message code="comCopTpl.template.path" /> 지정 후 선택해 주세요.');
 		}
