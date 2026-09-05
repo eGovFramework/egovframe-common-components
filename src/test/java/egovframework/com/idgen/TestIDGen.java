@@ -2,6 +2,7 @@ package egovframework.com.idgen;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.context.ApplicationContext;
@@ -43,12 +44,8 @@ public class TestIDGen {
 			log.debug("=====>>>>> Result Next ID = {}", result);
 			log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextStringId());
 			log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextStringId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextBigDecimalId());
 		} catch (FdlException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 		
 		//BeanFactory

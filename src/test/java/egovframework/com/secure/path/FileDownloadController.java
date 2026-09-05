@@ -26,7 +26,7 @@ public class FileDownloadController {
         try {
             fileMngUtil.downFile(response, streFileNm, orignFileNm);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("서버 파일 다운로드 처리 중 오류가 발생했습니다.", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
