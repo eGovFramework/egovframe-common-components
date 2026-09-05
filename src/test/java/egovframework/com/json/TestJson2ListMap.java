@@ -1,16 +1,18 @@
 package egovframework.com.json;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class TestJson2ListMap {
@@ -33,11 +35,11 @@ public class TestJson2ListMap {
 				}
 			}
 		} catch (JsonParseException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 	}
 }

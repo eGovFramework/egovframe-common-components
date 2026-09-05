@@ -57,8 +57,7 @@ public class TestPdfConverter2 {
 		             .to(outputFile)
 		             .execute();
 		} catch (OfficeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} finally {
 		    // Stop the office process
 		    OfficeUtils.stopQuietly(officeManager);

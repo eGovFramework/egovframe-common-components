@@ -20,8 +20,8 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.LoginRequestVO;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.SearchIdRequestVO;
 import egovframework.com.cmm.SearchPasswordRequestVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -521,7 +521,7 @@ public class EgovLoginController {
 		 * x509Cert.getCert(); Base64 base64 = new Base64(); base64cert =
 		 * base64.encode(cert); log.info("+++ Base64로 변환된 인증서는 : " + base64cert);
 		 * 
-		 * } catch (GpkiApiException e) { e.printStackTrace(); }
+		 * } catch (GpkiApiException e) { throw new BaseRuntimeException(e); }
 		 */
 	}
 

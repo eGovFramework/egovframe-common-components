@@ -260,15 +260,7 @@ public class SndngMailDetailDAOTest extends EgovTestAbstractDAO {
         testData(sndngMailVO , loginVO);
 
         // when
-        int result = 0;
-        try {
-            result = sndngMailDetailDAO.deleteSndngMail(sndngMailVO);
-        } catch (Exception e) {
-          // e.printStackTrace();
-          log.error("Exception deleteSndngMail");
-          // error(e);
-          result = 0;
-        }
+        int result = sndngMailDetailDAO.deleteSndngMail(sndngMailVO);
 
         // then
         assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));

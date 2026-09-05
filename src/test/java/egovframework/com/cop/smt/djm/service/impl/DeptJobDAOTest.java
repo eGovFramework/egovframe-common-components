@@ -1,12 +1,12 @@
 package egovframework.com.cop.smt.djm.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
@@ -106,9 +106,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         try {
             testDataDeptJobBx.setDeptJobBxId(egovDeptJobBxIdGnrService.getNextStringId());
         } catch (FdlException e) {
-//            e.printStackTrace();
-            log.error("FdlException egovDeptJobBxIdGnrService");
-            fail("FdlException egovDeptJobBxIdGnrService");
+            throw new BaseRuntimeException(e);
         }
 
         testDataDeptJobBx.setDeptJobBxNm("test 이백행 부서업무함명 " + LocalDateTime.now());
@@ -131,9 +129,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             testDataDeptJob.setDeptJobId(egovDeptJobIdGnrService.getNextStringId());
             testDataDeptJob.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
         } catch (FdlException e) {
-//            e.printStackTrace();
-            log.error("FdlException egovDeptJobBxIdGnrService");
-            fail("FdlException egovDeptJobBxIdGnrService");
+            throw new BaseRuntimeException(e);
         }
 
         testDataDeptJob.setDeptJobNm("test 이백행 부서업무명 " + LocalDateTime.now());
@@ -162,8 +158,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         try {
             deptJobBx.setDeptJobBxId(egovDeptJobBxIdGnrService.getNextStringId());
         } catch (FdlException e) {
-//            e.printStackTrace();
-            log.error("FdlException egovDeptJobBxIdGnrService");
+        	throw new BaseRuntimeException(e);
         }
 
         deptJobBx.setDeptJobBxNm("test 이백행 부서업무함명 " + LocalDateTime.now());
@@ -199,8 +194,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             deptJob.setDeptJobId(egovDeptJobIdGnrService.getNextStringId());
             deptJob.setDeptJobBxId(egovDeptJobBxIdGnrService.getNextStringId());
         } catch (FdlException e) {
-//            e.printStackTrace();
-            log.error("FdlException egovDeptJobBxIdGnrService");
+        	throw new BaseRuntimeException(e);
         }
 
         deptJob.setDeptJobNm("test 이백행 부서업무명 " + LocalDateTime.now());
