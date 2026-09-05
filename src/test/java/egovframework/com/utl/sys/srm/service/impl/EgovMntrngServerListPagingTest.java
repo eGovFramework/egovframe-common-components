@@ -29,7 +29,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 class EgovMntrngServerListPagingTest {
 
 	private static final String STATEMENT_ID = "serverResrceMntrngDAO.selectMntrngServerList";
@@ -106,8 +108,8 @@ class EgovMntrngServerListPagingTest {
 		List<String> firstPage = equipmentIdsOf(searchConditionOfPage(1));
 		List<String> secondPage = equipmentIdsOf(searchConditionOfPage(2));
 
-		System.out.println("[1페이지] " + firstPage);
-		System.out.println("[2페이지] " + secondPage);
+		log.debug("[1페이지] {}", firstPage);
+		log.debug("[2페이지] {}", secondPage);
 
 		assertEquals(List.of("EQP01", "EQP02", "EQP03", "EQP04", "EQP05", "EQP06", "EQP07", "EQP08", "EQP09", "EQP10"),
 				firstPage, "1페이지에 10건이 아니라 전체가 실렸다");
@@ -136,7 +138,7 @@ class EgovMntrngServerListPagingTest {
 		// EgovServerResrceMntrngScheduling.monitorServerResrce 는 null 을 넘긴다.
 		List<String> monitored = equipmentIdsOf(null);
 
-		System.out.println("[스케줄러] " + monitored.size() + "건 " + monitored);
+		log.debug("[스케줄러] {}건 {}", monitored.size(), monitored);
 
 		assertEquals(12, monitored.size(), "모니터링 대상 서버가 누락됐다");
 	}
