@@ -33,7 +33,7 @@ public class EgovFileBasePathSecurityValidatorTest {
         
 
         for (String path : testPaths) {
-            System.out.print("Testing: " + path + " -> ");
+        	log.debug("Testing: {} -> ", path);
             EgovFileBasePathSecurityValidator.validate(path);
             log.debug("---");
         }
