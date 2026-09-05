@@ -146,7 +146,7 @@ public class EgovFileTool {
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
-				file.getAbsolutePath();
+				result = file.getAbsolutePath();
 			} else {
 				LOGGER.error("[file.mkdirs] file : Path Creation Fail");
 			}
