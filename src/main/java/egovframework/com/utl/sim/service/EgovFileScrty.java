@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import org.apache.commons.codec.binary.Base64;
@@ -84,8 +85,8 @@ public class EgovFileScrty {
 				while ((length = input.read(buffer)) >= 0) {
 					byte[] data = new byte[length];
 					System.arraycopy(buffer, 0, data, 0, length);
-					output.write(encodeBinary(data).getBytes());
-					output.write(System.getProperty("line.separator").getBytes());
+					output.write(encodeBinary(data).getBytes(StandardCharsets.UTF_8));
+					output.write(System.getProperty("line.separator").getBytes(StandardCharsets.UTF_8));
 				}
 				result = true;
 			}
@@ -120,12 +121,12 @@ public class EgovFileScrty {
 		try {
 		    if (srcFile.exists() && srcFile.isFile()) {
 
-			input = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile)));
+			input = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile), StandardCharsets.UTF_8));
 			output = new BufferedOutputStream(new FileOutputStream(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));
 
 			while ((line = input.readLine()) != null) {
-			    byte[] data = line.getBytes();
-			    output.write(decodeBinary(new String(data)));
+			    byte[] data = line.getBytes(StandardCharsets.UTF_8);
+			    output.write(decodeBinary(new String(data, StandardCharsets.UTF_8)));
 			}
 
 			result = true;
@@ -149,7 +150,7 @@ public class EgovFileScrty {
 		    return "";
 		}
 
-		return new String(Base64.encodeBase64(data));
+		return new String(Base64.encodeBase64(data), StandardCharsets.UTF_8);
     }
 
     /**
@@ -161,7 +162,7 @@ public class EgovFileScrty {
      */
     @Deprecated
     public static String encode(String data) throws Exception {
-    	return encodeBinary(data.getBytes());
+    	return encodeBinary(data.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -172,7 +173,7 @@ public class EgovFileScrty {
      * @exception Exception
      */
     public static byte[] decodeBinary(String data) throws Exception {
-    	return Base64.decodeBase64(data.getBytes());
+    	return Base64.decodeBase64(data.getBytes(StandardCharsets.UTF_8));
     }
 
     /**
@@ -184,7 +185,7 @@ public class EgovFileScrty {
      */
     @Deprecated
     public static String decode(String data) throws Exception {
-    	return new String(decodeBinary(data));
+    	return new String(decodeBinary(data), StandardCharsets.UTF_8);
     }
 
     /**
@@ -207,11 +208,11 @@ public class EgovFileScrty {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 
 		md.reset();
-		md.update(id.getBytes());
+		md.update(id.getBytes(StandardCharsets.UTF_8));
 
-		hashValue = md.digest(password.getBytes());
+		hashValue = md.digest(password.getBytes(StandardCharsets.UTF_8));
 
-		return new String(Base64.encodeBase64(hashValue));
+		return new String(Base64.encodeBase64(hashValue), StandardCharsets.UTF_8);
     }
 
     /**
@@ -234,9 +235,9 @@ public class EgovFileScrty {
 		md.reset();
 		md.update(salt);
 
-		hashValue = md.digest(data.getBytes());
+		hashValue = md.digest(data.getBytes(StandardCharsets.UTF_8));
 
-		return new String(Base64.encodeBase64(hashValue));
+		return new String(Base64.encodeBase64(hashValue), StandardCharsets.UTF_8);
     }
 
     /**
@@ -254,9 +255,9 @@ public class EgovFileScrty {
 
     	md.reset();
     	md.update(salt);
-    	hashValue = md.digest(data.getBytes());
+    	hashValue = md.digest(data.getBytes(StandardCharsets.UTF_8));
 
-    	return MessageDigest.isEqual(hashValue, Base64.decodeBase64(encoded.getBytes()));
+    	return MessageDigest.isEqual(hashValue, Base64.decodeBase64(encoded.getBytes(StandardCharsets.UTF_8)));
     }
 
 }
