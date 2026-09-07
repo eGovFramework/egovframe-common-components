@@ -579,8 +579,6 @@ public class EgovLoginController {
 		LOGGER.debug("OS : {}", os);
 
 		// String virusReturn = null;
-		@SuppressWarnings("unused")
-		String dn = "";
 
 		// 브라우저 이름을 받기위한 처리
 		String browser = EgovClntInfo.getClntWebKind(request);

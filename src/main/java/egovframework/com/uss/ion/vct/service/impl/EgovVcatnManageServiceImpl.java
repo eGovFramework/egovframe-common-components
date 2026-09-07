@@ -293,10 +293,10 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	@SuppressWarnings("unused")
 	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
+		LOGGER.debug("getUserSe={}", _loginVO.getUserSe());
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO == null || loginVO.getUniqId() == null) {
@@ -320,8 +320,6 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		 * 휴가 승인처리 삭제 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManageVO);
 		 */
 		infrmlSanctnService.deleteInfrmlSanctn(converToInfrmlSanctnObject(vcatnManageVO));
-
-		LoginVO user = loginVO;
 
 		// 개인연차조회
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
@@ -628,6 +626,7 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
 	 */
+	@SuppressWarnings("unused")
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {

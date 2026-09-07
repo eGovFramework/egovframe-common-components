@@ -227,7 +227,6 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	 * using blocks of escaped and unescaped characters
 	 *
 	 */
-	@SuppressWarnings("unused")
 	private String getWriteEscapedXml() throws IOException {
 		String text = this.value.toString();
 		int length = text.length();

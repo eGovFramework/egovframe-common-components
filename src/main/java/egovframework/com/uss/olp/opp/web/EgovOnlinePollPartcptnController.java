@@ -171,7 +171,6 @@ public class EgovOnlinePollPartcptnController {
 	 * @return "/uss/olp/opp/EgovOnlinePollPartcptnRegist"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/olp/opp/registOnlinePollPartcptn.do")
 	public String egovOnlinePollPartcptnRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -230,7 +229,6 @@ public class EgovOnlinePollPartcptnController {
 			model.addAttribute("pollKindCodeList", listComCode);
 
 			// POLL페기유무 설정 /POLL자동페기유무
-			List<Object> listPollDeuseYn = new ArrayList<Object>();
 			voComCode = new ComDefaultCodeVO();
 			voComCode.setCodeId("COM038");
 			model.addAttribute("pollDeuseYnList", cmmUseService.selectCmmCodeDetail(voComCode));

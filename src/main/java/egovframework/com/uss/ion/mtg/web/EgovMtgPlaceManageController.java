@@ -176,7 +176,6 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceManage - 회의실관리 model
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/mtg/insertMtgPlace.do")
 	public String insertMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
@@ -198,8 +197,6 @@ public class EgovMtgPlaceManageController {
 		}
 		mtgPlaceManageVO.setAtchFileId(atchFileId);
 
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
 		status.setComplete();
 		egovMtgPlaceManageService.insertMtgPlaceManage(mtgPlaceManageVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
@@ -213,7 +210,6 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceManage - 회의실관리 model
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/mtg/updtMtgPlace.do")
 	public String updateMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@RequestParam("atchFileAt") String atchFileAt,
@@ -243,8 +239,6 @@ public class EgovMtgPlaceManageController {
 				fileMngService.updateFileInfs(fvoList);
 			}
 		}
-
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		status.setComplete();
 		egovMtgPlaceManageService.updtMtgPlaceManage(mtgPlaceManageVO);
@@ -364,7 +358,6 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/mtg/selectMtgPlaceResveManage.do")
 	public String selectMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
@@ -519,7 +512,6 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceResve - 회의실예약 model
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/mtg/updtMtgPlaceResve.do")
 	public String updtMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@Valid @ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO, BindingResult bindingResult,

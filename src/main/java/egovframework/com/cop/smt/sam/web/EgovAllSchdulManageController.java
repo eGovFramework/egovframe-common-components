@@ -57,14 +57,11 @@ public class EgovAllSchdulManageController {
 	 * @return "egovframework/com/uss/olp/qrm/EgovAllSchdulManageList"
 	 * @throws Exception
 	 */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="전체일정관리", order = 350 ,gid = 40)
 	@RequestMapping(value = "/cop/smt/sam/EgovAllSchdulManageList.do")
 	public String egovAllSchdulManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model)
     throws Exception {
-
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
