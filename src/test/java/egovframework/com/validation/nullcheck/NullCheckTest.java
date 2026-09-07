@@ -27,13 +27,7 @@ public class NullCheckTest {
 		
 		LoginVO loginVO = new LoginVO();
 		loginVO.setName("");
-		//loginVO.setEmail("");
-		//LoginVO loginVO = null;
 
-		/*if ( loginVO == null && loginVO.getName() == null && loginVO.getName().equals("") && loginVO.getEmail() == null && loginVO.getEmail().equals("") ) {
-			System.out.println("Null Check = 조건에 걸림");
-		}*/
-		
 		if ( loginVO == null || loginVO.getName() == null || loginVO.getName().equals("") && loginVO.getEmail() == null || loginVO.getEmail().equals("") ) {
 			log.debug("Null Check = 조건에 걸림");
 		}
