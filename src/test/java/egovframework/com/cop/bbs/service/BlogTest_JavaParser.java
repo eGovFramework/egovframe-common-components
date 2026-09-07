@@ -18,7 +18,7 @@ class BlogTest_JavaParser {
 	void test() {
 		CompilationUnit cu;
 		try {
-			cu = StaticJavaParser.parse(Paths.get("src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\Blog.java"));
+			cu = StaticJavaParser.parse(Paths.get("src/main/java/egovframework/com/cop/bbs/service/Blog.java"));
 		} catch (IOException e) {
 			throw new BaseRuntimeException(e);
 		}
