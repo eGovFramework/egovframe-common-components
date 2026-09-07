@@ -387,6 +387,9 @@ public class EgovFileTool {
 
 					if (parField != 1) {
 						if ((filedCnt % parField) == 1) {
+							// 2026.09.03 레코드가 시작될 때 새 List를 할당한다.
+							// (할당하지 않으면 모든 레코드가 같은 List 인스턴스를 참조하게 된다.)
+							arr = new ArrayList<>();
 							if (strArr[i] != null) {
 								arr.add(strArr[i]);
 							}
