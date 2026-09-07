@@ -470,6 +470,7 @@ public class EgovRwardManageController extends EgovComAbstractController {
 
 //	/**
 //	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+//	 * 하위 Controller에서 필요에 따라 오버라이드하여 사용할 수 있습니다.
 //	 */
 //	@Override
 //	protected LoginVO egovAssertLoginUser() {
@@ -482,6 +483,7 @@ public class EgovRwardManageController extends EgovComAbstractController {
 //
 //	/**
 //	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+//	 * 하위 Controller에서 필요에 따라 오버라이드하여 사용할 수 있습니다.
 //	 */
 //	@Override
 //	protected void egovAssertAdminOrOwner(String ownerUniqId) {

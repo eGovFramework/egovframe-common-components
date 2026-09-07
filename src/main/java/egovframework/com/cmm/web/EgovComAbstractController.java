@@ -5,13 +5,13 @@ package egovframework.com.cmm.web;
 
 import java.util.List;
 
-import org.egovframe.rte.fdl.property.EgovPropertyService;
+//import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import jakarta.annotation.Resource;
+//import jakarta.annotation.Resource;
 
 /**
  * EgovComAbstractController.java 클래스
@@ -27,18 +27,18 @@ import jakarta.annotation.Resource;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2022.05.04  이백행          최초 생성
- *   2026-09-05  이백행          [2026년 컨트리뷰션] 서비스 로거와 추적 로케일 처리 수정
+ *   2026-09-05  이백행          [2026년 컨트리뷰션] 호출부의 페이지 설정값을 유지
  *
  *      </pre>
  */
 public abstract class EgovComAbstractController {
 
-	@Resource(name = "propertiesService")
-	private EgovPropertyService egovPropertyService;
+//	@Resource(name = "propertiesService")
+//	private EgovPropertyService egovPropertyService;
 
 	protected PaginationInfo builderPaginationInfo(ComDefaultVO comDefaultVO) {
-		comDefaultVO.setPageUnit(egovPropertyService.getInt("pageUnit"));
-		comDefaultVO.setPageSize(egovPropertyService.getInt("pageSize"));
+//		comDefaultVO.setPageUnit(egovPropertyService.getInt("pageUnit"));
+//		comDefaultVO.setPageSize(egovPropertyService.getInt("pageSize"));
 
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(comDefaultVO.getPageIndex());
