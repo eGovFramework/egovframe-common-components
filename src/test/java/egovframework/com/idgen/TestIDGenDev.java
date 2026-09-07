@@ -1,11 +1,12 @@
 package egovframework.com.idgen;
 
-import lombok.extern.slf4j.Slf4j;
-
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ID Generation Test Class 구현
@@ -43,21 +44,21 @@ public class TestIDGenDev {
 			log.debug("=====>>>>> Result Next ID = {}", idgenService1.getNextStringId());
 			log.debug("=====>>>>> Result Next ID = {}", idgenService1.getNextStringId());
 		} catch (FdlException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 		
 		EgovIdGnrService idgenService2 = (EgovIdGnrService)context.getBean("sequenceIdGnrService");
 		try {
 			log.debug("=====>>>>> Result Next String ID (Sequence) = {}", idgenService2.getNextStringId());
 		} catch (FdlException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 		
 		EgovIdGnrService idgenService3 = (EgovIdGnrService)context.getBean("uuidIdGnrService");
 		try {
 			log.debug("=====>>>>> Result Next String ID (UUID) = {}", idgenService3.getNextStringId());
 		} catch (FdlException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 		
 	}
