@@ -142,8 +142,8 @@
         <if test="searchBndtCeckSe != null and searchBndtCeckSe != ''">AND
                BNDT_CECK_SE like  CONCAT('%', #{searchBndtCeckSe}, '%')  
         </if>
-        <if test="searchBndtCeckCd != null and searchBndtCeckCd != ''">AND
-               BNDT_CECK_CODE like  CONCAT('%', #{searchBndtCeckCd}, '%')   
+        <if test="searchUseAt != null and searchUseAt != ''">AND
+               USE_AT like  CONCAT('%', #{searchUseAt}, '%')   
         </if>
         <if test="searchKeyword != null and searchKeyword != ''">AND
                BNDT_CECK_CODE_NM like  CONCAT('%', #{searchKeyword}, '%')   
