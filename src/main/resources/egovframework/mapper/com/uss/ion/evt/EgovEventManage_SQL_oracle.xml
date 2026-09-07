@@ -304,7 +304,7 @@
 				  FROM   COMTNEVENTMANAGE mge
 				         left join COMTNEVENTATDRN atdrn
 				         ON   atdrn.EVENT_ID = mge.EVENT_ID
-				         and  atdrn.APPLCNT_ID = #{searchKeyword}
+				         and  atdrn.APPLCNT_ID = #{applcntId}
 				 WHERE    1=1
 			     AND    (TO_CHAR(sysdate, 'yyyymmdd')  BETWEEN RCEPT_BGNDE  AND RCEPT_ENDDE 
 			             or atdrn.confm_At is not null)
