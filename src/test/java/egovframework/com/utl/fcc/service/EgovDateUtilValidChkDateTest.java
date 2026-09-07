@@ -62,6 +62,14 @@ class EgovDateUtilValidChkDateTest {
 	}
 
 	@Test
+	@DisplayName("하이픈이 한쪽에만 있는 값은 거부한다")
+	void partialHyphenIsRejected() {
+		// 두 하이픈이 함께 있거나 모두 없어야 한다. 한쪽만 있으면 yyyyMMdd 반환이 보장되지 않는다.
+		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkDate("2026-0907"));
+		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkDate("202609-07"));
+	}
+
+	@Test
 	@DisplayName("null과 길이가 다른 입력은 거부한다")
 	void nullOrWrongLengthThrows() {
 		assertThrows(IllegalArgumentException.class, () -> EgovDateUtil.validChkDate(null));

@@ -38,9 +38,13 @@ import com.ibm.icu.util.ChineseCalendar;
 public class EgovDateUtil {
     private static final  String SIMPLE_DATE_PATTERN = "yyyyMMdd";
 	/** HHmm 또는 HH:mm 형식만 허용한다. 길이만 보면 "12345"처럼 형식이 다른 값도 통과한다. */
-	/** yyyyMMdd 또는 yyyy-MM-dd 형식만 허용한다. 길이만 보면 형식이 다른 값도 통과한다. */
+	/**
+	 * yyyyMMdd 또는 yyyy-MM-dd 형식만 허용한다. 두 하이픈이 함께 있거나 모두 없는 경우만
+	 * 통과하며, 한쪽에만 하이픈이 있는 값(예: 2026-0907)은 거부한다. 그런 값은 반환이
+	 * yyyyMMdd로 보장되지 않아 이후 처리에 영향을 준다.
+	 */
 	private static final java.util.regex.Pattern DATE_PATTERN = java.util.regex.Pattern
-			.compile("^\\d{4}-?\\d{2}-?\\d{2}$");
+			.compile("^(\\d{8}|\\d{4}-\\d{2}-\\d{2})$");
 
 	private static final java.util.regex.Pattern TIME_PATTERN = java.util.regex.Pattern.compile("^\\d{2}:?\\d{2}$");
 
