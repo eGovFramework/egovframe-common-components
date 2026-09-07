@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
@@ -121,8 +122,7 @@ public class EgovCommuBBSMasterDAOTest extends EgovTestAbstractDAO {
             boardMaster.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
 
         } catch (FdlException e) {
-            log.error("FdlException egovBBSMstrIdGnrService");
-            // e.printStackTrace();
+            throw new BaseRuntimeException(e);
         }
 
         boardMaster.setBbsTyCode("BBST02");

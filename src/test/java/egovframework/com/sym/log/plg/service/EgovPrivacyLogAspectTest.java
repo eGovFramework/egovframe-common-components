@@ -259,7 +259,6 @@ class EgovPrivacyLogAspectTest {
         void getter_없는_필드는_건너뜀() {
             // given: name getter만 있고 email, phone getter가 없는 익명 객체
             Object noGetterObj = new Object() {
-                @SuppressWarnings("unused")
                 public String getName() { return "홍길동"; }
             };
 

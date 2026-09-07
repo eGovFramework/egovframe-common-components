@@ -890,8 +890,6 @@ public class EgovArticleController {
 	@PostMapping("/cop/bbs/deleteGuestArticle.do")
 	public String deleteGuestList(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@Valid @ModelAttribute("articleVO") Board board, ModelMap model) throws Exception {
-		@SuppressWarnings("unused")
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {

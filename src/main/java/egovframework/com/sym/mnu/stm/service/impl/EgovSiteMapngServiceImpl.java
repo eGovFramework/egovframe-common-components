@@ -21,7 +21,7 @@ import jakarta.annotation.Resource;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이  용          최초 생성
- *   2024.10.29	LeeBaekHaeng	불필요 @SuppressWarnings("unused") 제거
+ *   2024.10.29	LeeBaekHaeng	불필요 사용되지 않음 경고를 억제하는 어노테이션 제거
  *
  * </pre>
  */

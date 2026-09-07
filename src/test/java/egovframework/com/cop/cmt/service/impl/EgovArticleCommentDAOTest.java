@@ -7,18 +7,20 @@ import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
@@ -28,7 +30,6 @@ import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.test.EgovTestAbstractDAO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -44,371 +45,370 @@ import lombok.extern.slf4j.Slf4j;
 
 @ImportResource({
 
-        "classpath*:egovframework/spring/com/idgn/context-idgn-AnswerNo.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-AnswerNo.xml",
 
-        "classpath*:egovframework/spring/com/idgn/context-idgn-bbs.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-bbs.xml",
 
 })
 
+@Import(EgovConfigCryptoTest.class)
+
 @ComponentScan(
 
-        useDefaultFilters = false,
+		useDefaultFilters = false,
 
-        basePackages = {
+		basePackages = {
 
-                "egovframework.com.cop.cmt.service.impl",
+				"egovframework.com.cop.cmt.service.impl",
 
-                "egovframework.com.cop.bbs.service.impl",
+				"egovframework.com.cop.bbs.service.impl",
 
-        },
+		},
 
-        includeFilters = {
+		includeFilters = {
 
-                @Filter(
+				@Filter(
 
-                        type = FilterType.ASSIGNABLE_TYPE,
+						type = FilterType.ASSIGNABLE_TYPE,
 
-                        classes = {
+						classes = {
 
-                                EgovArticleCommentDAO.class,
+								EgovArticleCommentDAO.class,
 
-                                EgovArticleCommentServiceImpl.class,
+								EgovArticleCommentServiceImpl.class,
 
-                                BBSAddedOptionsDAO.class,
+								BBSAddedOptionsDAO.class,
 
-                                EgovBBSMasterDAO.class,
+								EgovBBSMasterDAO.class,
 
-                                EgovArticleDAO.class,
+								EgovArticleDAO.class,
 
-                        }
+						}
 
-                )
+				)
 
-        }
+		}
 
 )
 
-@RequiredArgsConstructor
 @Slf4j
-//@Commit
-public class EgovArticleCommentDAOTest extends EgovTestAbstractDAO {
-
-    /**
-     * EgovArticleCommentDAO
-     */
-    @Autowired
-    private EgovArticleCommentDAO egovArticleCommentDAO;
-
-    /**
-     * 답글 ANSWER_NO 생성
-     */
-//    @Resource(name = "egovAnswerNoGnrService")
-    @Autowired
-    @Qualifier("egovAnswerNoGnrService")
-    private EgovIdGnrService egovAnswerNoGnrService;
-
-    /**
-     * EgovBBSMasterDAO
-     */
-    @Autowired
-    private EgovBBSMasterDAO egovBBSMasterDAO;
-
-    /**
-     * EgovArticleDAO
-     */
-    @Autowired
-    private EgovArticleDAO egovArticleDAO;
-
-    /**
-     * 게시판용 BBS_ID 생성
-     */
-    @Autowired
-    @Qualifier("egovBBSMstrIdGnrService")
-    private EgovIdGnrService egovBBSMstrIdGnrService;
-
-    /**
-     * 게시판용 NTT_ID 생성
-     */
-    @Autowired
-    @Qualifier("egovNttIdGnrService")
-    private EgovIdGnrService egovNttIdGnrService;
-
-    private void testData(final Comment comment) {
-        final BoardMaster boardMaster = new BoardMaster();
-        final Board board = new Board();
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-        if (loginVO != null) {
-            boardMaster.setFrstRegisterId(loginVO.getUniqId());
-            boardMaster.setLastUpdusrId(loginVO.getUniqId());
-
-            board.setFrstRegisterId(loginVO.getUniqId());
-            board.setLastUpdusrId(loginVO.getUniqId());
-        }
-
-        try {
-            boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
-        } catch (FdlException e) {
-            log.error("FdlException egovBBSMstrIdGnrService");
-        }
-        egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
-
-        try {
-            board.setNttId(egovNttIdGnrService.getNextLongId());
-        } catch (FdlException e) {
-            log.error("FdlException egovNttIdGnrService");
-        }
-        board.setBbsId(boardMaster.getBbsId());
-        egovArticleDAO.insertArticle(board);
-
-        comment.setNttId(board.getNttId());
-        comment.setBbsId(board.getBbsId());
-    }
-
-    private void testData2(final Comment comment) {
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-        testData(comment);
-
-        try {
-            comment.setCommentNo(String.valueOf(egovAnswerNoGnrService.getNextLongId()));
-        } catch (FdlException e) {
-            log.error("FdlException egovAnswerNoGnrService");
-        }
-
-        comment.setCommentPassword("rhdxhd12");
-        comment.setCommentCn("test 이백행 댓글 " + LocalDateTime.now());
-
-        if (loginVO != null) {
-            comment.setFrstRegisterId(loginVO.getUniqId());
-            comment.setLastUpdusrId(loginVO.getUniqId());
-
-            comment.setWrterId(loginVO.getUniqId());
-            comment.setWrterNm(loginVO.getName());
-        }
-
-        egovArticleCommentDAO.insertArticleComment(comment);
-    }
-
-    /**
-     * 댓글 DAO 단위 테스트: 등록
-     */
-    @Test
-//    @Commit
-    void test_a10_insert() {
-        // given
-        final Comment comment = new Comment();
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-        testData(comment);
-
-        try {
-            comment.setCommentNo(String.valueOf(egovAnswerNoGnrService.getNextLongId()));
-        } catch (FdlException e) {
-            log.error("FdlException egovAnswerNoGnrService");
-        }
-
-        comment.setCommentPassword("rhdxhd12");
-        comment.setCommentCn("test 이백행 댓글 " + LocalDateTime.now());
-
-        if (loginVO != null) {
-            comment.setFrstRegisterId(loginVO.getUniqId());
-            comment.setLastUpdusrId(loginVO.getUniqId());
-
-            comment.setWrterId(loginVO.getUniqId());
-            comment.setWrterNm(loginVO.getName());
-        }
-
-        // when
-        int result = 1;
-        try {
-            egovArticleCommentDAO.insertArticleComment(comment);
-        } catch (DataAccessException e) {
-            result = 0;
-            error(e);
-        }
-
-        // then
-        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
-    }
-
-    /**
-     * 댓글 DAO 단위 테스트: 조회(멀티건)
-     */
-    @Test
-    void test_a20_selectList() {
-        // given
-        final CommentVO commentVO = new CommentVO();
-        final Comment comment = new Comment();
-
-        testData2(comment);
-
-        commentVO.setBbsId(comment.getBbsId());
-        commentVO.setNttId(comment.getNttId());
-        commentVO.setSubRecordCountPerPage(1);
-        commentVO.setSubFirstIndex(0);
-
-        // when
-        final List<CommentVO> results = egovArticleCommentDAO.selectArticleCommentList(commentVO);
-        for (final CommentVO result : results) {
-            debug(result);
-//            debug2(result);
-
-            // then
-            assertEquals(comment.getCommentNo(), result.getCommentNo(),
-                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-        }
-    }
-
-    /* default */ void debug(final CommentVO result) {
-        if (log.isDebugEnabled()) {
-            log.debug("result={}", result);
-
-            log.debug("getCommentNo={}", result.getCommentNo());
-            log.debug("getNttId={}", result.getNttId());
-            log.debug("getBbsId={}", result.getBbsId());
-
-            log.debug("getWrterId={}", result.getWrterId());
-            log.debug("getWrterNm={}", result.getWrterNm());
-            log.debug("getCommentPassword={}", result.getCommentPassword());
-            log.debug("getCommentCn={}", result.getCommentCn());
-
-            log.debug("getUseAt={}", result.getUseAt());
-
-            log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
-            log.debug("getFrstRegisterNm={}", result.getFrstRegisterNm());
-        }
-    }
-
-    /* default */ void debug2(final CommentVO result) {
-        if (log.isDebugEnabled()) {
-            log.debug("result={}", result);
-
-            log.debug("getNttId={}", result.getNttId());
-            log.debug("getBbsId={}", result.getBbsId());
-            log.debug("getCommentNo={}", result.getCommentNo());
-
-            log.debug("getWrterId={}", result.getWrterId());
-            log.debug("getWrterNm={}", result.getWrterNm());
-            log.debug("getCommentCn={}", result.getCommentCn());
-
-            log.debug("getUseAt={}", result.getUseAt());
-
-            log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
-            log.debug("getFrstRegisterId={}", result.getFrstRegisterId());
-            log.debug("getFrstRegisterNm={}", result.getFrstRegisterNm());
-
-            log.debug("getLastUpdusrPnttm={}", result.getLastUpdusrPnttm());
-            log.debug("getLastUpdusrId={}", result.getLastUpdusrId());
-
-            log.debug("getCommentPassword={}", result.getCommentPassword());
-        }
-    }
-
-    /**
-     * 댓글 DAO 단위 테스트: 조회(멀티건) 총 수
-     */
-    @Test
-    void test_a30_selectListTotCnt() {
-        // given
-        final CommentVO commentVO = new CommentVO();
-        final Comment comment = new Comment();
-
-        testData2(comment);
-
-        commentVO.setBbsId(comment.getBbsId());
-        commentVO.setNttId(comment.getNttId());
-
-        // when
-        final int totCnt = egovArticleCommentDAO.selectArticleCommentListCnt(commentVO);
-
-        log.debug("totCnt={}", totCnt);
-
-        // then
-        assertEquals(1, totCnt, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-    }
-
-    /**
-     * 댓글 DAO 단위 테스트: 조회(단건)
-     */
-    @Test
-    void test_a40_select() {
-        // given
-        final CommentVO commentVO = new CommentVO();
-        final Comment comment = new Comment();
-
-        testData2(comment);
-
-        commentVO.setCommentNo(comment.getCommentNo());
-
-        // when
-        final CommentVO result = egovArticleCommentDAO.selectArticleCommentDetail(commentVO);
-
-        debug2(result);
-
-        // then
-        if (result != null) {
-            assertEquals(commentVO.getCommentNo(), result.getCommentNo(),
-                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-        }
-    }
-
-    /**
-     * 댓글 DAO 단위 테스트: 수정
-     */
-    @Test
-//    @Commit
-    void test_a50_update() {
-        // given
-        final Comment comment = new Comment();
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-        testData2(comment);
-
-        comment.setCommentCn(comment.getCommentCn() + " > 수정 test 이백행 댓글 " + LocalDateTime.now());
-
-        if (loginVO != null) {
-            comment.setLastUpdusrId(loginVO.getUniqId());
-        }
-
-        // when
-        int result = 1;
-        try {
-            egovArticleCommentDAO.updateArticleComment(comment);
-        } catch (DataAccessException e) {
-            result = 0;
-            error(e);
-        }
-
-        // then
-        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
-    }
-
-    /**
-     * 댓글 DAO 단위 테스트: 삭제
-     */
-    @Test
-//    @Commit
-    void test_a60_delete() {
-        // given
-        final CommentVO commentVO = new CommentVO();
-        final Comment comment = new Comment();
-
-        testData2(comment);
-
-        commentVO.setCommentNo(comment.getCommentNo());
-
-        // when
-        int result = 1;
-        try {
-            egovArticleCommentDAO.deleteArticleComment(commentVO);
-        } catch (DataAccessException e) {
-            result = 0;
-            error(e);
-        }
-
-        // then
-        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
-    }
+class EgovArticleCommentDAOTest extends EgovTestAbstractDAO {
+
+	/**
+	 * EgovArticleCommentDAO
+	 */
+	@Autowired
+	private EgovArticleCommentDAO egovArticleCommentDAO;
+
+	/**
+	 * 답글 ANSWER_NO 생성
+	 */
+	@Autowired
+	private EgovIdGnrService egovAnswerNoGnrService;
+
+	/**
+	 * EgovBBSMasterDAO
+	 */
+	@Autowired
+	private EgovBBSMasterDAO egovBBSMasterDAO;
+
+	/**
+	 * EgovArticleDAO
+	 */
+	@Autowired
+	private EgovArticleDAO egovArticleDAO;
+
+	/**
+	 * 게시판용 BBS_ID 생성
+	 */
+	@Autowired
+	private EgovIdGnrService egovBBSMstrIdGnrService;
+
+	/**
+	 * 게시판용 NTT_ID 생성
+	 */
+	@Autowired
+	private EgovIdGnrService egovNttIdGnrService;
+
+	/**
+	 * 댓글 DAO 단위 테스트: 조회(멀티건)
+	 */
+	@Test
+	@Order(1)
+	void selectArticleCommentList() {
+		// given
+		final CommentVO commentVO = new CommentVO();
+		final Comment comment = new Comment();
+
+		testData2(comment);
+
+		commentVO.setBbsId(comment.getBbsId());
+		commentVO.setNttId(comment.getNttId());
+		commentVO.setSubRecordCountPerPage(1);
+		commentVO.setSubFirstIndex(0);
+
+		// when
+		final List<CommentVO> results = egovArticleCommentDAO.selectArticleCommentList(commentVO);
+		for (final CommentVO result : results) {
+			debug(result);
+			// debug2(result);
+
+			// then
+			assertEquals(comment.getCommentNo(), result.getCommentNo(),
+					egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+		}
+	}
+
+	/**
+	 * 댓글 DAO 단위 테스트: 조회(멀티건) 총 수
+	 */
+	@Test
+	@Order(2)
+	void selectArticleCommentListCnt() {
+		// given
+		final CommentVO commentVO = new CommentVO();
+		final Comment comment = new Comment();
+
+		testData2(comment);
+
+		commentVO.setBbsId(comment.getBbsId());
+		commentVO.setNttId(comment.getNttId());
+
+		// when
+		final int totCnt = egovArticleCommentDAO.selectArticleCommentListCnt(commentVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertEquals(1, totCnt, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+	}
+
+	/**
+	 * 댓글 DAO 단위 테스트: 등록
+	 */
+	@Test
+	@Order(3)
+	void insertArticleComment() {
+		// given
+		final Comment comment = new Comment();
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		testData(comment);
+
+		try {
+			comment.setCommentNo(String.valueOf(egovAnswerNoGnrService.getNextLongId()));
+		} catch (FdlException e) {
+			log.error("FdlException egovAnswerNoGnrService");
+		}
+
+		comment.setCommentPassword("rhdxhd12");
+		comment.setCommentCn("test 이백행 댓글 " + LocalDateTime.now());
+
+		if (loginVO != null) {
+			comment.setFrstRegisterId(loginVO.getUniqId());
+			comment.setLastUpdusrId(loginVO.getUniqId());
+
+			comment.setWrterId(loginVO.getUniqId());
+			comment.setWrterNm(loginVO.getName());
+		}
+
+		// when
+		int result = 1;
+		try {
+			egovArticleCommentDAO.insertArticleComment(comment);
+		} catch (DataAccessException e) {
+			result = 0;
+			error(e);
+		}
+
+		// then
+		assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
+	}
+
+	/**
+	 * 댓글 DAO 단위 테스트: 삭제
+	 */
+	@Test
+	@Order(4)
+	void deleteArticleComment() {
+		// given
+		final CommentVO commentVO = new CommentVO();
+		final Comment comment = new Comment();
+
+		testData2(comment);
+
+		commentVO.setCommentNo(comment.getCommentNo());
+
+		// when
+		int result = 1;
+		try {
+			egovArticleCommentDAO.deleteArticleComment(commentVO);
+		} catch (DataAccessException e) {
+			result = 0;
+			error(e);
+		}
+
+		// then
+		assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
+	}
+
+	/**
+	 * 댓글 DAO 단위 테스트: 조회(단건)
+	 */
+	@Test
+	@Order(5)
+	void selectArticleCommentDetail() {
+		// given
+		final CommentVO commentVO = new CommentVO();
+		final Comment comment = new Comment();
+
+		testData2(comment);
+
+		commentVO.setCommentNo(comment.getCommentNo());
+
+		// when
+		final CommentVO result = egovArticleCommentDAO.selectArticleCommentDetail(commentVO);
+
+		debug2(result);
+
+		// then
+		if (result != null) {
+			assertEquals(commentVO.getCommentNo(), result.getCommentNo(),
+					egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+		}
+	}
+
+	/**
+	 * 댓글 DAO 단위 테스트: 수정
+	 */
+	@Test
+	@Order(6)
+	void updateArticleComment() {
+		// given
+		final Comment comment = new Comment();
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		testData2(comment);
+
+		comment.setCommentCn(comment.getCommentCn() + " > 수정 test 이백행 댓글 " + LocalDateTime.now());
+
+		if (loginVO != null) {
+			comment.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		int result = 1;
+		try {
+			egovArticleCommentDAO.updateArticleComment(comment);
+		} catch (DataAccessException e) {
+			result = 0;
+			error(e);
+		}
+
+		// then
+		assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
+	}
+
+	private void testData(final Comment comment) {
+		final BoardMaster boardMaster = new BoardMaster();
+		final Board board = new Board();
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		if (loginVO != null) {
+			boardMaster.setFrstRegisterId(loginVO.getUniqId());
+			boardMaster.setLastUpdusrId(loginVO.getUniqId());
+
+			board.setFrstRegisterId(loginVO.getUniqId());
+			board.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error("FdlException egovBBSMstrIdGnrService");
+		}
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+
+		try {
+			board.setNttId(egovNttIdGnrService.getNextLongId());
+		} catch (FdlException e) {
+			log.error("FdlException egovNttIdGnrService");
+		}
+		board.setBbsId(boardMaster.getBbsId());
+		egovArticleDAO.insertArticle(board);
+
+		comment.setNttId(board.getNttId());
+		comment.setBbsId(board.getBbsId());
+	}
+
+	private void testData2(final Comment comment) {
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		testData(comment);
+
+		try {
+			comment.setCommentNo(String.valueOf(egovAnswerNoGnrService.getNextLongId()));
+		} catch (FdlException e) {
+			log.error("FdlException egovAnswerNoGnrService");
+		}
+
+		comment.setCommentPassword("rhdxhd12");
+		comment.setCommentCn("test 이백행 댓글 " + LocalDateTime.now());
+
+		if (loginVO != null) {
+			comment.setFrstRegisterId(loginVO.getUniqId());
+			comment.setLastUpdusrId(loginVO.getUniqId());
+
+			comment.setWrterId(loginVO.getUniqId());
+			comment.setWrterNm(loginVO.getName());
+		}
+
+		egovArticleCommentDAO.insertArticleComment(comment);
+	}
+
+	private void debug(final CommentVO result) {
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+
+			log.debug("getCommentNo={}", result.getCommentNo());
+			log.debug("getNttId={}", result.getNttId());
+			log.debug("getBbsId={}", result.getBbsId());
+
+			log.debug("getWrterId={}", result.getWrterId());
+			log.debug("getWrterNm={}", result.getWrterNm());
+			log.debug("getCommentPassword={}", result.getCommentPassword());
+			log.debug("getCommentCn={}", result.getCommentCn());
+
+			log.debug("getUseAt={}", result.getUseAt());
+
+			log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
+			log.debug("getFrstRegisterNm={}", result.getFrstRegisterNm());
+		}
+	}
+
+	private void debug2(final CommentVO result) {
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+
+			log.debug("getNttId={}", result.getNttId());
+			log.debug("getBbsId={}", result.getBbsId());
+			log.debug("getCommentNo={}", result.getCommentNo());
+
+			log.debug("getWrterId={}", result.getWrterId());
+			log.debug("getWrterNm={}", result.getWrterNm());
+			log.debug("getCommentCn={}", result.getCommentCn());
+
+			log.debug("getUseAt={}", result.getUseAt());
+
+			log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
+			log.debug("getFrstRegisterId={}", result.getFrstRegisterId());
+			log.debug("getFrstRegisterNm={}", result.getFrstRegisterNm());
+
+			log.debug("getLastUpdusrPnttm={}", result.getLastUpdusrPnttm());
+			log.debug("getLastUpdusrId={}", result.getLastUpdusrId());
+
+			log.debug("getCommentPassword={}", result.getCommentPassword());
+		}
+	}
 
 }

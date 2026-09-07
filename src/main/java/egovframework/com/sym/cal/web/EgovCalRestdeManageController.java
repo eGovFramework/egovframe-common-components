@@ -12,7 +12,6 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,7 +84,6 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovNormalCalPopup"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/sym/cal/callCal.do")
 	public String callCal(@Valid Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -131,7 +129,6 @@ public class EgovCalRestdeManageController {
 
 		String year = Integer.toString(iYear);
 		String month = Integer.toString(iMonth);
-		String day = Integer.toString(cal.get(Calendar.DAY_OF_MONTH));
 
 		restde.setStartWeekMonth(firstWeek);
 		restde.setLastDayMonth(lastDay);

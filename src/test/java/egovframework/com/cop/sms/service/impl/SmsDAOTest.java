@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
@@ -101,9 +102,7 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
         try {
             testDataSms.setSmsId(egovSmsIdGnrService.getNextStringId()); // 문자메시지ID
         } catch (FdlException e) {
-//            e.printStackTrace();
-            log.error("FdlException egovSmsIdGnrService");
-//            fail("FdlException egovSmsIdGnrService");
+            throw new BaseRuntimeException(e);
         }
 
         testDataSms.setTrnsmitTelno("전송전화번호"); // 전송전화번호
@@ -217,9 +216,7 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
         try {
             sms.setSmsId(egovSmsIdGnrService.getNextStringId());
         } catch (FdlException e) {
-//            e.printStackTrace();
-            log.error("FdlException egovSmsIdGnrService");
-//            fail("FdlException egovSmsIdGnrService");
+            throw new BaseRuntimeException(e);
         }
 
         if (loginVO != null) {

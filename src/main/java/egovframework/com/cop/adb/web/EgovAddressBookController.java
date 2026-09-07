@@ -173,7 +173,6 @@ public class EgovAddressBookController {
      * @param model
      * @return
      */
-    @SuppressWarnings("unused")
 	@PostMapping("/cop/adb/deleteAdbkInf.do")
     public String deleteAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
@@ -205,13 +204,9 @@ public class EgovAddressBookController {
      * @param model
      * @return
      */
-    @SuppressWarnings("unused")
 	@PostMapping("/cop/adb/addUser.do")
     public String addUser(@ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
             @RequestParam("checkCnd")String checkCnd, ModelMap model) {
-
-        LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
 
@@ -246,8 +241,6 @@ public class EgovAddressBookController {
     public String deleteUser( @ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
             @RequestParam("checkWord")String checkWord, @RequestParam("checkCnd")String checkCnd, ModelMap model) {
 
-        @SuppressWarnings("unused")
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {

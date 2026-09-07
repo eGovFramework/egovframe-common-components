@@ -358,11 +358,9 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
 	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
 			throws Exception {
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {

@@ -2,10 +2,10 @@ package egovframework.com.cop.cmy.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -296,11 +296,8 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         List<CommunityVO> resultList = null;
         try {
             resultList = egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
-        } catch (DataAccessException eDAE) {
-            // eDAE.printStackTrace();
-            log.error("DataAccessException selectCommuMasterListPortlet");
-            error(eDAE);
-            fail("DataAccessException selectCommuMasterListPortlet");
+        } catch (DataAccessException e) {
+        	throw new BaseRuntimeException(e);
         }
 
         // log.info("resultList=[{}]", resultList);

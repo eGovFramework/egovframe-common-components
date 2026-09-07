@@ -65,13 +65,9 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="네트워크서비스모니터링", order = 2120 ,gid = 90)
     @RequestMapping("/utl/sys/nsm/selectNtwrkSvcMntrngList.do")
 	public String selectNtwrkSvcMntrngList(@ModelAttribute("searchVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, ModelMap model) throws Exception{
-    	//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 		ntwrkSvcMntrngVO.setPageUnit(propertyService.getInt("pageUnit"));
 		ntwrkSvcMntrngVO.setPageSize(propertyService.getInt("pageSize"));
 

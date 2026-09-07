@@ -180,8 +180,6 @@ public class EgovArticleCommentController {
     @PostMapping("/cop/cmt/deleteArticleComment.do")
     public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
     		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
-		@SuppressWarnings("unused")
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
