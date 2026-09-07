@@ -131,6 +131,9 @@
             <if test="searchCondition == 2">AND
                    A.MNGR_NM LIKE CONCAT ('%', #{searchKeyword},'%')        
             </if>
+            <if test="searchCondition == 3">AND
+                   B.CODE_NM LIKE CONCAT ('%', #{searchKeyword},'%')        
+            </if>
 	</select>
 	
 	<select id="selectTrsmrcvMntrng" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng" resultMap="trsmrcvMntrngResult">
