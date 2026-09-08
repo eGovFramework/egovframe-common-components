@@ -27,9 +27,9 @@ import egovframework.com.cop.adb.service.EgovAddressBookService;
 @Import(EgovConfigCryptoTest.class)
 
 @ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.adb.service.impl" }, includeFilters = {
+		"egovframework.com.cop.adb.service.impl", }, includeFilters = {
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { AddressBookDAO.class,
-						EgovAddressBookService.class }) })
+						EgovAddressBookService.class, }) })
 
 public class AddressBookConfigurationTest {
 
