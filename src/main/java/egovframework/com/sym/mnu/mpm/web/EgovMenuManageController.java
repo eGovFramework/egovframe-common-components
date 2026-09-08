@@ -171,12 +171,18 @@ public class EgovMenuManageController {
 		String resultMsg = "";
 
 		String[] delMenuNo = checkedMenuNoForDel.split(",");
-		if (delMenuNo.length != 0) {
-			menuManageVO.setMenuNo(Integer.parseInt(delMenuNo[0]));
+		boolean upperMenuExist = false;
+		// 단건 삭제와 동일하게, 지울 메뉴마다 하위 메뉴 존재 여부를 확인한다.
+		for (String menuNo : delMenuNo) {
+			menuManageVO.setMenuNo(Integer.parseInt(menuNo));
+			if (menuManageService.selectUpperMenuNoByPk(menuManageVO) != 0) {
+				upperMenuExist = true;
+				break;
+			}
 		}
 
 		// 2022.11.11 시큐어코딩 처리
-		if (menuManageService.selectUpperMenuNoByPk(menuManageVO) != 0) {
+		if (upperMenuExist) {
 			resultMsg = egovMessageSource.getMessage("fail.common.delete.upperMenuExist");
 			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageSelect.do";
 		} else if (delMenuNo.length == 0) {
