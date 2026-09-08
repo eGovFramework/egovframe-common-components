@@ -141,7 +141,8 @@ function onepassCancel() {
 		<tr>
 			<th><label for="mberNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="mberNm" title="${title} ${inputTxt}" size="50" maxlength="60" />
+				<!-- 등록/가입 화면 및 백엔드 제한(50자)과 일치시킴 (기존 60은 실제 저장 가능 길이와 불일치) -->
+				<form:input path="mberNm" title="${title} ${inputTxt}" size="50" maxlength="50" />
 				<div><form:errors path="mberNm" cssClass="error" /></div> 
 			</td>
 		</tr>

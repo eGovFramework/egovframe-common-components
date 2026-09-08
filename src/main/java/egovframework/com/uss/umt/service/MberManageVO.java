@@ -80,11 +80,19 @@ public class MberManageVO extends UserDefaultVO{
 	@Size(max=20)
 	private String mberId;
 	/**
-	 * 회원명
+	 * 회원명 (외국인 등 국제 실명 지원 - 한글/영문 전용이 아닌 유니코드 전체 문자 허용)
 	 */
 	@EgovNullCheck
 	@Size(max=50)
 	private String mberNm;
+
+	/**
+	 * 앞뒤 공백만 제거한다. 이름 중간의 의미 있는 공백은 유지한다.
+	 */
+	public void setMberNm(String mberNm) {
+		this.mberNm = mberNm == null ? null : mberNm.trim();
+	}
+
 	/**
 	 * 회원상태
 	 */
