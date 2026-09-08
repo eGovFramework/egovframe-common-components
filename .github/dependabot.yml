@@ -1,0 +1,19 @@
+# Dependabot 설정 — 의존성/GitHub Actions 자동 업데이트
+# 제안: eGovFramework/egovframe-common-components#1141
+# 참고: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  # 1) GitHub Actions
+  #    CI 워크플로가 사용하는 액션(actions/checkout, actions/setup-java 등)의 버전을 최신화합니다.
+  #    부모 POM과 무관하고 변경 범위가 작아 노이즈가 거의 없습니다.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
