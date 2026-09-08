@@ -101,7 +101,8 @@ public class EgovFileTool {
 
 		String result = "";
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
+		// basePath가 구분자로 끝나지 않아도 경로가 올바르게 구성되도록 결합한다.
+		File file = new File(EgovWebUtil.filePathBlackList(new File(basePath, filePath).getPath()));
 		if (file.exists()) {
 			result = file.getAbsolutePath();
 			if (!file.delete()) {
@@ -326,7 +327,7 @@ public class EgovFileTool {
 			return "";
 		}
 		String result = "";
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + fileDeletePath));
+		File file = new File(EgovWebUtil.filePathBlackList(new File(basePath, fileDeletePath).getPath()));
 		if (file.isFile()) {
 			result = deletePath(basePath, fileDeletePath);
 		} else {
