@@ -260,10 +260,9 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 	 * 
 	 * @param vo LoginVO
 	 * @return int
-	 * @exception Exception
 	 */
 	@Override
-	public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
+	public int selectPassedDayChangePWD(LoginVO vo) {
 		return loginDAO.selectPassedDayChangePWD(vo);
 	}
 

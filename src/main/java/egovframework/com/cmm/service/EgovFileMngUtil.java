@@ -20,12 +20,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +32,9 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.com.cmm.EgovWebUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 파일 관리 유틸리티
@@ -74,10 +75,9 @@ public class EgovFileMngUtil {
 	 *
 	 * @param files
 	 * @return
-	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String keyStr, int fileKeyParam,
-			String atchFileId, String storePath) throws Exception {
+			String atchFileId, String storePath) {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -90,7 +90,11 @@ public class EgovFileMngUtil {
 		}
 
 		if (atchFileId == null || "".equals(atchFileId)) {
-			atchFileIdString = idgenService.getNextStringId();
+			try {
+				atchFileIdString = idgenService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
 		} else {
 			atchFileIdString = atchFileId;
 		}
@@ -124,7 +128,11 @@ public class EgovFileMngUtil {
 			String newName = keyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
 			String filePath = storePathString + File.separator + newName;
-			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			try {
+				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			} catch (IllegalStateException | IOException e) {
+				throw new BaseRuntimeException(e);
+			}
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
@@ -147,10 +155,9 @@ public class EgovFileMngUtil {
 	 *
 	 * @param files
 	 * @return
-	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(List<MultipartFile> files, String keyStr, int fileKeyParam, String atchFileId,
-			String storePath) throws Exception {
+			String storePath) {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -163,7 +170,11 @@ public class EgovFileMngUtil {
 		}
 
 		if (atchFileId == null || "".equals(atchFileId)) {
-			atchFileIdString = idgenService.getNextStringId();
+			try {
+				atchFileIdString = idgenService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
 		} else {
 			atchFileIdString = atchFileId;
 		}
@@ -194,7 +205,11 @@ public class EgovFileMngUtil {
 			String newName = keyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
 			String filePath = storePathString + File.separator + newName;
-			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			try {
+				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			} catch (IllegalStateException | IOException e) {
+				throw new BaseRuntimeException(e);
+			}
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
@@ -219,15 +234,14 @@ public class EgovFileMngUtil {
 	 * @param file
 	 * @param newName
 	 * @param stordFilePath
-	 * @throws Exception
 	 */
-	protected void writeUploadedFile(MultipartFile file, String newName) throws Exception {
+	protected void writeUploadedFile(MultipartFile file, String newName) {
 		File cFile = new File(FILE_STORE_PATH);
 
 		if (!cFile.isDirectory()) {
 			boolean flag = cFile.mkdir();
 			if (!flag) {
-				throw new IOException("Directory creation Failed ");
+				throw new BaseRuntimeException("Directory creation Failed ");
 			}
 		}
 
@@ -236,6 +250,10 @@ public class EgovFileMngUtil {
 
 		try (InputStream stream = file.getInputStream(); OutputStream bos = new FileOutputStream(writeFilePath);) {
 			FileCopyUtils.copy(stream, bos);
+		} catch (FileNotFoundException e) {
+			throw new BaseRuntimeException(e);
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -244,9 +262,8 @@ public class EgovFileMngUtil {
 	 *
 	 * @param request
 	 * @param response
-	 * @throws Exception
 	 */
-	public static void downFile(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public static void downFile(HttpServletRequest request, HttpServletResponse response) {
 
 		String downFileName = resolveRequestAttribute(request, "downFile");
 
@@ -254,11 +271,11 @@ public class EgovFileMngUtil {
 		// File file = new File(EgovWebUtil.filePathBlackList(downFileName,FILE_STORE_PATH));
 
 		if (!file.exists()) {
-			throw new FileNotFoundException(downFileName);
+			throw new BaseRuntimeException(downFileName);
 		}
 
 		if (!file.isFile()) {
-			throw new FileNotFoundException(downFileName);
+			throw new BaseRuntimeException(downFileName);
 		}
 
 		response.setContentType("application/x-msdownload");
@@ -270,6 +287,10 @@ public class EgovFileMngUtil {
 		try (BufferedInputStream fin = new BufferedInputStream(new FileInputStream(file));
 				BufferedOutputStream outs = new BufferedOutputStream(response.getOutputStream());) {
 			FileCopyUtils.copy(fin, outs);
+		} catch (FileNotFoundException e) {
+			throw new BaseRuntimeException(e);
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -291,12 +312,15 @@ public class EgovFileMngUtil {
 	 *
 	 * @param request
 	 * @return
-	 * @throws UnsupportedEncodingException
 	 */
-	static String buildContentDispositionHeader(HttpServletRequest request) throws UnsupportedEncodingException {
+	static String buildContentDispositionHeader(HttpServletRequest request) {
 		String orgFileName = resolveRequestAttribute(request, "orginFile").replaceAll("\r", "").replaceAll("\n", "");
 
-		return "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8");
+		try {
+			return "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new BaseRuntimeException(e);
+		}
 	}
 
 	/**
@@ -304,9 +328,8 @@ public class EgovFileMngUtil {
 	 *
 	 * @param file
 	 * @return
-	 * @throws Exception
 	 */
-	public static HashMap<String, String> uploadFile(MultipartFile file) throws Exception {
+	public static HashMap<String, String> uploadFile(MultipartFile file) {
 
 		HashMap<String, String> map = new HashMap<String, String>();
 		long size = file.getSize();
@@ -336,9 +359,8 @@ public class EgovFileMngUtil {
 	 * @param file
 	 * @param newName
 	 * @param stordFilePath
-	 * @throws Exception
 	 */
-	protected static void writeFile(MultipartFile file, String newName) throws Exception {
+	protected static void writeFile(MultipartFile file, String newName) {
 		File cFile = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH));
 
 		if (!cFile.isDirectory()) {
@@ -355,6 +377,8 @@ public class EgovFileMngUtil {
 						.filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName)));) {
 
 			FileCopyUtils.copy(stream, bos);
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -364,9 +388,8 @@ public class EgovFileMngUtil {
 	 * @param response
 	 * @param streFileNm  파일된 파일명
 	 * @param orignFileNm
-	 * @throws Exception
 	 */
-	public void downFile(HttpServletResponse response, String streFileNm, String orignFileNm) throws Exception {
+	public void downFile(HttpServletResponse response, String streFileNm, String orignFileNm) {
 		String downFilePath = EgovWebUtil.filePathBlackList(FILE_STORE_PATH + streFileNm);
 		// String downFilePath =
 		// EgovWebUtil.filePathBlackList(streFileNm,FILE_STORE_PATH);
@@ -375,11 +398,11 @@ public class EgovFileMngUtil {
 		File file = new File(downFilePath);
 
 		if (!file.exists()) {
-			throw new FileNotFoundException(downFilePath);
+			throw new BaseRuntimeException(downFilePath);
 		}
 
 		if (!file.isFile()) {
-			throw new FileNotFoundException(downFilePath);
+			throw new BaseRuntimeException(downFilePath);
 		}
 
 		long fSize = file.length();
@@ -395,9 +418,13 @@ public class EgovFileMngUtil {
 				// response.setHeader("Pragma","no-cache");
 				// response.setHeader("Expires","0");
 				FileCopyUtils.copy(in, response.getOutputStream());
+				response.getOutputStream().flush();
+				response.getOutputStream().close();
+			} catch (FileNotFoundException e) {
+				throw new BaseRuntimeException(e);
+			} catch (IOException e) {
+				throw new BaseRuntimeException(e);
 			}
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
 		}
 
 		/*

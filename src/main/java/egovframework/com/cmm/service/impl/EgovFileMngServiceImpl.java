@@ -41,7 +41,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteFileInfs(java.util.List)
 	 */
 	@Override
-	public void deleteFileInfs(List<FileVO> fvoList) throws Exception {
+	public void deleteFileInfs(List<FileVO> fvoList) {
 		fileMngDAO.deleteFileInfs(fvoList);
 	}
 
@@ -51,7 +51,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#insertFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public String insertFileInf(FileVO fvo) throws Exception {
+	public String insertFileInf(FileVO fvo) {
 		String atchFileId = fvo.getAtchFileId();
 
 		fileMngDAO.insertFileInf(fvo);
@@ -65,7 +65,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#insertFileInfs(java.util.List)
 	 */
 	@Override
-	public String insertFileInfs(List<FileVO> fvoList) throws Exception {
+	public String insertFileInfs(List<FileVO> fvoList) {
 		String atchFileId = "";
 
 		if (!fvoList.isEmpty()) {
@@ -83,7 +83,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#selectFileInfs(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public List<FileVO> selectFileInfs(FileVO fvo) throws Exception {
+	public List<FileVO> selectFileInfs(FileVO fvo) {
 		return fileMngDAO.selectFileInfs(fvo);
 	}
 
@@ -93,7 +93,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#updateFileInfs(java.util.List)
 	 */
 	@Override
-	public void updateFileInfs(List<FileVO> fvoList) throws Exception {
+	public void updateFileInfs(List<FileVO> fvoList) {
 		//Delete & Insert
 		fileMngDAO.updateFileInfs(fvoList);
 	}
@@ -104,7 +104,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public void deleteFileInf(FileVO fvo) throws Exception {
+	public void deleteFileInf(FileVO fvo) {
 		fileMngDAO.deleteFileInf(fvo);
 	}
 
@@ -114,7 +114,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#selectFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public FileVO selectFileInf(FileVO fvo) throws Exception {
+	public FileVO selectFileInf(FileVO fvo) {
 		return fileMngDAO.selectFileInf(fvo);
 	}
 
@@ -124,7 +124,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#getMaxFileSN(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public int getMaxFileSN(FileVO fvo) throws Exception {
+	public int getMaxFileSN(FileVO fvo) {
 		return fileMngDAO.getMaxFileSN(fvo);
 	}
 
@@ -134,7 +134,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteAllFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public void deleteAllFileInf(FileVO fvo) throws Exception {
+	public void deleteAllFileInf(FileVO fvo) {
 		fileMngDAO.deleteAllFileInf(fvo);
 	}
 
@@ -144,7 +144,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#selectFileListByFileNm(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public Map<String, Object> selectFileListByFileNm(FileVO fvo) throws Exception {
+	public Map<String, Object> selectFileListByFileNm(FileVO fvo) {
 		List<FileVO> result = fileMngDAO.selectFileListByFileNm(fvo);
 		int cnt = fileMngDAO.selectFileListCntByFileNm(fvo);
 
@@ -162,7 +162,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#selectImageFileList(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public List<FileVO> selectImageFileList(FileVO vo) throws Exception {
+	public List<FileVO> selectImageFileList(FileVO vo) {
 		return fileMngDAO.selectImageFileList(vo);
 	}
 }

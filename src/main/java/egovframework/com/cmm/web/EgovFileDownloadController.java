@@ -1,7 +1,5 @@
 package egovframework.com.cmm.web;
 
-import egovframework.com.cmm.LoginVO;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -13,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovBrowserUtil;
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovBasicLogger;
@@ -66,11 +66,10 @@ public class EgovFileDownloadController {
 	 *
 	 * @param commandMap
 	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cmm/fms/FileDown.do")
 	public void cvplFileDownload(@RequestParam Map<String, Object> commandMap, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
@@ -159,7 +158,12 @@ public class EgovFileDownloadController {
 			} else {
 				response.setContentType("application/x-msdownload");
 
-				PrintWriter printwriter = response.getWriter(); // NOPMD - CloseResource
+				PrintWriter printwriter;
+				try {
+					printwriter = response.getWriter(); // NOPMD - CloseResource
+				} catch (IOException e) {
+					throw new BaseRuntimeException(e);
+				}
 
 				printwriter.println("<html>");
 				printwriter.println("<br><br><br><h2>Could not get file name:<br>"
@@ -190,6 +194,7 @@ public class EgovFileDownloadController {
 	/**
 	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
 	 */
+	@SuppressWarnings("unused")
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
