@@ -33,9 +33,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String ipAddr IP주소
-	 * @exception Exception
 	 */
-	public static String getClntIP(HttpServletRequest request) throws Exception {
+	public static String getClntIP(HttpServletRequest request) {
 
 		String ipAddr = null;
 
@@ -83,9 +82,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String osInfo OS 정보
-	 * @exception Exception
 	 */
-	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
+	public static String getClntOsInfo(HttpServletRequest request) {
 
 		String userAgent = request.getHeader("user-agent");
 		//2026.02.28 KISA 취약점 조취
@@ -116,9 +114,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webKind 웹브라우저 종류
-	 * @exception Exception
 	 */
-	public static String getClntWebKind(HttpServletRequest request) throws Exception {
+	public static String getClntWebKind(HttpServletRequest request) {
 
 		String userAgent = request.getHeader("user-agent");
 		//2026.02.28 KISA 취약점 조치
@@ -162,9 +159,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webVer 웹브라우저 버전
-	 * @exception Exception
 	 */
-	public static String getClntWebVer(HttpServletRequest request) throws Exception {
+	public static String getClntWebVer(HttpServletRequest request) {
 
 		String userAgent = request.getHeader("user-agent");
 		//2026.02.28 KISA 취약점 조치

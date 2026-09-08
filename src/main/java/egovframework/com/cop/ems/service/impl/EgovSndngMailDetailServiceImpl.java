@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.Globals;
 import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.sim.service.EgovFileTool;
@@ -69,7 +68,9 @@ public class EgovSndngMailDetailServiceImpl extends EgovAbstractServiceImpl impl
 
 		// 2. 발송요청XML파일을 삭제한다.
 		String xmlFile = vo.getMssageId() + ".xml";
-		EgovFileTool.deleteFile(Globals.MAIL_REQUEST_PATH, xmlFile);
+		// 저장은 EgovXMLDoc.getClassToXML()이 Globals.fileStorePath 아래에 파일명만으로 수행하므로
+		// 삭제도 같은 기준 경로를 사용한다.
+		EgovFileTool.deleteFile(xmlFile);
 	}
 
 	/**

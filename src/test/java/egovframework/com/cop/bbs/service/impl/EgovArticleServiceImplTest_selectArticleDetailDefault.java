@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectArticleDetailDefault extends EgovTestV1 {
+class EgovArticleServiceImplTest_selectArticleDetailDefault extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -25,15 +24,13 @@ public class EgovArticleServiceImplTest_selectArticleDetailDefault extends EgovT
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() throws FdlException {
-		log.debug("test");
-
+	void selectArticleDetailDefault() {
 		// given
 		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
 		boardVO.setSearchCnd("5");
 
 		log.debug("getBbsId={}", boardVO.getBbsId());
-		
+
 		log.debug("nttId={}", boardVO.getNttId());
 		log.debug("nttSj={}", boardVO.getNttSj());
 		log.debug("nttCn={}", boardVO.getNttCn());

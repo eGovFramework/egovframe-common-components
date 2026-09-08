@@ -75,7 +75,8 @@
 			WHERE		APPLCNT_ID     = #{applcntId}
 			AND			VCATN_SE       = #{vcatnSe}
 			AND			BGNDE		   = #{bgnde}
-        
+			AND			ENDDE		   = #{endde}
+
     </select>
 
     <insert id="insertVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO">

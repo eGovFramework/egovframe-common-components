@@ -1,14 +1,13 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.Date;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
@@ -27,25 +26,28 @@ public class EgovArticleDAOTest_insertArticle extends EgovTestV1 {
 	private EgovArticleDAO egovArticleDAO;
 
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Autowired
-	@Qualifier("egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
 	@Test
-//	@Commit
-	public void test() throws Exception {
-		log.debug("test");
-
+	void insertArticle() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		Board board = new Board();
 
-		board.setNttId((long) egovNttIdGnrService.getNextIntegerId());
+		try {
+			board.setNttId((long) egovNttIdGnrService.getNextIntegerId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		board.setBbsId(boardMaster.getBbsId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
@@ -59,16 +61,9 @@ public class EgovArticleDAOTest_insertArticle extends EgovTestV1 {
 		// when
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
-		boolean result = false;
-		try {
-			egovArticleDAO.insertArticle(board);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		egovArticleDAO.insertArticle(board);
 
 		// then
-		assertEquals(result, true);
 	}
 
 }

@@ -444,6 +444,8 @@ public class EgovAnnvrsryManageController {
 		if (resultVO == null) {
 			throw new IllegalStateException("권한이 없습니다.");
 		}
+		// 상세조회·수정·삭제와 동일하게 소유자 또는 관리자만 볼 수 있다.
+		egovAssertAdminOrOwner(resultVO.getUsid());
 		sAnnvrsryDe = EgovStringUtil.removeMinusChar(resultVO.getAnnvrsryDe());
 		if ("1".equals(resultVO.getCldrSe())) {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");// 양

@@ -1,25 +1,32 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import lombok.extern.slf4j.Slf4j;
-
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.Test;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
-public class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
+class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
 
 	// https://www.programcreek.com/java-api-examples/?api=org.apache.ibatis.builder.xml.XMLMapperBuilder
 
 	@Test
-	public void printResultMapInfo() throws Exception {
+	void printResultMapInfo() {
 		Configuration configuration = new Configuration();
 		String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
-		InputStream inputStream = Resources.getResourceAsStream(resource);
+		InputStream inputStream;
+		try {
+			inputStream = Resources.getResourceAsStream(resource);
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
+		}
 		XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
 				configuration.getSqlFragments());
 		builder.parse();
@@ -64,7 +71,11 @@ public class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
 		log.debug(sb.toString());
 
 		log.debug("");
-		inputStream.close();
+		try {
+			inputStream.close();
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
+		}
 	}
 
 }

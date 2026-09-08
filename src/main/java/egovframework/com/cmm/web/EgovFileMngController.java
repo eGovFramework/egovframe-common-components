@@ -67,11 +67,10 @@ public class EgovFileMngController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/selectFileInfs.do")
 	public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO, HttpServletRequest request,
-			@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<String, Object> commandMap, ModelMap model) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
@@ -114,13 +113,12 @@ public class EgovFileMngController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/selectFileInfsForUpdate.do")
 	public String selectFileInfsForUpdate(@ModelAttribute("searchVO") FileVO fileVO,
 			@RequestParam Map<String, Object> commandMap,
 			// SessionVO sessionVO,
-			HttpServletRequest request, ModelMap model) throws Exception {
+			HttpServletRequest request, ModelMap model) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
@@ -164,12 +162,11 @@ public class EgovFileMngController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/deleteFileInfs.do")
 	public String deleteFileInf(@ModelAttribute("searchVO") FileVO fileVO,
 			// SessionVO sessionVO,
-			HttpServletRequest request, ModelMap model) throws Exception {
+			HttpServletRequest request, ModelMap model) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
@@ -250,6 +247,7 @@ public class EgovFileMngController {
 	/**
 	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
 	 */
+	@SuppressWarnings("unused")
 	private void egovAssertAdminOrOwner(String ownerUniqId) {
 		LoginVO loginVO = egovAssertLoginUser();
 		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
