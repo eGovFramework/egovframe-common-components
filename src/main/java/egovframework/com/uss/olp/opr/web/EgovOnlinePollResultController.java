@@ -6,7 +6,6 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
