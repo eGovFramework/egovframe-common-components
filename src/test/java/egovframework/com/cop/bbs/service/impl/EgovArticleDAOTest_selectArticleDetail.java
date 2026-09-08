@@ -2,11 +2,11 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleDetail extends EgovTestV1 {
+class EgovArticleDAOTest_selectArticleDetail extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
@@ -26,26 +26,28 @@ public class EgovArticleDAOTest_selectArticleDetail extends EgovTestV1 {
 	private EgovArticleDAO egovArticleDAO;
 
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Autowired
-	@Qualifier("egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
 	@Test
-	@Rollback(true)
-//	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectArticleDetail() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		Board board = new Board();
 		board.setBbsId(boardMaster.getBbsId());
-		board.setNttId(egovNttIdGnrService.getNextLongId());
+		try {
+			board.setNttId(egovNttIdGnrService.getNextLongId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId(board.getBbsId());

@@ -13,12 +13,10 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class EgovArticleServiceImplTest_selectNoticeArticleList_MyBatis {
+class EgovArticleServiceImplTest_selectNoticeArticleList_MyBatis {
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void test() {
 		InputStream inputStream = null;
 
 		try {
@@ -48,7 +46,7 @@ public class EgovArticleServiceImplTest_selectNoticeArticleList_MyBatis {
 				sb.append("boardVO.get");
 				sb.append(propertyUpper);
 				sb.append("());\n");
-				
+
 				sb2.append("assertEquals(resultList.get(0).get");
 				sb2.append(propertyUpper);
 				sb2.append("(), boardVO.get");

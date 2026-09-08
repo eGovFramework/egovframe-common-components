@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleCnOne extends EgovTestV1 {
+class EgovArticleDAOTest_selectArticleCnOne extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
@@ -22,10 +22,7 @@ public class EgovArticleDAOTest_selectArticleCnOne extends EgovTestV1 {
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
-//	@Commit
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectArticleCnOne() {
 		// given
 		Board board = egovArticleDAOTest_AaaTestData.insertArticle();
 		BoardVO boardVO = new BoardVO();

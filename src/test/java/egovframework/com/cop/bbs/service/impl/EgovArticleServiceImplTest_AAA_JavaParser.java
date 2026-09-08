@@ -15,10 +15,10 @@ import com.github.javaparser.ast.CompilationUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class EgovArticleServiceImplTest_AAA_JavaParser {
+class EgovArticleServiceImplTest_AAA_JavaParser {
 
 	@Test
-	public void test() {
+	void test() {
 		try {
 
 //			String first = "C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\impl\\EgovArticleServiceImpl.java";
