@@ -177,9 +177,12 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 		if (fileNamePath == null) {
 			return "";
 		}
-		String ext = fileNamePath.substring(fileNamePath.lastIndexOf(".") + 1, fileNamePath.length());
+		int extensionIndex = fileNamePath.lastIndexOf(".");
+		if (extensionIndex < 0) {
+			return "";
+		}
 
-		return (ext == null) ? "" : ext;
+		return fileNamePath.substring(extensionIndex + 1);
 	}
 
 	/**
