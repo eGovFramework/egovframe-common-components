@@ -5,8 +5,30 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class EgovNumberUtilTest {
+
+	@ParameterizedTest
+	@NullAndEmptySource
+	void numberValidationRejectsNullAndEmptyInput(String input) {
+		assertFalse(EgovNumberUtil.getNumberValidCheck(input));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {"0", "2026", "0001", "0123456789", "2147483648"})
+	void numberValidationAcceptsAsciiDigits(String input) {
+		// 숫자 형식 검사이므로 선행 0이나 int 범위를 넘는 숫자도 허용한다.
+		assertTrue(EgovNumberUtil.getNumberValidCheck(input));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = {" ", "\t", "\n", "-1", "+1", "1.0", "20a6", "１２３", "١٢٣", "1 2"})
+	void numberValidationRejectsNonAsciiDigitInput(String input) {
+		assertFalse(EgovNumberUtil.getNumberValidCheck(input));
+	}
 
 	@Test
 	void testRandomInRange() {
