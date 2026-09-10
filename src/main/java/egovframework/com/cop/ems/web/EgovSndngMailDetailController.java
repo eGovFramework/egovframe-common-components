@@ -69,7 +69,7 @@ public class EgovSndngMailDetailController {
 
 
 		if (sndngMailVO == null || sndngMailVO.getMssageId() == null || sndngMailVO.getMssageId().equals("")) {
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -80,7 +80,7 @@ public class EgovSndngMailDetailController {
 		// 1. 발송메일을 상세 조회한다.
 		SndngMailVO resultMailVO = sndngMailDetailService.selectSndngMail(sndngMailVO);
 		if (resultMailVO == null || resultMailVO.getMssageId() == null || resultMailVO.getMssageId().equals("")) {
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!loginVO.getId().equals(resultMailVO.getDsptchPerson())) {
@@ -97,7 +97,7 @@ public class EgovSndngMailDetailController {
 			return "egovframework/com/cop/ems/EgovMailDetail";
 		} else {
 			// 오류 페이지 이동
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 	}
 
@@ -116,7 +116,7 @@ public class EgovSndngMailDetailController {
 
 
 		if (sndngMailVO == null || sndngMailVO.getMssageId() == null || sndngMailVO.getMssageId().equals("")) {
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -125,7 +125,7 @@ public class EgovSndngMailDetailController {
 		}
 		SndngMailVO resultMailVO = sndngMailDetailService.selectSndngMail(sndngMailVO);
 		if (resultMailVO == null || resultMailVO.getMssageId() == null || resultMailVO.getMssageId().equals("")) {
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!loginVO.getId().equals(resultMailVO.getDsptchPerson())) {
