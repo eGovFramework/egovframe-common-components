@@ -806,11 +806,11 @@ INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM,
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectScrinStats', '/sts/sst/', '화면통계', '화면통계', '/sts/sst/selectScrinStats.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectReprtStatsListView', '/sts/rst/', '보고서통계', '보고서통계', '/sts/rst/selectReprtStatsListView.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectDtaUseStatsList', '/sts/dst/', '자료이용현황통계', '자료이용현황통계', '/sts/dst/selectDtaUseStatsList.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('SelectBBSMasterInfs', '/cop/bbs/', '게시판속성관리', '게시판속성관리', '/cop/bbs/SelectBBSMasterInfs.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('SelectBBSMasterInfs', '/cop/bbs/', '게시판속성관리', '게시판속성관리', '/cop/bbs/selectBBSMasterInfs.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectBBSUseInfs', '/cop/com/', '게시판사용정보', '게시판사용정보', '/cop/com/selectBBSUseInfs.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectTemplateInfs', '/cop/tpl/', '템플릿관리', '템플릿관리', '/cop/tpl/selectTemplateInfs.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectScrapList', '/cop/scp/', '스크랩 목록', '스크랩 목록', '/cop/scp/selectScrapList.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectCmmntyInfs', '/cop/cmy/', '커뮤니티관리', '커뮤니티관리', '/cop/cmy/selectCmmntyInfs.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectScrapList', '/cop/scp/', '스크랩 목록', '스크랩 목록', '/cop/scp/selectArticleScrapList.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectCmmntyInfs', '/cop/cmy/', '커뮤니티관리', '커뮤니티관리', '/cop/cmy/selectCommuMasterList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectSmsList', '/cop/sms/', '문자메시지', '문자메시지', '/cop/sms/selectSmsList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovDeptSchdulManageList', '/cop/smt/sdm/', '부서일정관리', '부서일정관리', '/cop/smt/sdm/EgovDeptSchdulManageList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovIndvdlSchdulManageList', '/cop/smt/sim/', '일정관리', '일정관리', '/cop/smt/sim/EgovIndvdlSchdulManageList.do');
