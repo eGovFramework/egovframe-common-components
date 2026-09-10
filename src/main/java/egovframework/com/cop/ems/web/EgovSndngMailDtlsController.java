@@ -104,7 +104,7 @@ public class EgovSndngMailDtlsController {
 
 
 		if (sndngMailVO == null || sndngMailVO.getMssageId() == null || sndngMailVO.getMssageId().equals("")) {
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -113,7 +113,7 @@ public class EgovSndngMailDtlsController {
 		}
 		SndngMailVO resultMailVO = sndngMailDetailService.selectSndngMail(sndngMailVO);
 		if (resultMailVO == null || resultMailVO.getMssageId() == null || resultMailVO.getMssageId().equals("")) {
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!loginVO.getId().equals(resultMailVO.getDsptchPerson())) {
