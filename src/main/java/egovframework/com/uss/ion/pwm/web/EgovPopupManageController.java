@@ -354,17 +354,21 @@ public class EgovPopupManageController {
 
 		// 2026.02.28 KISA 취약점 조취
 		response.setContentType("text/html;charset=utf-8");
+
+		LOGGER.debug("commandMap : {}", commandMap);
+		LOGGER.debug("popupManageVO : {}", popupManageVO);
+
+		PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
+		if (popupManageVOs == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+
+		String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
+				+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
+				+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
+
 		PrintWriter out = response.getWriter();
-
-			LOGGER.debug("commandMap : {}", commandMap);
-			LOGGER.debug("popupManageVO : {}", popupManageVO);
-
-			PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
-
-			String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
-					+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
-					+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
-
 		out.print(EgovWebUtil.clearXSSMinimum(sPrint));
 		out.flush();
 
