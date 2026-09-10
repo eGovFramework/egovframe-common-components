@@ -811,7 +811,7 @@ INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM,
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectWikMnthngReprtList', '/cop/smt/wmr/', '주간/월간보고관리', '주간/월간보고관리', '/cop/smt/wmr/selectWikMnthngReprtList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectMemoTodoList', '/cop/smt/mtm/', '메모할일관리', '메모할일관리', '/cop/smt/mtm/selectMemoTodoList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectMemoReprtList', '/cop/smt/mrm/', '메모보고', '메모보고', '/cop/smt/mrm/selectMemoReprtList.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovEntrprsMberManage', '/uss/umt/', '기업회원관리', '기업회원관리', '/uss/umt/EgovEntrprsMberManage.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovEntrprsMberManage', '/uss/umt/', '기업회원관리', '기업회원관리', '/uss/umt/EgovEntrprsManage.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovUserManage', '/uss/umt/', '업무사용자관리', '업무사용자관리', '/uss/umt/EgovEmplyrManage.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectDeptManageListView', '/uss/umt/dpt/', '부서관리', '부서관리', '/uss/umt/dpt/selectDeptManageListView.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovMberManage', '/uss/umt/', '일반회원관리', '일반회원관리', '/uss/umt/EgovMberManage.do');
