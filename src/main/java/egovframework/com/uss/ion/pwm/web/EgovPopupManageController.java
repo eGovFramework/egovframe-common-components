@@ -396,7 +396,7 @@ public class EgovPopupManageController {
 		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
 		if (fileUrl2.contains(":") || fileUrl2.startsWith("/") || fileUrl2.toUpperCase(Locale.ROOT).contains("WEB-INF")) {
 			LOGGER.debug("Open Popup > Unsafe fileUrl rejected: {}", fileUrl2);
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
@@ -409,7 +409,7 @@ public class EgovPopupManageController {
 			}
 		}
 		LOGGER.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
 	}
 
 	/**

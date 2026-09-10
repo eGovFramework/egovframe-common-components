@@ -217,7 +217,7 @@ public class EgovQustnrRespondInfoController {
 		}
 
 		LOGGER.debug("QustnrTmplat > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
 	}
 
 	/**

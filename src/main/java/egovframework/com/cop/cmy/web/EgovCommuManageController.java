@@ -568,7 +568,7 @@ public class EgovCommuManageController {
 		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
 		if (tmplatCours.contains(":") || tmplatCours.startsWith("/") || tmplatCours.toUpperCase(Locale.ROOT).contains("WEB-INF")) {
 			LOGGER.debug("Template > Unsafe tmplatCours rejected: {}", tmplatCours);
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		// 화이트 리스트 체크
@@ -582,7 +582,7 @@ public class EgovCommuManageController {
         }
 
 		LOGGER.debug("Template > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
     }
 
     /**
