@@ -552,14 +552,18 @@ public class EgovStringUtil {
 	/**
 	 * 문자열을 지정한 분리자에 의해 배열로 리턴하는 메서드.
 	 * @param source 원본 문자열
-	 * @param separator 분리자
+	 * @param separator 빈 문자열이 아닌 분리자
 	 * @return result 분리자로 나뉘어진 문자열 배열
+	 * @throws IllegalArgumentException 분리자가 빈 문자열인 경우
 	 */
 	public static String[] split(String source, String separator) throws NullPointerException {
 		String[] returnVal = null;
 		int cnt = 1;
 
 		int index = source.indexOf(separator);
+		if (separator.isEmpty()) {
+			throw new IllegalArgumentException("separator must not be empty");
+		}
 		int index0 = 0;
 		// 2026-08-14 content_j split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
 		while (index >= 0) {
@@ -729,9 +733,10 @@ public class EgovStringUtil {
 	/**
 	 * 문자열을 지정한 분리자에 의해 지정된 길이의 배열로 리턴하는 메서드.
 	 * @param source 원본 문자열
-	 * @param separator 분리자
+	 * @param separator 빈 문자열이 아닌 분리자
 	 * @param arraylength 배열 길이
 	 * @return 분리자로 나뉘어진 문자열 배열
+	 * @throws IllegalArgumentException 분리자가 빈 문자열인 경우
 	 */
 	public static String[] split(String source, String separator, int arraylength) throws NullPointerException {
 		String[] returnVal = new String[arraylength];
@@ -739,6 +744,9 @@ public class EgovStringUtil {
 		int index0 = 0;
 		// 2026-08-14 content_j split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
 		int index = source.indexOf(separator);
+		if (separator.isEmpty()) {
+			throw new IllegalArgumentException("separator must not be empty");
+		}
 		while (index >= 0 && cnt < (arraylength - 1)) {
 			returnVal[cnt] = source.substring(index0, index);
 			index0 = index + separator.length();
