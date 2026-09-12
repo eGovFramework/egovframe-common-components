@@ -383,4 +383,52 @@ class EgovRwardManageControllerOwnershipTest {
 		String view = assertDoesNotThrow(() -> controller.selectRwardConfm(vo, rm, model));
 		assertTrue(view.contains("EgovRwardConfm"));
 	}
+
+	// ---- selectRwardManage (상세 열람) ----
+
+	@Test
+	void viewDetailByOutsiderIsRejected() {
+		StubService service = new StubService(OWNER, SANCTNER);
+		EgovRwardManageController controller = controllerWith(service);
+		bindLoginUser(OUTSIDER, List.of());
+
+		RwardManage rm = requestFor("1");
+		RwardManageVO vo = new RwardManageVO();
+		vo.setRwardId("1");
+		ModelMap model = new ModelMap();
+
+		assertThrows(IllegalStateException.class,
+				() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model),
+				"A logged-in non-applicant must not be able to view another member's reward nomination detail.");
+	}
+
+	@Test
+	void viewDetailByApplicantSucceeds() throws Exception {
+		StubService service = new StubService(OWNER, SANCTNER);
+		EgovRwardManageController controller = controllerWith(service);
+		bindLoginUser(OWNER, List.of());
+
+		RwardManage rm = requestFor("1");
+		RwardManageVO vo = new RwardManageVO();
+		vo.setRwardId("1");
+		ModelMap model = new ModelMap();
+
+		String view = assertDoesNotThrow(() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model));
+		assertTrue(view.contains("EgovRwardDetail"));
+	}
+
+	@Test
+	void viewDetailByAdminSucceedsEvenWhenNotApplicant() throws Exception {
+		StubService service = new StubService(OWNER, SANCTNER);
+		EgovRwardManageController controller = controllerWith(service);
+		bindLoginUser(OUTSIDER, List.of("ROLE_ADMIN"));
+
+		RwardManage rm = requestFor("1");
+		RwardManageVO vo = new RwardManageVO();
+		vo.setRwardId("1");
+		ModelMap model = new ModelMap();
+
+		String view = assertDoesNotThrow(() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model));
+		assertTrue(view.contains("EgovRwardDetail"));
+	}
 }
