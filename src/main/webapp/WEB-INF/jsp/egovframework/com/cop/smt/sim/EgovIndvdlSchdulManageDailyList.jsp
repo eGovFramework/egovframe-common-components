@@ -124,7 +124,7 @@ String sTodate = formatter.format(new java.util.Date());
 	
 	function fnEgovSchdulTodate() {
 
-		location.href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDailyList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&day=<%=sTodate.substring(6, 8)%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.deptSchdulManageVO.schdulSe.value;
+		location.href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&day=<%=sTodate.substring(6, 8)%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.deptSchdulManageVO.schdulSe.value;
 
 	}
 
@@ -186,7 +186,7 @@ String sTodate = formatter.format(new java.util.Date());
 			<li class="date">&nbsp;</li>
 			
 			<%if(iNowMonth > 0 ){ %>
-			<li><a class="prev" href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;day=<%=iNowDay%>">prev</a></li>
+			<li><a class="prev" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;day=<%=iNowDay%>">prev</a></li>
 			<%}%>
 			<li class="date"><%=iNowMonth+1%> <spring:message code="comCopSmtSim.Navi.Month"/> </li> <!-- 월 -->
 			<%if(iNowMonth < 11 ){ %>
