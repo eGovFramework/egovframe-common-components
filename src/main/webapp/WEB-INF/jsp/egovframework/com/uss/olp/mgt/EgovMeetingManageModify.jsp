@@ -189,68 +189,67 @@ function fn_egov_SelectBoxValue(sbName)
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgNm"/> <span class="pilsu">*</span></th><!-- 회의제목 -->
 			<td class="left">
-				<input type="text" name="mtgNm" value="${resultList[0].mtgNm}" maxlength="100" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgNm"/>" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgNm" var="fieldTitle" />
+				<form:input path="mtgNm" maxlength="100" title="${fieldTitle}" htmlEscape="true" />
 				<div><form:errors path="mtgNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgMtrCn"/> <span class="pilsu">*</span></th><!-- 회의 안건 내용 -->
 			<td class="left">
-				<textarea name="mtgMtrCn" class="textarea"  cols="75" rows="4"  style="width:99%;" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgMtrCn"/>">${resultList[0].mtgMtrCn}</textarea>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgMtrCn" var="fieldTitle" />
+				<form:textarea path="mtgMtrCn" class="textarea"  cols="75" rows="4"  style="width:99%;" title="${fieldTitle}" htmlEscape="true" />
 				<div><form:errors path="mtgMtrCn" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgSn"/> <span class="pilsu">*</span></th><!-- 회의순서 -->
 			<td class="left">
-				<input name="mtgSn" type="text" size="73" value="${resultList[0].mtgSn}" maxlength="10" style="width:60px;" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgSn"/>">
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgSn" var="fieldTitle" />
+				<form:input path="mtgSn" size="73" maxlength="10" style="width:60px;" title="${fieldTitle}" htmlEscape="true" />
 				<div><form:errors path="mtgSn" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgCo"/> <span class="pilsu">*</span></th><!-- 회의회차 -->
 			<td class="left">
-				<input name="mtgCo" type="text" size="73" value="${resultList[0].mtgCo}" maxlength="5" style="width:60px;" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgCo"/>">
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgCo" var="fieldTitle" />
+				<form:input path="mtgCo" size="73" maxlength="5" style="width:60px;" title="${fieldTitle}" htmlEscape="true" />
 				<div><form:errors path="mtgCo" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgDe"/> <span class="pilsu">*</span></th><!-- 회의일자 -->
 			<td class="left">
-				<input id="mtgDe" type="text" name="mtgDe" value="${resultList[0].mtgDe}" maxlength="10" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgDe"/>" style="width:80px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgDe" var="fieldTitle" />
+				<form:input id="mtgDe" path="mtgDe" maxlength="10" title="${fieldTitle}" style="width:80px;" htmlEscape="true" />
 				<div><form:errors path="mtgDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgPlace"/> <span class="pilsu">*</span></th><!-- 회의장소 -->
 			<td class="left">
-				<input type="text" name="mtgPlace" value="${resultList[0].mtgPlace}" maxlength="70" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgPlace"/>" style="width:200px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgPlace" var="fieldTitle" />
+				<form:input path="mtgPlace" maxlength="70" title="${fieldTitle}" style="width:200px;" htmlEscape="true" />
 				<div><form:errors path="mtgPlace" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgBeginTime"/> <span class="pilsu">*</span></th><!-- 회의시작시간 -->
 			<td class="left">
-				<c:forTokens var="one"
-					items="${resultList[0].mtgBeginTime}"
-					delims=":" varStatus="sts">
-					<c:if test="${sts.count == 1}">
-						<select name="mtgBeginHH" id="mtgBeginHH" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgHH"/>">
-							<c:forEach var="h" begin="1" end="24" step="1">
-							<option value="${h}" <c:if test="${h == one}">selected</c:if>>${h}<spring:message code="ussOlpMgt.meetingManageModify.mtgHH"/></option>
-							</c:forEach>
-						</select>
-					</c:if>
-					<c:if test="${sts.count == 2}">
-						<select name="mtgBeginMM" id="mtgBeginMM" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/>">
-							<option value="0">0<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/></option>
-							<c:forEach var="m" begin="1" end="60" step="1">
-							<option value="${m}" <c:if test="${m == one}">selected</c:if>>${m}<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/></option>
-							</c:forEach>
-						</select>
-					</c:if>
-				</c:forTokens>
-				<input id="mtgBeginTime" name="mtgBeginTime" type="hidden" value="" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgHH" var="fieldTitle" />
+				<form:select path="mtgBeginHH" id="mtgBeginHH" title="${fieldTitle}">
+					<c:forEach var="value" begin="1" end="24">
+						<form:option value="${value}">${value}<spring:message code="ussOlpMgt.meetingManageModify.mtgHH"/></form:option>
+					</c:forEach>
+				</form:select>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgMM" var="fieldTitle" />
+				<form:select path="mtgBeginMM" id="mtgBeginMM" title="${fieldTitle}">
+					<c:forEach var="value" begin="0" end="60">
+						<form:option value="${value}">${value}<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/></form:option>
+					</c:forEach>
+				</form:select>
+				<form:hidden path="mtgBeginTime" id="mtgBeginTime" htmlEscape="true" />
 				<div><form:errors path="mtgBeginHH" cssClass="error" /></div>
 				<div><form:errors path="mtgBeginMM" cssClass="error" /></div>
 			</td>
@@ -258,27 +257,20 @@ function fn_egov_SelectBoxValue(sbName)
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgEndTime"/> <span class="pilsu">*</span></th><!-- 회의종료시간 -->
 			<td class="left">
-				<c:forTokens var="one"
-					items="${resultList[0].mtgEndTime}"
-					delims=":" varStatus="sts">
-					<c:if test="${sts.count == 1}">
-						<select name="mtgEndHH" id="mtgEndHH" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgHH"/>">
-							<c:forEach var="h" begin="1" end="24" step="1">
-							<option value="${h}" <c:if test="${h == one}">selected</c:if>>${h}<spring:message code="ussOlpMgt.meetingManageModify.mtgHH"/></option>
-							</c:forEach>
-						</select>
-					</c:if>
-					<c:if test="${sts.count == 2}">
-						<select name="mtgEndMM" id="mtgEndMM" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/>">
-							<option value="0">0<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/></option>
-							<c:forEach var="m" begin="1" end="60" step="1">
-							<option value="${m}" <c:if test="${m == one}">selected</c:if>>${m}<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/></option>
-							</c:forEach>
-						</select>
-					</c:if>
-				</c:forTokens>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgHH" var="fieldTitle" />
+				<form:select path="mtgEndHH" id="mtgEndHH" title="${fieldTitle}">
+					<c:forEach var="value" begin="1" end="24">
+						<form:option value="${value}">${value}<spring:message code="ussOlpMgt.meetingManageModify.mtgHH"/></form:option>
+					</c:forEach>
+				</form:select>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgMM" var="fieldTitle" />
+				<form:select path="mtgEndMM" id="mtgEndMM" title="${fieldTitle}">
+					<c:forEach var="value" begin="0" end="60">
+						<form:option value="${value}">${value}<spring:message code="ussOlpMgt.meetingManageModify.mtgMM"/></form:option>
+					</c:forEach>
+				</form:select>
 				
-				<input name="mtgEndTime" type="hidden" value="" id="mtgEndTime">
+				<form:hidden path="mtgEndTime" id="mtgEndTime" htmlEscape="true" />
 				<div><form:errors path="mtgEndHH" cssClass="error" /></div>
 				<div><form:errors path="mtgEndMM" cssClass="error" /></div>
 			</td>
@@ -286,92 +278,104 @@ function fn_egov_SelectBoxValue(sbName)
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.clsdrMtgAt"/> <span class="pilsu">*</span></th><!-- 비공개 회의여부 -->
 			<td class="left">
-				<input type="checkbox" name="clsdrMtgAt" value="1" title="<spring:message code="ussOlpMgt.meetingManageModify.clsdrMtgAt"/>" <c:if test="${resultList[0].clsdrMtgAt == '1'}">checked='checked'</c:if> />
+				<spring:message code="ussOlpMgt.meetingManageModify.clsdrMtgAt" var="fieldTitle" />
+				<input type="checkbox" name="clsdrMtgAt" value="1" title="${fn:escapeXml(fieldTitle)}" <c:if test="${meetingManageVO.clsdrMtgAt == '1'}">checked="checked"</c:if> />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.readngBeginDe"/> <span class="pilsu">*</span></th><!-- 열람 개시일 -->
 			<td class="left">
-				<input id="readngBeginDe" type="text" name="readngBeginDe" value="${resultList[0].readngBeginDe}" maxlength="10" title="<spring:message code="ussOlpMgt.meetingManageModify.readngBeginDe"/>" style="width:80px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.readngBeginDe" var="fieldTitle" />
+				<form:input id="readngBeginDe" path="readngBeginDe" maxlength="10" title="${fieldTitle}" style="width:80px;" htmlEscape="true" />
 				<div><form:errors path="readngBeginDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.readngAt"/> <span class="pilsu">*</span></th><!-- 열람 여부 -->
 			<td class="left">
-				<select name="readngAt" title="<spring:message code="ussOlpMgt.meetingManageModify.readngAt"/>">
-					<option value="N" <c:if test="${resultList[0].readngAt == 'N'}">selected</c:if>>N</option>
-					<option value="Y" <c:if test="${resultList[0].readngAt == 'Y'}">selected</c:if>>Y</option>
-				</select>
+				<spring:message code="ussOlpMgt.meetingManageModify.readngAt" var="fieldTitle" />
+				<form:select path="readngAt" title="${fieldTitle}">
+					<form:option value="N">N</form:option>
+					<form:option value="Y">Y</form:option>
+				</form:select>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgResultCn"/></th><!-- 회의결과 내용 -->
 			<td class="left">
-				<textarea name="mtgResultCn" cols="75" rows="4"  title="<spring:message code="ussOlpMgt.meetingManageModify.mtgResultCn"/>">${resultList[0].mtgResultCn}</textarea>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgResultCn" var="fieldTitle" />
+				<form:textarea path="mtgResultCn" cols="75" rows="4"  title="${fieldTitle}" htmlEscape="true" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtgResultEnnc"/></th><!-- 회의결과 여부 -->
 			<td class="left">
-				<input type="checkbox" name="mtgResultEnnc" value="1" title="<spring:message code="ussOlpMgt.meetingManageModify.mtgResultEnnc"/>" <c:if test="${resultList[0].mtgResultEnnc == '1'}">checked='checked'</c:if>>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtgResultEnnc" var="fieldTitle" />
+				<input type="checkbox" name="mtgResultEnnc" value="1" title="${fn:escapeXml(fieldTitle)}" <c:if test="${meetingManageVO.mtgResultEnnc == '1'}">checked="checked"</c:if> />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.etcMatter"/></th><!-- 기타 사항 -->
 			<td class="left">
-				<textarea name="etcMatter" cols="75" rows="2" title="<spring:message code="ussOlpMgt.meetingManageModify.etcMatter"/>">${resultList[0].etcMatter}</textarea>
+				<spring:message code="ussOlpMgt.meetingManageModify.etcMatter" var="fieldTitle" />
+				<form:textarea path="etcMatter" cols="75" rows="2" title="${fieldTitle}" htmlEscape="true" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/></th><!-- 주관부서 -->
 			<td class="left">
-				<input id="mngtDeptNm" type="text" name="mngtDeptNm" value="${resultList[0].mngtDeptNm}" maxlength="2000" title="<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/>" readonly="readonly" style="width:100px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm" var="fieldTitle" />
+				<form:input id="mngtDeptNm" path="mngtDeptNm" maxlength="2000" title="${fieldTitle}" readonly="readonly" style="width:100px;" htmlEscape="true" />
 				<a href="javascript:void(0);" onclick="fn_egov_mngtDeptNm_MeetingManage();return false">
 					<img alt="<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/>" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/>" />
 				</a>
-				<input id="mngtDeptId" type="hidden" name="mngtDeptId" value="${resultList[0].mngtDeptId}" />
+				<form:hidden id="mngtDeptId" path="mngtDeptId" htmlEscape="true" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mnaerNm"/></th><!-- 주관자명 -->
 			<td class="left">
-				<input id="mnaerNm" type="text" name="mnaerNm" value="${resultList[0].mnaerIds}" title="<spring:message code="ussOlpMgt.meetingManageModify.mnaerNm"/>" maxlength="2000" readonly="readonly" style="width:100px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mnaerNm" var="fieldTitle" />
+				<form:input id="mnaerNm" path="mnaerNm" title="${fieldTitle}" maxlength="2000" readonly="readonly" style="width:100px;" htmlEscape="true" />
 				<a href="javascript:void(0);" onclick="fn_egov_mnaer_MeetingManage();return false">
 					<img alt="주관자ID 찾기버튼" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="주관자ID 찾기 버튼" />
 				</a>
-				<input id="mnaerId" type="hidden" name="mnaerId" value="${resultList[0].mnaerId}" />
+				<form:hidden id="mnaerId" path="mnaerId" htmlEscape="true" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mnaerDeptNm"/></th><!-- 주관자부서 -->
 			<td class="left">
-				<input id="mnaerDeptNm" type="text" name="mnaerDeptNm" title="<spring:message code="ussOlpMgt.meetingManageModify.mnaerDeptNm"/>" value="${resultList[0].mnaerDeptNm}" maxlength="2000" style="width:100px;" readonly="readonly" />
+				<spring:message code="ussOlpMgt.meetingManageModify.mnaerDeptNm" var="fieldTitle" />
+				<form:input id="mnaerDeptNm" path="mnaerDeptNm" title="${fieldTitle}" maxlength="2000" style="width:100px;" readonly="readonly" htmlEscape="true" />
 				<a href="javascript:void(0);" onclick="fn_egov_mnaerDept_MeetingManage();return false">
 					<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" align="middle" style="border:0px" alt="주관자부서 찾기버튼" title="주관자부서 찾기 버튼">
 				</a>
-				<input name="mnaerDeptId"  id="mnaerDeptId" type="hidden" value="${resultList[0].mnaerDeptId}" >
+				<form:hidden path="mnaerDeptId"  id="mnaerDeptId" htmlEscape="true" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mtnAt"/></th><!-- 회의여부 -->
 			<td class="left">
-				<select name="mtnAt" title="<spring:message code="ussOlpMgt.meetingManageModify.mtnAt"/>">
-					<option value="Y"  <c:if test="${resultList[0].mtnAt == 'Y'}">selected</c:if>>Y</option>
-					<option value="N"  <c:if test="${resultList[0].mtnAt == 'N'}">selected</c:if>>N</option>
-				</select>
+				<spring:message code="ussOlpMgt.meetingManageModify.mtnAt" var="fieldTitle" />
+				<form:select path="mtnAt" title="${fieldTitle}">
+					<form:option value="Y">Y</form:option>
+					<form:option value="N">N</form:option>
+				</form:select>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.nonatdrnCo"/></th><!-- 불참석자수 -->
 			<td class="left">
-				<input id="nonatdrnCo" type="text" name="nonatdrnCo" value="${resultList[0].nonatdrnCo}" title="<spring:message code="ussOlpMgt.meetingManageModify.nonatdrnCo"/>" maxlength="10" style="width:60px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.nonatdrnCo" var="fieldTitle" />
+				<form:input id="nonatdrnCo" path="nonatdrnCo" title="${fieldTitle}" maxlength="10" style="width:60px;" htmlEscape="true" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageModify.atdrnCo"/></th><!-- 참석자수 -->
 			<td class="left">
-				<input id="atdrnCo" type="text" name="atdrnCo" size="73" value="${resultList[0].atdrnCo}" maxlength="10" title="<spring:message code="ussOlpMgt.meetingManageModify.atdrnCo"/>" style="width:60px;" />
+				<spring:message code="ussOlpMgt.meetingManageModify.atdrnCo" var="fieldTitle" />
+				<form:input id="atdrnCo" path="atdrnCo" size="73" maxlength="10" title="${fieldTitle}" style="width:60px;" htmlEscape="true" />
 			</td>
 		</tr>
 	</table>
@@ -384,7 +388,7 @@ function fn_egov_SelectBoxValue(sbName)
 	<div style="clear:both;"></div>
 </div>
 
-<input name="mtgId" type="hidden" value="<c:out value='${resultList[0].mtgId}'/>">
+<form:hidden path="mtgId" htmlEscape="true" />
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 </form:form>
 </DIV>
