@@ -226,7 +226,7 @@ public class EgovMeetingManageController {
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageModifyView.do")
 	public String meetingManageModifyView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			MeetingManageVO meetingManageVO,
+			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
 			ModelMap model,
     		RedirectAttributes redirectAttributes
     		)
@@ -239,11 +239,54 @@ public class EgovMeetingManageController {
 		}
 		
 		List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
-		model.addAttribute("resultList", resultList);
+		if (!resultList.isEmpty()) {
+			model.addAttribute("meetingManageVO", meetingModifyForm(resultList.get(0)));
+		}
 
 		return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
 	}
 	
+	/** 최초 수정 화면에서 조회 결과를 입력 폼에 담는다. */
+	private MeetingManageVO meetingModifyForm(EgovMap stored) {
+		MeetingManageVO form = new MeetingManageVO();
+		form.setMtgId(EgovStringUtil.isNullToString(stored.get("mtgId")));
+		form.setMtgNm(EgovStringUtil.isNullToString(stored.get("mtgNm")));
+		form.setMtgMtrCn(EgovStringUtil.isNullToString(stored.get("mtgMtrCn")));
+		form.setMtgSn(EgovStringUtil.isNullToString(stored.get("mtgSn")));
+		form.setMtgCo(EgovStringUtil.isNullToString(stored.get("mtgCo")));
+		form.setMtgDe(EgovStringUtil.isNullToString(stored.get("mtgDe")));
+		form.setMtgPlace(EgovStringUtil.isNullToString(stored.get("mtgPlace")));
+		form.setMtgBeginTime(EgovStringUtil.isNullToString(stored.get("mtgBeginTime")));
+		form.setMtgEndTime(EgovStringUtil.isNullToString(stored.get("mtgEndTime")));
+		form.setClsdrMtgAt(EgovStringUtil.isNullToString(stored.get("clsdrMtgAt")));
+		form.setReadngBeginDe(EgovStringUtil.isNullToString(stored.get("readngBeginDe")));
+		form.setReadngAt(EgovStringUtil.isNullToString(stored.get("readngAt")));
+		form.setMtgResultCn(EgovStringUtil.isNullToString(stored.get("mtgResultCn")));
+		form.setMtgResultEnnc(EgovStringUtil.isNullToString(stored.get("mtgResultEnnc")));
+		form.setEtcMatter(EgovStringUtil.isNullToString(stored.get("etcMatter")));
+		form.setMngtDeptId(EgovStringUtil.isNullToString(stored.get("mngtDeptId")));
+		form.setMngtDeptNm(EgovStringUtil.isNullToString(stored.get("mngtDeptNm")));
+		form.setMnaerId(EgovStringUtil.isNullToString(stored.get("mnaerId")));
+		// 기존 수정 화면과 직원 선택 팝업은 주관자 로그인 ID를 표시한다.
+		form.setMnaerNm(EgovStringUtil.isNullToString(stored.get("mnaerIds")));
+		form.setMnaerDeptId(EgovStringUtil.isNullToString(stored.get("mnaerDeptId")));
+		form.setMnaerDeptNm(EgovStringUtil.isNullToString(stored.get("mnaerDeptNm")));
+		form.setMtnAt(EgovStringUtil.isNullToString(stored.get("mtnAt")));
+		form.setNonatdrnCo(EgovStringUtil.isNullToString(stored.get("nonatdrnCo")));
+		form.setAtdrnCo(EgovStringUtil.isNullToString(stored.get("atdrnCo")));
+		String[] begin = form.getMtgBeginTime().split(":");
+		if (begin.length == 2) {
+			form.setMtgBeginHH(begin[0].replaceFirst("^0+(?!$)", ""));
+			form.setMtgBeginMM(begin[1].replaceFirst("^0+(?!$)", ""));
+		}
+		String[] end = form.getMtgEndTime().split(":");
+		if (end.length == 2) {
+			form.setMtgEndHH(end[0].replaceFirst("^0+(?!$)", ""));
+			form.setMtgEndMM(end[1].replaceFirst("^0+(?!$)", ""));
+		}
+		return form;
+	}
+
 	/**
 	  * 회의정보를 수정한다.
 	 * @param searchVO
@@ -273,8 +316,6 @@ public class EgovMeetingManageController {
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         
     	if(bindingResult.hasErrors()){
-             List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
-             model.addAttribute("resultList", resultList);
              bindingResult.getAllErrors().forEach(e -> LOGGER.error(e.toString()));
              return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
     	}
