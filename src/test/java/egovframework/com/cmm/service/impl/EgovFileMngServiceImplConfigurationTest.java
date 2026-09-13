@@ -4,8 +4,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 import egovframework.com.cmm.service.EgovFileMngService;
 
 @Configuration
@@ -14,7 +16,6 @@ import egovframework.com.cmm.service.EgovFileMngService;
 
 //	"classpath*:egovframework/spring/com/**/context-*.xml",
 
-		"classpath*:/egovframework/spring/com/context-crypto.xml",
 		"classpath*:/egovframework/spring/com/context-datasource.xml",
 		"classpath*:/egovframework/spring/com/context-mapper.xml",
 		"classpath*:/egovframework/spring/com/context-transaction.xml",
@@ -24,6 +25,8 @@ import egovframework.com.cmm.service.EgovFileMngService;
 		"classpath*:/egovframework/spring/com/test-context-common.xml",
 
 })
+
+@Import(EgovConfigCryptoTest.class)
 
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
 		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovFileMngService.class, FileManageDAO.class }) })
