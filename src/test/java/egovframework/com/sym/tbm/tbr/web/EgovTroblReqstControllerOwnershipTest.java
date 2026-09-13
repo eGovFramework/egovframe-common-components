@@ -1,5 +1,6 @@
 package egovframework.com.sym.tbm.tbr.web;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -7,6 +8,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -118,6 +121,34 @@ class EgovTroblReqstControllerOwnershipTest {
 			@Override
 			public String getMessage(String code) {
 				return code;
+			}
+		});
+
+		Field cmmUseServiceField = EgovTroblReqstController.class.getDeclaredField("egovCmmUseService");
+		cmmUseServiceField.setAccessible(true);
+		cmmUseServiceField.set(controller, new egovframework.com.cmm.service.EgovCmmUseService() {
+			@Override
+			public List<egovframework.com.cmm.service.CmmnDetailCode> selectCmmCodeDetail(
+					egovframework.com.cmm.ComDefaultCodeVO comDefaultCodeVO) {
+				return List.of();
+			}
+
+			@Override
+			public java.util.Map<String, List<egovframework.com.cmm.service.CmmnDetailCode>> selectCmmCodeDetails(
+					List<egovframework.com.cmm.ComDefaultCodeVO> comDefaultCodeVOs) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public List<egovframework.com.cmm.service.CmmnDetailCode> selectOgrnztIdDetail(
+					egovframework.com.cmm.ComDefaultCodeVO comDefaultCodeVO) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public List<egovframework.com.cmm.service.CmmnDetailCode> selectGroupIdDetail(
+					egovframework.com.cmm.ComDefaultCodeVO comDefaultCodeVO) {
+				throw new UnsupportedOperationException();
 			}
 		});
 		return controller;
@@ -243,5 +274,47 @@ class EgovTroblReqstControllerOwnershipTest {
 
 		controller.requstTroblReqstCancl("T0000001", troblReqst, status, model);
 		assertTrue(service.requstCalled, "The requester must be able to cancel their own incident request processing.");
+	}
+
+	// ---- updateViewTroblReqst (수정화면 진입) ----
+
+	@Test
+	void updateViewByNonOwnerIsRejected() throws Exception {
+		StubService service = new StubService(OWNER_LOGIN_ID);
+		EgovTroblReqstController controller = controllerWith(service);
+		bindLoginUser(ATTACKER_LOGIN_ID, ATTACKER_UNIQ_ID, List.of());
+
+		TroblReqstVO troblReqstVO = new TroblReqstVO();
+		Model model = new ExtendedModelMap();
+
+		assertThrows(IllegalStateException.class,
+				() -> controller.updateViewTroblReqst("T0000001", troblReqstVO, model),
+				"A logged-in non-owner must not reach the update form of another member's incident request.");
+	}
+
+	@Test
+	void updateViewByOwnerSucceeds() throws Exception {
+		StubService service = new StubService(OWNER_LOGIN_ID);
+		EgovTroblReqstController controller = controllerWith(service);
+		bindLoginUser(OWNER_LOGIN_ID, OWNER_UNIQ_ID, List.of());
+
+		TroblReqstVO troblReqstVO = new TroblReqstVO();
+		Model model = new ExtendedModelMap();
+
+		String view = assertDoesNotThrow(() -> controller.updateViewTroblReqst("T0000001", troblReqstVO, model));
+		assertTrue(view.contains("EgovTroblReqstUpdt"));
+	}
+
+	@Test
+	void updateViewByAdminSucceedsEvenWhenNotOwner() throws Exception {
+		StubService service = new StubService(OWNER_LOGIN_ID);
+		EgovTroblReqstController controller = controllerWith(service);
+		bindLoginUser(ATTACKER_LOGIN_ID, ATTACKER_UNIQ_ID, List.of("ROLE_ADMIN"));
+
+		TroblReqstVO troblReqstVO = new TroblReqstVO();
+		Model model = new ExtendedModelMap();
+
+		String view = assertDoesNotThrow(() -> controller.updateViewTroblReqst("T0000001", troblReqstVO, model));
+		assertTrue(view.contains("EgovTroblReqstUpdt"));
 	}
 }

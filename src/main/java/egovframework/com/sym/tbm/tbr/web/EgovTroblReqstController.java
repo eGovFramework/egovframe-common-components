@@ -200,9 +200,12 @@ public class EgovTroblReqstController {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
-
 		troblReqstVO.setTroblId(troblId);
-		model.addAttribute("troblReqst", egovTroblReqstService.selectTroblReqst(troblReqstVO));
+		TroblReqstVO stored = egovTroblReqstService.selectTroblReqst(troblReqstVO);
+		// 신청자 본인 또는 관리자만 수정화면에 접근 가능하도록 소유권 검증 (updtTroblReqst와 동일)
+		egovAssertAdminOrOwnerById(stored == null ? null : stored.getFrstRegisterId());
+
+		model.addAttribute("troblReqst", stored);
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstUpdt";
