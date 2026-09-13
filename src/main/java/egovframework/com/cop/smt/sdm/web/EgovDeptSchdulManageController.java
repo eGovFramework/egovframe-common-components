@@ -509,6 +509,11 @@ public class EgovDeptSchdulManageController {
 	public String egovDeptSchdulManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) throws Exception {
 
+		// 담당자·등록자 또는 관리자만 상세조회 가능하도록 소유권 검증 (삭제·수정과 동일)
+		DeptSchdulManageVO stored = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
+		egovAssertAdminOrChargerOrOwner(stored == null ? null : stored.getSchdulChargerId(),
+				stored == null ? null : stored.getFrstRegisterId());
+
 		// 공통코드 중요도 조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 		voComCode.setCodeId("COM019");
