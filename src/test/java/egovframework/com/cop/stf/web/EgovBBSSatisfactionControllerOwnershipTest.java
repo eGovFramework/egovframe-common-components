@@ -12,6 +12,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovUserDetailsService;
@@ -21,9 +23,9 @@ import egovframework.com.cop.bbs.service.Satisfaction;
 import egovframework.com.cop.bbs.service.SatisfactionVO;
 
 /**
- * updateSatisfaction의 소유권 검증 회귀 테스트.
+ * 만족도조사 수정·상세조회의 소유권 검증 회귀 테스트.
  *
- * 로그인 사용자가 자신이 등록하지 않은 만족도 레코드를 수정하려 하면 차단돼야 한다(IDOR 방지).
+ * 로그인 사용자가 자신이 등록하지 않은 만족도 레코드를 수정·조회하려 하면 차단돼야 한다(IDOR 방지).
  * 수정 전 코드는 인증 여부만 확인하고 소유자를 대조하지 않아, 아래 attacker 테스트가 실패한다.
  */
 class EgovBBSSatisfactionControllerOwnershipTest {
@@ -58,7 +60,7 @@ class EgovBBSSatisfactionControllerOwnershipTest {
 
 		@Override
 		public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO) {
-			throw new UnsupportedOperationException();
+			return Map.of("resultCnt", "0", "resultList", List.of(), "summary", Map.of());
 		}
 
 		@Override
@@ -108,6 +110,87 @@ class EgovBBSSatisfactionControllerOwnershipTest {
 				return code;
 			}
 		};
+		controller.propertyService = new EgovPropertyService() {
+			@Override
+			public int getInt(String key) {
+				return 10;
+			}
+
+			@Override
+			public int getInt(String key, int defaultValue) {
+				return defaultValue;
+			}
+
+			@Override
+			public boolean getBoolean(String key) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public boolean getBoolean(String key, boolean defaultValue) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public double getDouble(String key) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public double getDouble(String key, double defaultValue) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public float getFloat(String key) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public float getFloat(String key, float defaultValue) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public java.util.Iterator<?> getKeys() {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public java.util.Iterator<?> getKeys(String prefix) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public long getLong(String key) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public long getLong(String key, long defaultValue) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public String getString(String key) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public String getString(String key, String defaultValue) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public String[] getStringArray(String key) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public void refreshPropertyFiles() {
+				throw new UnsupportedOperationException();
+			}
+		};
 		return controller;
 	}
 
@@ -145,5 +228,38 @@ class EgovBBSSatisfactionControllerOwnershipTest {
 		Object[] r = callUpdate(OWNER, OWNER);
 		StubService service = (StubService) r[0];
 		assertTrue(service.updateCalled, "The owner must be able to update their own satisfaction record.");
+	}
+
+	// ---- selectSingleSatisfaction (상세조회) ----
+
+	private static Object[] callViewDetail(String ownerUniqId, String loginUniqId) throws Exception {
+		StubService service = new StubService(ownerUniqId);
+		service.stored.setStsfdgCn("private feedback");
+		EgovBBSSatisfactionController controller = controllerWith(service);
+		bindLoginUser(loginUniqId);
+
+		SatisfactionVO searchVO = new SatisfactionVO();
+		ModelMap model = new ModelMap();
+		controller.selectSingleSatisfaction(searchVO, model);
+		return new Object[] { searchVO, model };
+	}
+
+	@Test
+	void viewDetailByNonOwnerDoesNotExposeTheContent() throws Exception {
+		Object[] r = callViewDetail(OWNER, ATTACKER);
+		SatisfactionVO searchVO = (SatisfactionVO) r[0];
+		ModelMap model = (ModelMap) r[1];
+		assertTrue(model.containsAttribute("subMsg"), "The rejection must surface the checkerUser message.");
+		assertFalse("private feedback".equals(searchVO.getStsfdgCn()),
+				"A logged-in non-owner must not receive another member's satisfaction content.");
+	}
+
+	@Test
+	void viewDetailByOwnerSucceeds() throws Exception {
+		Object[] r = callViewDetail(OWNER, OWNER);
+		SatisfactionVO searchVO = (SatisfactionVO) r[0];
+		ModelMap model = (ModelMap) r[1];
+		assertFalse(model.containsAttribute("subMsg"), "The owner must not be rejected.");
+		assertTrue("private feedback".equals(searchVO.getStsfdgCn()), "The owner must receive their own content.");
 	}
 }
