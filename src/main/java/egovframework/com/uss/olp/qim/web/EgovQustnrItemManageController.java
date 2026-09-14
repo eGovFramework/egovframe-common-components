@@ -277,6 +277,12 @@ public class EgovQustnrItemManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+		// 형제 경로 egovQustnrItemManageDetail의 cmd=del과 동일한 관리자 검증
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+			throw new IllegalStateException("권한이 없습니다.");
+		}
+
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -348,6 +354,11 @@ public class EgovQustnrItemManageController {
 		if (!isAuthenticated) {
 			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		// 형제 경로 egovQustnrItemManageDetail의 cmd=del과 동일한 관리자 검증
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+			throw new IllegalStateException("권한이 없습니다.");
 		}
 		// validate 체크
 		if (bindingResult.hasErrors()) {
