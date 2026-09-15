@@ -1,11 +1,14 @@
 package egovframework.com.cmm.service.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.EgovFileMngService;
@@ -31,6 +34,8 @@ import jakarta.annotation.Resource;
  */
 @Service("EgovFileMngService")
 public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements EgovFileMngService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileMngServiceImpl.class);
 
 	@Resource(name = "FileManageDAO")
 	private FileManageDAO fileMngDAO;
@@ -105,7 +110,24 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void deleteFileInf(FileVO fvo) {
+		deletePhysicalFile(fileMngDAO.selectFileInf(fvo));
 		fileMngDAO.deleteFileInf(fvo);
+	}
+
+	/**
+	 * 첨부파일 상세정보에 연결된 실제 파일을 삭제한다.
+	 * @param fvo - 삭제할 파일의 상세정보(파일 상세정보 삭제 전에 조회해 둔 것)
+	 */
+	private void deletePhysicalFile(FileVO fvo) {
+		if (fvo == null) {
+			return;
+		}
+		File file = new File(fvo.getFileStreCours(), fvo.getStreFileNm());
+		if (file.delete()) {
+			LOGGER.debug("[file.delete] file : File Deletion Success");
+		} else {
+			LOGGER.error("[file.delete] file : File Deletion Fail");
+		}
 	}
 
 	/**
