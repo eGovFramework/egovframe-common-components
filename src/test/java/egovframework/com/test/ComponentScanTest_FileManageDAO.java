@@ -8,36 +8,37 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.FileManageDAO;
 import lombok.extern.slf4j.Slf4j;
 
 @Configuration
-@ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml" })
-@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class }) })
+@ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml", })
+@Import(EgovConfigCryptoTest.class)
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl", }, includeFilters = {
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class, }) })
 
 @Slf4j
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { ComponentScanTest_FileManageDAO.class })
 @ActiveProfiles({ "mysql", "dummy" })
-public class ComponentScanTest_FileManageDAO {
+class ComponentScanTest_FileManageDAO {
 
 	@Autowired
-	ApplicationContext context;
+	private ApplicationContext context;
 
 	@Autowired
-	FileManageDAO dao;
+	private FileManageDAO fileManageDAO;
 
 	@Test
 	void test() {
-		log.debug("test");
-
 		// getBeanDefinitionNames
 		String[] beanDefinitionNames = context.getBeanDefinitionNames();
 
@@ -47,7 +48,7 @@ public class ComponentScanTest_FileManageDAO {
 
 		// FileManageDAO
 		FileVO vo = new FileVO();
-		dao.selectFileInfs(vo);
+		fileManageDAO.selectFileInfs(vo);
 	}
 
 }

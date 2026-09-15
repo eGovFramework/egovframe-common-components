@@ -15,16 +15,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.cmy.service.Community;
 import egovframework.com.cop.cmy.service.CommunityVO;
 import egovframework.com.test.EgovTestAbstractDAO;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,281 +41,276 @@ import lombok.extern.slf4j.Slf4j;
 
 @ImportResource({
 
-        "classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
 
 })
 
+@Import(EgovConfigCryptoTest.class)
+
 @ComponentScan(
 
-        useDefaultFilters = false,
+		useDefaultFilters = false,
 
-        basePackages = {
+		basePackages = {
 
-                "egovframework.com.cop.cmy.service.impl",
+				"egovframework.com.cop.cmy.service.impl",
 
-        },
+		},
 
-        includeFilters = {
+		includeFilters = {
 
-                @Filter(
+				@Filter(
 
-                        type = FilterType.ASSIGNABLE_TYPE,
+						type = FilterType.ASSIGNABLE_TYPE,
 
-                        classes = {
+						classes = {
 
-                                EgovCommuMasterDAO.class,
+								EgovCommuMasterDAO.class,
 
-                        }
+						}
 
-                )
+				)
 
-        }
+		}
 
 )
 
-@NoArgsConstructor
 @Slf4j
-// @Commit
 public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
 
-    /**
-     * EgovCommuBBSMasterDAO
-     */
-    @Autowired
-    private EgovCommuMasterDAO egovCommuMasterDAO;
+	/**
+	 * EgovCommuBBSMasterDAO
+	 */
+	@Autowired
+	private EgovCommuMasterDAO egovCommuMasterDAO;
 
-    /**
-     * egovCmmntyIdGnrService
-     */
-    @Autowired
-    @Qualifier("egovCmmntyIdGnrService")
-    private EgovIdGnrService egovCmmntyIdGnrService;
+	/**
+	 * egovCmmntyIdGnrService
+	 */
+	@Autowired
+	@Qualifier("egovCmmntyIdGnrService")
+	private EgovIdGnrService egovCmmntyIdGnrService;
 
-    /**
-     * testCommunity
-     */
-    private Community testCommunity;
+	/**
+	 * testCommunity
+	 */
+	private Community testCommunity;
 
-    /**
-     * 테스트 커뮤니티 생성
-     *
-     */
-    private int testCommunityAdd(final Community community, final LoginVO loginVO)
-    {
-        // 커뮤니티명 설정
-        community.setCmmntyNm("테스트 커뮤니티");
+	/**
+	 * 테스트 커뮤니티 생성
+	 *
+	 */
+	private int testCommunityAdd(final Community community, final LoginVO loginVO) {
+		// 커뮤니티명 설정
+		community.setCmmntyNm("테스트 커뮤니티");
 
-        // 커뮤니티소개 설정
-        community.setCmmntyIntrcn("테스트 커뮤니티입니다.");
+		// 커뮤니티소개 설정
+		community.setCmmntyIntrcn("테스트 커뮤니티입니다.");
 
-        // 사용여부 설정
-        community.setUseAt("Y");
+		// 사용여부 설정
+		community.setUseAt("Y");
 
-        // 등록구분코드 설정
-        community.setRegistSeCode("REGC02"); // 커뮤니티 등록
+		// 등록구분코드 설정
+		community.setRegistSeCode("REGC02"); // 커뮤니티 등록
 //
 //        // 템플릿ID
 //        community.setTmplatId("TMPT02"); // 커뮤니티 템플릿
 
-        if (loginVO != null) {
-            // 최초등록자ID 설정
-            testCommunity.setFrstRegisterId(loginVO.getUniqId());
-            testCommunity.setLastUpdusrId(loginVO.getUniqId());
-        }
+		if (loginVO != null) {
+			// 최초등록자ID 설정
+			testCommunity.setFrstRegisterId(loginVO.getUniqId());
+			testCommunity.setLastUpdusrId(loginVO.getUniqId());
+		}
 
-        // 커뮤니티 등록
-        return egovCommuMasterDAO.insertCommuMaster(testCommunity);
+		// 커뮤니티 등록
+		return egovCommuMasterDAO.insertCommuMaster(testCommunity);
 
 //        // 커뮤니티ID 설정
 //        communityUser.setCmmntyId(community.getCmmntyId());
 //
 //        // 테스트 사용자 생성
 //        testUser(communityUser);
-    }
+	}
 
-    /**
-     * 테스트 데이터 생성
-     */
-    @BeforeEach
-    void testData() {
-        testCommunity = new Community();
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+	/**
+	 * 테스트 데이터 생성
+	 */
+	@BeforeEach
+	void testData() {
+		testCommunity = new Community();
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        // 커뮤니티ID 설정
-        final String cmmntyId = "TEST_CMMNTY_99999000";
-        testCommunity.setCmmntyId(cmmntyId);
-        /**
-         * egovCmmntyIdGnrService 사용
-         */
-        /*        try {
-            community.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
-        } catch (FdlException e) {
-            log.error("FdlException egovCmmntyIdGnrService");
-            fail("FdlException egovCmmntyIdGnrService");
-        }
-        community.setCmmntyId(cmmntyId);
-        */
+		// 커뮤니티ID 설정
+		final String cmmntyId = "TEST_CMMNTY_99999000";
+		testCommunity.setCmmntyId(cmmntyId);
+		/**
+		 * egovCmmntyIdGnrService 사용
+		 */
+		/*
+		 * try { community.setCmmntyId(egovCmmntyIdGnrService.getNextStringId()); }
+		 * catch (FdlException e) { log.error("FdlException egovCmmntyIdGnrService");
+		 * fail("FdlException egovCmmntyIdGnrService"); }
+		 * community.setCmmntyId(cmmntyId);
+		 */
 
-        testCommunityAdd(testCommunity, loginVO);
+		testCommunityAdd(testCommunity, loginVO);
 
-    }
+	}
 
-    /**
-     * 커뮤니티 등록 테스트
-     */
-    @Test
-    void testInsertCommuMaster() {
-        // given
-        final Community cmmntyUser = new Community();
-        // 'TEST_CMMNTY_99999001' 커뮤니티 등록
-        final String cmmntyId = "TEST_CMMNTY_99999001";
-        cmmntyUser.setCmmntyId(cmmntyId);
+	/**
+	 * 커뮤니티 등록 테스트
+	 */
+	@Test
+	void testInsertCommuMaster() {
+		// given
+		final Community cmmntyUser = new Community();
+		// 'TEST_CMMNTY_99999001' 커뮤니티 등록
+		final String cmmntyId = "TEST_CMMNTY_99999001";
+		cmmntyUser.setCmmntyId(cmmntyId);
 
-        // when
-        final int result = egovCommuMasterDAO.insertCommuMaster(cmmntyUser);
+		// when
+		final int result = egovCommuMasterDAO.insertCommuMaster(cmmntyUser);
 
-        // then
-        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
-    }
+		// then
+		assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
+	}
 
-    /**
-     * 커뮤니티 목록 개수 조회 테스트
-     */
-    @Test
-    void testSelectCommuMasterListCnt() {
-        // given
-        final CommunityVO cmmntyVO = new CommunityVO();
-        cmmntyVO.setSearchCnd("0");
-        cmmntyVO.setSearchWrd(testCommunity.getCmmntyNm());
+	/**
+	 * 커뮤니티 목록 개수 조회 테스트
+	 */
+	@Test
+	void testSelectCommuMasterListCnt() {
+		// given
+		final CommunityVO cmmntyVO = new CommunityVO();
+		cmmntyVO.setSearchCnd("0");
+		cmmntyVO.setSearchWrd(testCommunity.getCmmntyNm());
 
-        // when
-        final int result = egovCommuMasterDAO.selectCommuMasterListCnt(cmmntyVO);
+		// when
+		final int result = egovCommuMasterDAO.selectCommuMasterListCnt(cmmntyVO);
 
-        // then
-        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-    }
+		// then
+		assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+	}
 
-    /**
-     * 커뮤니티 목록 조회 테스트
-     */
-    @Test
-    void testSelectCommuMasterList() {
-        // given
-        final CommunityVO cmmntyVO = new CommunityVO();
-        cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
-        cmmntyVO.setSearchCnd("0");
-        cmmntyVO.setSearchWrd(testCommunity.getCmmntyNm());
+	/**
+	 * 커뮤니티 목록 조회 테스트
+	 */
+	@Test
+	void testSelectCommuMasterList() {
+		// given
+		final CommunityVO cmmntyVO = new CommunityVO();
+		cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
+		cmmntyVO.setSearchCnd("0");
+		cmmntyVO.setSearchWrd(testCommunity.getCmmntyNm());
 
-        cmmntyVO.setFirstIndex(0);
-        cmmntyVO.setRecordCountPerPage(10);
+		cmmntyVO.setFirstIndex(0);
+		cmmntyVO.setRecordCountPerPage(10);
 
+		// when
+		final List<CommunityVO> resultList = egovCommuMasterDAO.selectCommuMasterList(cmmntyVO);
+		// log.info("resultList=[{}]", resultList);
+		for (final CommunityVO result : resultList) {
+			if (log.isDebugEnabled()) {
+				log.debug("result={}", result);
+				log.debug("getCmmntyId={}, {}", cmmntyVO.getCmmntyId(), result.getCmmntyId());
+			}
 
-        // when
-        final List<CommunityVO> resultList = egovCommuMasterDAO.selectCommuMasterList(cmmntyVO);
-        // log.info("resultList=[{}]", resultList);
-        for (final CommunityVO result : resultList) {
-            if (log.isDebugEnabled()) {
-                log.debug("result={}", result);
-                log.debug("getCmmntyId={}, {}", cmmntyVO.getCmmntyId(), result.getCmmntyId());
-            }
+			// then
+			assertSelectCommuMaster(cmmntyVO, result);
+		}
+	}
 
-            // then
-            assertSelectCommuMaster(cmmntyVO, result);
-        }
-    }
+	/**
+	 * 커뮤니티 정보 assert
+	 */
+	private void assertSelectCommuMaster(final CommunityVO cmmntyUser, final CommunityVO result) {
+		assertEquals(cmmntyUser.getCmmntyId(), result.getCmmntyId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+	}
 
-    /**
-     * 커뮤니티 정보 assert
-     */
-    private void assertSelectCommuMaster(final CommunityVO cmmntyUser, final CommunityVO result) {
-        assertEquals(cmmntyUser.getCmmntyId(), result.getCmmntyId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-    }
+	/**
+	 * 커뮤니티 상세 정보 조회 테스트
+	 */
+	@Test
+	void testSelectCommuMasterDetail() {
+		// given
+		final CommunityVO cmmntyVO = new CommunityVO();
+		cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
 
+		// when
+		final CommunityVO result = egovCommuMasterDAO.selectCommuMasterDetail(cmmntyVO);
+		// log.info("result=[{}]", result);
 
-    /**
-     * 커뮤니티 상세 정보 조회 테스트
-     */
-    @Test
-    void testSelectCommuMasterDetail() {
-        // given
-        final CommunityVO cmmntyVO = new CommunityVO();
-        cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
+		// then
+		assertSelectCommuMaster(cmmntyVO, result);
+	}
 
-        // when
-        final CommunityVO result = egovCommuMasterDAO.selectCommuMasterDetail(cmmntyVO);
-        // log.info("result=[{}]", result);
+	/**
+	 * 커뮤니터 정보 업데이트 테스트
+	 */
+	@Test
+	void testUpdateCommuMaster() {
+		// given
+		final CommunityVO cmmntyVO = new CommunityVO();
+		cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
+		cmmntyVO.setCmmntyNm(testCommunity.getCmmntyNm() + " - 수정");
+		cmmntyVO.setCmmntyIntrcn(testCommunity.getCmmntyIntrcn());
+		cmmntyVO.setTmplatId(testCommunity.getTmplatId());
+		cmmntyVO.setLastUpdusrId(testCommunity.getLastUpdusrId());
+		cmmntyVO.setUseAt(testCommunity.getUseAt());
 
-        // then
-        assertSelectCommuMaster(cmmntyVO, result);
-    }
+		// when
+		final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
 
-    /**
-     * 커뮤니터 정보 업데이트 테스트
-     */
-    @Test
-    void testUpdateCommuMaster() {
-        // given
-        final CommunityVO cmmntyVO = new CommunityVO();
-        cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
-        cmmntyVO.setCmmntyNm(testCommunity.getCmmntyNm() + " - 수정");
-        cmmntyVO.setCmmntyIntrcn(testCommunity.getCmmntyIntrcn());
-        cmmntyVO.setTmplatId(testCommunity.getTmplatId());
-        cmmntyVO.setLastUpdusrId(testCommunity.getLastUpdusrId());
-        cmmntyVO.setUseAt(testCommunity.getUseAt());
+		assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
+	}
 
-        // when
-        final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
+	/**
+	 * 커뮤니티 정보 삭제 테스트
+	 */
+	@Test
+	void testDeleteCommuMaster() {
+		// given
+		final CommunityVO cmmntyVO = new CommunityVO();
+		cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
+		cmmntyVO.setLastUpdusrId(testCommunity.getLastUpdusrId());
 
-        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
-    }
+		// when
+		final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
 
-    /**
-     * 커뮤니티 정보 삭제 테스트
-     */
-    @Test
-    void testDeleteCommuMaster() {
-        // given
-        final CommunityVO cmmntyVO = new CommunityVO();
-        cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
-        cmmntyVO.setLastUpdusrId(testCommunity.getLastUpdusrId());
+		assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
+	}
 
-        // when
-        final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
+	/**
+	 * 포트릿을 위한 커뮤니티 정보 목록 조회 테스트
+	 */
+	@Test
+	public void testSelectCommuMasterListPortlet() {
+		// given
+		final CommunityVO cmmntyVO = new CommunityVO();
 
-        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
-    }
+		// when
+		List<CommunityVO> resultList = null;
+		try {
+			resultList = egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
+		} catch (DataAccessException e) {
+			throw new BaseRuntimeException(e);
+		}
 
-    /**
-     * 포트릿을 위한 커뮤니티 정보 목록 조회 테스트
-     */
-    @Test
-    public void testSelectCommuMasterListPortlet() {
-        // given
-        final CommunityVO cmmntyVO = new CommunityVO();
+		// log.info("resultList=[{}]", resultList);
+		for (final CommunityVO result : resultList) {
+			if (log.isDebugEnabled()) {
+				log.debug("result={}", result);
+				log.debug("getCmmntyId={}, {}", cmmntyVO.getCmmntyId(), result.getCmmntyId());
+			}
+		}
 
-        // when
-        List<CommunityVO> resultList = null;
-        try {
-            resultList = egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
-        } catch (DataAccessException e) {
-        	throw new BaseRuntimeException(e);
-        }
+		// then
+		assertSelectCommuMasterListPortlet(resultList);
+	}
 
-        // log.info("resultList=[{}]", resultList);
-        for (final CommunityVO result : resultList) {
-            if (log.isDebugEnabled()) {
-                log.debug("result={}", result);
-                log.debug("getCmmntyId={}, {}", cmmntyVO.getCmmntyId(), result.getCmmntyId());
-            }
-        }
-
-        // then
-        assertSelectCommuMasterListPortlet(resultList);
-    }
-
-    private void assertSelectCommuMasterListPortlet(final List<CommunityVO> resultList) {
-        if (resultList != null) {
-            assertFalse(resultList.isEmpty(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-        }
-    }
+	private void assertSelectCommuMasterListPortlet(final List<CommunityVO> resultList) {
+		if (resultList != null) {
+			assertFalse(resultList.isEmpty(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+		}
+	}
 }

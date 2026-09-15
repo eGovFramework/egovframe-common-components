@@ -15,16 +15,14 @@ import egovframework.com.test.EgovTestV1;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ContextConfiguration(classes = { AddressBookConfigurationTest.class })
+@ContextConfiguration(classes = { AddressBookConfigurationTest.class, })
 public class EgovAddressBookServiceImplTest_selectUserList extends EgovTestV1 {
 
 	@Autowired
 	private EgovAddressBookService egovAddressBookService;
 
 	@Test
-	void test() throws Exception {
-		log.debug("test");
-
+	void test() {
 		// given
 		AddressBookVO addressBookVO = new AddressBookVO();
 		addressBookVO.setAdbkId("test 주소록ID");

@@ -133,11 +133,15 @@ public class EgovNumberUtil {
 	/**
 	 * 체크할 숫자 중에서 숫자인지 아닌지 체크하는 기능
 	 * 숫자이면 True, 아니면 False를 반환한다
+	 * null 또는 빈 문자열은 False를 반환한다.
 	 * @param checkStr - 체크문자열
 	 * @return 숫자여부
 	 * @see
 	 */
 	public static Boolean getNumberValidCheck(String checkStr) {
+		if (checkStr == null || checkStr.isEmpty()) {
+			return false;
+		}
 
 		int i;
 		//String sourceStr = String.valueOf(sourceInt);
