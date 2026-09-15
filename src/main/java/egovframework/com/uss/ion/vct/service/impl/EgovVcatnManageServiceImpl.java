@@ -421,6 +421,22 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
 		vcatnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManageVO.getReqstDe()));
 
+		// 지정된 승인권자 본인 또는 관리자만 승인·반려 가능하도록 소유권 검증 (deleteVcatnManage와 동일)
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null) {
+			throw new EgovBizException("인증 정보가 없습니다.");
+		}
+		VcatnManageVO existing = vcatnManageDAO.selectVcatnManage(vcatnManageVO);
+		if (existing == null) {
+			throw new EgovBizException("권한이 없습니다.");
+		}
+		if (!loginVO.getUniqId().equals(existing.getSanctnerId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new EgovBizException("권한이 없습니다.");
+			}
+		}
+
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if ("C".equals(vcatnManageVO.getConfmAt())) {
 			/*
