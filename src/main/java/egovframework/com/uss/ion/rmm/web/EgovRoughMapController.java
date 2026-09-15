@@ -212,7 +212,8 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/updateRoughMap.do")
-	public String updateRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
+	public String updateRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult,
+			ModelMap model)
 			throws Exception {
 
 		// 권한 체크
@@ -223,6 +224,8 @@ public class EgovRoughMapController {
 		}
 
 		if (bindingResult.hasErrors()) {
+			// 형제 goRoughMapUpdt와 동일하게 재표시 폼이 참조하는 result를 담는다
+			model.addAttribute("result", roughMap);
 			return "egovframework/com/uss/ion/rmm/EgovRoughMapUpdt";
 		}
 
