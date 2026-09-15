@@ -5485,3 +5485,69 @@ function validateQustnrRespondInfoVO(form) {
 function validateVcatnManageVO(form) {
     return validateVcatnManage(form);
 }
+
+// 게시물 스크랩 validation
+function validateArticleScrapVO(form) {
+    const rules = {
+        scrapNm: {
+            label: '스크랩명',
+            rules: {
+                required: true,
+                maxlength: 70
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 간부상태 validation
+function validateLeaderSttusVO(form) {
+    const rules = {
+        leaderNm: {
+            label: '간부명',
+            rules: {
+                required: true
+            }
+        },
+        leaderSttus: {
+            label: '간부상태',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 메모보고 validation
+function validateMemoReprtVO(form) {
+    const rules = {
+        reprtDe: {
+            label: '보고일자',
+            rules: {
+                required: true
+            }
+        },
+        reportrNm: {
+            label: '보고대상명',
+            rules: {
+                required: true
+            }
+        },
+        reprtSj: {
+            label: '제목',
+            rules: {
+                required: true,
+                maxlength: 255
+            }
+        },
+        reprtCn: {
+            label: '보고내용',
+            rules: {
+                required: true,
+                maxlength: 2500
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
