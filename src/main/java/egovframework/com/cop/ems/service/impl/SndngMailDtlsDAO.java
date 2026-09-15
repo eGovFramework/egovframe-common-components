@@ -34,7 +34,6 @@ public class SndngMailDtlsDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo ComDefaultVO
 	 * @return List
-	 * @exception Exception
 	 */
 	public List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) {
 		return selectList("SndngMailDtlsDAO.selectSndngMailList_D", vo);
@@ -45,7 +44,6 @@ public class SndngMailDtlsDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo ComDefaultVO
 	 * @return int
-	 * @exception
 	 */
 	public int selectSndngMailListTotCnt(ComDefaultVO vo) {
 		return (Integer) selectOne("SndngMailDtlsDAO.selectSndngMailListTotCnt_S", vo);

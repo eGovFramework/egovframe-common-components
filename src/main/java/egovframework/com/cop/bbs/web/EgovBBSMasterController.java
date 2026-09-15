@@ -3,25 +3,26 @@ package egovframework.com.cop.bbs.web;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -120,10 +121,9 @@ public class EgovBBSMasterController {
      * @param boardMasterVO
      * @param model
      * @return
-     * @throws Exception
      */
     @GetMapping("/cop/bbs/insertBBSMasterView.do")
-    public String insertBBSMasterView(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
+    public String insertBBSMasterView(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) {
 		BoardMasterVO boardMaster = new BoardMasterVO();
 		//공통코드(게시판유형)
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -145,12 +145,11 @@ public class EgovBBSMasterController {
      * @param boardMaster
      * @param status
      * @return
-     * @throws Exception
      */
     @RequireAdmin
     @PostMapping("/cop/bbs/insertBBSMaster.do")
     public String insertBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -190,11 +189,10 @@ public class EgovBBSMasterController {
      * @param boardMasterVO
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="게시판관리",order = 180 ,gid = 40)
     @RequestMapping("/cop/bbs/selectBBSMasterInfs.do")
-    public String selectBBSMasterInfs(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
+    public String selectBBSMasterInfs(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) {
 		boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
 		boardMasterVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -226,11 +224,10 @@ public class EgovBBSMasterController {
      * @param blogVO
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="블로그관리", order = 170 ,gid = 40)
     @RequestMapping("/cop/bbs/selectBlogList.do")
-    public String selectBlogMasterList(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
+    public String selectBlogMasterList(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	 //KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -272,10 +269,9 @@ public class EgovBBSMasterController {
      * @param blogVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/bbs/insertBlogMasterView.do")
-    public String insertBlogMasterView(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) throws Exception {
+    public String insertBlogMasterView(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) {
     	model.addAttribute("blogMasterVO", new BlogVO());
 	return "egovframework/com/cop/bbs/EgovBlogRegist";
     }
@@ -286,16 +282,15 @@ public class EgovBBSMasterController {
      * @param blogVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/bbs/selectChkBloguser.do")
-    public ModelAndView chkBlogUser(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) throws Exception {
+    public ModelAndView chkBlogUser(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-        	throw new IllegalAccessException("Login Required!");
+        	throw new BaseRuntimeException("Login Required!");
         }
 
     	model.addAttribute("blogMasterVO", new BlogVO());
@@ -317,11 +312,10 @@ public class EgovBBSMasterController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/bbs/insertBlogMaster.do")
     public String insertBlogMaster(@ModelAttribute("searchVO") BlogVO blogVO, @Valid @ModelAttribute("blogMasterVO") Blog blog,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -356,10 +350,9 @@ public class EgovBBSMasterController {
      * @param boardMasterVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/bbs/selectBBSMasterDetail.do")
-    public String selectBBSMasterDetail(@ModelAttribute("searchVO") BoardMasterVO searchVO, ModelMap model) throws Exception {
+    public String selectBBSMasterDetail(@ModelAttribute("searchVO") BoardMasterVO searchVO, ModelMap model) {
 		BoardMasterVO vo = egovBBSMasterService.selectBBSMasterInf(searchVO);
 		model.addAttribute("result", vo);
 
@@ -382,12 +375,10 @@ public class EgovBBSMasterController {
      * @param bbsId
      * @param searchVO
      * @param model
-     * @throws Exception
      */
     @PostMapping("/cop/bbs/updateBBSMasterView.do")
     public String updateBBSMasterView(@RequestParam("bbsId") String bbsId ,
-            @ModelAttribute("searchVO") BoardMaster searchVO, ModelMap model)
-            throws Exception {
+            @ModelAttribute("searchVO") BoardMaster searchVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
@@ -423,12 +414,11 @@ public class EgovBBSMasterController {
      * @param boardMaster
      * @param model
      * @return
-     * @throws Exception
      */
     @RequireAdmin
     @PostMapping("/cop/bbs/updateBBSMaster.do")
     public String updateBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -466,12 +456,11 @@ public class EgovBBSMasterController {
      * @param boardMaster
      * @param status
      * @return
-     * @throws Exception
      */
     @RequireAdmin
     @PostMapping("/cop/bbs/deleteBBSMaster.do")
     public String deleteBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @ModelAttribute("boardMaster") BoardMaster boardMaster
-	    ) throws Exception {
+	    ) {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -496,10 +485,9 @@ public class EgovBBSMasterController {
      * @param blogVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/bbs/selectBlogListPortlet.do")
-    public String selectBlogListPortlet(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) throws Exception {
+    public String selectBlogListPortlet(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) {
 	List<BlogVO> result = egovBBSMasterService.selectBlogListPortlet(blogVO);
 
 	model.addAttribute("resultList", result);
@@ -513,10 +501,9 @@ public class EgovBBSMasterController {
      * @param blogVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/bbs/selectBBSListPortlet.do")
-    public String selectBBSListPortlet(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
+    public String selectBBSListPortlet(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) {
     	List<BoardMasterVO> result = egovBBSMasterService.selectBBSListPortlet(boardMasterVO);
 
     	model.addAttribute("resultList", result);

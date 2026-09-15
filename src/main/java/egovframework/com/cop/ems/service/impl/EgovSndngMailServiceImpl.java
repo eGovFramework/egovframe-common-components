@@ -1,10 +1,7 @@
 package egovframework.com.cop.ems.service.impl;
 
-import org.apache.commons.mail2.core.EmailException;
 import org.apache.commons.mail2.jakarta.EmailAttachment;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.ems.service.EgovMultiPartEmail;
@@ -39,16 +36,13 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 	@Resource(name = "sndngMailRegistDAO")
 	private SndngMailRegistDAO sndngMailRegistDAO;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSndngMailServiceImpl.class);
-
 	/**
 	 * 메일을 발송한다
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean sndngMail(SndngMailVO sndngMailVO) throws Exception {
+	public boolean sndngMail(SndngMailVO sndngMailVO) {
 
 		String recptnPerson = (sndngMailVO.getRecptnPerson() == null) ? "" : sndngMailVO.getRecptnPerson(); // 수신자
 		String subject = (sndngMailVO.getSj() == null) ? "" : sndngMailVO.getSj(); // 메일제목
@@ -56,30 +50,23 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 		String atchmnFileNm = (sndngMailVO.getOrignlFileNm() == null) ? "" : sndngMailVO.getOrignlFileNm(); // 첨부파일이름
 		String atchmnFilePath = (sndngMailVO.getFileStreCours() == null) ? "" : sndngMailVO.getFileStreCours(); // 첨부파일경로
 
-		try {
-			EmailAttachment attachment = new EmailAttachment();
-			// 첨부파일이 있을 때
-			if (atchmnFileNm != null && !atchmnFileNm.isEmpty() && atchmnFilePath != null && !atchmnFilePath.isEmpty()) {
-				// 첨부할 attachment 정보를 생성합니다
-				attachment.setPath(atchmnFilePath);
-				attachment.setDisposition(EmailAttachment.ATTACHMENT);
-				attachment.setDescription("첨부파일입니다");
-				//attachment.setName(new String(atchmnFileNm.getBytes("UTF-8"),"latin1")); // 구버전의 경우 필요
-				attachment.setName(atchmnFileNm);
+		EmailAttachment attachment = new EmailAttachment();
+		// 첨부파일이 있을 때
+		if (atchmnFileNm != null && !atchmnFileNm.isEmpty() && atchmnFilePath != null && !atchmnFilePath.isEmpty()) {
+			// 첨부할 attachment 정보를 생성합니다
+			attachment.setPath(atchmnFilePath);
+			attachment.setDisposition(EmailAttachment.ATTACHMENT);
+			attachment.setDescription("첨부파일입니다");
+			//attachment.setName(new String(atchmnFileNm.getBytes("UTF-8"),"latin1")); // 구버전의 경우 필요
+			attachment.setName(atchmnFileNm);
 
-				// 2015.05.08 주석수정 - 첨부파일 정보를 포함한 메일을 전송합니다
-				egovMultiPartEmail.send(recptnPerson, subject, emailCn, attachment);
-			}
-			else
-			{
-				// 메일을 전송합니다
-				egovMultiPartEmail.send(recptnPerson, subject, emailCn);
-			}
-		} catch (EmailException ex) {
-			sndngMailVO.setSndngResultCode("F"); // 발송결과 실패
-			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.
-			LOGGER.error("Sending Mail Exception : {} [failure when sending the message]", ex.getMessage(), ex);
-			return false;
+			// 2015.05.08 주석수정 - 첨부파일 정보를 포함한 메일을 전송합니다
+			egovMultiPartEmail.send(recptnPerson, subject, emailCn, attachment);
+		}
+		else
+		{
+			// 메일을 전송합니다
+			egovMultiPartEmail.send(recptnPerson, subject, emailCn);
 		}
 
 		return true;

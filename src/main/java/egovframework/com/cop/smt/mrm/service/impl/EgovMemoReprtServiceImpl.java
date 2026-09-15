@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param reportrVO
 	 */
 	@Override
-	public Map<String, Object> selectReportrList(ReportrVO reportrVO) throws Exception{
+	public Map<String, Object> selectReportrList(ReportrVO reportrVO) {
 		List<ReportrVO> result = memoReprtDAO.selectReportrList(reportrVO);
 		int cnt = memoReprtDAO.selectReportrListCnt(reportrVO);
 
@@ -69,7 +71,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param String
 	 */
 	@Override
-	public String selectWrterClsfNm(String wrterId) throws Exception{
+	public String selectWrterClsfNm(String wrterId) {
 		return memoReprtDAO.selectWrterClsfNm(wrterId);
 	}
 
@@ -81,7 +83,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprtVO
 	 */
 	@Override
-	public Map<String, Object> selectMemoReprtList(MemoReprtVO memoReprtVO) throws Exception{
+	public Map<String, Object> selectMemoReprtList(MemoReprtVO memoReprtVO) {
 		List<MemoReprtVO> result = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 		int cnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
@@ -101,7 +103,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprtVO
 	 */
 	@Override
-	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
+	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) {
 		MemoReprtVO resultVO = memoReprtDAO.selectMemoReprt(memoReprtVO);
 		if(resultVO.getReportrInqireDt() == null || resultVO.getReportrInqireDt().equals("")){
 			resultVO.setReprtSttus("미확인");
@@ -126,7 +128,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprt
 	 */
 	@Override
-	public void readMemoReprt(MemoReprt memoReprt) throws Exception{
+	public void readMemoReprt(MemoReprt memoReprt) {
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
 		memoReprt.setReportrInqireDt(formatter.format(new java.util.Date()));
 		memoReprtDAO.readMemoReprt(memoReprt);
@@ -139,7 +141,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprt
 	 */
 	@Override
-	public void updateMemoReprt(MemoReprt memoReprt) throws Exception{
+	public void updateMemoReprt(MemoReprt memoReprt) {
 		memoReprtDAO.updateMemoReprt(memoReprt);
 	}
 
@@ -150,7 +152,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprt
 	 */
 	@Override
-	public void updateMemoReprtDrctMatter(MemoReprt memoReprt) throws Exception{
+	public void updateMemoReprtDrctMatter(MemoReprt memoReprt) {
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
 		memoReprt.setDrctMatterRegistDt(formatter.format(new java.util.Date()));
 		memoReprtDAO.updateMemoReprtDrctMatter(memoReprt);
@@ -163,8 +165,12 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprt
 	 */
 	@Override
-	public void insertMemoReprt(MemoReprt memoReprt) throws Exception{
-		memoReprt.setReprtId(idgenServiceMemoReprt.getNextStringId());
+	public void insertMemoReprt(MemoReprt memoReprt) {
+		try {
+			memoReprt.setReprtId(idgenServiceMemoReprt.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		memoReprtDAO.insertMemoReprt(memoReprt);
 	}
 
@@ -175,7 +181,7 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * @param memoReprt
 	 */
 	@Override
-	public void deleteMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
+	public void deleteMemoReprt(MemoReprtVO memoReprtVO) {
 		memoReprtDAO.deleteMemoReprt(memoReprtVO);
 	}
 

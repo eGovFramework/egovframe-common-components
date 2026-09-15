@@ -6,6 +6,7 @@ import java.time.Duration;
 import org.apache.commons.mail2.core.EmailException;
 import org.apache.commons.mail2.jakarta.EmailAttachment;
 import org.apache.commons.mail2.jakarta.MultiPartEmail;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 /**
  * 발송메일에 첨부파일용으로 사용되는 VO 클래스
@@ -85,7 +86,7 @@ public class EgovMultiPartEmail implements Serializable {
 	}
 
 	@Deprecated
-	public String send() throws EmailException {
+	public String send() {
 		MultiPartEmail email = new MultiPartEmail();
 
 		email.setCharset("UTF-8");
@@ -98,16 +99,19 @@ public class EgovMultiPartEmail implements Serializable {
 		email.setAuthentication(this.id, this.password);
 		email.setSocketConnectionTimeout(Duration.ofMillis(60000));
 		email.setSocketTimeout(Duration.ofMillis(60000));
-		email.setFrom(this.emailAddress, this.senderName);
-
-		return email.send();
+		try {
+			email.setFrom(this.emailAddress, this.senderName);
+			return email.send();
+		} catch (EmailException e) {
+			throw new BaseRuntimeException(e);
+		}
 	}
 
-	public String send(String addTo, String subject, String msg) throws EmailException {
+	public String send(String addTo, String subject, String msg) {
 		return send(addTo, subject, msg, null);
 	}
 
-	public String send(String addTo, String subject, String msg, EmailAttachment attachment) throws EmailException {
+	public String send(String addTo, String subject, String msg, EmailAttachment attachment) {
 		MultiPartEmail email = new MultiPartEmail();
 
 		email.setCharset("UTF-8");
@@ -120,17 +124,20 @@ public class EgovMultiPartEmail implements Serializable {
 		email.setAuthentication(this.id, this.password);
 		email.setSocketConnectionTimeout(Duration.ofMillis(60000));
 		email.setSocketTimeout(Duration.ofMillis(60000));
-		email.setFrom(this.emailAddress, this.senderName);
-		email.addTo(addTo);
-		email.setSubject(subject);
-		email.setMsg(msg);
-
-		if (attachment != null) {
-			email.attach(attachment);
+		try {
+			email.setFrom(this.emailAddress, this.senderName);
+			email.addTo(addTo);
+			email.setSubject(subject);
+			email.setMsg(msg);
+	
+			if (attachment != null) {
+				email.attach(attachment);
+			}
+	
+			return email.send();
+		} catch (EmailException e) {
+			throw new BaseRuntimeException(e);
 		}
-
-		return email.send();
-
 	}
 
 }

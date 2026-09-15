@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,6 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
 	public List<EgovMap> selectDeptSchdulManageAuthorGroupPopup(ComDefaultVO searchVO){
@@ -55,7 +56,6 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 아이디 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
 	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
@@ -66,10 +66,9 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서일정관리조회
 	 * @param Map(map) - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
 	@Override
-	public List<EgovMap> selectDeptSchdulManageMainList(Map<String, String> map) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageMainList(Map<String, String> map) {
 		return dao.selectDeptSchdulManageMainList(map);
 	}
 
@@ -77,10 +76,9 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서일정 목록을 Map(map)형식으로 조회한다.
 	 * @param Map(map) - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
 	@Override
-	public List<EgovMap> selectDeptSchdulManageRetrieve(Map<String, String> map) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageRetrieve(Map<String, String> map) {
 		return dao.selectDeptSchdulManageRetrieve(map);
 	}
 
@@ -88,10 +86,9 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서일정 목록을 VO(model)형식으로 조회한다.
 	 * @param deptSchdulManageVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
 	@Override
-	public DeptSchdulManageVO selectDeptSchdulManageDetailVO(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public DeptSchdulManageVO selectDeptSchdulManageDetailVO(DeptSchdulManageVO deptSchdulManageVO) {
 		return dao.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
 	}
 
@@ -99,10 +96,9 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서일정 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
 	@Override
-	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) {
 		return dao.selectDeptSchdulManageList(searchVO);
 	}
 
@@ -110,10 +106,9 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서일정를(을) 상세조회 한다.
 	 * @param DeptSchdulManage - 회정정보가 담김 VO
 	 * @return List
-	 * @exception Exception
 	 */
 	@Override
-	public List<EgovMap> selectDeptSchdulManageDetail(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageDetail(DeptSchdulManageVO deptSchdulManageVO) {
 		return dao.selectDeptSchdulManageDetail(deptSchdulManageVO);
 	}
 
@@ -121,10 +116,9 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * 부서일정를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @exception Exception
 	 */
 	@Override
-	public int selectDeptSchdulManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectDeptSchdulManageListCnt(ComDefaultVO searchVO) {
 
 
 		return dao.selectDeptSchdulManageListCnt(searchVO);
@@ -133,11 +127,15 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
     /**
 	 * 부서일정를(을) 등록한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @exception Exception
 	 */
 	@Override
-	public void insertDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) throws Exception {
-		String sMakeId = idgenService.getNextStringId();
+	public void insertDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) {
+		String sMakeId;
+		try {
+			sMakeId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		deptSchdulManageVO.setSchdulId(sMakeId);
 
 		dao.insertDeptSchdulManage(deptSchdulManageVO);
@@ -146,20 +144,18 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
     /**
 	 * 부서일정를(을) 수정한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @exception Exception
 	 */
 	@Override
-	public void updateDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public void updateDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) {
 		dao.updateDeptSchdulManage(deptSchdulManageVO);
 	}
 
     /**
 	 * 부서일정를(을) 삭제한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @exception Exception
 	 */
 	@Override
-	public void deleteDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public void deleteDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) {
 		dao.deleteDeptSchdulManage(deptSchdulManageVO);
 	}
 }

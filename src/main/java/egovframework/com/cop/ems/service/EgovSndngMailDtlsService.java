@@ -26,22 +26,19 @@ public interface EgovSndngMailDtlsService {
 	 * 발송메일 목록을 조회한다.
 	 * @param vo ComDefaultVO
 	 * @return List
-	 * @exception Exception
 	 */
-	List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) throws Exception;
+	List<SndngMailVO> selectSndngMailList(ComDefaultVO vo);
 
 	/**
 	 * 발송메일 총건수를 조회한다.
 	 * @param vo ComDefaultVO
 	 * @return int
-	 * @exception
 	 */
-	int selectSndngMailListTotCnt(ComDefaultVO vo) throws Exception;
+	int selectSndngMailListTotCnt(ComDefaultVO vo);
 
 	/**
 	 * 발송메일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
-	void deleteSndngMailList(SndngMailVO vo) throws Exception;
+	void deleteSndngMailList(SndngMailVO vo);
 }

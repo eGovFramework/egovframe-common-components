@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -45,10 +47,9 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * 메인페이지/일정관리조회
 	 * @param map - 조회할 정보가 담긴 map
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<String, String> map) throws Exception{
+	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<String, String> map) {
 		return dao.selectIndvdlSchdulManageMainList(map);
 	}
 
@@ -56,10 +57,9 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * 일정 목록을 Map(map)형식으로 조회한다.
 	 * @param Map(map) - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<String, String> map) throws Exception{
+	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<String, String> map) {
 		return dao.selectIndvdlSchdulManageRetrieve(map);
 	}
 
@@ -67,10 +67,9 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * 일정 목록을 VO(model)형식으로 조회한다.
 	 * @param indvdlSchdulManageVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public IndvdlSchdulManageVO selectIndvdlSchdulManageDetailVO(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
+	public IndvdlSchdulManageVO selectIndvdlSchdulManageDetailVO(IndvdlSchdulManageVO indvdlSchdulManageVO) {
 		return dao.selectIndvdlSchdulManageDetailVO(indvdlSchdulManageVO);
 	}
 
@@ -78,10 +77,9 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * 일정 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception{
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageList(ComDefaultVO searchVO) {
 		return dao.selectIndvdlSchdulManageList(searchVO);
 	}
 
@@ -89,10 +87,9 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * 일정를(을) 상세조회 한다.
 	 * @param IndvdlSchdulManage - 회정정보가 담김 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) {
 		return dao.selectIndvdlSchdulManageDetail(indvdlSchdulManageVO);
 	}
 
@@ -100,21 +97,24 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * 일정를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
 	@Override
-	public int selectIndvdlSchdulManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectIndvdlSchdulManageListCnt(ComDefaultVO searchVO) {
 		return dao.selectIndvdlSchdulManageListCnt(searchVO);
 	}
 
     /**
 	 * 일정를(을) 등록한다.
 	 * @param indvdlSchdulManageVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
 	 */
 	@Override
-	public void insertIndvdlSchdulManage(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception {
-		String sMakeId = idgenService.getNextStringId();
+	public void insertIndvdlSchdulManage(IndvdlSchdulManageVO indvdlSchdulManageVO) {
+		String sMakeId;
+		try {
+			sMakeId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		indvdlSchdulManageVO.setSchdulId(sMakeId);
 
 		dao.insertIndvdlSchdulManage(indvdlSchdulManageVO);
@@ -123,20 +123,18 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
     /**
 	 * 일정를(을) 수정한다.
 	 * @param indvdlSchdulManageVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
 	 */
 	@Override
-	public void updateIndvdlSchdulManage(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
+	public void updateIndvdlSchdulManage(IndvdlSchdulManageVO indvdlSchdulManageVO) {
 		dao.updateIndvdlSchdulManage(indvdlSchdulManageVO);
 	}
 
     /**
 	 * 일정를(을) 삭제한다.
 	 * @param indvdlSchdulManageVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
 	 */
 	@Override
-	public void deleteIndvdlSchdulManage(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
+	public void deleteIndvdlSchdulManage(IndvdlSchdulManageVO indvdlSchdulManageVO) {
 		dao.deleteIndvdlSchdulManage(indvdlSchdulManageVO);
 	}
 }

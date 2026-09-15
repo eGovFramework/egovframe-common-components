@@ -81,7 +81,6 @@ public class SmsBasicDBUtil {
 	 *
 	 * @param alias
 	 * @param bds
-	 * @throws Exception
 	 */
 	protected static void createPools(String alias, BasicDataSource bds) {
 

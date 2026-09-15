@@ -59,10 +59,9 @@ public class EgovBBSSatisfactionController {
      * @param boardVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/stf/selectSatisfactionList.do")
-    public String selectSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	// 수정 처리된 후 만족도조사 등록 화면으로 처리되기 위한 구현
 	if (satisfactionVO.isModified()) {
@@ -126,10 +125,9 @@ public class EgovBBSSatisfactionController {
      * @param boardVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/stf/anonymous/selectSatisfactionList.do")
-    public String selectAnonymousSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectAnonymousSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	// 수정 처리된 후 만족도조사 등록 화면으로 처리되기 위한 구현
 	if (satisfactionVO.isModified()) {
@@ -193,11 +191,10 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/insertSatisfaction.do")
     public String insertSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -232,11 +229,10 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/anonymous/insertSatisfaction.do")
     public String insertAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		if (bindingResult.hasErrors()) {
 		    model.addAttribute("msg", "작성자 및 만족도는 필수 입력값입니다.");
@@ -265,10 +261,9 @@ public class EgovBBSSatisfactionController {
      * @param satisfaction
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/deleteSatisfaction.do")
-    public String deleteSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
+    public String deleteSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) {
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -299,10 +294,9 @@ public class EgovBBSSatisfactionController {
      * @param satisfaction
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/anonymous/deleteSatisfaction.do")
-    public String deleteAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
+    public String deleteAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) {
 
 	//-------------------------------
 	// 패스워드 비교
@@ -334,10 +328,9 @@ public class EgovBBSSatisfactionController {
      * @param satisfactionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/stf/selectSingleSatisfaction.do")
-    public String selectSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	//------------------------------------------
 	// JSP의 <head> 부분 처리 (javascript 생성)
@@ -405,10 +398,9 @@ public class EgovBBSSatisfactionController {
      * @param satisfactionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/stf/anonymous/selectSingleSatisfaction.do")
-    public String selectAnonymousSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectAnonymousSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	//------------------------------------------
 	// JSP의 <head> 부분 처리 (javascript 생성)
@@ -488,11 +480,10 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/updateSatisfaction.do")
     public String updateSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -535,11 +526,10 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/anonymous/updateSatisfaction.do")
     public String updateAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 

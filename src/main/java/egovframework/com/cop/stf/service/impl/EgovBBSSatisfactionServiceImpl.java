@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,7 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사 사용 가능 여부를 확인한다.
      */
     @Override
-	public boolean canUseSatisfaction(String bbsId) throws Exception {
+	public boolean canUseSatisfaction(String bbsId) {
 	//String flag = EgovProperties.getProperty("Globals.addedOptions");
 	//if (flag != null && flag.trim().equalsIgnoreCase("true")) {//2011.09.15
 	    BoardMaster vo = new BoardMaster();
@@ -74,7 +76,7 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사에 대한 목록을 조회 한다.
      */
     @Override
-	public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO) throws Exception {
+	public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO) {
 	List<SatisfactionVO> result = bbsSatisfactionDAO.selectSatisfactionList(satisfactionVO);
 	int cnt = bbsSatisfactionDAO.selectSatisfactionListCnt(satisfactionVO);
 	float summary = bbsSatisfactionDAO.getSummary(satisfactionVO);
@@ -92,9 +94,13 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사를 등록한다.
      */
     @Override
-	public void insertSatisfaction(Satisfaction satisfaction) throws Exception {
+	public void insertSatisfaction(Satisfaction satisfaction) {
 
-    satisfaction.setStsfdgNo(egovStsfdgNoGnrService.getNextLongId() + "");//2011.10.18
+    try {
+		satisfaction.setStsfdgNo(egovStsfdgNoGnrService.getNextLongId() + "");//2011.10.18
+	} catch (FdlException e) {
+		throw new BaseRuntimeException(e);
+	}
 	bbsSatisfactionDAO.insertSatisfaction(satisfaction);
     }
 
@@ -102,7 +108,7 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사를 삭제한다.
      */
     @Override
-	public void deleteSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
+	public void deleteSatisfaction(SatisfactionVO satisfactionVO) {
 	bbsSatisfactionDAO.deleteSatisfaction(satisfactionVO);
     }
 
@@ -110,7 +116,7 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사에 대한 내용을 조회한다.
      */
     @Override
-	public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
+	public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO) {
 	return bbsSatisfactionDAO.selectSatisfaction(satisfactionVO);
     }
 
@@ -118,7 +124,7 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사에 대한 내용을 수정한다.
      */
     @Override
-	public void updateSatisfaction(Satisfaction satisfaction) throws Exception {
+	public void updateSatisfaction(Satisfaction satisfaction) {
 	bbsSatisfactionDAO.updateSatisfaction(satisfaction);
     }
 
@@ -126,7 +132,7 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
      * 만족도조사 패스워드를 가져온다.
      */
     @Override
-	public String getSatisfactionPassword(Satisfaction satisfaction) throws Exception {
+	public String getSatisfactionPassword(Satisfaction satisfaction) {
 	return bbsSatisfactionDAO.getSatisfactionPassword(satisfaction);
     }
 }

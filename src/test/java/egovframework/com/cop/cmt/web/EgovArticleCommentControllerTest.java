@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
@@ -108,7 +107,7 @@ class EgovArticleCommentControllerTest {
 		}
 
 		@Override
-		public boolean canUseComment(String bbsId) throws Exception {
+		public boolean canUseComment(String bbsId) {
 			return true;
 		}
 
@@ -118,7 +117,7 @@ class EgovArticleCommentControllerTest {
 		}
 
 		@Override
-		public void insertArticleComment(Comment comment) throws FdlException {
+		public void insertArticleComment(Comment comment) {
 		}
 
 		@Override

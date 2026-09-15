@@ -91,10 +91,9 @@ public class EgovDeptSchdulManageController {
 	 * 
 	 * @param model
 	 * @return "/cop/smt/sdm/EgovMain"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/EgovMain.do")
-	public String egovMain(ModelMap model) throws Exception {
+	public String egovMain(ModelMap model) {
 		return "egovframework/com/cop/smt/sdm/EgovMain";
 	}
 
@@ -103,10 +102,9 @@ public class EgovDeptSchdulManageController {
 	 * 
 	 * @param model
 	 * @return "/cop/smt/sdm/EgovLeft"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/EgovLeft.do")
-	public String egovLeft(ModelMap model) throws Exception {
+	public String egovLeft(ModelMap model) {
 		return "egovframework/com/cop/smt/sdm/EgovLeft";
 	}
 
@@ -117,11 +115,10 @@ public class EgovDeptSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "uss/olp/mgt/EgovDeptSchdulManageAuthorGroupPopup"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageAuthorGroupPopup.do")
 	public String egovMeetingManageLisAuthorGroupPopupPost(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageAuthorGroupPopup(searchVO);
 		model.addAttribute("resultList", resultList);
@@ -136,11 +133,10 @@ public class EgovDeptSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageEmpLyrPopup.do")
 	public String egovMeetingManageLisEmpLyrPopupPost(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageEmpLyrPopup(searchVO);
 		model.addAttribute("resultList", resultList);
@@ -154,10 +150,9 @@ public class EgovDeptSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMainList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageMainList.do")
-	public String egovDeptSchdulManageList(@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	public String egovDeptSchdulManageList(@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -190,11 +185,9 @@ public class EgovDeptSchdulManageController {
 	 * @param searchVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageListPopup.do")
-	public String egovDeptSchdulManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
-			throws Exception {
+	public String egovDeptSchdulManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) {
 
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -228,12 +221,10 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDailyList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageDailyList.do")
 	public String egovDeptSchdulManageDailyList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 검색 유지
 		model.addAttribute("searchKeyword",
@@ -292,12 +283,10 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageWeekList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageWeekList.do")
 	public String egovDeptSchdulManageWeekList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 일정구분 검색 유지
 		model.addAttribute("searchKeyword",
@@ -433,12 +422,10 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageMonthList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageMonthList.do")
 	public String egovDeptSchdulManageMonthList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 일정구분 검색 유지
 		model.addAttribute("searchKeyword",
@@ -503,11 +490,10 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDetail"
-	 * @throws Exception
 	 */
 	@GetMapping("/cop/smt/sdm/EgovDeptSchdulManageDetail.do")
 	public String egovDeptSchdulManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) throws Exception {
+			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 담당자·등록자 또는 관리자만 상세조회 가능하도록 소유권 검증 (삭제·수정과 동일)
 		DeptSchdulManageVO stored = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
@@ -541,10 +527,9 @@ public class EgovDeptSchdulManageController {
 	 * 
 	 * @param deptSchdulManageVO
 	 * @return redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do
-	 * @throws Exception
 	 */
 	@PostMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageDetail.do", params = "cmd=del")
-	public String egovDeptSchdulManageDelete(DeptSchdulManageVO deptSchdulManageVO) throws Exception {
+	public String egovDeptSchdulManageDelete(DeptSchdulManageVO deptSchdulManageVO) {
 
 		// 담당자·등록자 또는 관리자만 삭제 가능하도록 소유권 검증
 		DeptSchdulManageVO stored = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
@@ -564,11 +549,10 @@ public class EgovDeptSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageModify.do")
 	public String deptSchdulManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) throws Exception {
+			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
@@ -633,13 +617,12 @@ public class EgovDeptSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageModifyActor.do")
 	public String deptSchdulManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<String, String> commandMap,
 			@Valid @ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
-			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+			ModelMap model, RedirectAttributes redirectAttributes) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -740,13 +723,11 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageRegist"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageRegist.do")
 	public String deptSchdulManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, ModelMap model,
-			RedirectAttributes redirectAttributes)
-			throws Exception {
+			RedirectAttributes redirectAttributes) {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageRegist";
 
@@ -796,13 +777,12 @@ public class EgovDeptSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "/cop/smt/sdm/EgovDeptSchdulManageRegist"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageRegistActor.do")
 	public String deptSchdulManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -881,7 +861,6 @@ public class EgovDeptSchdulManageController {
 	 * 시간을 LIST를 반환한다.
 	 * 
 	 * @return List
-	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeHH() {
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
@@ -908,7 +887,6 @@ public class EgovDeptSchdulManageController {
 	 * 분을 LIST를 반환한다.
 	 * 
 	 * @return List
-	 * @throws
 	 */
 	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	private List getTimeMM() {
@@ -937,7 +915,6 @@ public class EgovDeptSchdulManageController {
 	 * 0을 붙여 반환
 	 * 
 	 * @return String
-	 * @throws
 	 */
 	public String dateTypeIntForString(int iInput) {
 		String sOutput = "";

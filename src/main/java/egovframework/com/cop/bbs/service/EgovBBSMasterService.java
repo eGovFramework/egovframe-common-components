@@ -24,7 +24,7 @@ public interface EgovBBSMasterService {
 
 	void updateBBSMasterInf(BoardMaster boardMaster);
 
-	BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) throws Exception;
+	BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO);
 
 	Map<String, Object> selectBBSMasterInfs(BoardMasterVO boardMasterVO);
 	
@@ -45,7 +45,7 @@ public interface EgovBBSMasterService {
 
   void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user);
 
-	BlogVO selectBlogDetail(BlogVO blogVO) throws Exception;
+	BlogVO selectBlogDetail(BlogVO blogVO);
 
 	List<BlogVO> selectBlogListPortlet(BlogVO blogVO);
 

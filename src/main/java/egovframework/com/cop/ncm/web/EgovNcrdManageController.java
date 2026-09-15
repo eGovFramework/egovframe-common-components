@@ -64,11 +64,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="명함관리",order = 370 ,gid = 40)
     @RequestMapping("/cop/ncm/selectNcrdInfs.do")
-    public String selectNcrdItems(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
+    public String selectNcrdItems(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -111,12 +110,11 @@ public class EgovNcrdManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
 
     @PostMapping("/cop/ncm/deleteNcrdInf.do")
     public String deleteNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
-	    ModelMap model) throws Exception {
+	    ModelMap model) {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -144,10 +142,9 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/ncm/addNcrdInf.do")
-    public String addNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
+    public String addNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) {
     	return "egovframework/com/cop/ncm/EgovNcrdRegist";
     }
 
@@ -159,11 +156,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/ncm/insertNcrdInf.do")
     public String insertNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, @Valid @ModelAttribute("nameCard") NameCard nameCard,
-	    BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
+	    BindingResult bindingResult, SessionStatus status, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -193,11 +189,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/ncm/selectNcrdInf.do")
     public String selectNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
-            ModelMap model) throws Exception {
+            ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -224,11 +219,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/ncm/updateNcrdInf.do")
     public String updateNcrdItem(HttpServletRequest request, @ModelAttribute("searchVO") NameCardVO ncrdVO, @RequestParam("ncrdNm") String ncrdNm,
-	    @Valid @ModelAttribute("nameCard") NameCard nameCard, BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
+	    @Valid @ModelAttribute("nameCard") NameCard nameCard, BindingResult bindingResult, SessionStatus status, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -269,11 +263,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/ncm/insertNcrdUseInf.do")
     public String insertNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
-	    SessionStatus status, ModelMap model) throws Exception {
+	    SessionStatus status, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -298,11 +291,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="내명함목록",order = 371 ,gid = 40)
     @RequestMapping("/cop/ncm/selectMyNcrdUseInf.do")
-    public String selectNcrdUseInf(@ModelAttribute("searchVO") NameCardUser ncrdUser, SessionStatus status, ModelMap model) throws Exception {
+    public String selectNcrdUseInf(@ModelAttribute("searchVO") NameCardUser ncrdUser, SessionStatus status, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -346,11 +338,10 @@ public class EgovNcrdManageController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/ncm/updateNcrdUseInf.do")
     public String updateNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
-	    SessionStatus status, ModelMap model) throws Exception {
+	    SessionStatus status, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -373,10 +364,9 @@ public class EgovNcrdManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/ncm/selectNcrdInfPopup.do")
-    public String selectNcrdItemforPop(@ModelAttribute("searchVO") NameCardVO ncrdVO, ModelMap model) throws Exception {
+    public String selectNcrdItemforPop(@ModelAttribute("searchVO") NameCardVO ncrdVO, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)

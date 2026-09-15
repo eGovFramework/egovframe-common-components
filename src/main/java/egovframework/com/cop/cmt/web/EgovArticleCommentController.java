@@ -62,10 +62,9 @@ public class EgovArticleCommentController {
      * @param boardVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmt/selectArticleCommentList.do")
-    public String selectArticleCommentList(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) throws Exception {
+    public String selectArticleCommentList(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) {
 
     	CommentVO articleCommentVO = new CommentVO();
 
@@ -130,11 +129,10 @@ public class EgovArticleCommentController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/insertArticleComment.do")
     public String insertArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
-	    BindingResult bindingResult, ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
+	    BindingResult bindingResult, ModelMap model, @RequestParam HashMap<String, String> map) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -175,11 +173,10 @@ public class EgovArticleCommentController {
      * @param comment
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/deleteArticleComment.do")
     public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
-    		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
+    		ModelMap model, @RequestParam HashMap<String, String> map) {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
@@ -206,10 +203,9 @@ public class EgovArticleCommentController {
      * @param commentVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/updateArticleCommentView.do")
-    public String updateArticleCommentView(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) throws Exception {
+    public String updateArticleCommentView(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	 //KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -262,11 +258,10 @@ public class EgovArticleCommentController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/updateArticleComment.do")
     public String updateArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -290,7 +285,7 @@ public class EgovArticleCommentController {
 		return "forward:/cop/bbs/selectArticleDetail.do";
     }
 
-    private void checkCommentOwner(HttpServletRequest request, String commentNo) throws Exception {
+    private void checkCommentOwner(HttpServletRequest request, String commentNo) {
 		CommentVO ownerVO = new CommentVO();
 		ownerVO.setCommentNo(commentNo);
 

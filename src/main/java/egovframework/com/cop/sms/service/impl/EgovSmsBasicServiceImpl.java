@@ -1,8 +1,5 @@
 package egovframework.com.cop.sms.service.impl;
 
-//import java.io.BufferedInputStream;
-//import java.io.FileInputStream;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,7 +97,7 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 		return result;
 	}
 
-	private String formatPhoneNumber(String number) throws ParseException {
+	private String formatPhoneNumber(String number) {
 		if (number == null || number.trim().isEmpty()) {
 			return "";
 		}
@@ -155,7 +152,7 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 	 * 문자메시지 목록을 조회 한다.
 	 */
 	@Override
-	public Map<String, Object> selectSmsInfs(SmsVO searchVO) throws Exception {
+	public Map<String, Object> selectSmsInfs(SmsVO searchVO) {
 		List<SmsVO> result = smsDao.selectSmsInfs(searchVO);
 		int cnt = smsDao.selectSmsInfsCnt(searchVO);
 
@@ -177,7 +174,7 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 	 * 문자메시지를 전송(등록)한다.
 	 */
 	@Override
-	public void insertSmsInf(Sms sms) throws Exception {
+	public void insertSmsInf(Sms sms) {
 		HashMap<String, SmsRecptn> check = new HashMap<String, SmsRecptn>();
 
 		sms.setTrnsmitTelno(getPhoneNumber(sms.getTrnsmitTelno()));
@@ -254,7 +251,7 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 	 * 문자메시지에 대한 상세정보를 조회한다.
 	 */
 	@Override
-	public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
+	public SmsVO selectSmsInf(SmsVO searchVO) {
 		SmsVO vo = smsDao.selectSmsInf(searchVO);
 
 		// 전화번호 포맷 처리
@@ -281,7 +278,7 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 	 * 문자메시지 실 전송을 요청한다.
 	 */
 	@Override
-	public SmsConnection sendRequsest(SmsConnection smsConn) throws Exception {
+	public SmsConnection sendRequsest(SmsConnection smsConn) {
 		String callTo = smsConn.getCallTo();
 		String callFrom = smsConn.getCallFrom();
 		String callBack = smsConn.getCallBack();
@@ -327,10 +324,9 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 	 *
 	 * @param smsConn
 	 * @return
-	 * @throws Exception
 	 */
 	@Override
-	public SmsConnection[] sendRequsest(SmsConnection[] smsConn) throws Exception {
+	public SmsConnection[] sendRequsest(SmsConnection[] smsConn) {
 		EgovSmsInfoSender sender = null;
 
 		try {
@@ -365,7 +361,6 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 				smsConn[i].setResult(result.getResult());
 				smsConn[i].setResultMessage(result.getResultMessage());
 			}
-
 		} finally {
 			if (sender != null) {
 				sender.close();

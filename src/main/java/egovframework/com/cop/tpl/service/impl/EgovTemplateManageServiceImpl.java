@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +47,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#deleteTemplateInf(egovframework.com.cop.bbs.com.service.TemplateInf)
      */
     @Override
-	public void deleteTemplateInf(TemplateInf tmplatInf) throws Exception {
+	public void deleteTemplateInf(TemplateInf tmplatInf) {
 	tmplatDAO.deleteTemplateInf(tmplatInf);
     }
 
@@ -55,9 +57,13 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#insertTemplateInf(egovframework.com.cop.bbs.com.service.TemplateInf)
      */
     @Override
-	public void insertTemplateInf(TemplateInf tmplatInf) throws Exception {
+	public void insertTemplateInf(TemplateInf tmplatInf) {
 
-	tmplatInf.setTmplatId(idgenService.getNextStringId());
+	try {
+		tmplatInf.setTmplatId(idgenService.getNextStringId());
+	} catch (FdlException e) {
+		throw new BaseRuntimeException(e);
+	}
 
 	tmplatDAO.insertTemplateInf(tmplatInf);
     }
@@ -68,7 +74,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#selectTemplateInf(egovframework.com.cop.bbs.com.service.TemplateInfVO)
      */
     @Override
-	public TemplateInfVO selectTemplateInf(TemplateInfVO tmplatInfVO) throws Exception {
+	public TemplateInfVO selectTemplateInf(TemplateInfVO tmplatInfVO) {
 	TemplateInfVO vo = new TemplateInfVO();
 	vo = tmplatDAO.selectTemplateInf(tmplatInfVO);
 	return vo;
@@ -80,7 +86,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#selectTemplateInfs(egovframework.com.cop.bbs.com.service.TemplateInfVO)
      */
     @Override
-	public List<TemplateInfVO> selectTemplateWhiteList() throws Exception {
+	public List<TemplateInfVO> selectTemplateWhiteList() {
     	List<TemplateInfVO> resultWhiteList = tmplatDAO.selectTemplateWhiteList();
 
     	return resultWhiteList;
@@ -92,7 +98,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#selectTemplateInfs(egovframework.com.cop.bbs.com.service.TemplateInfVO)
      */
     @Override
-	public Map<String, Object> selectTemplateInfs(TemplateInfVO tmplatInfVO) throws Exception {
+	public Map<String, Object> selectTemplateInfs(TemplateInfVO tmplatInfVO) {
 	List<TemplateInfVO> result = tmplatDAO.selectTemplateInfs(tmplatInfVO);
 	int cnt = tmplatDAO.selectTemplateInfsCnt(tmplatInfVO);
 
@@ -110,7 +116,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#selectTemplatePreview(egovframework.com.cop.bbs.com.service.TemplateInfVO)
      */
     @Override
-	public TemplateInfVO selectTemplatePreview(TemplateInfVO tmplatInfVO) throws Exception {
+	public TemplateInfVO selectTemplatePreview(TemplateInfVO tmplatInfVO) {
 	TemplateInfVO vo = new TemplateInfVO();
 
 	vo = tmplatDAO.selectTemplatePreview(tmplatInfVO);
@@ -124,7 +130,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#updateTemplateInf(egovframework.com.cop.bbs.com.service.TemplateInf)
      */
     @Override
-	public void updateTemplateInf(TemplateInf tmplatInf) throws Exception {
+	public void updateTemplateInf(TemplateInf tmplatInf) {
 	tmplatDAO.updateTemplateInf(tmplatInf);
     }
 
@@ -134,7 +140,7 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
      * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#selectAllTemplateInfs(egovframework.com.cop.bbs.com.service.TemplateInfVO)
      */
     @Override
-	public List<TemplateInfVO> selectTemplateInfsByCode(TemplateInfVO tmplatInfVO) throws Exception {
+	public List<TemplateInfVO> selectTemplateInfsByCode(TemplateInfVO tmplatInfVO) {
 	return tmplatDAO.selectTemplateInfsByCode(tmplatInfVO);
     }
 }

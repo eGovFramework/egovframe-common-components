@@ -36,10 +36,9 @@ public class EgovCopViewController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/com/openPopup.do")
-	public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+	public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) {
 
 		String requestUrl = EgovWebUtil.sanitizeRelativeRequestUrl((String) commandMap.get("requestUrl"));
 		String trgetId = EgovWebUtil.removeCRLF(EgovWebUtil.clearXSSMinimum((String) commandMap.get("trgetId")));
