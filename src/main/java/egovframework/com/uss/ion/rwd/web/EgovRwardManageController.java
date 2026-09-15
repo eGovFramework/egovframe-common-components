@@ -24,6 +24,7 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.web.EgovComAbstractController;
 import egovframework.com.uss.ion.rwd.service.EgovRwardManageService;
 import egovframework.com.uss.ion.rwd.service.RwardManage;
 import egovframework.com.uss.ion.rwd.service.RwardManageVO;
@@ -61,7 +62,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Controller
 @Slf4j
-public class EgovRwardManageController {
+public class EgovRwardManageController extends EgovComAbstractController {
 
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
@@ -479,30 +480,34 @@ public class EgovRwardManageController {
 		}
 	}
 
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
+//	/**
+//	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+//	 * 하위 Controller에서 필요에 따라 오버라이드하여 사용할 수 있습니다.
+//	 */
+//	@Override
+//	protected LoginVO egovAssertLoginUser() {
+//		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+//		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+//			throw new IllegalStateException("인증 정보가 없습니다.");
+//		}
+//		return loginVO;
+//	}
+//
+//	/**
+//	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+//	 * 하위 Controller에서 필요에 따라 오버라이드하여 사용할 수 있습니다.
+//	 */
+//	@Override
+//	protected void egovAssertAdminOrOwner(String ownerUniqId) {
+//		LoginVO loginVO = egovAssertLoginUser();
+//		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+//			return;
+//		}
+//		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+//		if (auth != null && auth.contains("ROLE_ADMIN")) {
+//			return;
+//		}
+//		throw new IllegalStateException("권한이 없습니다.");
+//	}
 
 }
