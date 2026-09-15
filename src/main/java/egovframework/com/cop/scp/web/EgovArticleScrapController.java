@@ -234,6 +234,9 @@ public class EgovArticleScrapController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+		    ScrapVO vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		    egovAssertAdminOrOwner(vo == null ? null : vo.getFrstRegisterId());
+
 		    egovArticleScrapService.deleteArticleScrap(scrapVO);
 		}
 
@@ -308,6 +311,9 @@ public class EgovArticleScrapController {
 		}
 
 		if (isAuthenticated) {
+		    ScrapVO vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		    egovAssertAdminOrOwner(vo == null ? null : vo.getFrstRegisterId());
+
 		    scrap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    egovArticleScrapService.updateArticleScrap(scrap);
