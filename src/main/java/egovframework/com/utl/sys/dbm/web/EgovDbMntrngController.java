@@ -169,6 +169,9 @@ public class EgovDbMntrngController {
 	@PostMapping("/utl/sys/dbm/getDbMntrngLog.do")
 	public String selectDbMntrngLog(@ModelAttribute("searchVO")DbMntrngLog dbMntrngLog, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		egovAssertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", dbMntrngLog);
         DbMntrngLog result = egovDbMntrngService.selectDbMntrngLog(dbMntrngLog);
         model.addAttribute("resultInfo", result);
@@ -244,6 +247,9 @@ public class EgovDbMntrngController {
 	@RequestMapping("/utl/sys/dbm/getDbMntrngList.do")
 	public String selectDbMntrngList(@ModelAttribute("searchVO") DbMntrng searchVO, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		egovAssertLoginUser();
+
 		//searchVO.setUniqId(user.getUniqId());
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
 		searchVO.setPageSize(propertyService.getInt("pageSize"));
@@ -280,6 +286,9 @@ public class EgovDbMntrngController {
 	@RequestMapping("/utl/sys/dbm/getDbMntrngLogList.do")
 	public String selectDbMntrngLogList(@ModelAttribute("searchVO") DbMntrngLog searchVO, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		egovAssertLoginUser();
+
 		//searchVO.setUniqId(user.getUniqId());
         // DB서비스모니터링 정보 조회.
 		LOGGER.debug(" 조회조건 : {}", searchVO);
