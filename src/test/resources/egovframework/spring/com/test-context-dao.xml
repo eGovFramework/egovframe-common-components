@@ -5,8 +5,10 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<import
-		resource="classpath*:/egovframework/spring/com/context-crypto.xml" />
+	<!-- 삭제된 context-crypto.xml 대신 crypto 라이브러리를 직접 스캔 (egovPasswordResolver 제공) -->
+	<context:component-scan base-package="org.egovframe.rte.fdl.crypto" />
+	<bean id="egovPasswordResolver" class="egovframework.com.cmm.util.EgovPasswordResolver" />
+
 	<import
 		resource="classpath*:/egovframework/spring/com/context-datasource.xml" />
 	<import

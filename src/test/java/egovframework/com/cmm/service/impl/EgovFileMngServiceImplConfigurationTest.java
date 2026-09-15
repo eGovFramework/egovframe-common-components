@@ -14,6 +14,8 @@ import egovframework.com.cmm.service.EgovFileMngService;
 
 @ImportResource({
 
+//	"classpath*:egovframework/spring/com/**/context-*.xml",
+
 		"classpath*:/egovframework/spring/com/context-datasource.xml",
 		"classpath*:/egovframework/spring/com/context-mapper.xml",
 		"classpath*:/egovframework/spring/com/context-transaction.xml",
@@ -26,8 +28,8 @@ import egovframework.com.cmm.service.EgovFileMngService;
 
 @Import(EgovConfigCryptoTest.class)
 
-@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl", }, includeFilters = {
-		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovFileMngService.class, FileManageDAO.class, }) })
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
+		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovFileMngService.class, FileManageDAO.class }) })
 
 public class EgovFileMngServiceImplConfigurationTest {
 

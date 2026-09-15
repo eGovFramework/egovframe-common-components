@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -48,13 +50,14 @@ import lombok.extern.slf4j.Slf4j;
 
 		"classpath*:egovframework/spring/com/test-context-common.xml",
 
-		"classpath*:egovframework/spring/com/context-crypto.xml",
 		"classpath*:egovframework/spring/com/context-datasource.xml",
 		"classpath*:egovframework/spring/com/context-egovuserdetailshelper.xml",
 		"classpath*:egovframework/spring/com/context-mapper.xml",
 		"classpath*:egovframework/spring/com/context-transaction.xml",
 
 })
+
+@Import(EgovConfigCryptoTest.class)
 
 @Slf4j
 
