@@ -26,16 +26,18 @@ import egovframework.com.uss.ion.rwd.service.RwardManage;
 import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 
 /**
- * 포상관리 수정화면(EgovRwardUpdt)의 포상구분 코드목록 회귀 테스트.
+ * 포상관리 등록·수정화면(EgovRwardRegist·EgovRwardUpdt)의 포상구분 코드목록 회귀 테스트.
  *
- * EgovRwardUpdt.jsp의 포상구분(필수)은 form:select/form:options가 ${rwardCodeList}만 보고
- * option을 만든다. 수정화면 진입(EgovRwardManageDetail.do?cmd=updt)은 이 목록을 담아주는데,
- * 같은 화면을 다시 그리는 updtRwardManage.do의 검증실패 분기는 담지 않아 목록이 비어 있었다.
+ * 두 화면 모두 form:select/form:options가 ${rwardCodeList}만 보고 option을 만든다.
+ * 각 화면의 진입 경로(insertViewRwardManage·EgovRwardManageDetail.do?cmd=updt)는 이
+ * 목록을 담아주는데, 같은 화면을 다시 그리는 검증실패 분기(insertRwardManage·
+ * updtRwardManage)는 담지 않아 목록이 비어 있었다.
  */
 class EgovRwardManageControllerRwardCodeListTest {
 
 	private static final String APPLICANT = "USRCNFRM_00000000001";
 	private static final String UPDT_VIEW = "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
+	private static final String REGIST_VIEW = "egovframework/com/uss/ion/rwd/EgovRwardRegist";
 
 	/** 포상구분 공통코드(COM055) 스텁. */
 	private static final List<CmmnDetailCode> RWARD_CODES = List.of(detailCode("01", "표창"), detailCode("02", "포상"));
@@ -160,5 +162,29 @@ class EgovRwardManageControllerRwardCodeListTest {
 				"검증실패로 수정화면을 다시 그릴 때 포상구분 목록이 없으면 필수값을 선택할 수 없다.");
 		assertEquals(RWARD_CODES.size(), ((List<?>) model.get("rwardCodeList")).size(),
 				"재표시된 포상구분 목록은 진입 때와 같은 항목 수여야 한다.");
+	}
+
+	/** 형제 등록 경로도 같은 화면을 그리므로 포상구분 목록이 있어야 한다. */
+	@Test
+	void insertRegistrationErrorRedisplaySuppliesRwardCodeList() throws Exception {
+		EgovRwardManageController controller = controllerWith(new RwardManageVO());
+		bindLoginUser(APPLICANT);
+
+		RwardManage rwardManage = new RwardManage();
+		rwardManage.setRwardDe("2026-13-99"); // 포상일자 형식 오류
+		BindingResult bindingResult = new BeanPropertyBindingResult(rwardManage, "rwardManage");
+		bindingResult.rejectValue("rwardDe", "validation.pattern.date");
+
+		ModelMap model = new ModelMap();
+
+		// 검증실패 분기는 multiRequest를 건드리지 않으므로 null로 충분하다.
+		String view = controller.insertRwardManage(null, rwardManage, bindingResult, new RwardManageVO(),
+				new SimpleSessionStatus(), model);
+
+		assertEquals(REGIST_VIEW, view);
+		assertNotNull(model.get("rwardCodeList"),
+				"검증실패로 등록화면을 다시 그릴 때 포상구분 목록이 없으면 필수값을 선택할 수 없다.");
+		assertEquals(RWARD_CODES.size(), ((List<?>) model.get("rwardCodeList")).size(),
+				"재표시된 포상구분 목록은 등록화면 진입 때와 같은 항목 수여야 한다.");
 	}
 }
