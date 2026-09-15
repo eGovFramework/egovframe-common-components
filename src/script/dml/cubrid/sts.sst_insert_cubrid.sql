@@ -761,7 +761,7 @@ INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM,
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectMainImageList', '/uss/ion/msi/', '메인이미지관리', '메인이미지관리', '/uss/ion/msi/selectMainImageList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('getMainImageResult', '/uss/ion/msi/', '메인이미지 반영결과보기', '메인이미지 반영결과보기', '/uss/ion/msi/getMainImageResult.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('listUnityLink', '/uss/ion/ulm/', '통합링크관리', '통합링크관리', '/uss/ion/ulm/listUnityLink.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectUserAbsnceListView', '/uss/ion/uas/', '사용자부재관리', '사용자부재관리', '/uss/ion/uas/selectUserAbsnceListView.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectUserAbsnceListView', '/uss/ion/uas/', '사용자부재관리', '사용자부재관리', '/uss/ion/uas/selectUserAbsnceList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectIntnetSvcGuidanceList', '/uss/ion/isg/', '인터넷서비스안내및관리', '인터넷서비스안내및관리', '/uss/ion/isg/selectIntnetSvcGuidanceList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('listWikiBookmark', '/uss/ion/wik/bmk/', 'Wiki기능', 'Wiki기능', '/uss/ion/wik/bmk/listWikiBookmark.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('listRssTagManage', '/uss/ion/rss/', 'RSS태그관리', 'RSS태그관리', '/uss/ion/rss/listRssTagManage.do');
@@ -790,11 +790,11 @@ INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM,
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovMeetingManageList', '/uss/olp/mgt/', '회의관리', '회의관리', '/uss/olp/mgt/EgovMeetingManageList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('listOnlinePollManage', '/uss/olp/opm/', '온라인poll관리', '온라인poll관리', '/uss/olp/opm/listOnlinePollManage.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('listOnlinePollPartcptn', '/uss/olp/opp/', '온라인poll참여', '온라인poll참여', '/uss/olp/opp/listOnlinePollPartcptn.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('NewsInfoListInqire', '/uss/ion/nws/', '뉴스관리', '뉴스관리', '/uss/ion/nws/NewsInfoListInqire.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('SiteListInqire', '/uss/ion/sit/', '사이트관리', '사이트관리', '/uss/ion/sit/SiteListInqire.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('RecomendSiteListInqire', '/uss/ion/rec/', '추천사이트관리', '추천사이트관리', '/uss/ion/rec/RecomendSiteListInqire.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovEventCmpgnList', '/uss/ion/ecc/', '행사/이벤트/캠페인', '행사/이벤트/캠페인', '/uss/ion/ecc/EgovEventCmpgnList.do');
-INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovTnextrlHrInfoList', '/uss/ion/ecc/', '외부인사정보', '외부인사정보', '/uss/ion/ecc/EgovTnextrlHrInfoList.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('NewsInfoListInqire', '/uss/ion/nws/', '뉴스관리', '뉴스관리', '/uss/ion/nws/selectNewsList.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('SiteListInqire', '/uss/ion/sit/', '사이트관리', '사이트관리', '/uss/ion/sit/selectSiteList.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('RecomendSiteListInqire', '/uss/ion/rec/', '추천사이트관리', '추천사이트관리', '/uss/ion/rec/selectRecomendSiteList.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovEventCmpgnList', '/uss/ion/ecc/', '행사/이벤트/캠페인', '행사/이벤트/캠페인', '/uss/ion/ecc/selectEventCmpgnList.do');
+INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('EgovTnextrlHrInfoList', '/uss/ion/ecc/', '외부인사정보', '외부인사정보', '/uss/ion/ecc/selectTnextrlHrList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectSndngMailList', '/cop/ems/', '발송메일내역', '발송메일내역', '/cop/ems/selectSndngMailList.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectNcrdInfs', '/cop/ncm/', '명함관리', '명함관리', '/cop/ncm/selectNcrdInfs.do');
 INSERT INTO COMTNPROGRMLIST (PROGRM_FILE_NM, PROGRM_STRE_PATH, PROGRM_KOREAN_NM, PROGRM_DC, URL) VALUES ('selectMyNcrdUseInf', '/cop/ncm/', '내명함목록', '내명함목록', '/cop/ncm/selectMyNcrdUseInf.do');
