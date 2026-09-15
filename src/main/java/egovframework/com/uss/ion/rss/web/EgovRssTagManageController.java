@@ -239,6 +239,12 @@ public class EgovRssTagManageController {
 
             if (sCmd.equals("save")) {
 
+                // 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 삭제와 같이 관리자만 수정 가능
+                java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+                if (auth == null || !auth.contains("ROLE_ADMIN")) {
+                    throw new IllegalStateException("권한이 없습니다.");
+                }
+
                 if(bindingResult.hasErrors()){
                 	//테이블 목록 불러오기
                 	model.addAttribute("trgetSvcTableList", egovRssManageService.selectRssTagManageTableList());
@@ -308,6 +314,12 @@ public class EgovRssTagManageController {
             if (!isAuthenticated) {
                 model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
                 return "redirect:/uat/uia/egovLoginUsr.do";
+            }
+
+            // 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 삭제와 같이 관리자만 등록 가능
+            java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+            if (auth == null || !auth.contains("ROLE_ADMIN")) {
+                throw new IllegalStateException("권한이 없습니다.");
             }
 
             // 로그인 객체 선언
