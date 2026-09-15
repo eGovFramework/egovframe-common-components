@@ -161,6 +161,9 @@ public class EgovTrsmrcvMntrngController {
     @PostMapping("/utl/sys/trm/getTrsmrcvMntrngLog.do")
 	public String selectTrsmrcvMntrngLog(@ModelAttribute("searchVO") TrsmrcvMntrngLog trsmrcvMntrngLog, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
+		egovAssertLoginUser();
+
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrngLog);
 		TrsmrcvMntrngLog result = egovTrsmrcvMntrngService.selectTrsmrcvMntrngLog(trsmrcvMntrngLog);
 		model.addAttribute("resultInfo", result);
@@ -222,6 +225,9 @@ public class EgovTrsmrcvMntrngController {
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngList.do")
 	public String selectTrsmrcvMntrngList(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
+		egovAssertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", searchVO);
 
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -259,6 +265,9 @@ public class EgovTrsmrcvMntrngController {
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngLogList.do")
 	public String selectTrsmrcvMntrngLogList(@ModelAttribute("searchVO") TrsmrcvMntrngLog searchVO, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
+		egovAssertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", searchVO);
 
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
