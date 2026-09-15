@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.LoginVO;
@@ -21,17 +23,20 @@ import egovframework.com.uss.olp.qim.service.EgovQustnrItemManageService;
 import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
 
 /**
- * 설문항목관리 목록팝업 일괄삭제(cmd=del)의 관리자 검증 회귀 테스트.
+ * 설문항목관리 쓰기 경로(삭제·수정·등록)의 관리자 검증 회귀 테스트.
  *
- * 형제 경로 egovQustnrItemManageDetail의 cmd=del은 이미 ROLE_ADMIN 검증을 거치는데,
- * 동일한 deleteQustnrItemManage를 호출하는 egovQustnrItemManageListPopup의 cmd=del은
- * 그 검증이 빠져 있었다. 로그인만 한 일반 사용자가 이 팝업 경로로 설문항목을 삭제할 수
- * 있었다(형제 경로 비교로 드러나는 자기모순).
+ * 형제 경로 egovQustnrItemManageDetail/egovQustnrItemManageListPopup의 cmd=del은
+ * ROLE_ADMIN 검증을 거치는데, 같은 설문항목을 대상으로 하는 qustnrItemManageModify·
+ * qustnrItemManageRegist는 로그인 여부만 확인하고 ROLE_ADMIN은 확인하지 않았다.
+ * 로그인만 한 일반 사용자가 이 두 경로로 설문항목을 수정·등록할 수 있었다
+ * (형제 경로 비교로 드러나는 자기모순).
  */
 class EgovQustnrItemManageControllerAdminCheckTest {
 
 	private static final class StubService implements EgovQustnrItemManageService {
 		private boolean deleteCalled = false;
+		private boolean updateCalled = false;
+		private boolean insertCalled = false;
 
 		@Override
 		public void deleteQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) {
@@ -60,12 +65,12 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 
 		@Override
 		public void insertQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) {
-			throw new UnsupportedOperationException();
+			insertCalled = true;
 		}
 
 		@Override
 		public void updateQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) {
-			throw new UnsupportedOperationException();
+			updateCalled = true;
 		}
 	}
 
@@ -191,5 +196,82 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 
 		callListPopupDelete(service);
 		assertTrue(service.deleteCalled, "An admin must be able to delete a survey item via the list popup.");
+	}
+
+	/** hasErrors()가 false를 돌려주는 것 외엔 관여하지 않는 최소 프록시. */
+	private static org.springframework.validation.BindingResult noopBindingResult() {
+		return (org.springframework.validation.BindingResult) java.lang.reflect.Proxy.newProxyInstance(
+				EgovQustnrItemManageControllerAdminCheckTest.class.getClassLoader(),
+				new Class<?>[] { org.springframework.validation.BindingResult.class },
+				(proxy, method, args) -> {
+					if ("hasErrors".equals(method.getName())) {
+						return false;
+					}
+					Class<?> returnType = method.getReturnType();
+					if (returnType == boolean.class) {
+						return false;
+					}
+					return null;
+				});
+	}
+
+	private static String callModify(StubService service) throws Exception {
+		EgovQustnrItemManageController controller = controllerWith(service);
+
+		ComDefaultVO searchVO = new ComDefaultVO();
+		QustnrItemManageVO qustnrItemManageVO = new QustnrItemManageVO();
+		ModelMap model = new ModelMap();
+
+		return controller.qustnrItemManageModify(searchVO, qustnrItemManageVO, noopBindingResult(), model);
+	}
+
+	@Test
+	void updateByNonAdminIsRejected() {
+		StubService service = new StubService();
+		bindLoginUser("USRCNFRM_00000000009", List.of());
+
+		assertThrows(IllegalStateException.class, () -> callModify(service),
+				"A logged-in non-admin must not be able to modify a survey item.");
+		assertTrue(!service.updateCalled, "updateQustnrItemManage must not be reached by a non-admin.");
+	}
+
+	@Test
+	void updateByAdminSucceeds() throws Exception {
+		StubService service = new StubService();
+		bindLoginUser("USRCNFRM_00000000001", List.of("ROLE_ADMIN"));
+
+		callModify(service);
+		assertTrue(service.updateCalled, "An admin must be able to modify a survey item.");
+	}
+
+	private static String callRegist(StubService service) throws Exception {
+		EgovQustnrItemManageController controller = controllerWith(service);
+
+		ComDefaultVO searchVO = new ComDefaultVO();
+		QustnrItemManageVO qustnrItemManageVO = new QustnrItemManageVO();
+		ModelMap model = new ModelMap();
+		RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+
+		return controller.qustnrItemManageRegist(searchVO, qustnrItemManageVO, noopBindingResult(), model,
+				redirectAttributes);
+	}
+
+	@Test
+	void insertByNonAdminIsRejected() {
+		StubService service = new StubService();
+		bindLoginUser("USRCNFRM_00000000009", List.of());
+
+		assertThrows(IllegalStateException.class, () -> callRegist(service),
+				"A logged-in non-admin must not be able to register a survey item.");
+		assertTrue(!service.insertCalled, "insertQustnrItemManage must not be reached by a non-admin.");
+	}
+
+	@Test
+	void insertByAdminSucceeds() throws Exception {
+		StubService service = new StubService();
+		bindLoginUser("USRCNFRM_00000000001", List.of("ROLE_ADMIN"));
+
+		callRegist(service);
+		assertTrue(service.insertCalled, "An admin must be able to register a survey item.");
 	}
 }
