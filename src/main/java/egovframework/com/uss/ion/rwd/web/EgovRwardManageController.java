@@ -215,6 +215,10 @@ public class EgovRwardManageController {
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 형제 insertViewRwardManage와 동일하게 재표시 화면이 참조하는 포상구분 목록을 다시 담는다
+			ComDefaultCodeVO rwardCdVo = new ComDefaultCodeVO();
+			rwardCdVo.setCodeId("COM055");
+			model.addAttribute("rwardCodeList", cmmUseService.selectCmmCodeDetail(rwardCdVo));
 			model.addAttribute("rwardManageVO", rwardManageVO);
 			return "egovframework/com/uss/ion/rwd/EgovRwardRegist";
 		} else {
