@@ -306,6 +306,9 @@ public class EgovCnsltManageController {
 
 		if (bindingResult.hasErrors()) {
 
+			// 형제 insertCnsltDtlsView와 동일하게 재표시 폼이 참조하는 result를 담는다
+			model.addAttribute("result", cnsltManageVO);
+
 			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsRegist";
 
 		}
