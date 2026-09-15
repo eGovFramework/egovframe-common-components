@@ -222,10 +222,13 @@ public class EgovRoleManageController {
     @RequireAdmin
 	public String updateRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 			BindingResult bindingResult,
+			@ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
             ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
 			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
+			// 형제 selectRole과 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("roleManageVO", roleManageVO);
 			return "egovframework/com/sec/rmt/EgovRoleUpdate";
 		} else {
     	egovRoleManageService.updateRole(roleManage);
