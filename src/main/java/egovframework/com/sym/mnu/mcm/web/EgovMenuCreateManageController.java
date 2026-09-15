@@ -283,7 +283,7 @@ public class EgovMenuCreateManageController {
 		model.addAttribute("list_menulist", resultList);
 
 		model.addAttribute("resultVO", menuSiteMapVO);
-		return "egovframework/com/sym/mnu/mcm/EgovSiteMap";
+		return "egovframework/com/sym/mnu/stm/EgovSiteMap";
 	}
 
 }
