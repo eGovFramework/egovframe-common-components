@@ -38,7 +38,6 @@
 <title><spring:message code="comSymMnuMpm.menuList.title" /></title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do" />"></script>
 <script type="text/javascript">
 var imgpath = "<c:url value='/images/egovframework/com/cmm/utl/'/>";
 </script>
