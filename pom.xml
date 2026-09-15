@@ -20,7 +20,7 @@
 	<parent>
 		<groupId>org.egovframe.web</groupId>
 		<artifactId>egovframe-web-config-parent</artifactId>
-		<version>5.0.0</version>
+		<version>5.0.1</version>
 	</parent>
 
 	<repositories>
@@ -102,7 +102,6 @@
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>egovframe-rte-fdl-security</artifactId>
-			<version>5.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>
@@ -600,12 +599,12 @@
 							<type>embedded</type>
 						</container>
 						<configuration>
-							<properties>
+							<!--<properties>
 								<property>
 									<name>cargo.servlet.port</name>
 									<value>8080</value>
 								</property>
-							</properties>
+							</properties>-->
 						</configuration>
 					</configuration>
 				</plugin>
@@ -644,7 +643,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<skipTests>true</skipTests>
 					<reportFormat>xml</reportFormat>
 					<excludes>
 						<exclude>**/Abstract*.java</exclude>
