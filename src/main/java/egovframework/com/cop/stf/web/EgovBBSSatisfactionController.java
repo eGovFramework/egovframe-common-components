@@ -377,6 +377,13 @@ public class EgovBBSSatisfactionController {
 
 	Satisfaction data = bbsSatisfactionService.selectSatisfaction(satisfactionVO);
 
+	// 작성자 본인만 상세정보를 볼 수 있도록 소유권 검증 (수정·삭제와 동일)
+	String loginUniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
+	if (data == null || data.getFrstRegisterId() == null || !data.getFrstRegisterId().equals(loginUniqId)) {
+	    model.addAttribute("subMsg", egovMessageSource.getMessage("errors.xss.checkerUser"));
+	    return "egovframework/com/cop/stf/EgovSatisfactionList";
+	}
+
 	satisfactionVO.setStsfdgNo(data.getStsfdgNo());
 	satisfactionVO.setNttId(data.getNttId());
 	satisfactionVO.setBbsId(data.getBbsId());
