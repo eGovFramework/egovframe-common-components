@@ -105,6 +105,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 */
 	public static List<EgovFormBasedFileVo> uploadFilesExt(MultipartHttpServletRequest mptRequest, String where, long maxFileSize, String extensionWhiteList) throws Exception {
 		List<EgovFormBasedFileVo> list = new ArrayList<>();
+		List<MultipartFile> filesToSave = new ArrayList<>();
 
 		if (mptRequest != null) {
 			Iterator<?> fileIter = mptRequest.getFileNames();
@@ -153,13 +154,19 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 					}
 
 					if (fileSize > 0) {
-						try (InputStream is = mFile.getInputStream()) {
-							String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile";
-							saveFile(is, new File(EgovWebUtil.filePathBlackList( fullPath )));
-						}
+						filesToSave.add(mFile);
 						list.add(vo);
 					}
 				}
+			}
+		}
+
+		// 모든 파일의 확장자와 크기 검증이 끝난 뒤 저장을 시작한다.
+		for (int i = 0; i < filesToSave.size(); i++) {
+			EgovFormBasedFileVo vo = list.get(i);
+			try (InputStream is = filesToSave.get(i).getInputStream()) {
+				String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile";
+				saveFile(is, new File(EgovWebUtil.filePathBlackList(fullPath)));
 			}
 		}
 
