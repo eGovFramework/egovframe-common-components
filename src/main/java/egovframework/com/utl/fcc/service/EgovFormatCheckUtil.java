@@ -27,6 +27,9 @@ public class EgovFormatCheckUtil {
      * @return  유효한 전화번호 형식인지 여부 (True/False)
      */
     public static boolean checkFormatTell(String tell1, String tell2, String tell3) {
+	 if(tell1 == null || tell2 == null || tell3 == null || tell1.isEmpty() || tell2.isEmpty() || tell3.isEmpty()) {
+		return false;
+	 }
 
 	 String[] check = {"02", "031", "032", "033", "041", "042", "043", "051", "052", "053", "054", "055", "061",
 				 "062", "063", "070", "080", "0505"};	//존재하는 국번 데이터
@@ -73,6 +76,9 @@ public class EgovFormatCheckUtil {
      * @return  유효한 전화번호 형식인지 여부 (True/False)
      */
     public static boolean checkFormatTell(String tellNumber) {
+	 if(tellNumber == null || tellNumber.isEmpty()) {
+		return false;
+	 }
 
 	 String temp1;
 	 String temp2;
@@ -124,6 +130,9 @@ public class EgovFormatCheckUtil {
      * @return  유효한 휴대폰번호 형식인지 여부 (True/False)
      */
     public static boolean checkFormatCell(String cell1, String cell2, String cell3) {
+	 if(cell1 == null || cell2 == null || cell3 == null || cell1.isEmpty() || cell2.isEmpty() || cell3.isEmpty()) {
+		return false;
+	 }
 	 String[] check = {"010", "011", "016", "017", "018", "019"}; //유효한 휴대폰 첫자리 번호 데이터
 	 String temp = cell1 + cell2 + cell3;
 
@@ -157,6 +166,9 @@ public class EgovFormatCheckUtil {
      * @return  유효한 휴대폰번호 형식인지 여부 (True/False)
      */
     public static boolean checkFormatCell(String cellNumber) {
+	 if(cellNumber == null || cellNumber.isEmpty()) {
+		return false;
+	 }
 
 	 String temp1;
 	 String temp2;
