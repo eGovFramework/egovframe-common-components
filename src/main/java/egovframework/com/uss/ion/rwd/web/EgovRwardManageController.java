@@ -153,6 +153,11 @@ public class EgovRwardManageController {
 
 		// 등록 상세정보
 		RwardManageVO rwardManageVOTemp = egovRwardManageService.selectRwardManage(rwardManageVO);
+		if (rwardManageVOTemp == null) {
+			throw new IllegalStateException("포상 정보가 없습니다.");
+		}
+		// 신청자 본인 또는 관리자만 조회 가능하도록 소유권 검증 (수정·삭제와 동일)
+		egovAssertAdminOrOwner(rwardManageVOTemp.getFrstRegisterId());
 
 		model.addAttribute("rwardManageVO", rwardManageVOTemp);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));

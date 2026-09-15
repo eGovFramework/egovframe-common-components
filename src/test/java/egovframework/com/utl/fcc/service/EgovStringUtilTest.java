@@ -1,7 +1,13 @@
 package egovframework.com.utl.fcc.service;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
@@ -139,6 +145,84 @@ public class EgovStringUtilTest {
     void splitWithLimit_remainderKeptInLastField(){
         String[] result = EgovStringUtil.split("a::b::c::d", "::", 2);
         Assertions.assertArrayEquals(new String[]{"a", "b::c::d"}, result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", "abc" })
+    void splitRejectsEmptySeparator(String source) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EgovStringUtil.split(source, ""));
+    }
+
+    @ParameterizedTest
+    @MethodSource("emptySeparatorWithLimits")
+    void splitWithLimitRejectsEmptySeparator(String source, int limit) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EgovStringUtil.split(source, "", limit));
+    }
+
+    private static Stream<Arguments> emptySeparatorWithLimits() {
+        return Stream.of(
+                Arguments.of("", 1),
+                Arguments.of("", 3),
+                Arguments.of("abc", 1),
+                Arguments.of("abc", 3));
+    }
+
+    @ParameterizedTest
+    @MethodSource("emptyFieldCases")
+    void splitPreservesEmptyFields(String source, String separator, String[] expected) {
+        Assertions.assertArrayEquals(expected, EgovStringUtil.split(source, separator));
+        Assertions.assertArrayEquals(expected, EgovStringUtil.split(source, separator, expected.length));
+    }
+
+    private static Stream<Arguments> emptyFieldCases() {
+        return Stream.of(
+                Arguments.of("", ",", new String[]{""}),
+                Arguments.of(",a", ",", new String[]{"", "a"}),
+                Arguments.of("a,", ",", new String[]{"a", ""}),
+                Arguments.of("a,,b", ",", new String[]{"a", "", "b"}),
+                Arguments.of("::a::::", "::", new String[]{"", "a", "", ""}));
+    }
+
+    @ParameterizedTest
+    @MethodSource("paddedFieldCases")
+    void splitWithLimitPadsUnusedFields(String source, String[] expected) {
+        Assertions.assertArrayEquals(expected, EgovStringUtil.split(source, "::", 4));
+    }
+
+    private static Stream<Arguments> paddedFieldCases() {
+        return Stream.of(
+                Arguments.of("", new String[]{"", "", "", ""}),
+                Arguments.of("a::b", new String[]{"a", "b", "", ""}));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", "a::b::c" })
+    void splitWithLimitOnePreservesTheWholeSource(String source) {
+        Assertions.assertArrayEquals(new String[]{source}, EgovStringUtil.split(source, "::", 1));
+    }
+
+    @ParameterizedTest
+    @MethodSource("nullInputs")
+    void splitPreservesNullInputExceptions(String source, String separator) {
+        Assertions.assertThrows(NullPointerException.class, () -> EgovStringUtil.split(source, separator));
+        Assertions.assertThrows(NullPointerException.class, () -> EgovStringUtil.split(source, separator, 2));
+    }
+
+    private static Stream<Arguments> nullInputs() {
+        return Stream.of(
+                Arguments.of(null, ","),
+                Arguments.of("abc", null),
+                Arguments.of(null, null));
+    }
+
+    @Test
+    void splitWithLimitPreservesZeroLengthException() {
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> EgovStringUtil.split("abc", ",", 0));
+    }
+
+    @Test
+    void splitWithLimitPreservesNegativeLengthException() {
+        Assertions.assertThrows(NegativeArraySizeException.class, () -> EgovStringUtil.split("abc", ",", -1));
     }
 
 }

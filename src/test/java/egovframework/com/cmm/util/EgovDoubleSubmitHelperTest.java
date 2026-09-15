@@ -1,6 +1,12 @@
 package egovframework.com.cmm.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Proxy;
 import java.util.Collections;
@@ -16,18 +22,150 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
 class EgovDoubleSubmitHelperTest {
 
+	@AfterEach
+	void resetRequestContext() {
+		RequestContextHolder.resetRequestAttributes();
+	}
+
+	@Test
+	void checkAndSaveToken_acceptsDefaultTokenOnceAndAllowsTheRotatedToken() {
+		Map<String, String> tokens = defaultTokens("TOKEN");
+		MockHttpSession session = sessionWithTokens(tokens);
+		bindRequest(session, "TOKEN");
+
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+		String rotatedToken = tokens.get(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY);
+		assertNotNull(rotatedToken);
+		assertFalse(rotatedToken.isEmpty());
+		assertNotEquals("TOKEN", rotatedToken);
+
+		bindRequest(session, "TOKEN");
+		assertFalse(EgovDoubleSubmitHelper.checkAndSaveToken());
+		assertEquals(rotatedToken, tokens.get(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY));
+
+		bindRequest(session, rotatedToken);
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+		assertNotEquals(rotatedToken, tokens.get(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY));
+	}
+
+	@ParameterizedTest
+	@ValueSource(strings = { "WRONG", "" })
+	void checkAndSaveToken_preservesValidTokenAfterAnInvalidSubmission(String invalidToken) {
+		Map<String, String> tokens = defaultTokens("TOKEN");
+		MockHttpSession session = sessionWithTokens(tokens);
+		bindRequest(session, invalidToken);
+
+		assertFalse(EgovDoubleSubmitHelper.checkAndSaveToken());
+		assertEquals(defaultTokens("TOKEN"), tokens);
+
+		bindRequest(session, "TOKEN");
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+	}
+
+	@Test
+	void checkAndSaveToken_keepsFormKeysIndependent() {
+		Map<String, String> tokens = new HashMap<>(Map.of("FORM_A", "TOKEN", "FORM_B", "TOKEN"));
+		MockHttpSession session = sessionWithTokens(tokens);
+		bindRequest(session, "TOKEN");
+
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken("FORM_A"));
+		String firstFormToken = tokens.get("FORM_A");
+		assertNotEquals("TOKEN", firstFormToken);
+		assertEquals("TOKEN", tokens.get("FORM_B"));
+
+		bindRequest(session, "TOKEN");
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken("FORM_B"));
+		assertNotEquals("TOKEN", tokens.get("FORM_B"));
+		assertEquals(firstFormToken, tokens.get("FORM_A"));
+		assertEquals(2, tokens.size());
+	}
+
+	@Test
+	void checkAndSaveToken_keepsSessionsIndependentEvenWithTheSameToken() {
+		Map<String, String> firstTokens = defaultTokens("TOKEN");
+		Map<String, String> secondTokens = defaultTokens("TOKEN");
+		MockHttpSession firstSession = sessionWithTokens(firstTokens);
+		MockHttpSession secondSession = sessionWithTokens(secondTokens);
+		bindRequest(firstSession, "TOKEN");
+
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+		String rotatedFirstToken = firstTokens.get(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY);
+		assertEquals(defaultTokens("TOKEN"), secondTokens);
+
+		bindRequest(secondSession, "TOKEN");
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+		assertEquals(rotatedFirstToken, firstTokens.get(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY));
+	}
+
+	@Test
+	void checkAndSaveToken_rejectsAnotherSessionsTokenWithoutConsumingEitherToken() {
+		Map<String, String> firstTokens = defaultTokens("FIRST_TOKEN");
+		Map<String, String> secondTokens = defaultTokens("SECOND_TOKEN");
+		MockHttpSession firstSession = sessionWithTokens(firstTokens);
+		MockHttpSession secondSession = sessionWithTokens(secondTokens);
+		bindRequest(secondSession, "FIRST_TOKEN");
+
+		assertFalse(EgovDoubleSubmitHelper.checkAndSaveToken());
+		assertEquals(defaultTokens("FIRST_TOKEN"), firstTokens);
+		assertEquals(defaultTokens("SECOND_TOKEN"), secondTokens);
+
+		bindRequest(firstSession, "FIRST_TOKEN");
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+		bindRequest(secondSession, "SECOND_TOKEN");
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+	}
+
+	@Test
+	void checkAndSaveToken_rejectsUnregisteredFormKeyWithoutChangingStoredTokens() {
+		Map<String, String> tokens = defaultTokens("TOKEN");
+		MockHttpSession session = sessionWithTokens(tokens);
+		bindRequest(session, "TOKEN");
+
+		assertFalse(EgovDoubleSubmitHelper.checkAndSaveToken("UNKNOWN"));
+		assertEquals(defaultTokens("TOKEN"), tokens);
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+	}
+
+	@Test
+	void checkAndSaveToken_reportsMissingSessionTokenConfiguration() {
+		MockHttpSession session = new MockHttpSession();
+		bindRequest(session, "TOKEN");
+
+		assertThrowsExactly(RuntimeException.class, EgovDoubleSubmitHelper::checkAndSaveToken);
+		assertNull(session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY));
+	}
+
+	@Test
+	void checkAndSaveToken_preservesStoredTokenWhenRequestParameterIsMissing() {
+		Map<String, String> tokens = defaultTokens("TOKEN");
+		MockHttpSession session = sessionWithTokens(tokens);
+		bindRequest(session, null);
+
+		assertThrowsExactly(RuntimeException.class, EgovDoubleSubmitHelper::checkAndSaveToken);
+		assertEquals(defaultTokens("TOKEN"), tokens);
+
+		bindRequest(session, "TOKEN");
+		assertTrue(EgovDoubleSubmitHelper.checkAndSaveToken());
+	}
+
 	@Test
 	void checkAndSaveToken_allowsOnlyOneConcurrentSubmitForSameToken()
 			throws InterruptedException, ExecutionException, TimeoutException {
 		final String token = "TOKEN";
-		Map<String, String> tokenMap = new CoordinatedTokenMap(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY);
-		tokenMap.put(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY, token);
+		Map<String, String> tokenMap = new CoordinatedTokenMap(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY, token);
 		HttpSession session = fakeSessionWithTokenMap(tokenMap);
 
 		ExecutorService pool = Executors.newFixedThreadPool(2);
@@ -45,6 +183,26 @@ class EgovDoubleSubmitHelperTest {
 		} finally {
 			pool.shutdownNow();
 		}
+	}
+
+	private static Map<String, String> defaultTokens(String token) {
+		return new HashMap<>(Map.of(EgovDoubleSubmitHelper.DEFAULT_TOKEN_KEY, token));
+	}
+
+	private static MockHttpSession sessionWithTokens(Map<String, String> tokens) {
+		MockHttpSession session = new MockHttpSession();
+		session.setAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY, tokens);
+		return session;
+	}
+
+	private static void bindRequest(HttpSession session, String token) {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setMethod("POST");
+		request.setSession(session);
+		if (token != null) {
+			request.setParameter(EgovDoubleSubmitHelper.PARAMETER_NAME, token);
+		}
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 	}
 
 	private static boolean checkTokenAfterStart(HttpSession session, String token, CountDownLatch start)
@@ -112,8 +270,9 @@ class EgovDoubleSubmitHelperTest {
 		private final CountDownLatch readAttempts = new CountDownLatch(2);
 		private final AtomicBoolean coordinateReads = new AtomicBoolean(true);
 
-		private CoordinatedTokenMap(String tokenKey) {
+		private CoordinatedTokenMap(String tokenKey, String token) {
 			this.tokenKey = tokenKey;
+			super.put(tokenKey, token);
 		}
 
 		@Override

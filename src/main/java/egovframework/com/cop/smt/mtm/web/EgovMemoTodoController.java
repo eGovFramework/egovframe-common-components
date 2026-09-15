@@ -117,10 +117,7 @@ public class EgovMemoTodoController {
     	if (loginVO == null || loginVO.getUniqId() == null) {
     		throw new IllegalStateException("인증 정보가 없습니다.");
     	}
-    	MemoTodo memoTodo = memoTodoService.selectMemoTodo(memoTodoVO);
-    	if (memoTodo == null) {
-    		throw new IllegalStateException("권한이 없습니다.");
-    	}
+		MemoTodo memoTodo = selectRequiredMemoTodo(memoTodoVO);
     	// 2026.07.13 KISA 보안취약점 조치
     	if (!loginVO.getUniqId().equals(memoTodo.getWrterId())) {
     		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
@@ -197,9 +194,9 @@ public class EgovMemoTodoController {
     	//할일정료일자(분)
     	model.addAttribute("todoEndMin", getTimeMM());
 
-    	MemoTodoVO resultVO = memoTodoService.selectMemoTodo(memoTodoVO);
+		MemoTodoVO resultVO = selectRequiredMemoTodo(memoTodoVO);
 		// 작성자 본인 또는 관리자만 수정폼에 접근 가능하도록 소유권 검증 (2026.07.13 KISA 조치의 selectMemoTodo와 동일 관례)
-		egovAssertAdminOrOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
+		egovAssertAdminOrOwner(resultVO.getFrstRegisterId());
 		resultVO.setSearchCnd(memoTodoVO.getSearchCnd());
 		resultVO.setSearchWrd(memoTodoVO.getSearchWrd());
 		resultVO.setSearchBgnDe(memoTodoVO.getSearchBgnDe());
@@ -224,7 +221,7 @@ public class EgovMemoTodoController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (bindingResult.hasErrors()) {
-			MemoTodo memoTodo = memoTodoService.selectMemoTodo(memoTodoVO);
+			MemoTodo memoTodo = selectRequiredMemoTodo(memoTodoVO);
 		    model.addAttribute("memoTodo", memoTodo);
 			//할일시작일자(시)
 			model.addAttribute("todoBeginHour", getTimeHH());
@@ -240,8 +237,8 @@ public class EgovMemoTodoController {
 		if (isAuthenticated) {
 		    // 작성자 본인 또는 관리자만 수정 가능하도록 소유권 검증 (selectMemoTodo의 KISA 조치와 동일하게
 		    // 이 파일이 이미 정의해 둔 egovAssertAdminOrOwner를 사용)
-		    MemoTodoVO stored = memoTodoService.selectMemoTodo(memoTodoVO);
-		    egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+		    MemoTodoVO stored = selectRequiredMemoTodo(memoTodoVO);
+		    egovAssertAdminOrOwner(stored.getFrstRegisterId());
 
 			memoTodoVO.setTodoBeginTime(memoTodoVO.getTodoDe() + memoTodoVO.getTodoBeginHour() + memoTodoVO.getTodoBeginMin());
 			memoTodoVO.setTodoEndTime(memoTodoVO.getTodoDe() + memoTodoVO.getTodoEndHour() + memoTodoVO.getTodoEndMin());
@@ -316,8 +313,8 @@ public class EgovMemoTodoController {
     	}
 
 		// 작성자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
-		MemoTodoVO stored = memoTodoService.selectMemoTodo(memoTodoVO);
-		egovAssertAdminOrOwner(stored == null ? null : stored.getFrstRegisterId());
+		MemoTodoVO stored = selectRequiredMemoTodo(memoTodoVO);
+		egovAssertAdminOrOwner(stored.getFrstRegisterId());
 
     	memoTodoService.deleteMemoTodo(memoTodoVO);
 		return "forward:/cop/smt/mtm/selectMemoTodoList.do";
@@ -409,6 +406,14 @@ public class EgovMemoTodoController {
     	return listMM;
 	}
 
+
+	private MemoTodoVO selectRequiredMemoTodo(MemoTodoVO memoTodoVO) throws Exception {
+		MemoTodoVO stored = memoTodoService.selectMemoTodo(memoTodoVO);
+		if (stored == null) {
+			throw new IllegalStateException("권한이 없습니다.");
+		}
+		return stored;
+	}
 
 	/**
 	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인

@@ -239,7 +239,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 		if (bindingResult.hasErrors()) {
 
-			return "egovframework/com/uss/olh/wor/EgovCpyrhtPrtcPolicyCnUpdt";
+			return "egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnUpdt";
 
 		}
 

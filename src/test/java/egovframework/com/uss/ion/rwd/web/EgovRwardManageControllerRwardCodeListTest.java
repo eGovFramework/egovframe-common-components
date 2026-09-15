@@ -119,7 +119,9 @@ class EgovRwardManageControllerRwardCodeListTest {
 	void updateFormEntrySuppliesRwardCodeList() throws Exception {
 		RwardManageVO stored = new RwardManageVO();
 		stored.setRwardId("1");
+		stored.setFrstRegisterId(APPLICANT);
 		EgovRwardManageController controller = controllerWith(stored);
+		bindLoginUser(APPLICANT);
 
 		ModelMap model = new ModelMap();
 		String view = controller.selectRwardManage(new RwardManage(), new RwardManageVO(), Map.of("cmd", "updt"),

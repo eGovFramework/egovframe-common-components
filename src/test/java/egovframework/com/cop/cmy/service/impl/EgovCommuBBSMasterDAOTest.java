@@ -15,16 +15,17 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.test.EgovTestAbstractDAO;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,131 +41,131 @@ import lombok.extern.slf4j.Slf4j;
 
 @ImportResource({
 
-    "classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
 
-    "classpath*:egovframework/spring/com/idgn/context-idgn-bbs.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-bbs.xml",
 
 })
 
+@Import(EgovConfigCryptoTest.class)
+
 @ComponentScan(
 
-        useDefaultFilters = false,
+		useDefaultFilters = false,
 
-        basePackages = {
+		basePackages = {
 
-                "egovframework.com.cop.cmy.service.impl",
+				"egovframework.com.cop.cmy.service.impl",
 
-                "egovframework.com.cop.bbs.service.impl",
+				"egovframework.com.cop.bbs.service.impl",
 
-        },
+		},
 
-        includeFilters = {
+		includeFilters = {
 
-                @Filter(
+				@Filter(
 
-                        type = FilterType.ASSIGNABLE_TYPE,
+						type = FilterType.ASSIGNABLE_TYPE,
 
-                        classes = {
+						classes = {
 
-                                EgovCommuBBSMasterDAO.class,
+								EgovCommuBBSMasterDAO.class,
 
-                                EgovBBSMasterDAO.class,
+								EgovBBSMasterDAO.class,
 
-                        }
+						}
 
-                        )
+				)
 
-        }
+		}
 
-        )
+)
 
-@RequiredArgsConstructor
 @Slf4j
-// @Commit
 public class EgovCommuBBSMasterDAOTest extends EgovTestAbstractDAO {
 
-    /**
-     * EgovCommuBBSMasterDAO
-     */
-    @Autowired
-    private EgovCommuBBSMasterDAO egovCommuBBSMasterDAO;
+	/**
+	 * EgovCommuBBSMasterDAO
+	 */
+	@Autowired
+	private EgovCommuBBSMasterDAO egovCommuBBSMasterDAO;
 
-    /**
-     * EgovBBSMasterDAO
-     */
-    @Autowired
-    private EgovBBSMasterDAO egovBBSMasterDAO;
+	/**
+	 * EgovBBSMasterDAO
+	 */
+	@Autowired
+	private EgovBBSMasterDAO egovBBSMasterDAO;
 
-    /**
-     * egovBBSMstrIdGnrService
-     */
-    @Autowired
-    @Qualifier("egovBBSMstrIdGnrService")
-    private EgovIdGnrService egovBBSMstrIdGnrService;
+	/**
+	 * egovBBSMstrIdGnrService
+	 */
+	@Autowired
+	@Qualifier("egovBBSMstrIdGnrService")
+	private EgovIdGnrService egovBBSMstrIdGnrService;
 
-    /**
-     * egovCmmntyIdGnrService
-     */
-    @Autowired
-    @Qualifier("egovCmmntyIdGnrService")
-    private EgovIdGnrService egovCmmntyIdGnrService;
+	/**
+	 * egovCmmntyIdGnrService
+	 */
+	@Autowired
+	@Qualifier("egovCmmntyIdGnrService")
+	private EgovIdGnrService egovCmmntyIdGnrService;
 
-    private void testData(final BoardMaster boardMaster) {
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+	private void testData(final BoardMaster boardMaster) {
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        if (loginVO != null) {
-            boardMaster.setFrstRegisterId(loginVO.getUniqId());
-            boardMaster.setLastUpdusrId(loginVO.getUniqId());
-        }
+		if (loginVO != null) {
+			boardMaster.setFrstRegisterId(loginVO.getUniqId());
+			boardMaster.setLastUpdusrId(loginVO.getUniqId());
+		}
 
-        try {
-            boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
-            boardMaster.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+			boardMaster.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
 
-        } catch (FdlException e) {
-            throw new BaseRuntimeException(e);
-        }
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
-        boardMaster.setBbsTyCode("BBST02");
-        boardMaster.setBbsNm("test 게시판마스터 " + LocalDateTime.now());
+		boardMaster.setBbsTyCode("BBST02");
+		boardMaster.setBbsNm("test 게시판마스터 " + LocalDateTime.now());
 
-        boardMaster.setUseAt("Y");
+		boardMaster.setUseAt("Y");
 
-        egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
-    }
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+	}
 
-    @Test
-    public void testSelectCommuBBSMasterListMain() {
-        // given
-        BoardMaster testData = new BoardMaster();
-        testData(testData);
+	@Test
+	public void testSelectCommuBBSMasterListMain() {
+		// given
+		BoardMaster testData = new BoardMaster();
+		testData(testData);
 
-        BoardMasterVO boardMasterVO = new BoardMasterVO();
-        boardMasterVO.setCmmntyId(testData.getCmmntyId());
+		BoardMasterVO boardMasterVO = new BoardMasterVO();
+		boardMasterVO.setCmmntyId(testData.getCmmntyId());
 
-        // when
-        final List<BoardMasterVO> resultList = egovCommuBBSMasterDAO.selectCommuBBSMasterListMain(boardMasterVO);
-        for (final BoardMasterVO result : resultList) {
-            debug(result);
-        }
-        // then
-        if(resultList != null) {
-            assertAll(testData, resultList.get(0));
-        }
-    }
+		// when
+		final List<BoardMasterVO> resultList = egovCommuBBSMasterDAO.selectCommuBBSMasterListMain(boardMasterVO);
+		for (final BoardMasterVO result : resultList) {
+			debug(result);
+		}
+		// then
+		if (resultList != null) {
+			assertAll(testData, resultList.get(0));
+		}
+	}
 
-    private void assertAll(final BoardMaster testData, final BoardMasterVO result) {
-        assertEquals(testData.getBbsId(), result.getBbsId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-        assertEquals(testData.getBbsTyCode(), result.getBbsTyCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-        assertEquals(testData.getBbsNm(), result.getBbsNm(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
-    }
+	private void assertAll(final BoardMaster testData, final BoardMasterVO result) {
+		assertEquals(testData.getBbsId(), result.getBbsId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+		assertEquals(testData.getBbsTyCode(), result.getBbsTyCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+		assertEquals(testData.getBbsNm(), result.getBbsNm(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+	}
 
-    private void debug(final BoardMasterVO result) {
-        if (log.isDebugEnabled()) {
-            log.debug("result={}", result);
-            log.debug("getBbsId={}", result.getBbsId());
-            log.debug("getBbsTyCode={}", result.getBbsTyCode());
-            log.debug("getBbsNm={}", result.getBbsNm());
-        }
-    }
+	private void debug(final BoardMasterVO result) {
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+			log.debug("getBbsId={}", result.getBbsId());
+			log.debug("getBbsTyCode={}", result.getBbsTyCode());
+			log.debug("getBbsNm={}", result.getBbsNm());
+		}
+	}
 }

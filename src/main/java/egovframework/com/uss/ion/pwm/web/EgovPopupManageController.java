@@ -2,7 +2,6 @@ package egovframework.com.uss.ion.pwm.web;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -354,17 +353,21 @@ public class EgovPopupManageController {
 
 		// 2026.02.28 KISA 취약점 조취
 		response.setContentType("text/html;charset=utf-8");
+
+		LOGGER.debug("commandMap : {}", commandMap);
+		LOGGER.debug("popupManageVO : {}", popupManageVO);
+
+		PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
+		if (popupManageVOs == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+
+		String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
+				+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
+				+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
+
 		PrintWriter out = response.getWriter();
-
-			LOGGER.debug("commandMap : {}", commandMap);
-			LOGGER.debug("popupManageVO : {}", popupManageVO);
-
-			PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
-
-			String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
-					+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
-					+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
-
 		out.print(EgovWebUtil.clearXSSMinimum(sPrint));
 		out.flush();
 
@@ -396,7 +399,7 @@ public class EgovPopupManageController {
 		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
 		if (fileUrl2.contains(":") || fileUrl2.startsWith("/") || fileUrl2.toUpperCase(Locale.ROOT).contains("WEB-INF")) {
 			LOGGER.debug("Open Popup > Unsafe fileUrl rejected: {}", fileUrl2);
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
@@ -409,7 +412,7 @@ public class EgovPopupManageController {
 			}
 		}
 		LOGGER.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
 	}
 
 	/**

@@ -2,6 +2,7 @@ package egovframework.com.utl.fcc.service;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,6 +19,10 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -25,6 +30,21 @@ class EgovFileUploadUtilTest {
 
 	@TempDir
 	Path uploadDir;
+
+	@ParameterizedTest
+	@NullAndEmptySource
+	@ValueSource(strings = {"png", "pdf", "README", "image."})
+	void filenamesWithoutExtensionAreNotAllowed(String filename) {
+		assertEquals("", EgovFileUploadUtil.getFileExtension(filename));
+		assertFalse(EgovFileUploadUtil.checkFileExtension(filename, ".png,.pdf,.gz"));
+	}
+
+	@ParameterizedTest
+	@CsvSource({"image.PNG, PNG", "archive.tar.gz, gz", ".png, png"})
+	void existingExtensionHandlingIsPreserved(String filename, String expectedExtension) {
+		assertEquals(expectedExtension, EgovFileUploadUtil.getFileExtension(filename));
+		assertTrue(EgovFileUploadUtil.checkFileExtension(filename, ".png,.pdf,.gz"));
+	}
 
 	@Test
 	void uploadFilesExtRejectsFilesExceedingMaxFileSizeBeforeSaving() throws Exception {

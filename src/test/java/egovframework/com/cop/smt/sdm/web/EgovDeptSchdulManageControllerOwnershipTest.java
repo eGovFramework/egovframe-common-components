@@ -27,12 +27,12 @@ import egovframework.com.cop.smt.sdm.service.EgovDeptSchdulManageService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
- * 부서일정 삭제·수정의 소유권 검증 회귀 테스트.
+ * 부서일정 삭제·수정·상세조회의 소유권 검증 회귀 테스트.
  *
  * EgovDeptSchdulManageMainList의 "SCHDUL_CHARGER_ID = uniqId OR FRST_REGISTER_ID = uniqId"
  * 조건이 이 도메인의 실제 소유권 정의다. 담당자·등록자 중 아무도 아닌 로그인 사용자가
- * 부서일정을 삭제·수정하려 하면 egovAssertAdminOrChargerOrOwner가 IllegalStateException을
- * 던져 차단해야 한다. 담당자·등록자·ROLE_ADMIN은 모두 통과해야 한다.
+ * 부서일정을 삭제·수정·상세조회하려 하면 egovAssertAdminOrChargerOrOwner가
+ * IllegalStateException을 던져 차단해야 한다. 담당자·등록자·ROLE_ADMIN은 모두 통과해야 한다.
  */
 class EgovDeptSchdulManageControllerOwnershipTest {
 
@@ -95,7 +95,7 @@ class EgovDeptSchdulManageControllerOwnershipTest {
 
 		@Override
 		public List<EgovMap> selectDeptSchdulManageDetail(DeptSchdulManageVO deptSchdulManageVO) {
-			throw new UnsupportedOperationException();
+			return List.of();
 		}
 
 		@Override
@@ -315,5 +315,42 @@ class EgovDeptSchdulManageControllerOwnershipTest {
 
 		controller.deptSchdulManageModifyActor(multiRequest, commandMap, vo, bindingResult, model, redirectAttributes);
 		org.junit.jupiter.api.Assertions.assertTrue(service.updateCalled, "The registrant must be able to save changes.");
+	}
+
+	// ---- egovDeptSchdulManageDetail (상세조회) ----
+
+	@Test
+	void viewDetailByOutsiderIsRejected() {
+		StubService service = new StubService(CHARGER, REGISTRANT);
+		EgovDeptSchdulManageController controller = controllerWith(service);
+		bindLoginUser(OUTSIDER, List.of());
+
+		ComDefaultVO searchVO = new ComDefaultVO();
+		ModelMap model = new ModelMap();
+		assertThrows(IllegalStateException.class,
+				() -> controller.egovDeptSchdulManageDetail(searchVO, requestFor("1"), model),
+				"A logged-in user who is neither charger nor registrant must not view a department schedule detail.");
+	}
+
+	@Test
+	void viewDetailByChargerSucceeds() throws Exception {
+		StubService service = new StubService(CHARGER, REGISTRANT);
+		EgovDeptSchdulManageController controller = controllerWith(service);
+		bindLoginUser(CHARGER, List.of());
+
+		ComDefaultVO searchVO = new ComDefaultVO();
+		ModelMap model = new ModelMap();
+		assertDoesNotThrow(() -> controller.egovDeptSchdulManageDetail(searchVO, requestFor("1"), model));
+	}
+
+	@Test
+	void viewDetailByAdminSucceedsEvenWhenNeitherChargerNorRegistrant() throws Exception {
+		StubService service = new StubService(CHARGER, REGISTRANT);
+		EgovDeptSchdulManageController controller = controllerWith(service);
+		bindLoginUser(OUTSIDER, List.of("ROLE_ADMIN"));
+
+		ComDefaultVO searchVO = new ComDefaultVO();
+		ModelMap model = new ModelMap();
+		assertDoesNotThrow(() -> controller.egovDeptSchdulManageDetail(searchVO, requestFor("1"), model));
 	}
 }
