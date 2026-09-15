@@ -304,8 +304,22 @@ public class EgovArticleScrapController {
 		if (bindingResult.hasErrors()) {
 
 		    Scrap vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		    if (vo == null) {
+		        throw new IllegalStateException("권한이 없습니다.");
+		    }
+		    egovAssertAdminOrOwner(vo.getFrstRegisterId());
 
 		    model.addAttribute("result", vo);
+
+		    // 형제 updateArticleScrapView와 동일하게 재표시 폼이 참조하는 속성을 담는다
+		    model.addAttribute("articleScrapVO", vo);
+
+		    BoardVO boardVO = new BoardVO();
+		    boardVO.setNttId(vo.getNttId());
+		    boardVO.setBbsId(vo.getBbsId());
+		    boardVO = egovArticleService.selectArticleDetail(boardVO);
+
+		    model.addAttribute("articleVO", boardVO);
 
 		    return "egovframework/com/cop/scp/EgovArticleScrapUpdt";
 		}
