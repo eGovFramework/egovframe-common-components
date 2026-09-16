@@ -162,11 +162,14 @@ public class EgovAuthorManageController {
 	 */
     @PostMapping("/sec/ram/EgovAuthorUpdate.do")
     @RequireAdmin
-    public String updateAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
+    public String updateAuthor(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
+    		                    @Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    Model model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 형제 selectAuthor와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("authorManageVO", authorManageVO);
 			return "egovframework/com/sec/ram/EgovAuthorUpdate";
 		} else {
 			egovAuthorManageService.updateAuthor(authorManage);
