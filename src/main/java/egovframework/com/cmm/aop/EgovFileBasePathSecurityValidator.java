@@ -71,7 +71,7 @@ public class EgovFileBasePathSecurityValidator {
 			// 허용된 디렉토리 내인지 검증
 			for (String whiteBasePath : whiteList) {
 				File file = new File(whiteBasePath).getCanonicalFile();
-				if (base.getPath().startsWith(file.getPath())) {
+				if (base.toPath().startsWith(file.toPath())) {
 					validateResult = true;
 				}
 			}
