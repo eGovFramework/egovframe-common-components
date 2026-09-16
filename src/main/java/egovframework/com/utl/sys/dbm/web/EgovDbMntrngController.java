@@ -106,7 +106,8 @@ public class EgovDbMntrngController {
 	 */
 	@PostMapping("/utl/sys/dbm/addDbMntrng.do")
 	@RequireAdmin
-	public String insertDbMntrng(@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
+	public String insertDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
+			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
@@ -122,6 +123,8 @@ public class EgovDbMntrngController {
     	if (bindingResult.hasErrors()){
     		referenceData(model);
     		model.addAttribute("dbMntrng", dbMntrng);
+    		// 형제 selectDbMntrngForRegist·updateDbMntrng와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+    		model.addAttribute("searchVO", searchVO);
     		return "egovframework/com/utl/sys/dbm/EgovDbMntrngRegist";
 		}else{
     		//아이디 설정
