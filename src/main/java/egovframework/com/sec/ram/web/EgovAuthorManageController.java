@@ -163,7 +163,7 @@ public class EgovAuthorManageController {
     @PostMapping("/sec/ram/EgovAuthorUpdate.do")
     @RequireAdmin
     public String updateAuthor(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
-    		                    @Valid @ModelAttribute("authorManage") AuthorManage authorManage,
+			                    @Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    Model model) throws Exception {
 

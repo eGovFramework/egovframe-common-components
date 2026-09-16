@@ -123,8 +123,8 @@ public class EgovDbMntrngController {
     	if (bindingResult.hasErrors()){
     		referenceData(model);
     		model.addAttribute("dbMntrng", dbMntrng);
-    		// 형제 selectDbMntrngForRegist·updateDbMntrng와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
-    		model.addAttribute("searchVO", searchVO);
+			// 형제 selectDbMntrngForRegist·updateDbMntrng와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("searchVO", searchVO);
     		return "egovframework/com/utl/sys/dbm/EgovDbMntrngRegist";
 		}else{
     		//아이디 설정
