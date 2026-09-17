@@ -65,6 +65,27 @@ public class EgovAuthorRoleManageServiceImpl extends EgovAbstractServiceImpl imp
 		authorRoleManageDAO.deleteAuthorRole(authorRoleManage);
 	}
 
+	/**
+	 * 여러 롤코드에 대한 권한 배정을 배정여부(regYn)에 따라 일괄 처리한다.
+	 * 이 메서드 진입 시점에 한 번만 트랜잭션이 걸리므로(context-transaction.xml 의
+	 * *Impl 메서드 대상 AOP), 항목 중간에 예외가 나면 목록 전체가 롤백된다.
+	 * @param authorRoleManage AuthorRoleManage
+	 * @param roleCodes 처리할 롤코드 배열
+	 * @param regYns roleCodes 와 같은 순서의 배정여부(Y/N) 배열
+	 * @exception Exception
+	 */
+	@Override
+	public void updateAuthorRoleList(AuthorRoleManage authorRoleManage, String[] roleCodes, String[] regYns) throws Exception {
+		for (int i = 0; i < roleCodes.length; i++) {
+			authorRoleManage.setRoleCode(roleCodes[i]);
+			authorRoleManage.setRegYn(regYns[i]);
+			deleteAuthorRole(authorRoleManage);
+			if ("Y".equals(regYns[i])) {
+				insertAuthorRole(authorRoleManage);
+			}
+		}
+	}
+
     /**
 	 * 목록조회 카운트를 반환한다
 	 * @param authorRoleManageVO AuthorRoleManageVO

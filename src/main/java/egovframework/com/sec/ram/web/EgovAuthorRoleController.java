@@ -134,18 +134,9 @@ public class EgovAuthorRoleController {
 	    	String [] strRegYns = regYns.split(";");
 	
 	    	authorRoleManage.setRoleCode(authorCode);
-	
-	    	for(int i=0; i<strRoleCodes.length;i++) {
-	
-	    		authorRoleManage.setRoleCode(strRoleCodes[i]);
-	    		authorRoleManage.setRegYn(strRegYns[i]);
-	    		if(strRegYns[i].equals("Y")){
-	    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);//2011.09.07
-	    			egovAuthorRoleManageService.insertAuthorRole(authorRoleManage);
-	    		}else {
-	    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);
-	    		}
-	    	}
+
+	    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+	    	egovAuthorRoleManageService.updateAuthorRoleList(authorRoleManage, strRoleCodes, strRegYns);
 		
 
     	if ("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
