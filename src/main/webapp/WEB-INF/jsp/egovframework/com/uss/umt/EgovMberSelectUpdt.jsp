@@ -141,7 +141,7 @@ function onepassCancel() {
 		<tr>
 			<th><label for="mberNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="mberNm" title="${title} ${inputTxt}" size="50" maxlength="60" />
+				<form:input path="mberNm" title="${title} ${inputTxt}" size="50" maxlength="50" />
 				<div><form:errors path="mberNm" cssClass="error" /></div> 
 			</td>
 		</tr>
@@ -182,9 +182,9 @@ function onepassCancel() {
 		<tr>
 			<th><label for="areaNo">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <form:input path="areaNo" id="areaNo" title="전화번호" cssClass="txaIpUmt" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="middleTelno" id="middleTelno" cssClass="txaIpUmt" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="endTelno" id="endTelno" cssClass="txaIpUmt" size="5" maxlength="5" style="width:40px;"/>
+                    <form:input path="areaNo" id="areaNo" title="전화번호" cssClass="txaIpUmt" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="middleTelno" id="middleTelno" cssClass="txaIpUmt" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="endTelno" id="endTelno" cssClass="txaIpUmt" size="5" maxlength="4" style="width:40px;"/>
                     <div><form:errors path="areaNo" cssClass="error" /></div>
                     <div><form:errors path="middleTelno" cssClass="error" /></div>
                     <div><form:errors path="endTelno" cssClass="error" /></div>
