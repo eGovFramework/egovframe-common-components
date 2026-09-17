@@ -430,17 +430,22 @@ public class EgovWikMnthngReprtController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = wikMnthngReprtVO.getAtchFileId();
-
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
-
-		fileMngService.deleteAllFileInf(fvo);
-		// 첨부파일 삭제 End.............
-
 		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+
+		// 첨부파일 삭제를 위한 ID 생성 start....
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		// 조회 조건에 searchId(작성자/보고대상자)가 들어가므로 위의 setSearchId보다 뒤에 있어야 한다.
+		WikMnthngReprtVO stored = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
+
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
+
+			fileMngService.deleteAllFileInf(fvo);
+		}
+		// 첨부파일 삭제 End.............
 
 		wikMnthngReprtService.deleteWikMnthngReprt(wikMnthngReprtVO);
 		return "forward:/cop/smt/wmr/selectWikMnthngReprtList.do";
