@@ -141,7 +141,7 @@ function fn_egov_dn_info_setting(dn) {
 		<tr>
 			<th><label for="emplyrNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="emplyrNm" title="${title} ${inputTxt}" size="50" maxlength="60" />
+				<form:input path="emplyrNm" title="${title} ${inputTxt}" size="50" maxlength="50" />
 				<div><form:errors path="emplyrNm" cssClass="error" /></div> 
 			</td>
 		</tr>
@@ -233,9 +233,9 @@ function fn_egov_dn_info_setting(dn) {
 		<tr>
 			<th><label for="areaNo">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <form:input path="areaNo" id="areaNo" title="${title} ${inputSelect}" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="homemiddleTelno" id="homemiddleTelno" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="homeendTelno" id="homeendTelno"  size="5" maxlength="5" style="width:40px;"/>
+                    <form:input path="areaNo" id="areaNo" title="${title} ${inputSelect}" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="homemiddleTelno" id="homemiddleTelno" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="homeendTelno" id="homeendTelno"  size="5" maxlength="4" style="width:40px;"/>
                     <div><form:errors path="areaNo" cssClass="error" /></div>
                     <div><form:errors path="homemiddleTelno" cssClass="error" /></div>
                     <div><form:errors path="homeendTelno" cssClass="error" /></div>
