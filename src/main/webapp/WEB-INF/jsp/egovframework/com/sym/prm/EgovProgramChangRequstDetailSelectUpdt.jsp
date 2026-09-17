@@ -135,7 +135,7 @@ function selectList(){
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstDetailSelectUpdt.rqesterSj"/> <span class="pilsu">*</span></th><!-- 요청제목 -->
 			<td class="left">
-			    <form:input path="rqesterSj" size="60"  maxlength="60"  title="${vrqesterSj}"/>
+			    <form:input path="rqesterSj" size="60"  maxlength="50"  title="${vrqesterSj}"/>
 			    <div><form:errors path="rqesterSj" cssClass="error" /></div>
 			</td>
 		</tr>

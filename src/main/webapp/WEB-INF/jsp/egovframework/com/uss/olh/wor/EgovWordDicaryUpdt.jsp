@@ -93,7 +93,7 @@ function fn_egov_inqire_list() {
 		<tr>
 			<th><label for="engNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="engNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="engNm" title="${title} ${inputTxt}" size="70" maxlength="60" />
    				<div><form:errors path="engNm" cssClass="error" /></div>     
 			</td>
 		</tr>
