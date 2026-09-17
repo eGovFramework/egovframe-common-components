@@ -263,13 +263,17 @@ public class EgovMtgPlaceManageController {
 			return "forward:/uss/ion/mtg/selectMtgPlaceManageList.do";
 		}
 
-		String atchFileId = mtgPlaceManageVO.getAtchFileId();
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		MtgPlaceManageVO stored = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
 
 		egovMtgPlaceManageService.deleteMtgPlaceManage(mtgPlaceManageVO);
 
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
-		fileMngService.deleteAllFileInf(fvo);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));

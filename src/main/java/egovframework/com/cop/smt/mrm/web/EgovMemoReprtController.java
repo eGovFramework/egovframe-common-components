@@ -457,13 +457,17 @@ public class EgovMemoReprtController {
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = memoReprtVO.getAtchFileId();
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		MemoReprtVO stored = memoReprtService.selectMemoReprt(memoReprtVO);
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
 
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
 
-		fileMngService.deleteAllFileInf(fvo);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 		// 첨부파일 삭제 End.............
 
 		memoReprtService.deleteMemoReprt(memoReprtVO);
