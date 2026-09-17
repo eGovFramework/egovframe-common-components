@@ -135,15 +135,8 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
     	String [] strAuthorCodes = authorCodes.split(";");
     	String [] strRegYns = regYns.split(";");
 
-    	for(int i=0; i<strUserIds.length;i++) {
-    		deptAuthor.setUniqId(strUserIds[i]);
-    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
-    		if(strRegYns[i].equals("N")) {
-				egovDeptAuthorService.insertDeptAuthor(deptAuthor);
-			} else {
-				egovDeptAuthorService.updateDeptAuthor(deptAuthor);
-			}
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovDeptAuthorService.updateDeptAuthorList(deptAuthor, strUserIds, strAuthorCodes, strRegYns);
 		 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
@@ -168,10 +161,8 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 		}
 		
     	String [] strUserIds = userIds.split(";");
-    	for (String strUserId : strUserIds) {
-    		deptAuthor.setUniqId(strUserId);
-    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovDeptAuthorService.deleteDeptAuthorList(deptAuthor, strUserIds);
 		
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
