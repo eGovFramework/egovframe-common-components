@@ -552,15 +552,18 @@ public class EgovCnsltManageController {
 		// --------------------------------------------------------------------------------------------
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = cnsltManageVO.getAtchFileId();
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 위의 XSS 권한체크에 쓴 서버 조회값을 그대로 쓴다.
+		String atchFileId = vo.getAtchFileId();
 
 		cnsltManageService.deleteCnsltDtls(cnsltManageVO);
 
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
 
-		fileMngService.deleteAllFileInf(fvo);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 		// 첨부파일 삭제 End.............
 
 		return "forward:/uss/olp/cns/CnsltListInqire.do";
