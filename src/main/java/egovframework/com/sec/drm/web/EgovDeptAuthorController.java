@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.web.EgovComAbstractController;
 import egovframework.com.sec.drm.service.DeptAuthor;
 import egovframework.com.sec.drm.service.DeptAuthorVO;
@@ -119,6 +120,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sec/drm/EgovDeptAuthorInsert.do")
+	@RequireAdmin
 	public String insertDeptAuthor(@RequestParam("userIds") String userIds,
 			                       @RequestParam("authorCodes") String authorCodes,
 			                       @RequestParam("regYns") String regYns,
@@ -157,6 +159,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sec/drm/EgovDeptAuthorDelete.do")
+	@RequireAdmin
 	public String deleteDeptAuthor (@RequestParam("userIds") String userIds,
 			                        @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
                                      ModelMap model) throws Exception {
