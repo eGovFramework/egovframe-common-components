@@ -38,7 +38,6 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 기 등록된 팝업창정보를 삭제한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
@@ -50,7 +49,6 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 팝업창정보를 신규로 등록한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
@@ -64,7 +62,6 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 기 등록된 팝업창정보를 수정한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
