@@ -139,7 +139,9 @@ public class EgovSndngMailDetailController {
 		sndngMailDetailService.deleteSndngMail(sndngMailVO);
 
 		// 2. 첨부파일을 삭제한다.
-		sndngMailDetailService.deleteAtchmnFile(sndngMailVO);
+		// 삭제 폼의 hidden 필드 이름이 atchFileIdList라 요청VO의 atchFileId는 항상 비어 있다.
+		// 위에서 조회해 둔 resultMailVO(서버 값)를 대신 쓴다.
+		sndngMailDetailService.deleteAtchmnFile(resultMailVO);
 
 		// 3. 발송메일 목록 페이지 이동
 		return "redirect:/cop/ems/selectSndngMailList.do";
