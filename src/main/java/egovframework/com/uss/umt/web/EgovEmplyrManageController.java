@@ -25,6 +25,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovEmplyrManageService;
@@ -33,7 +34,6 @@ import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.EmplyrManageVO;
 import egovframework.com.uss.umt.service.EmplyrManageInsertVO;
 import egovframework.com.uss.umt.service.EmplyrPasswordManageVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import jakarta.annotation.Resource;
 
@@ -266,7 +266,7 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
-		if (!isSelfTarget(uniqId)) {
+		if (!EgovUmtAuthorizationHelper.canModifyUser(uniqId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -364,7 +364,7 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
-		if (!isSelfTarget(currentEmplyr.getUniqId())) {
+		if (!EgovUmtAuthorizationHelper.canModifyUser(currentEmplyr.getUniqId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -414,10 +414,6 @@ public class EgovEmplyrManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
-		}
-
-		if (!isSelfOnlyDeleteTargets(checkedIdForDel)) {
-			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		emplyrManageService.deleteEmplyr(checkedIdForDel);
@@ -637,36 +633,6 @@ public class EgovEmplyrManageController {
 			return decryptId;
 		}
 		return null;
-	}
-
-	private String getLoginUniqId() {
-		LoginVO loginUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		return loginUser == null ? "" : EgovStringUtil.isNullToString(loginUser.getUniqId());
-	}
-
-	private boolean isSelfTarget(String targetUniqId) {
-		String loginUniqId = getLoginUniqId();
-		return !loginUniqId.isEmpty()
-				&& targetUniqId != null
-				&& loginUniqId.equals(targetUniqId);
-	}
-
-	private boolean isSelfOnlyDeleteTargets(String checkedIdForDel) {
-		String loginUniqId = getLoginUniqId();
-		if (loginUniqId.isEmpty()) {
-			return false;
-		}
-		String[] delIds = EgovStringUtil.isNullToString(checkedIdForDel).split(",");
-		if (delIds.length == 0 || (delIds.length == 1 && delIds[0].isEmpty())) {
-			return false;
-		}
-		for (String element : delIds) {
-			String[] id = element.split(":");
-			if (id.length < 2 || !loginUniqId.equals(id[1])) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	private static void clearUmtPasswordFields(PasswordManageVO vo) {
