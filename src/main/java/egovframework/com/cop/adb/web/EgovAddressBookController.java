@@ -312,7 +312,7 @@ public class EgovAddressBookController {
      * javascript:/data: 등 스킴 URI를 차단한다.
      *
      * @param url 검증할 요청 URL
-     * @return 내부 상대경로이면 true
+     * @return 내부 절대경로이면 true
      */
     private boolean isSafeInternalUrl(String url) {
         if (url == null) {
