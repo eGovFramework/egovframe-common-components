@@ -372,11 +372,14 @@ public class EgovDeptJobController {
 	 */
 	@PostMapping("/cop/smt/djm/updateDeptJobBx.do")
 	public String updateDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
+			@RequestParam(value = "deptIndictOrdr", required = false) String deptIndictOrdr,
 			ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (bindingResult.hasErrors()) {
+			// modifyDeptJobBx 와 같이 화면의 표시순서 상한(deptIndictOrdr)을 다시 담는다.
+			model.addAttribute("indictOrdrValue", deptIndictOrdr);
 			return "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 		}
 
@@ -425,6 +428,7 @@ public class EgovDeptJobController {
 	 */
 	@PostMapping("/cop/smt/djm/insertDeptJobBx.do")
 	public String insertDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
+			@RequestParam(value = "deptIndictOrdr", required = false) String deptIndictOrdr,
 			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -439,6 +443,8 @@ public class EgovDeptJobController {
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
 
 		if(bindingResult.hasErrors()){
+			// getDeptJobBxOrdr 와 같이 화면의 표시순서 상한(deptIndictOrdr)을 다시 담는다.
+			model.addAttribute("indictOrdrValue", deptIndictOrdr);
 			return sLocationUrl;
 		}
 
