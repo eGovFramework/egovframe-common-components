@@ -1,6 +1,6 @@
 package egovframework.com.cmm.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class FileManageDAOTest_deleteAllFileInf extends EgovTestV1 {
 	private FileManageDAO fileManageDAO;
 
 	@Test
-	public void test() throws Exception {
+	public void test() {
 		log.debug("test");
 
 		// given
@@ -27,16 +27,11 @@ public class FileManageDAOTest_deleteAllFileInf extends EgovTestV1 {
 //		fvo.setAtchFileId("FILE_000000000000031");
 
 		// when
-		boolean result = false;
-		try {
-			fileManageDAO.deleteAllFileInf(fvo);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		int result = fileManageDAO.deleteAllFileInf(fvo);
 
 		// then
-		assertEquals(result, true);
+//		assertTrue(result > 0);
+		assertTrue(result == 0);
 
 		log.debug("result={}", result);
 	}

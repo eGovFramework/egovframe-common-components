@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import jakarta.annotation.Resource;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @Class Name : EgovFileMngServiceImpl.java
@@ -33,12 +34,12 @@ import jakarta.annotation.Resource;
  *
  */
 @Service("EgovFileMngService")
+@RequiredArgsConstructor
 public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements EgovFileMngService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileMngServiceImpl.class);
 
-	@Resource(name = "FileManageDAO")
-	private FileManageDAO fileMngDAO;
+	private final FileManageDAO fileMngDAO;
 
 	/**
 	 * 여러 개의 파일을 삭제한다.
@@ -109,9 +110,9 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public void deleteFileInf(FileVO fvo) {
+	public int deleteFileInf(FileVO fvo) {
 		deletePhysicalFile(fileMngDAO.selectFileInf(fvo));
-		fileMngDAO.deleteFileInf(fvo);
+		return fileMngDAO.deleteFileInf(fvo);
 	}
 
 	/**
@@ -156,8 +157,8 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteAllFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public void deleteAllFileInf(FileVO fvo) {
-		fileMngDAO.deleteAllFileInf(fvo);
+	public int deleteAllFileInf(FileVO fvo) {
+		return fileMngDAO.deleteAllFileInf(fvo);
 	}
 
 	/**
