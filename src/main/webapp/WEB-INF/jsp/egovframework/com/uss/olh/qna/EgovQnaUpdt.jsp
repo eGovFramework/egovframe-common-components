@@ -86,7 +86,7 @@ function fn_egov_inqire_list() {
 		<tr>
 			<th><label for="wrterNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="20" />
    				<div><form:errors path="wrterNm" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -96,9 +96,9 @@ function fn_egov_inqire_list() {
 		<tr>
 			<th><label for="areaNo">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-			    <form:input path="areaNo" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>&nbsp;-&nbsp;
-			    <form:input path="middleTelno" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>&nbsp;-&nbsp;
-			    <form:input path="endTelno" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>
+			    <form:input path="areaNo" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;"/>&nbsp;-&nbsp;
+			    <form:input path="middleTelno" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;"/>&nbsp;-&nbsp;
+			    <form:input path="endTelno" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;"/>
    				<div><form:errors path="areaNo" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -108,7 +108,7 @@ function fn_egov_inqire_list() {
 		<tr>
 			<th><label for="emailAdres">${title}</label></th>
 			<td class="left">
-			    <form:input path="emailAdres" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="emailAdres" title="${title} ${inputTxt}" size="70" maxlength="50" />
    				<div><form:errors path="emailAdres" cssClass="error" /></div>     
 			</td>
 			<c:set var="title"><spring:message code="comUssOlhQna.qnaVO.emailAnswerAt"/> </c:set>
