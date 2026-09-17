@@ -128,16 +128,8 @@ public class EgovAuthorGroupController {
     	String [] strRegYns = regYns.split(";");
     	String [] strMberTyCodes = mberTyCodes.split(";");// 2011.08.04 수정 부분
 
-    	for(int i=0; i<strUserIds.length;i++) {
-    		authorGroup.setUniqId(strUserIds[i]);
-    		authorGroup.setAuthorCode(strAuthorCodes[i]);
-    		authorGroup.setMberTyCode(strMberTyCodes[i]);// 2011.08.04 수정 부분
-    		if(strRegYns[i].equals("N")) {
-				egovAuthorGroupService.insertAuthorGroup(authorGroup);
-			} else {
-				egovAuthorGroupService.updateAuthorGroup(authorGroup);
-			}
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovAuthorGroupService.updateAuthorGroupList(authorGroup, strUserIds, strAuthorCodes, strMberTyCodes, strRegYns);
 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";
@@ -157,10 +149,8 @@ public class EgovAuthorGroupController {
                                      ModelMap model) throws Exception {
 
     	String [] strUserIds = userIds.split(";");
-    	for (String strUserId : strUserIds) {
-    		authorGroup.setUniqId(strUserId);
-    		egovAuthorGroupService.deleteAuthorGroup(authorGroup);
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovAuthorGroupService.deleteAuthorGroupList(authorGroup, strUserIds);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";
