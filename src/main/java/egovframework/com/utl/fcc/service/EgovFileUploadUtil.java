@@ -198,7 +198,6 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @param fileNamePath
 	 * @param whiteListExtensions : ex) .png.pdf.txt
 	 * @return true : 허용
-	 * @return true : 불가
 	 */
 	public static boolean checkFileExtension(String fileNamePath, String whiteListExtensions) {
 		String extension = getFileExtension(fileNamePath);
@@ -238,7 +237,6 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @param multipartFile
 	 * @param maxFileSize : ex) 1048576 = 1M , 1K = 1024
 	 * @return true : 허용
-	 * @return true : 불가
 	 */
 	public static boolean checkFileMaxSize(MultipartFile multipartFile, long maxFileSize) {
 
