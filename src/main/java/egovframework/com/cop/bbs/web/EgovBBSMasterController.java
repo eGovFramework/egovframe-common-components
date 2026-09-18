@@ -290,7 +290,7 @@ public class EgovBBSMasterController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-        	throw new BaseRuntimeException("Login Required!");
+			throw new BaseRuntimeException("Login Required!");
         }
 
     	model.addAttribute("blogMasterVO", new BlogVO());

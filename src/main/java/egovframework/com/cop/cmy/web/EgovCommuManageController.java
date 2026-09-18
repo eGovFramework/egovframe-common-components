@@ -93,7 +93,7 @@ public class EgovCommuManageController {
     @RequestMapping("/cop/cmy/cmmntyMain.do")
     public String selectCmmntyMain(@ModelAttribute("searchVO") CommunityVO cmmntyVO
     		,ModelMap model
-    		,HttpServletRequest request) {
+			,HttpServletRequest request) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

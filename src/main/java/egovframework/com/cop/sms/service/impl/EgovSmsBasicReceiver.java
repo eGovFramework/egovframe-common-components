@@ -71,7 +71,7 @@ public class EgovSmsBasicReceiver implements SMEListener {
 			this.factReceiver = new SMEConnectionFactoryImpl(connString);
 			this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
 			this.sessReceiver = connReceiver.createSession();
-	
+
 			this.receiver = sessReceiver.createReceiver();
 			this.receiver.setListener(this);
 		} catch (SMEException e) {

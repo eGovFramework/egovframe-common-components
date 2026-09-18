@@ -35,6 +35,6 @@ public interface EgovAllSchdulManageService {
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
 	 */
-	public int selectAllSchdulManageListCnt(ComDefaultVO searchVO);	
+	public int selectAllSchdulManageListCnt(ComDefaultVO searchVO);
 	
 }

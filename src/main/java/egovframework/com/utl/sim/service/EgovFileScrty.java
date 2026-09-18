@@ -259,7 +259,7 @@ public class EgovFileScrty {
     public static boolean checkPassword(String data, String encoded, byte[] salt) {
     	byte[] hashValue = null; // 해쉬값
 
-    	MessageDigest md;
+		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {

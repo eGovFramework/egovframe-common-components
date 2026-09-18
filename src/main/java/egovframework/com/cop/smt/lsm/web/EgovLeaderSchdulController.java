@@ -517,7 +517,7 @@ public class EgovLeaderSchdulController {
 	@RequestMapping("/cop/smt/lsm/mng/addLeaderSchdul.do")
 	public String addLeaderSchdul(
 			@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
-    		ModelMap model) {
+			ModelMap model) {
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulRegist";
 
     	// 0. Spring Security 사용자권한 처리

@@ -176,7 +176,7 @@ public class EgovArticleCommentController {
      */
     @PostMapping("/cop/cmt/deleteArticleComment.do")
     public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
-    		ModelMap model, @RequestParam HashMap<String, String> map) {
+			ModelMap model, @RequestParam HashMap<String, String> map) {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
