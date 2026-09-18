@@ -1,5 +1,6 @@
 package egovframework.com.cop.sms.service.impl;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,16 +65,19 @@ public class EgovSmsBasicReceiver implements SMEListener {
 
 	/**
 	 * SMS 결과 수신을 위한 Connection 및 Session 생성한다.
-	 *
-	 * @throws SMEException
 	 */
-	public void open() throws SMEException {
-		this.factReceiver = new SMEConnectionFactoryImpl(connString);
-		this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
-		this.sessReceiver = connReceiver.createSession();
+	public void open() {
+		try {
+			this.factReceiver = new SMEConnectionFactoryImpl(connString);
+			this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
+			this.sessReceiver = connReceiver.createSession();
+	
+			this.receiver = sessReceiver.createReceiver();
+			this.receiver.setListener(this);
+		} catch (SMEException e) {
+			throw new BaseRuntimeException(e);
+		}
 
-		this.receiver = sessReceiver.createReceiver();
-		this.receiver.setListener(this);
 		this.connReceiver.start();
 
 		isConnected = true;

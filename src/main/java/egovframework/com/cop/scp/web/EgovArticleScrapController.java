@@ -65,11 +65,10 @@ public class EgovArticleScrapController {
      * @param scrapVO
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="스크랩관리", order = 250 ,gid = 40)
     @RequestMapping("/cop/scp/selectArticleScrapList.do")
-    public String selectArticleScrapList(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
+    public String selectArticleScrapList(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -110,10 +109,9 @@ public class EgovArticleScrapController {
      * @param scrapVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/scp/selectArticleScrapDetail.do")
-    public String selectArticleScrapDetail(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
+    public String selectArticleScrapDetail(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -155,10 +153,9 @@ public class EgovArticleScrapController {
      * @param scrapVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/scp/insertArticleScrapView.do")
-    public String insertArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
+    public String insertArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
@@ -189,11 +186,10 @@ public class EgovArticleScrapController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/scp/insertArticleScrap.do")
     public String insertArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("scrap") Scrap scrap,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -214,7 +210,7 @@ public class EgovArticleScrapController {
 		if (isAuthenticated) {
 		    scrap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-		    egovArticleScrapService.insertArticleScrap(scrap);
+			egovArticleScrapService.insertArticleScrap(scrap);
 		}
 
 		return "forward:/cop/scp/selectArticleScrapList.do";
@@ -227,10 +223,9 @@ public class EgovArticleScrapController {
      * @param Scrap
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/scp/deleteArticleScrap.do")
-    public String deleteArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("Scrap") Scrap scrap, ModelMap model) throws Exception {
+    public String deleteArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("Scrap") Scrap scrap, ModelMap model) {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
@@ -249,10 +244,9 @@ public class EgovArticleScrapController {
      * @param scrapVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/scp/updateArticleScrapView.do")
-    public String updateArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("scrap") Scrap scrap, ModelMap model) throws Exception {
+    public String updateArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("scrap") Scrap scrap, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null || user.getUniqId() == null) {
 			throw new IllegalStateException("인증 정보가 없습니다.");
@@ -292,11 +286,10 @@ public class EgovArticleScrapController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/scp/updateArticleScrap.do")
     public String updateArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("Scrap") Scrap scrap,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

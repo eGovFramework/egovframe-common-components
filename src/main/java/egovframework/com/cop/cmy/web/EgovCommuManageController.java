@@ -89,12 +89,11 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/cmmntyMain.do")
     public String selectCmmntyMain(@ModelAttribute("searchVO") CommunityVO cmmntyVO
     		,ModelMap model
-    		,HttpServletRequest request) throws Exception {
+    		,HttpServletRequest request) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -135,10 +134,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/cmmntyMainContents.do")
-    public String selectCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String selectCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -204,10 +202,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuUserBySelf.do")
-    public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model) throws Exception {
+    public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -250,10 +247,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuUserBySelf.do")
-    public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -291,10 +287,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/selectCommuUserList.do")
-    public String selectCommuUserList(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String selectCommuUserList(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -335,10 +330,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuUser.do")
-    public String insertCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String insertCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -368,10 +362,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuUser.do")
-    public String deleteCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String deleteCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -400,10 +393,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuUserAdmin.do")
-    public String insertCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String insertCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -433,10 +425,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuUserAdmin.do")
-    public String deleteCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String deleteCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -469,7 +460,7 @@ public class EgovCommuManageController {
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
 
-	private void checkCommuAdmin(String cmmntyId, LoginVO user) throws Exception {
+	private void checkCommuAdmin(String cmmntyId, LoginVO user) {
 		String uniqId = user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId());
 
 		if ("".equals(EgovStringUtil.isNullToString(cmmntyId)) || "".equals(uniqId)) {
@@ -492,10 +483,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/previewCmmntyMainPage.do")
-    public String previewCmmntyMainPage(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String previewCmmntyMainPage(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -592,10 +582,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/previewCmmntyMainContents.do")
-    public String previewCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String previewCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		cmmntyVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));

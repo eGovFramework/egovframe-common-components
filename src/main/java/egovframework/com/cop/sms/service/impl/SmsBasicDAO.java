@@ -131,7 +131,6 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsVO
 	 * @return
-	 * @throws Exception
 	 */
 	public int selectSmsInfsCnt(SmsVO vo) {
 		StringBuilder buffer = new StringBuilder();
@@ -193,7 +192,6 @@ public class SmsBasicDAO {
 	 * 
 	 * @param notification
 	 * @return
-	 * @throws Exception
 	 */
 	public String insertSmsInf(Sms sms) {
 		String smsId = null;
@@ -243,7 +241,6 @@ public class SmsBasicDAO {
 	 * 문자메시지 수신정보 및 결과 정보를 등록한다.
 	 * 
 	 * @param smsRecptn
-	 * @throws Exception
 	 */
 	public void insertSmsRecptnInf(SmsRecptn smsRecptn) {
 		StringBuilder buffer = new StringBuilder();
@@ -371,7 +368,6 @@ public class SmsBasicDAO {
 	 * 
 	 * @param smsRecptn
 	 * @return
-	 * @throws Exception
 	 */
 	public void updateSmsRecptnInf(SmsRecptn smsRecptn) {
 		StringBuilder buffer = new StringBuilder();
@@ -402,7 +398,6 @@ public class SmsBasicDAO {
 	 * ID 처리. transaction 처리를 위해 Connection을 파라미터로 넘겨받음
 	 * 
 	 * @return
-	 * @throws Exception
 	 */
 	protected String getNextId(Connection conn) {
 		StringBuilder buffer = new StringBuilder();

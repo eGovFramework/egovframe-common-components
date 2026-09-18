@@ -86,11 +86,10 @@ public class EgovCommuMasterController {
      * @param cmmntyVO
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="커뮤니티관리", order = 270 ,gid = 40)
     @RequestMapping("/cop/cmy/selectCommuMasterList.do")
-    public String selectCommuMasterList(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String selectCommuMasterList(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 	cmmntyVO.setPageUnit(propertyService.getInt("pageUnit"));
 	cmmntyVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -122,10 +121,9 @@ public class EgovCommuMasterController {
      * @param cmmntyVO
      * @param model
      * @return
-     * @throws Exception
      */
     @GetMapping("/cop/cmy/insertCommuMasterView.do")
-    public String insertCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String insertCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
     	model.addAttribute("commuMasterVO", new CommunityVO());
 
 	return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
@@ -139,11 +137,10 @@ public class EgovCommuMasterController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuMaster.do")
     public String insertCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @Valid @ModelAttribute("commuMasterVO") Community community,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -182,10 +179,9 @@ public class EgovCommuMasterController {
      * @param cmmntyVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/selectCommuMasterDetail.do")
-    public String selectCommuMasterDetail(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model, HttpServletRequest request) throws Exception {
+    public String selectCommuMasterDetail(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model, HttpServletRequest request) {
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
 
 		//-----------------------
@@ -205,11 +201,9 @@ public class EgovCommuMasterController {
      * @param cmmntyVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/updateCommuMasterView.do")
-    public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model)
-	    throws Exception {
+    public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -235,11 +229,10 @@ public class EgovCommuMasterController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/updateCommuMaster.do")
     public String updateCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @Valid @ModelAttribute("commuMasterVO") Community community,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -274,11 +267,10 @@ public class EgovCommuMasterController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuMaster.do")
     public String deleteCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -303,10 +295,9 @@ public class EgovCommuMasterController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/selectCommuMasterListPortlet.do")
-    public String selectCmmntyListPortlet(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String selectCmmntyListPortlet(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 	List<CommunityVO> result = egovCommuMasterService.selectCommuMasterListPortlet(cmmntyVO);
 
 	model.addAttribute("resultList", result);

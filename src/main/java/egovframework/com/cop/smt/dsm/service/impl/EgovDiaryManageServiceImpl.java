@@ -3,6 +3,8 @@ package egovframework.com.cop.smt.dsm.service.impl;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -43,10 +45,9 @@ public class EgovDiaryManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 일지관리 목록를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) {
 		return dao.selectDiaryManageList(searchVO);
 	}
 
@@ -54,10 +55,9 @@ public class EgovDiaryManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 일지관리를(을) 상세조회 한다.
 	 * @param DiaryManage - 회정정보가 담김 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public DiaryManageVO selectDiaryManageDetail(DiaryManageVO diaryManageVO) throws Exception{
+	public DiaryManageVO selectDiaryManageDetail(DiaryManageVO diaryManageVO) {
 		return dao.selectDiaryManageDetail(diaryManageVO);
 	}
 
@@ -65,21 +65,24 @@ public class EgovDiaryManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 일지관리를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
 	@Override
-	public int selectDiaryManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectDiaryManageListCnt(ComDefaultVO searchVO) {
 		return dao.selectDiaryManageListCnt(searchVO);
 	}
 
     /**
 	 * 일지관리를(을) 등록한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
 	 */
 	@Override
-	public void insertDiaryManage(DiaryManageVO diaryManageVO) throws Exception {
-		String sMakeId = idgenService.getNextStringId();
+	public void insertDiaryManage(DiaryManageVO diaryManageVO) {
+		String sMakeId;
+		try {
+			sMakeId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		diaryManageVO.setDiaryId(sMakeId);
 
@@ -89,20 +92,18 @@ public class EgovDiaryManageServiceImpl extends EgovAbstractServiceImpl implemen
     /**
 	 * 일지관리를(을) 수정한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
 	 */
 	@Override
-	public void updateDiaryManage(DiaryManageVO diaryManageVO) throws Exception{
+	public void updateDiaryManage(DiaryManageVO diaryManageVO) {
 		dao.updateDiaryManage(diaryManageVO);
 	}
 
     /**
 	 * 일지관리를(을) 삭제한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
 	 */
 	@Override
-	public void deleteDiaryManage(DiaryManageVO diaryManageVO) throws Exception{
+	public void deleteDiaryManage(DiaryManageVO diaryManageVO) {
 		dao.deleteDiaryManage(diaryManageVO);
 	}
 }

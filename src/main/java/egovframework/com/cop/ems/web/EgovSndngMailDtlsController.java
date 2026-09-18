@@ -59,11 +59,10 @@ public class EgovSndngMailDtlsController {
 	 * 발송메일 내역을 조회한다
 	 * @param searchVO ComDefaultVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@IncludedInfo(name = "발송메일내역", order = 361, gid = 40)
 	@RequestMapping(value = "/cop/ems/selectSndngMailList.do")
-	public String selectSndngMailList(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
+	public String selectSndngMailList(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) {
 
 		// 발송메일 내역 조회
 		/** EgovPropertyService.sample */
@@ -95,10 +94,9 @@ public class EgovSndngMailDtlsController {
 	 * 발송메일을 삭제한다.
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
-	 * @exception
 	 */
 	@PostMapping("/cop/ems/deleteSndngMailList.do")
-	public String deleteSndngMailList(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) throws Exception {
+	public String deleteSndngMailList(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 

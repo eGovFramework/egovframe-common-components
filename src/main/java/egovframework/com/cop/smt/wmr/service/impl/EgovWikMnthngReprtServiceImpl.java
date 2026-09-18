@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param reportrVO
 	 */
 	@Override
-	public Map<String, Object> selectReportrList(ReportrVO reportrVO) throws Exception{
+	public Map<String, Object> selectReportrList(ReportrVO reportrVO) {
 		List<ReportrVO> result = wikMnthngReprtDAO.selectReportrList(reportrVO);
 		int cnt = wikMnthngReprtDAO.selectReportrListCnt(reportrVO);
 
@@ -69,7 +71,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param String
 	 */
 	@Override
-	public String selectWrterClsfNm(String wrterId) throws Exception{
+	public String selectWrterClsfNm(String wrterId) {
 		return wikMnthngReprtDAO.selectWrterClsfNm(wrterId);
 	}
 
@@ -81,7 +83,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprtVO
 	 */
 	@Override
-	public Map<String, Object> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) throws Exception{
+	public Map<String, Object> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) {
 		List<WikMnthngReprtVO> result = wikMnthngReprtDAO.selectWikMnthngReprtList(wikMnthngReprtVO);
 		int cnt = wikMnthngReprtDAO.selectWikMnthngReprtListCnt(wikMnthngReprtVO);
 
@@ -101,7 +103,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprtVO
 	 */
 	@Override
-	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) throws Exception{
+	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) {
 
 		WikMnthngReprtVO resultVO = wikMnthngReprtDAO.selectWikMnthngReprt(wikMnthngReprtVO);
 		if(resultVO.getConfmDt() == null || resultVO.getConfmDt().equals("")){
@@ -134,7 +136,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		wikMnthngReprtDAO.updateWikMnthngReprt(wikMnthngReprt);
 	}
 
@@ -145,8 +147,12 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void insertWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
-		wikMnthngReprt.setReprtId(idgenServiceWikMnthngReprt.getNextStringId());
+	public void insertWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
+		try {
+			wikMnthngReprt.setReprtId(idgenServiceWikMnthngReprt.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		wikMnthngReprtDAO.insertWikMnthngReprt(wikMnthngReprt);
 	}
 
@@ -157,7 +163,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
 		wikMnthngReprt.setConfmDt(formatter.format(new java.util.Date()));
 		wikMnthngReprtDAO.confirmWikMnthngReprt(wikMnthngReprt);
@@ -170,7 +176,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		wikMnthngReprtDAO.deleteWikMnthngReprt(wikMnthngReprt);
 	}
 }

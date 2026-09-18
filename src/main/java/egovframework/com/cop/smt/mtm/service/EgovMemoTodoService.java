@@ -31,7 +31,7 @@ public interface EgovMemoTodoService {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public Map<String, Object> selectMemoTodoList(MemoTodoVO memoTodoVO) throws Exception;
+	public Map<String, Object> selectMemoTodoList(MemoTodoVO memoTodoVO);
 
 	/**
 	 * 메모할일 정보를 조회한다.
@@ -40,7 +40,7 @@ public interface EgovMemoTodoService {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) throws Exception;
+	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO);
 
 	/**
 	 * 메모할일 정보를 수정한다.
@@ -48,7 +48,7 @@ public interface EgovMemoTodoService {
 	 * 
 	 * @param memoTodo
 	 */
-	public void updateMemoTodo(MemoTodo memoTodo) throws Exception;
+	public void updateMemoTodo(MemoTodo memoTodo);
 
 	/**
 	 * 메모할일 정보를 등록한다.
@@ -56,7 +56,7 @@ public interface EgovMemoTodoService {
 	 * 
 	 * @param memoTodo
 	 */
-	public void insertMemoTodo(MemoTodo memoTodo) throws Exception;
+	public void insertMemoTodo(MemoTodo memoTodo);
 
 	/**
 	 * 메모할일 정보를 삭제한다.
@@ -64,7 +64,7 @@ public interface EgovMemoTodoService {
 	 * 
 	 * @param memoTodo
 	 */
-	public void deleteMemoTodo(MemoTodo memoTodo) throws Exception;
+	public void deleteMemoTodo(MemoTodo memoTodo);
 
 	/**
 	 * 메모할일 목록 중 오늘의 할일을 조회한다.
@@ -73,6 +73,6 @@ public interface EgovMemoTodoService {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO) throws Exception;
+	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO);
 
 }

@@ -81,10 +81,10 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) throws Exception {
+	public BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) {
 		BoardMasterVO resultVO = egovBBSMasterDao.selectBBSMasterDetail(boardMasterVO);
         if (resultVO == null) {
-			throw processException("info.nodata.msg");
+			throw new BaseRuntimeException(processException("info.nodata.msg"));
 		}
 
     	if(EgovComponentChecker.hasComponent("EgovBBSCommentService") || EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){//2011.09.15
@@ -221,10 +221,10 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
   }
 
 	@Override
-	public BlogVO selectBlogDetail(BlogVO blogVO) throws Exception {
+	public BlogVO selectBlogDetail(BlogVO blogVO) {
 		BlogVO resultVO = egovBBSMasterDao.selectBlogDetail(blogVO);
         if (resultVO == null) {
-			throw processException("info.nodata.msg");
+			throw new BaseRuntimeException(processException("info.nodata.msg"));
 		}
         return resultVO;
 	}

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -59,11 +60,9 @@ public class EgovSndngMailDetailController {
 	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@PostMapping("/cop/ems/selectSndngMailDetail.do")
-	public String selectSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
-			throws Exception {
+	public String selectSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
@@ -106,11 +105,9 @@ public class EgovSndngMailDetailController {
 	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@PostMapping("/cop/ems/deleteSndngMail.do")
-	public String deleteSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
-			throws Exception {
+	public String deleteSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
@@ -152,11 +149,9 @@ public class EgovSndngMailDetailController {
 	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@PostMapping("/cop/ems/backSndngMailDetail.do")
-	public String backSndngMailDtls(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
-			throws Exception {
+	public String backSndngMailDtls(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) {
 
 		return "redirect:/cop/ems/selectSndngMailList.do";
 	}
@@ -165,11 +160,10 @@ public class EgovSndngMailDetailController {
 	 * XML형태의 발송요청메일을 조회한다.
 	 * 
 	 * @param sndngMailVO SndngMailVO
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/cop/ems/selectSndngMailXml.do")
 	public void selectSndngMailXml(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, HttpServletResponse response,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
 		LoginVO _loginVO = egovAssertLoginUser();
 
@@ -215,6 +209,8 @@ public class EgovSndngMailDetailController {
 			try {
 				in = new BufferedInputStream(new FileInputStream(uFile));
 				FileCopyUtils.copy(in, response.getOutputStream());
+			} catch (IOException e) {
+				throw new BaseRuntimeException(e);
 			} finally {
 				if (in != null) {
 					try {
@@ -225,11 +221,20 @@ public class EgovSndngMailDetailController {
 					}
 				}
 			}
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
+			try {
+				response.getOutputStream().flush();
+				response.getOutputStream().close();
+			} catch (IOException e) {
+				throw new BaseRuntimeException(e);
+			}
 		} else {
 			response.setContentType("application/x-msdownload");
-			PrintWriter printwriter = response.getWriter(); // NOPMD - CloseResource
+			PrintWriter printwriter;
+			try {
+				printwriter = response.getWriter(); // NOPMD - CloseResource
+			} catch (IOException e) {
+				throw new BaseRuntimeException(e);
+			}
 			printwriter.println("<html>");
 			printwriter.println(
 					"<br><br><br><h2>Could not get file name:<br>" + EgovWebUtil.clearXSSMinimum(xmlFile) + "</h2>");

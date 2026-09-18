@@ -68,7 +68,7 @@ public class EgovMemoTodoController {
 	 */
     @IncludedInfo(name="메모할일관리", order = 420 ,gid = 40)
     @RequestMapping("/cop/smt/mtm/selectMemoTodoList.do")
-	public String selectMemoTodoList(@ModelAttribute("searchVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
+	public String selectMemoTodoList(@ModelAttribute("searchVO") MemoTodoVO memoTodoVO, ModelMap model) {
     	//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -112,7 +112,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodoVO
 	 */
     @PostMapping("/cop/smt/mtm/selectMemoTodo.do")
-	public String selectMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
+	public String selectMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) {
     	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
     	if (loginVO == null || loginVO.getUniqId() == null) {
     		throw new IllegalStateException("인증 정보가 없습니다.");
@@ -139,7 +139,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodo
 	 */
     @PostMapping("/cop/smt/mtm/addMemoTodo.do")
-	public String addMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String addMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) {
     	String sLocationUrl = "egovframework/com/cop/smt/mtm/EgovMemoTodoRegist";
 
     	// 0. Spring Security 사용자권한 처리
@@ -177,7 +177,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodo
 	 */
     @PostMapping("/cop/smt/mtm/modifyMemoTodo.do")
-	public String modifyMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String modifyMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) {
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -216,7 +216,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodo
 	 */
     @PostMapping("/cop/smt/mtm/updateMemoTodo.do")
-	public String updateMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String updateMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -258,7 +258,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodo
 	 */
     @PostMapping("/cop/smt/mtm/insertMemoTodo.do")
-	public String insertMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String insertMemoTodo(@Valid @ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, BindingResult bindingResult, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -304,7 +304,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodo
 	 */
     @PostMapping("/cop/smt/mtm/deleteMemoTodo.do")
-	public String deleteMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
+	public String deleteMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -328,7 +328,7 @@ public class EgovMemoTodoController {
 	 * @param memoTodoVO
 	 */
     @RequestMapping("/cop/smt/mtm/selectMemoTodoListToday.do")
-	public String selectMemoTodoListToday(@ModelAttribute("searchVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
+	public String selectMemoTodoListToday(@ModelAttribute("searchVO") MemoTodoVO memoTodoVO, ModelMap model) {
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -355,7 +355,6 @@ public class EgovMemoTodoController {
     /**
 	 * 시간의 LIST를 반환한다.
 	 * @return  List
-	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeHH (){
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
@@ -382,7 +381,6 @@ public class EgovMemoTodoController {
 	/**
 	 * 분의 LIST를 반환한다.
 	 * @return  List
-	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeMM (){
     	ArrayList<ComDefaultCodeVO> listMM = new ArrayList<>();
@@ -407,7 +405,7 @@ public class EgovMemoTodoController {
 	}
 
 
-	private MemoTodoVO selectRequiredMemoTodo(MemoTodoVO memoTodoVO) throws Exception {
+	private MemoTodoVO selectRequiredMemoTodo(MemoTodoVO memoTodoVO) {
 		MemoTodoVO stored = memoTodoService.selectMemoTodo(memoTodoVO);
 		if (stored == null) {
 			throw new IllegalStateException("권한이 없습니다.");

@@ -44,10 +44,9 @@ public class EgovSndngMailDetailServiceImpl extends EgovAbstractServiceImpl impl
 	 * 발송메일을 상세 조회한다.
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
 	@Override
-	public SndngMailVO selectSndngMail(SndngMailVO vo) throws Exception {
+	public SndngMailVO selectSndngMail(SndngMailVO vo) {
 
 		// 1. 발송메일 정보를 조회한다.
 		SndngMailVO resultMailVO = sndngMailDetailDAO.selectSndngMail(vo);
@@ -58,10 +57,9 @@ public class EgovSndngMailDetailServiceImpl extends EgovAbstractServiceImpl impl
 	/**
 	 * 발송메일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
 	@Override
-	public void deleteSndngMail(SndngMailVO vo) throws Exception {
+	public void deleteSndngMail(SndngMailVO vo) {
 
 		// 1. 발송메일을 삭제한다.
 		sndngMailDetailDAO.deleteSndngMail(vo);
@@ -76,10 +74,9 @@ public class EgovSndngMailDetailServiceImpl extends EgovAbstractServiceImpl impl
 	/**
 	 * 첨부파일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
 	@Override
-	public void deleteAtchmnFile(SndngMailVO vo) throws Exception {
+	public void deleteAtchmnFile(SndngMailVO vo) {
 
 		// 1. 첨부파일 목록을 삭제한다. (이삼섭 책임 제공)
 		FileVO fileVO = new FileVO();

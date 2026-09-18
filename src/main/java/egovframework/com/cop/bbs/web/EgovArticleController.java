@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
@@ -144,10 +145,9 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/selectArticleList.do")
-	public String selectArticleList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String selectArticleList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
@@ -216,10 +216,9 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/selectArticleDetail.do")
-	public String selectArticleDetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String selectArticleDetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
@@ -284,10 +283,9 @@ public class EgovArticleController {
 	 * @param boardVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/insertArticleView.do")
-	public String insertArticleView(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String insertArticleView(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -323,13 +321,12 @@ public class EgovArticleController {
 	 * @param board
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/insertArticle.do")
 	public String insertArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
 			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model,
-			RedirectAttributes redirectAttributes) throws Exception {
+			RedirectAttributes redirectAttributes) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -404,10 +401,9 @@ public class EgovArticleController {
 	 * @param boardVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/replyArticleView.do")
-	public String addReplyBoardArticle(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String addReplyBoardArticle(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();// KISA 보안취약점 조치 (2018-12-10, 이정은)
@@ -453,12 +449,11 @@ public class EgovArticleController {
 	 * @param board
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/replyArticle.do")
 	public String replyBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
-			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -543,11 +538,10 @@ public class EgovArticleController {
 	 * @param vo
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/updateArticleView.do")
 	public String updateArticleView(@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("board") BoardVO vo,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -606,12 +600,11 @@ public class EgovArticleController {
 	 * @param board
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/updateArticle.do")
 	public String updateBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
-			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -683,12 +676,10 @@ public class EgovArticleController {
 	 * @param board
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/deleteArticle.do")
 	public String deleteBoardArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
-			@ModelAttribute("board") Board board, @ModelAttribute("bdMstr") BoardMaster bdMstr, ModelMap model)
-			throws Exception {
+			@ModelAttribute("board") Board board, @ModelAttribute("bdMstr") BoardMaster bdMstr, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -744,10 +735,9 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/selectGuestArticleList.do")
-	public String selectGuestArticleList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String selectGuestArticleList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -809,11 +799,10 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/insertGuestArticle.do")
 	public String insertGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("Board") Board board,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -885,11 +874,10 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/deleteGuestArticle.do")
 	public String deleteGuestList(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
-			@Valid @ModelAttribute("articleVO") Board board, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") Board board, ModelMap model) {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
@@ -916,11 +904,10 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/updateGuestArticleView.do")
 	public String updateGuestArticleView(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
-			@ModelAttribute("boardMasterVO") BoardMasterVO brdMstrVO, ModelMap model) throws Exception {
+			@ModelAttribute("boardMasterVO") BoardMasterVO brdMstrVO, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -971,11 +958,10 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/updateGuestArticle.do")
 	public String updateGuestArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
-			@Valid @ModelAttribute Board board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute Board board, BindingResult bindingResult, ModelMap model) {
 
 		// BBST02, BBST04
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -1059,10 +1045,9 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/selectArticleBlogList.do")
-	public String selectArticleBlogList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String selectArticleBlogList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -1104,17 +1089,15 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/selectArticleBlogDetail.do")
-	public ModelAndView selectArticleBlogDetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model)
-			throws Exception {
+	public ModelAndView selectArticleBlogDetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 		if (!isAuthenticated) {
-			throw new IllegalAccessException("Login Required!");
+			throw new BaseRuntimeException("Login Required!");
 		}
 
 		BoardVO vo = new BoardVO();
@@ -1164,11 +1147,10 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/bbs/selectArticleBlogDetailCn.do")
 	public ModelAndView selectArticleBlogDetailCn(@ModelAttribute("searchVO") BoardVO boardVO,
-			@ModelAttribute("commentVO") CommentVO commentVO, ModelMap model) throws Exception {
+			@ModelAttribute("commentVO") CommentVO commentVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		boardVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
@@ -1176,7 +1158,7 @@ public class EgovArticleController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 		if (!isAuthenticated) {
-			throw new IllegalAccessException("Login Required!");
+			throw new BaseRuntimeException("Login Required!");
 		}
 
 		BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
@@ -1244,10 +1226,9 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/selectBlogListManager.do")
-	public String selectBlogMasterList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String selectBlogMasterList(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -1284,10 +1265,9 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/previewBoardList.do")
-	public String previewBoardArticles(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String previewBoardArticles(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String template = boardVO.getSearchWrd(); // 템플릿 URL
@@ -1368,16 +1348,15 @@ public class EgovArticleController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/previewBlogMainPage.do")
-	public String previewBlogMainPage(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
+	public String previewBlogMainPage(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 		if (!isAuthenticated) {
-			throw new IllegalAccessException("Login Required!");
+			throw new BaseRuntimeException("Login Required!");
 		}
 
 		String tmplatCours = boardVO.getSearchWrd();

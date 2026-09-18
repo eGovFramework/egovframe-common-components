@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -37,9 +38,14 @@ public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl impleme
 	}
 
 	@Override
-	public void insertArticleScrap(Scrap scrap) throws FdlException {
+	public void insertArticleScrap(Scrap scrap) {
 
-		String scrapId = idgenService.getNextStringId();
+		String scrapId;
+		try {
+			scrapId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		scrap.setScrapId(scrapId);
 
 		egovArticleScrapDao.insertArticleScrap(scrap);

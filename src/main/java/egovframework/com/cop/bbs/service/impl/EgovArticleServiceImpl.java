@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Service;
@@ -97,7 +99,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 	}
 
 	@Override
-	public void insertArticleAndFiles(Board board, List<MultipartFile> files) throws Exception {
+	public void insertArticleAndFiles(Board board, List<MultipartFile> files) {
 		List<FileVO> result = null;
 		String atchFileId = "";
 
@@ -112,7 +114,11 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 			// 게시판의 순서대로
 			// replyLc는 부모글의 ReplyLc + 1
 
-			board.setNttId((long) nttIdgenService.getNextIntegerId()); // 답글에 대한 nttId 생성
+			try {
+				board.setNttId((long) nttIdgenService.getNextIntegerId()); // 답글에 대한 nttId 생성
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
 			egovArticleDao.replyArticle(board);
 
 		} else {
@@ -120,7 +126,11 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 			board.setParnts("0");
 			board.setReplyLc("0");
 			board.setReplyAt("N");
-			board.setNttId((long) nttIdgenService.getNextIntegerId());// 2011.09.22
+			try {
+				board.setNttId((long) nttIdgenService.getNextIntegerId());// 2011.09.22
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
 
 			egovArticleDao.insertArticle(board);
 		}
@@ -132,7 +142,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 	}
 
 	@Override
-	public void updateArticleAndFiles(Board board, List<MultipartFile> files, String atchFileId) throws Exception {
+	public void updateArticleAndFiles(Board board, List<MultipartFile> files, String atchFileId) {
 		if (files != null && !files.isEmpty()) {
 			if (atchFileId == null || "".equals(atchFileId)) {
 				List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
@@ -150,7 +160,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 	}
 
 	@Override
-	public void deleteArticle(Board board) throws Exception {
+	public void deleteArticle(Board board) {
 		FileVO fvo = new FileVO();
 
 		fvo.setAtchFileId(board.getAtchFileId());

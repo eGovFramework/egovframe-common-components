@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class EgovArticleCommentServiceImpl extends EgovAbstractServiceImpl imple
      * 댓글 사용 가능 여부를 확인한다.
      */
     @Override
-	public boolean canUseComment(String bbsId) throws Exception {
+	public boolean canUseComment(String bbsId) {
 	//String flag = EgovProperties.getProperty("Globals.addedOptions");
 	//if (flag != null && flag.trim().equalsIgnoreCase("true")) {//2011.09.15
 	    BoardMaster vo = new BoardMaster();
@@ -69,8 +70,12 @@ public class EgovArticleCommentServiceImpl extends EgovAbstractServiceImpl imple
 
 
 	@Override
-	public void insertArticleComment(Comment comment) throws FdlException {
-		comment.setCommentNo(egovAnswerNoGnrService.getNextLongId() + "");//2011.10.18
+	public void insertArticleComment(Comment comment) {
+		try {
+			comment.setCommentNo(egovAnswerNoGnrService.getNextLongId() + "");//2011.10.18
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		egovArticleCommentDao.insertArticleComment(comment);
 	}
 

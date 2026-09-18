@@ -105,12 +105,11 @@ public class EgovDiaryManageController {
 	 * @param diaryManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
-	 * @throws Exception
 	 */
 	@IncludedInfo(name = "일지관리", order = 340, gid = 40)
 	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageList.do")
 	public String egovDiaryManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, ModelMap model) {
 
 //		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
@@ -156,11 +155,10 @@ public class EgovDiaryManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageDetail"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageDetail.do")
 	public String egovDiaryManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, DiaryManageVO diaryManageVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -212,12 +210,11 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModify"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageModify.do")
 	public String diaryManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -261,14 +258,12 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModifyActor"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageModifyActor.do")
 	public String diaryManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
-			RedirectAttributes redirectAttributes, ModelMap model)
-			throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -356,12 +351,11 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "/cop/smt/dsm/EgovDiaryManageRegist"
-	 * @throws Exception
 	 */
 	@GetMapping("/cop/smt/dsm/EgovDiaryManageRegist.do")
 	public String diaryManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -395,14 +389,12 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/DiaryManageRegistActor"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageRegistActor.do")
 	public String diaryManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
-			RedirectAttributes redirectAttributes, ModelMap model)
-			throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

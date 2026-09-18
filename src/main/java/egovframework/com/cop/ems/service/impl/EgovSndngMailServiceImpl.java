@@ -45,10 +45,9 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 	 * 메일을 발송한다
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean sndngMail(SndngMailVO sndngMailVO) throws Exception {
+	public boolean sndngMail(SndngMailVO sndngMailVO) {
 
 		String recptnPerson = (sndngMailVO.getRecptnPerson() == null) ? "" : sndngMailVO.getRecptnPerson(); // 수신자
 		String subject = (sndngMailVO.getSj() == null) ? "" : sndngMailVO.getSj(); // 메일제목

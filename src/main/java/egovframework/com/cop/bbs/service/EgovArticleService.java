@@ -21,14 +21,13 @@ public interface EgovArticleService {
 
 	BoardVO selectArticleDetail(BoardVO boardVO);
 	
-	void insertArticleAndFiles(Board board, List<MultipartFile> files) throws Exception;
+	void insertArticleAndFiles(Board board, List<MultipartFile> files);
 
 	void updateArticle(Board board);
 
-  void updateArticleAndFiles(Board board, List<MultipartFile> files, String atchFileId)
-      throws Exception;
+  void updateArticleAndFiles(Board board, List<MultipartFile> files, String atchFileId);
 
-  void deleteArticle(Board board) throws Exception;
+  void deleteArticle(Board board);
 
 	List<BoardVO> selectNoticeArticleList(BoardVO boardVO);
 	
