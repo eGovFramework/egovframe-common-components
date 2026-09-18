@@ -5054,14 +5054,14 @@ function validateCmmnCodeVO(form) {
             label: '코드ID',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 6
             }
         },
         codeIdNm: {
             label: '코드ID명',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 60
             }
         },
         codeIdDc: {
