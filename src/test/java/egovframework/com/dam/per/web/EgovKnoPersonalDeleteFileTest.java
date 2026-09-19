@@ -72,7 +72,7 @@ class EgovKnoPersonalDeleteFileTest {
 			if ("deleteAllFileInf".equals(method.getName())) {
 				deletedFileIds.add(((FileVO) args[0]).getAtchFileId());
 			}
-			return null;
+			return 0;
 		}));
 
 		KnoPersonal request = new KnoPersonal();

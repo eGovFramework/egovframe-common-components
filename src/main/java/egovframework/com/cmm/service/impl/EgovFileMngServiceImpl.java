@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 
 /**
