@@ -60,8 +60,9 @@ public interface EgovFileMngService {
      * 하나의 파일을 삭제한다.
      *
      * @param fvo
+     * @return 삭제 행 수
      */
-    public void deleteFileInf(FileVO fvo);
+    public int deleteFileInf(FileVO fvo);
 
     /**
      * 파일에 대한 상세정보를 조회한다.
@@ -83,8 +84,9 @@ public interface EgovFileMngService {
      * 전체 파일을 삭제한다.
      *
      * @param fvo
+     * @return 수정 행 수
      */
-    public void deleteAllFileInf(FileVO fvo);
+    public int deleteAllFileInf(FileVO fvo);
 
     /**
      * 파일명 검색에 대한 목록을 조회한다.

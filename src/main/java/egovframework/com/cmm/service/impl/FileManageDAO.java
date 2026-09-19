@@ -23,7 +23,7 @@ import egovframework.com.cmm.service.FileVO;
  * @see
  *
  */
-@Repository("FileManageDAO")
+@Repository
 public class FileManageDAO extends EgovComAbstractDAO {
 
 	/**
@@ -91,9 +91,10 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * 하나의 파일을 삭제한다.
 	 *
 	 * @param fvo
+     * @return 삭제 행 수
 	 */
-	public void deleteFileInf(FileVO fvo) {
-		delete("FileManageDAO.deleteFileDetail", fvo);
+	public int deleteFileInf(FileVO fvo) {
+		return delete("FileManageDAO.deleteFileDetail", fvo);
 	}
 
 	/**
@@ -130,9 +131,10 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * 전체 파일을 삭제한다.
 	 *
 	 * @param fvo
+     * @return 수정 행 수
 	 */
-	public void deleteAllFileInf(FileVO fvo) {
-		update("FileManageDAO.deleteCOMTNFILE", fvo);
+	public int deleteAllFileInf(FileVO fvo) {
+		return update("FileManageDAO.deleteCOMTNFILE", fvo);
 	}
 
 	/**

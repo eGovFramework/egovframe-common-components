@@ -35,7 +35,7 @@ public class EgovArticleServiceImplTest_deleteArticleGuard {
 					if ("deleteAllFileInf".equals(method.getName())) {
 						calls.incrementAndGet();
 						captured.set((FileVO) args[0]);
-						return null;
+						return 0;
 					}
 					Class<?> rt = method.getReturnType();
 					if (rt == int.class) {
