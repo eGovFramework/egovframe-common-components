@@ -5015,14 +5015,14 @@ function validateCmmnClCodeVO(form) {
             label: '분류코드',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 3
             }
         },
         clCodeNm: {
             label: '분류코드명',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 60
             }
         },
         clCodeDc: {
@@ -5054,14 +5054,14 @@ function validateCmmnCodeVO(form) {
             label: '코드ID',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 6
             }
         },
         codeIdNm: {
             label: '코드ID명',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 60
             }
         },
         codeIdDc: {

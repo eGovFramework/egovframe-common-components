@@ -150,7 +150,7 @@
 					<tr>
 						<th><label for="code">${title} <span class="pilsu">*</span></label></th>
 						<td class="left"><form:input path="code"
-								title="${title} ${inputTxt}" size="70" maxlength="70" />
+								title="${title} ${inputTxt}" size="70" maxlength="15" />
 							<div>
 								<form:errors path="code" cssClass="error" />
 							</div></td>
@@ -163,7 +163,7 @@
 					<tr>
 						<th><label for="codeNm">${title} <span class="pilsu">*</span></label></th>
 						<td class="left"><form:input path="codeNm"
-								title="${title} ${inputTxt}" size="70" maxlength="70" />
+								title="${title} ${inputTxt}" size="70" maxlength="60" />
 							<div>
 								<form:errors path="codeNm" cssClass="error" />
 							</div></td>
