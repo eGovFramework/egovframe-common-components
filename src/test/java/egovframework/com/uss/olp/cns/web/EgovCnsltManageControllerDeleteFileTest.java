@@ -73,7 +73,7 @@ class EgovCnsltManageControllerDeleteFileTest {
 				(proxy, method, args) -> {
 					if ("deleteAllFileInf".equals(method.getName())) {
 						deletedAtchFileIds.add(((FileVO) args[0]).getAtchFileId());
-						return null;
+						return 0;
 					}
 					return null;
 				});

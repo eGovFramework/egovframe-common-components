@@ -63,7 +63,7 @@ public class EgovSysHistoryDeleteFileTest {
 			if ("deleteAllFileInf".equals(method.getName())) {
 				deletedFileIds.add(((FileVO) args[0]).getAtchFileId());
 			}
-			return null;
+			return 0;
 		}));
 
 		SessionStatus status = new SimpleSessionStatus();

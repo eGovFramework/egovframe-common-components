@@ -30,12 +30,13 @@ class EgovFileMngServiceImplPhysicalFileDeletionTest {
 			}
 
 			@Override
-			public void deleteFileInf(FileVO fvo) {
+			public int deleteFileInf(FileVO fvo) {
 				// DB 삭제는 이 테스트의 관심사가 아니다.
+				return 0;
 			}
 		};
 
-		EgovFileMngServiceImpl service = new EgovFileMngServiceImpl();
+		EgovFileMngServiceImpl service = new EgovFileMngServiceImpl(stubDao);
 		Field daoField = EgovFileMngServiceImpl.class.getDeclaredField("fileMngDAO");
 		daoField.setAccessible(true);
 		daoField.set(service, stubDao);

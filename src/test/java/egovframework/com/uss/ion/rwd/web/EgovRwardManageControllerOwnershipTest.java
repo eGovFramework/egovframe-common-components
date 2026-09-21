@@ -159,7 +159,7 @@ class EgovRwardManageControllerOwnershipTest {
 			}
 
 			@Override
-			public void deleteFileInf(FileVO fvo) {
+			public int deleteFileInf(FileVO fvo) {
 				throw new UnsupportedOperationException();
 			}
 
@@ -174,8 +174,9 @@ class EgovRwardManageControllerOwnershipTest {
 			}
 
 			@Override
-			public void deleteAllFileInf(FileVO fvo) {
+			public int deleteAllFileInf(FileVO fvo) {
 				// no-op for the ownership test
+				return 0;
 			}
 
 			@Override
