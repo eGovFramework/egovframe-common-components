@@ -1,3 +1,6 @@
+-- 뷰(COMVNUSERMASTER)의 문자열 리터럴은 실행 클라이언트의 문자셋을 따른다.
+-- latin1 등으로 실행되면 로그인 조회 CONCAT(USER_SE, USER_ID)에서 collation 충돌이 나므로 utf8mb4로 고정한다.
+SET NAMES utf8mb4;
 
 CREATE TABLE COMTNPROGRMLIST
 (
