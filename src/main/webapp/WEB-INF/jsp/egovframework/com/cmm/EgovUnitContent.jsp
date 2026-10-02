@@ -12,6 +12,7 @@
   * @수정일               수정자            수정내용
   *  ----------   --------   ---------------------------
   *  2020.06.23   신용호            세션만료시간 보여주기
+  *  2026.10.02   개발팀           초기 비밀번호 사용 시 닫을 수 없는 변경 안내 팝업
   *
   *  @author 공통서비스 개발팀 신용호
   *  @since 2009.03.03
@@ -46,7 +47,11 @@
     	// 파일검색 화면 호출 함수
     	//var page = $(this).attr("href");
         //var pagetitle = $(this).attr("title");
-        var pagetitle = "<spring:message code="comCmm.unitContent.20"/>"; // 비밀번호 유효기간 만료 안내
+        // 초기(공개) 비밀번호 사용 중이면 닫을 수 없는 변경 안내로 연다(서버 판정 - EgovInitialPasswordChecker)
+        var initialPassword = "${initialPassword}" === "true";
+        var pagetitle = initialPassword
+                ? "<spring:message code="comCmm.unitContent.21"/>"  // 초기 비밀번호 변경 안내
+                : "<spring:message code="comCmm.unitContent.20"/>"; // 비밀번호 유효기간 만료 안내
         var page = "${pageContext.request.contextPath}/uat/uia/noticeExpirePwd.do";
         $dialog = $('<div style="overflow:hidden;padding: 0px 0px 0px 0px;"></div>')
 				        .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
@@ -56,11 +61,18 @@
 				            width: 600,
 				            height: 550,
 				            title: pagetitle,
-				            dialogClass: 'pwdTitleClass'
+				            dialogClass: 'pwdTitleClass',
+				            closeOnEscape: !initialPassword,
+				            open: function () {
+				                if (initialPassword) {
+				                    // 닫기(X) 버튼을 숨긴다 - 변경 화면으로 가는 것 외에는 닫을 수 없다
+				                    $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();
+				                }
+				            }
 				    	});
         
 <c:if test="${loginVO != null}">
-	if ( ${elapsedTimeExpiration} > 0 )
+	if ( initialPassword || ${elapsedTimeExpiration} > 0 )
 		$dialog.dialog('open');
 </c:if>
     });

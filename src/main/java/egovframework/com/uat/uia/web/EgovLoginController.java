@@ -32,6 +32,7 @@ import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import egovframework.com.uat.uia.service.impl.EgovInitialPasswordChecker;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 import jakarta.annotation.Resource;
@@ -68,6 +69,7 @@ import jakarta.validation.Valid;
  *   2023.06.09  김신해          NSR 보안조치 (GPKI 인증서 등록 OOB 방지)
  *   2024.10.29  이백행          불필요 형변환 제거 (request.getParameter("loginMessage"); loginService.selectLoginIncorrect(loginVO);)
  *   2025.07.31  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.10.02  개발팀         비밀번호 안내 팝업에 초기 비밀번호 사용 여부(initialPassword) 추가
  *
  *      </pre>
  */
@@ -77,6 +79,10 @@ public class EgovLoginController {
 	/** EgovLoginService */
 	@Resource(name = "loginService")
 	private EgovLoginService loginService;
+
+	/** 초기 비밀번호 사용 여부 확인 */
+	@Resource(name = "egovInitialPasswordChecker")
+	private EgovInitialPasswordChecker initialPasswordChecker;
 
 	/** EgovCmmUseService */
 	@Resource(name = "EgovCmmUseService")
@@ -657,6 +663,9 @@ public class EgovLoginController {
 
 		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
 		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
+
+		// 초기(공개) 비밀번호 사용 중이면 닫을 수 없는 변경 안내를 띄운다(유효기간과 무관)
+		model.addAttribute("initialPassword", initialPasswordChecker.isInitialPassword(loginVO));
 
 		return "egovframework/com/uat/uia/EgovExpirePwd";
 	}
