@@ -7,6 +7,10 @@
 FROM maven:3.9-eclipse-temurin-17 AS build
 WORKDIR /workspace
 
+# 암호화 키: src 의 egov-crypto-config.properties 가 배포 기본 키(egovframe)이면 컨테이너는 기동하지만
+# 모든 요청에 "암호화 키 초기화가 필요합니다" 안내 페이지(HTTP 503)를 응답한다. 이미지를 빌드하기 전에 호스트의 프로젝트 루트에서
+# init-crypto-key.sh(Windows: init-crypto-key.bat)를 한 번 실행해 두어야 한다.
+# 빌드 안에서 --generate 로 자동 생성하지 않는 이유: 빌드할 때마다 키가 바뀌어 기존 암호화 데이터를 풀 수 없게 된다.
 COPY pom.xml ./
 COPY src ./src
 COPY script ./script
