@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -79,6 +78,7 @@ public class EgovRoleManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/rmt/EgovRoleListView.do")
+    @RequireAdmin
     public String selectRoleListView()
             throws Exception {
         return "egovframework/com/sec/rmt/EgovRoleManage";
@@ -223,10 +223,13 @@ public class EgovRoleManageController {
     @RequireAdmin
 	public String updateRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 			BindingResult bindingResult,
+			@ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
             ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
 			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
+			// 형제 selectRole과 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("roleManageVO", roleManageVO);
 			return "egovframework/com/sec/rmt/EgovRoleUpdate";
 		} else {
     	egovRoleManageService.updateRole(roleManage);

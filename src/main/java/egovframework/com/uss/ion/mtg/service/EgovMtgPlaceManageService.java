@@ -76,6 +76,11 @@ public interface EgovMtgPlaceManageService {
 	public void deleteMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception;
 
 	/**
+	 * 회의실에 등록된 예약 건수를 조회한다.
+	 */
+	public int selectMtgPlaceResveCnt(MtgPlaceManageVO mtgPlaceManageVO) throws Exception;
+
+	/**
 	 * 회의실 중복여부 체크.
 	 */
 	public int mtgPlaceResveDplactCeck(MtgPlaceManageVO mtgPlaceManageVO) throws Exception;

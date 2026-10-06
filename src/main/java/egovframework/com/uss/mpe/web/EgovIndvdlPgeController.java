@@ -1,5 +1,7 @@
 package egovframework.com.uss.mpe.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -102,6 +104,7 @@ public class EgovIndvdlPgeController {
      * @throws Exception
      */
      @PostMapping("/uss/mpe/selectIndvdlPgeDetail.do")
+     @RequireAdmin
      public String selectIndvdlPgeDetail(IndvdlPgeVO indvdlPgeVO, @ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model) throws Exception {
 
  		IndvdlPgeVO vo = egovIndvdlPgeService.selectIndvdlPgeDetail(indvdlPgeVO);
@@ -119,6 +122,7 @@ public class EgovIndvdlPgeController {
       * @throws Exception
       */
      @PostMapping("/uss/mpe/insertIndvdlPgeView.do")
+     @RequireAdmin
      public String insertIndvdlPgeView(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, Model model) throws Exception {
 
          model.addAttribute("indvdlPgeVO", new IndvdlPgeVO());
@@ -136,7 +140,8 @@ public class EgovIndvdlPgeController {
       * @throws Exception
       */
       @PostMapping("/uss/mpe/insertIndvdlPge.do")
-      public String insertIndvdlPge(
+      @RequireAdmin
+	public String insertIndvdlPge(
 	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
 		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,
 		BindingResult bindingResult) throws Exception {
@@ -159,6 +164,7 @@ public class EgovIndvdlPgeController {
        * @throws Exception
        */
       @PostMapping("/uss/mpe/updateIndvdlPgeView.do")
+      @RequireAdmin
       public String updateIndvdlPgeView(@RequestParam("cntntsId") String cntntsId ,
               @ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model)
               throws Exception {
@@ -182,7 +188,8 @@ public class EgovIndvdlPgeController {
        * @throws Exception
        */
       @PostMapping("/uss/mpe/updateIndvdlPge.do")
-      public String updateIndvdlPge(
+      @RequireAdmin
+	public String updateIndvdlPge(
 	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
 		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,
 		BindingResult bindingResult) throws Exception {

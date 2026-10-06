@@ -1,7 +1,6 @@
 package egovframework.com.cop.sms.service.impl;
 
-import java.io.IOException;
-
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,26 +59,29 @@ public class EgovSmsBasicReceiver implements SMEListener {
 	private SMEReceiver receiver = null;
 
 	/** 연결 여부 */
-	@SuppressWarnings("unused")
 	private boolean isConnected = false;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsBasicReceiver.class);
 
 	/**
 	 * SMS 결과 수신을 위한 Connection 및 Session 생성한다.
-	 *
-	 * @throws SMEException
 	 */
-	public void open() throws SMEException {
-		this.factReceiver = new SMEConnectionFactoryImpl(connString);
-		this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
-		this.sessReceiver = connReceiver.createSession();
+	public void open() {
+		try {
+			this.factReceiver = new SMEConnectionFactoryImpl(connString);
+			this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
+			this.sessReceiver = connReceiver.createSession();
 
-		this.receiver = sessReceiver.createReceiver();
-		this.receiver.setListener(this);
+			this.receiver = sessReceiver.createReceiver();
+			this.receiver.setListener(this);
+		} catch (SMEException e) {
+			throw new BaseRuntimeException(e);
+		}
+
 		this.connReceiver.start();
 
 		isConnected = true;
+		LOGGER.debug("{}", isConnected);
 	}
 
 	/**
@@ -151,9 +153,6 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				int nRes = rpt.getResult(); // 결과코드
 				String doneTime = rpt.getDeliverTime(); // 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
 				String netCode = rpt.getDestination(); // 이동통신사 정보
-
-				// System.out.println("Receiver Number is :" +
-				// ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
 
 				String resultMsg = "";
 
@@ -244,16 +243,12 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				}
 
 				if (nRes != SMEMessage.RESULT_SUCCESS) {
-					// System.out.println("SMSMessage (msgId = " + msgId + ") report = " +
-					// rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
 					LOGGER.info("Done Time   : {}", doneTime);
 					LOGGER.info("Net Code    : {}", netCode);
 				} else {
-					// System.out.println("SMEMessage (msgId = " + msgId + ") report = " +
-					// rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
@@ -271,16 +266,8 @@ public class EgovSmsBasicReceiver implements SMEListener {
 					recptn.setResultCode(Integer.toString(nRes));
 					recptn.setResultMssage(resultMsg);
 
-					try {
-						smsDao.updateSmsRecptnInf(recptn);
+					smsDao.updateSmsRecptnInf(recptn);
 						// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-					} catch (IOException ex) {
-//						LOGGER.error("Exception: {}", ex.getClass().getName());
-//						LOGGER.error("Exception  Message: {}", ex.getMessage());
-						LOGGER.error("[IOException] : Connection Close");
-					} catch (Exception ex) {
-						LOGGER.error("[" + ex.getClass() + "] Connection Close : ", ex.getMessage());
-					}
 				}
 			} else {
 				LOGGER.debug("SMEReceiver Disconnected!!");

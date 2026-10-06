@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,6 +21,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
@@ -83,8 +83,9 @@ public class EgovProxySvcController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/utl/sys/pxy/selectProxySvcListView.do")
+	@RequireAdmin
 	public String selectProxySvcListView() throws Exception {
-		return "egovframework/com/utl/sys/pxy/EgovProxySvcList";
+		return "forward:/utl/sys/pxy/selectProxySvcList.do";
 	}
 
 	/**
@@ -94,7 +95,6 @@ public class EgovProxySvcController {
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name = "프록시서비스", order = 2140, gid = 90)
-	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/pxy/selectProxySvcList.do")
 	public String selectProxySvcList(@ModelAttribute("proxySvc") ProxySvc proxySvc, Model model) throws Exception {
 
@@ -194,7 +194,8 @@ public class EgovProxySvcController {
 	@RequireAdmin
 	public String updateViewProxySvc(@ModelAttribute("proxySvc") ProxySvc proxySvc, Model model) throws Exception {
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM072"));
-		model.addAttribute("proxySvc", egovProxySvcService.selectProxySvc(proxySvc));
+		ProxySvc stored = egovProxySvcService.selectProxySvc(proxySvc);
+		model.addAttribute("proxySvc", stored);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/utl/sys/pxy/EgovProxySvcUpdt";
 	}
@@ -250,12 +251,9 @@ public class EgovProxySvcController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/utl/sys/pxy/selectProxyLogListView.do")
+	@RequireAdmin
 	public String selectProxyLogListView(@ModelAttribute("proxyLog") ProxyLog proxyLog, Model model) throws Exception {
-		proxyLog.setStrStartDate(EgovStringUtil.addMinusChar(EgovDateUtil.addMonth(EgovDateUtil.getToday(), -1)));
-		proxyLog.setStrEndDate(EgovStringUtil.addMinusChar(EgovDateUtil.getToday()));
-		model.addAttribute("proxyLog", proxyLog);
-
-		return "egovframework/com/utl/sys/pxy/EgovProxyLogList";
+		return "forward:/utl/sys/pxy/selectProxyLogList.do";
 	}
 
 	/**

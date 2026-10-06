@@ -1,5 +1,7 @@
 package egovframework.com.uss.ion.bnt.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +30,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManageVO;
 import egovframework.com.uss.ion.bnt.service.BndtDiaryVO;
@@ -120,7 +123,6 @@ public class EgovBndtManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name = "당직관리", order = 910, gid = 50)
 	@RequestMapping("/uss/ion/bnt/EgovBndtManageList.do")
 	public String selectBndtManageListView(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
@@ -133,7 +135,6 @@ public class EgovBndtManageController {
 
 		int iYear = cal.get(java.util.Calendar.YEAR);
 		int iMonth = cal.get(java.util.Calendar.MONTH);
-		int iDate = cal.get(java.util.Calendar.DATE);
 
 		// 검색 설정
 		String sSearchDate = "";
@@ -163,6 +164,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/selectBndtManageList.do")
+	@RequireAdmin
 	public String selectBndtManageList(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, ModelMap model)
 			throws Exception {
 
@@ -194,12 +196,20 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/EgovBndtManageDetail.do")
+	@RequireAdmin
 	public String selectBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 
 		BndtManageVO resultVO = egovBndtManageService.selectBndtManage(bndtManageVO);
+
+		// 조회 결과가 없으면 화면을 그리지 않고 목록으로 돌려보낸다.
+		// 그대로 두면 상세 화면은 빈 값으로, 수정 화면은 form 바인딩 대상 없이 렌더된다.
+		if (resultVO == null) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/uss/ion/bnt/EgovBndtManageList.do";
+		}
 
 		model.addAttribute("bndtManageVO", resultVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -217,6 +227,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/EgovBndtManageRegist.do")
+	@RequireAdmin
 	public String insertViewBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, ModelMap model) throws Exception {
 
 		bndtManageVO.setBndtDe(EgovDateUtil.formatDate(bndtManageVO.getBndtDe(), "-"));
@@ -232,6 +243,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/insertBndtManage.do")
+	@RequireAdmin
 	public String insertBndtManage(@Valid @ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -255,6 +267,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/updtBndtManage.do")
+	@RequireAdmin
 	public String updtBndtManage(@Valid @ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -278,8 +291,10 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/deleteBndtManage.do")
+	@RequireAdmin
 	public String deleteBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
 			ModelMap model) throws Exception {
+
 
 		int iDiaryTotCnt = egovBndtManageService.selectBndtDiaryTotCnt(bndtManageVO);
 		if (iDiaryTotCnt == 0) {
@@ -289,6 +304,11 @@ public class EgovBndtManageController {
 		} else {
 
 			bndtManageVO = egovBndtManageService.selectBndtManage(bndtManageVO);
+
+			if (bndtManageVO == null) {
+				model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
+				return "forward:/uss/ion/bnt/EgovBndtManageList.do";
+			}
 
 			model.addAttribute("bndtManageVO", bndtManageVO);
 			model.addAttribute("errorMessage", "당직일지를 삭제하신 후 당직정보를 삭제 하세요.");
@@ -341,6 +361,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/EgovBndtCeckManage.do")
+	@RequireAdmin
 	public String selectBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			@RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -363,12 +384,10 @@ public class EgovBndtManageController {
 	 *
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/uss/ion/bnt/EgovBndtCeckManageRegist.do")
+	@RequireAdmin
 	public String insertViewBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			ModelMap model) throws Exception {
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		model.addAttribute("bndtCeckSeList", bndtCeckSeCode());
 
@@ -386,6 +405,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/insertBndtCeckManage.do")
+	@RequireAdmin
 	public String insertBndtCeckManage(@Valid @ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -415,6 +435,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/updtBndtCeckManage.do")
+	@RequireAdmin
 	public String updtBndtCeckManage(@Valid @ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -442,6 +463,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/deleteBndtCeckManage.do")
+	@RequireAdmin
 	public String deleteBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			ModelMap model) throws Exception {
 
@@ -459,6 +481,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/selectBndtDiary.do")
+	@RequireAdmin
 	public String selectBndtDiary(@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
@@ -472,6 +495,7 @@ public class EgovBndtManageController {
 			model.addAttribute("bndtDiaryVO", bndtDiaryVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtDiaryRegist";
 		} else if (sCmd.equals("updt")) {
+			requireDiary(bndtDiaryVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtDiaryUpdt";
 		} else {
 			return "egovframework/com/uss/ion/bnt/EgovBndtDiaryDetail";
@@ -485,6 +509,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/insertBndtDiary.do")
+	@RequireAdmin
 	public String insertBndtDiary(
 			@RequestParam(value = "bndtCeckSe", required = false) String[] bndtCeckSe,
 			@RequestParam(value = "bndtCeckCd", required = false) String[] bndtCeckCd,
@@ -541,12 +566,14 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/updtBndtDiary.do")
+	@RequireAdmin
 	public String updtBndtDiary(
 			@RequestParam(value = "bndtCeckSe", required = false) String[] bndtCeckSe,
 			@RequestParam(value = "bndtCeckCd", required = false) String[] bndtCeckCd,
 			@RequestParam(value = "chckSttus", required = false) String[] chckSttus,
 			@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
 			ModelMap model) throws Exception {
+		requireDiary(bndtDiaryVO);
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		bndtDiaryVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
@@ -597,12 +624,21 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/deleteBndtDiary.do")
+	@RequireAdmin
 	public String deleteBndtDiary(@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
 			ModelMap model) throws Exception {
 
+		requireDiary(bndtDiaryVO);
 		egovBndtManageService.deleteBndtDiary(bndtDiaryVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/ion/bnt/EgovBndtManageList.do";
+	}
+
+	/**
+	 * 일지가 없으면 거부한다. 당직관리는 관리자 전용이라 일지 작성자는 따로 확인하지 않는다(관리자끼리 신뢰).
+	 */
+	private void requireDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+		EgovAuthorizationHelper.requireTarget(egovBndtManageService.selectBndtDiaryRegisterId(bndtDiaryVO));
 	}
 
 	/**
@@ -614,6 +650,7 @@ public class EgovBndtManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageListPop.do")
+	@RequireAdmin
 	public String selectBndtManageBnde(final HttpServletRequest request,
 			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -630,6 +667,7 @@ public class EgovBndtManageController {
 	}
 
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageListPopAction.do")
+	@RequireAdmin
 	public String selectBndtManageBndeAction(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -695,6 +733,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/bnt/insertBndtManageBnde.do")
+	@RequireAdmin
 	public String insertBndtManageBnde(
 			@RequestParam(value = "checkedBndtManageForInsert", required = false) String checkedBndtManageForInsert,
 			@RequestParam(value = "searchKeyword", required = false) String searchKeyword,

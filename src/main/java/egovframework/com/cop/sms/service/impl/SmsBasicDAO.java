@@ -3,8 +3,11 @@ package egovframework.com.cop.sms.service.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsRecptn;
@@ -34,10 +37,10 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsVO
 	 */
-	public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
+	public List<SmsVO> selectSmsInfs(SmsVO vo) {
 		List<SmsVO> list = new ArrayList<SmsVO>();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append("SELECT\n");
@@ -118,6 +121,8 @@ public class SmsBasicDAO {
 			}
 
 			return list;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -126,10 +131,9 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsVO
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectSmsInfsCnt(SmsVO vo) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+	public int selectSmsInfsCnt(SmsVO vo) {
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append("SELECT\n");
@@ -178,6 +182,8 @@ public class SmsBasicDAO {
 			}
 
 			return 0;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -186,12 +192,11 @@ public class SmsBasicDAO {
 	 * 
 	 * @param notification
 	 * @return
-	 * @throws Exception
 	 */
-	public String insertSmsInf(Sms sms) throws Exception {
+	public String insertSmsInf(Sms sms) {
 		String smsId = null;
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append("INSERT INTO COMTNSMS\n");
@@ -227,6 +232,8 @@ public class SmsBasicDAO {
 			conn.commit();
 
 			return smsId;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -234,10 +241,9 @@ public class SmsBasicDAO {
 	 * 문자메시지 수신정보 및 결과 정보를 등록한다.
 	 * 
 	 * @param smsRecptn
-	 * @throws Exception
 	 */
-	public void insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+	public void insertSmsRecptnInf(SmsRecptn smsRecptn) {
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
 		buffer.append("INSERT INTO COMTNSMSRECPTN\n");
@@ -255,6 +261,8 @@ public class SmsBasicDAO {
 			pstmt.setString(++index, smsRecptn.getResultMssage());
 
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -264,10 +272,10 @@ public class SmsBasicDAO {
 	 * @param searchVO
 	 * @return
 	 */
-	public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
+	public SmsVO selectSmsInf(SmsVO searchVO) {
 		SmsVO smsVO = new SmsVO();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		// for mySql
 		buffer.append("SELECT\n");
 		buffer.append("  a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,\n");
@@ -307,6 +315,8 @@ public class SmsBasicDAO {
 			}
 
 			return smsVO;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -315,10 +325,10 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsRecptn
 	 */
-	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
+	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) {
 		List<SmsRecptn> list = new ArrayList<SmsRecptn>();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
 		buffer.append("SELECT\n");
@@ -348,6 +358,8 @@ public class SmsBasicDAO {
 			}
 
 			return list;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -356,10 +368,9 @@ public class SmsBasicDAO {
 	 * 
 	 * @param smsRecptn
 	 * @return
-	 * @throws Exception
 	 */
-	public void updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+	public void updateSmsRecptnInf(SmsRecptn smsRecptn) {
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql & Oracle
 		buffer.append("UPDATE COMTNSMSRECPTN SET\n");
@@ -378,6 +389,8 @@ public class SmsBasicDAO {
 			pstmt.setString(++index, smsRecptn.getRecptnTelno());
 
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -385,10 +398,9 @@ public class SmsBasicDAO {
 	 * ID 처리. transaction 처리를 위해 Connection을 파라미터로 넘겨받음
 	 * 
 	 * @return
-	 * @throws Exception
 	 */
-	protected String getNextId(Connection conn) throws Exception {
-		StringBuffer buffer = new StringBuffer();
+	protected String getNextId(Connection conn) {
+		StringBuilder buffer = new StringBuilder();
 
 		// for mySql
 		buffer.append(
@@ -410,6 +422,8 @@ public class SmsBasicDAO {
 			}
 
 			return null;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 }

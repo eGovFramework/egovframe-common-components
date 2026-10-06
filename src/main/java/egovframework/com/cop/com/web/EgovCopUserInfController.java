@@ -47,10 +47,9 @@ public class EgovCopUserInfController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/com/selectUserList.do")
-	public String selectUserList(@ModelAttribute("searchVO") UserInfVO userVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+	public String selectUserList(@ModelAttribute("searchVO") UserInfVO userVO, @RequestParam Map<String, Object> commandMap, ModelMap model) {
 		String popFlag = (String) commandMap.get("PopFlag");
 		String returnUrl = "egovframework/com/cop/com/EgovUserList";
 

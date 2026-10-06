@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ism.service.EgovInfrmlSanctnService;
@@ -48,6 +49,7 @@ public class EgovInfrmlSanctnController {
 	 * @param sanctnerVO
 	 */
 	@RequestMapping("/uss/ion/ism/selectSanctnerListPopup.do")
+	@RequireAdmin
 	public String selectSanctnerListPopup(@ModelAttribute("searchVO") SanctnerVO sanctnerVO, ModelMap model) throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovSanctnerListPopup";
 	}
@@ -60,6 +62,7 @@ public class EgovInfrmlSanctnController {
 	 * @param sanctnerVO
 	 */
 	@RequestMapping("/uss/ion/ism/selectSanctnerList.do")
+	@RequireAdmin
 	public String selectSanctnerList(@ModelAttribute("searchVO") SanctnerVO sanctnerVO, ModelMap model) throws Exception{
 		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -96,6 +99,7 @@ public class EgovInfrmlSanctnController {
 	 * @param sanctnerVO
 	 */
 	@RequestMapping("/uss/ion/ism/selectSanctnerListNew.do")
+	@RequireAdmin
 	public String selectSanctnerListNew(@ModelAttribute("searchVO") SanctnerVO sanctnerVO, ModelMap model) throws Exception{
 		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -132,6 +136,7 @@ public class EgovInfrmlSanctnController {
 	 * @param InfrmlSanctn
 	 */
 	@PostMapping("/uss/ion/ism/selectInfrmlSanctn.do")
+	@RequireAdmin
 	public String selectInfrmlSanctn(
 			@ModelAttribute("infrmlSanctn") InfrmlSanctn infrmlSanctn, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
@@ -160,6 +165,7 @@ public class EgovInfrmlSanctnController {
 	 * @param
 	 */
 	@RequestMapping("/uss/ion/ism/EgovReturnPopup.do")
+	@RequireAdmin
 	public String selectReturnPopup() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovReturnPopup";
 	}
@@ -172,6 +178,7 @@ public class EgovInfrmlSanctnController {
 	 * @param
 	 */
 	@RequestMapping("/uss/ion/ism/EgovConfmPopup.do")
+	@RequireAdmin
 	public String selectConfmPopup() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovConfmPopup";
 	}
@@ -183,7 +190,9 @@ public class EgovInfrmlSanctnController {
 	 *
 	 * @param
 	 */
-	@PostMapping("/uss/ion/ism/EgovReturnPopupNew.do")
+	// 반려사유 입력 팝업 화면. iframe src 로 로드되어 GET 으로 요청된다.
+	@RequestMapping("/uss/ion/ism/EgovReturnPopupNew.do")
+	@RequireAdmin
 	public String selectReturnPopupNew() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovReturnPopupNew";
 	}
@@ -195,7 +204,9 @@ public class EgovInfrmlSanctnController {
 	 *
 	 * @param
 	 */
-	@PostMapping("/uss/ion/ism/EgovConfmPopupNew.do")
+	// 승인 확인 팝업 화면. iframe src 로 로드되어 GET 으로 요청된다.
+	@RequestMapping("/uss/ion/ism/EgovConfmPopupNew.do")
+	@RequireAdmin
 	public String selectConfmPopupNew() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovConfmPopupNew";
 	}

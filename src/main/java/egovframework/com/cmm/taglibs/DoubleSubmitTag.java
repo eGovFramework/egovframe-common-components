@@ -56,25 +56,30 @@ public class DoubleSubmitTag extends TagSupport {
 		HttpServletRequest request = (HttpServletRequest)pageContext.getRequest();
 		HttpSession session = request.getSession();
 
-		Map<String, String> map = null;
+		String token = null;
 
-		if (session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY) == null) {
-			map = new HashMap<>();
+		synchronized (session) {
+			Map<String, String> map = null;
 
-			session.setAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY, map);
-		} else {
-			map = (Map<String, String>) session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY);
+			if (session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY) == null) {
+				map = new HashMap<>();
+
+				session.setAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY, map);
+			} else {
+				map = (Map<String, String>) session.getAttribute(EgovDoubleSubmitHelper.SESSION_TOKEN_KEY);
+			}
+
+			// First call (check session)
+			if (map.get(tokenKey) == null) {
+
+				map.put(tokenKey, EgovDoubleSubmitHelper.getNewUUID());
+
+				LOGGER.debug("[Double Submit] session token created({}) : {}", tokenKey, map.get(tokenKey));
+			}
+			token = map.get(tokenKey);
 		}
 
-		// First call (check session)
-		if (map.get(tokenKey) == null) {
-
-			map.put(tokenKey, EgovDoubleSubmitHelper.getNewUUID());
-
-			LOGGER.debug("[Double Submit] session token created({}) : {}", tokenKey, map.get(tokenKey));
-		}
-
-		buffer.append("<input type='hidden' name='").append(EgovDoubleSubmitHelper.PARAMETER_NAME).append("' value='").append(map.get(tokenKey)).append("'/>");
+		buffer.append("<input type='hidden' name='").append(EgovDoubleSubmitHelper.PARAMETER_NAME).append("' value='").append(token).append("'/>");
 
 		try {
 			pageContext.getOut().print(buffer.toString());

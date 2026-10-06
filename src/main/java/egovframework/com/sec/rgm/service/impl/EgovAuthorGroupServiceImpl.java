@@ -75,6 +75,45 @@ public class EgovAuthorGroupServiceImpl  extends EgovAbstractServiceImpl impleme
 		authorGroupDAO.deleteAuthorGroup(authorGroup);
 	}
 
+	/**
+	 * 여러 사용자에 대한 그룹 권한 배정을 배정여부(regYn)에 따라 일괄 처리한다.
+	 * 이 메서드 진입 시점에 한 번만 트랜잭션이 걸리므로(context-transaction.xml 의
+	 * *Impl 메서드 대상 AOP), 항목 중간에 예외가 나면 목록 전체가 롤백된다.
+	 * @param authorGroup AuthorGroup
+	 * @param userIds 처리할 사용자 ID 배열
+	 * @param authorCodes userIds 와 같은 순서의 권한코드 배열
+	 * @param mberTyCodes userIds 와 같은 순서의 회원유형코드 배열
+	 * @param regYns userIds 와 같은 순서의 배정여부 배열
+	 * @exception Exception
+	 */
+	@Override
+	public void updateAuthorGroupList(AuthorGroup authorGroup, String[] userIds, String[] authorCodes, String[] mberTyCodes, String[] regYns) throws Exception {
+		for (int i = 0; i < userIds.length; i++) {
+			authorGroup.setUniqId(userIds[i]);
+			authorGroup.setAuthorCode(authorCodes[i]);
+			authorGroup.setMberTyCode(mberTyCodes[i]);
+			if ("N".equals(regYns[i])) {
+				insertAuthorGroup(authorGroup);
+			} else {
+				updateAuthorGroup(authorGroup);
+			}
+		}
+	}
+
+	/**
+	 * 여러 사용자에 대한 그룹 권한을 일괄 삭제한다. 위와 동일한 이유로 목록 전체가 한 트랜잭션이다.
+	 * @param authorGroup AuthorGroup
+	 * @param userIds 삭제할 사용자 ID 배열
+	 * @exception Exception
+	 */
+	@Override
+	public void deleteAuthorGroupList(AuthorGroup authorGroup, String[] userIds) throws Exception {
+		for (String userId : userIds) {
+			authorGroup.setUniqId(userId);
+			deleteAuthorGroup(authorGroup);
+		}
+	}
+
     /**
 	 * 목록조회 카운트를 반환한다
 	 * @param authorGroupVO AuthorGroupVO

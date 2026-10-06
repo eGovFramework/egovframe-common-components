@@ -98,7 +98,7 @@ public class EgovMainImageServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public void deleteMainImageFile(MainImageVO mainImageVO) throws Exception {
 		FileVO fileVO = mainImageDAO.selectMainImageFile(mainImageVO);
-		File file = new File(fileVO.getFileStreCours()+fileVO.getStreFileNm());
+		File file = new File(fileVO.getFileStreCours(), fileVO.getStreFileNm());
 		//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 		if(file.delete()){
 			LOGGER.debug("[file.delete] file : File Deletion Success");

@@ -1,5 +1,7 @@
 package egovframework.com.cop.cmy.web;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.exception.EgovXssException;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
@@ -32,6 +35,7 @@ import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import java.util.Locale;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -87,12 +91,11 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/cmmntyMain.do")
     public String selectCmmntyMain(@ModelAttribute("searchVO") CommunityVO cmmntyVO
     		,ModelMap model
-    		,HttpServletRequest request) throws Exception {
+			,HttpServletRequest request) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -133,10 +136,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/cmmntyMainContents.do")
-    public String selectCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String selectCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -202,10 +204,10 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuUserBySelf.do")
-    public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model) throws Exception {
+    public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model,
+    		RedirectAttributes redirectAttributes) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -216,9 +218,8 @@ public class EgovCommuManageController {
 
 		String retVal = "";
 
-		if ("".equals(cmmntyUser.getMngrAt())) {
-		    cmmntyUser.setMngrAt("N");
-		}
+		// 본인 가입에서 운영자 권한은 클라이언트가 지정할 수 없다.
+		cmmntyUser.setMngrAt("N");
 		cmmntyUser.setUseAt("Y");
 		cmmntyUser.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		cmmntyUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -235,8 +236,10 @@ public class EgovCommuManageController {
 	    	retVal = egovMessageSource.getMessage("comCopCmy.commuMain.joinMember.info.fail"); //이미 가입처리가 되어 있습니다.
 	    }
 
-		model.addAttribute("returnMsg", retVal);
-		model.addAttribute("cmmntyId", cmmntyUser.getCmmntyId());
+		// 2026.09.21 Spring 6 이관 조치 - ignoreDefaultModelOnRedirect 기본값이 true 로 바뀌어
+		// model 속성이 redirect URL 로 승격되지 않는다. RedirectAttributes 로 명시 전달한다.
+		redirectAttributes.addAttribute("returnMsg", retVal);
+		redirectAttributes.addAttribute("cmmntyId", cmmntyUser.getCmmntyId());
 
 		return "redirect:/cop/cmy/cmmntyMain.do";
     }
@@ -248,10 +251,10 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuUserBySelf.do")
-    public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model,
+    		RedirectAttributes redirectAttributes) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -277,8 +280,10 @@ public class EgovCommuManageController {
 			resultMsg = egovMessageSource.getMessage("comCopCmy.commuMain.deleteMember.info.admin"); //관리자는 탈퇴할수 없습니다.
 		}
 
-		model.addAttribute("cmmntyId", cmmntyUserVO.getCmmntyId());
-		model.addAttribute("returnMsg", resultMsg);
+		// 2026.09.21 Spring 6 이관 조치 - ignoreDefaultModelOnRedirect 기본값이 true 로 바뀌어
+		// model 속성이 redirect URL 로 승격되지 않는다. RedirectAttributes 로 명시 전달한다.
+		redirectAttributes.addAttribute("cmmntyId", cmmntyUserVO.getCmmntyId());
+		redirectAttributes.addAttribute("returnMsg", resultMsg);
 
 		return "redirect:/cop/cmy/cmmntyMain.do";
     }
@@ -289,10 +294,18 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/selectCommuUserList.do")
-    public String selectCommuUserList(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String selectCommuUserList(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+        if(!isAuthenticated) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
+		checkCommuAdmin(cmmntyUserVO.getCmmntyId(), user);
+
 		cmmntyUserVO.setPageUnit(propertyService.getInt("pageUnit"));
 		cmmntyUserVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -324,10 +337,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuUser.do")
-    public String insertCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String insertCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -357,10 +369,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuUser.do")
-    public String deleteCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String deleteCommuUser(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -389,10 +400,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/insertCommuUserAdmin.do")
-    public String insertCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String insertCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -422,10 +432,9 @@ public class EgovCommuManageController {
      * @param cmmntyUserVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmy/deleteCommuUserAdmin.do")
-    public String deleteCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+    public String deleteCommuUserAdmin(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -458,6 +467,22 @@ public class EgovCommuManageController {
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
 
+	private void checkCommuAdmin(String cmmntyId, LoginVO user) {
+		String uniqId = user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId());
+
+		if ("".equals(EgovStringUtil.isNullToString(cmmntyId)) || "".equals(uniqId)) {
+			throw new EgovXssException("XSS00001", "errors.xss.checkerUser");
+		}
+
+		CommunityUserVO userVO = new CommunityUserVO();
+		userVO.setCmmntyId(cmmntyId);
+		userVO.setEmplyrId(uniqId);
+
+		if (!Boolean.TRUE.equals(egovCommuManageService.selectIsCommuAdmin(userVO))) {
+			throw new EgovXssException("XSS00002", "errors.xss.checkerUser");
+		}
+	}
+
     /**
      * 미리보기 커뮤니티 메인페이지를 조회한다.
      *
@@ -465,10 +490,9 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/previewCmmntyMainPage.do")
-    public String previewCmmntyMainPage(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String previewCmmntyMainPage(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -539,9 +563,9 @@ public class EgovCommuManageController {
 
 		// 뷰 이름 인젝션 방지 - forward:/redirect: 등 스킴 접두사나 콜론이 포함된 값,
 		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
-		if (tmplatCours.contains(":") || tmplatCours.startsWith("/") || tmplatCours.toUpperCase().contains("WEB-INF")) {
+		if (tmplatCours.contains(":") || tmplatCours.startsWith("/") || tmplatCours.toUpperCase(Locale.ROOT).contains("WEB-INF")) {
 			LOGGER.debug("Template > Unsafe tmplatCours rejected: {}", tmplatCours);
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		// 화이트 리스트 체크
@@ -555,7 +579,7 @@ public class EgovCommuManageController {
         }
 
 		LOGGER.debug("Template > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
     }
 
     /**
@@ -565,13 +589,10 @@ public class EgovCommuManageController {
      * @param sessionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmy/previewCmmntyMainContents.do")
-    public String previewCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
+    public String previewCmmntyMainContents(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		@SuppressWarnings("unused")
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		cmmntyVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 

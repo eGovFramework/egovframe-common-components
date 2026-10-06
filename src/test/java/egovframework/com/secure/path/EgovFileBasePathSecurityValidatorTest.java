@@ -1,16 +1,15 @@
 package egovframework.com.secure.path;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import lombok.extern.slf4j.Slf4j;
 
 import egovframework.com.cmm.aop.EgovFileBasePathSecurityValidator;
 
+@Slf4j
 public class EgovFileBasePathSecurityValidatorTest {
 
     public static void main(String[] args) {
 
-        System.out.println("=== EgovFileBasePathSecurityValidator 테스트 ===\n");
+        log.debug("=== EgovFileBasePathSecurityValidator 테스트 ===\n");
 
         // 테스트 케이스들
         /*
@@ -34,9 +33,9 @@ public class EgovFileBasePathSecurityValidatorTest {
         
 
         for (String path : testPaths) {
-            System.out.print("Testing: " + path + " -> ");
+        	log.debug("Testing: {} -> ", path);
             EgovFileBasePathSecurityValidator.validate(path);
-            System.out.println("---");
+            log.debug("---");
         }
     }
 }

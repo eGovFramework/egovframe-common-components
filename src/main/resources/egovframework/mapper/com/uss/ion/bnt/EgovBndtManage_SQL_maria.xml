@@ -92,6 +92,12 @@
         
     </delete>  
 
+    <select id="selectBndtDiaryRegisterId" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiaryVO" resultType="String">
+    	SELECT MIN(FRST_REGISTER_ID) FROM COMTNBNDTDIARY
+    	WHERE  BNDT_ID = #{bndtId}
+    	AND    BNDT_DE = #{bndtDe}
+    </select>
+
     <select id="selectBndtDiaryTotCnt" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO" resultType="int">
         
              SELECT count(*) FROM COMTNBNDTDIARY
@@ -142,8 +148,8 @@
         <if test="searchBndtCeckSe != null and searchBndtCeckSe != ''">AND
                binary(BNDT_CECK_SE) like  CONCAT('%', #{searchBndtCeckSe}, '%')  
         </if>
-        <if test="searchBndtCeckCd != null and searchBndtCeckCd != ''">AND
-               binary(BNDT_CECK_CODE) like  CONCAT('%', #{searchBndtCeckCd}, '%')   
+        <if test="searchUseAt != null and searchUseAt != ''">AND
+               binary(USE_AT) like  CONCAT('%', #{searchUseAt}, '%')   
         </if>
         <if test="searchKeyword != null and searchKeyword != ''">AND
                binary(BNDT_CECK_CODE_NM) like  CONCAT('%', #{searchKeyword}, '%')   

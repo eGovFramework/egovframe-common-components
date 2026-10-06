@@ -2,6 +2,7 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_deleteArticle extends EgovTestV1 {
+class EgovArticleServiceImplTest_deleteArticle extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -22,9 +23,7 @@ public class EgovArticleServiceImplTest_deleteArticle extends EgovTestV1 {
 	private EgovArticleService egovArticleService;
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void deleteArticle() {
 		// given
 		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
 
@@ -32,6 +31,8 @@ public class EgovArticleServiceImplTest_deleteArticle extends EgovTestV1 {
 		boolean result = true;
 		try {
 			egovArticleService.deleteArticle(boardVO);
+		} catch (BaseRuntimeException e) {
+			throw e;
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			result = false;

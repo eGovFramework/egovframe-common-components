@@ -86,21 +86,6 @@
 
 
 	
-	/* ********************************************************
-	* 아이디  팝업창열기
-	******************************************************** */
-	function fn_egov_charger_DeptJob(strTitle, frmUniqId, frmEmplNo, frmEmplyrNm, frmOrgnztNm){
-		var arrParam = new Array(6);
-		arrParam[0] = window;
-		arrParam[1] = strTitle;
-		arrParam[2] = frmUniqId;
-		arrParam[3] = frmEmplNo;
-		arrParam[4] = frmEmplyrNm;
-		arrParam[5] = frmOrgnztNm;
-
-	 	window.showModalDialog("<c:url value='/cop/smt/djm/selectChargerListPopup.do' />", arrParam,"dialogWidth=800px;dialogHeight=500px;resizable=yes;center=yes");
-	}
-
 </script>
 </head>
 <body onLoad="fn_egov_init_DeptJob()" style="margin-top:0">
@@ -156,9 +141,6 @@
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.chargerNm" /> <span class="pilsu">*</span></th>
 			<td class="left">
 			    <form:input path="chargerNm" size="73" cssClass="txaIpt" readonly="true" maxlength="10" title="담당자" cssStyle="width:188px"/>
-				<a href="javascript:void(0);" onclick="fn_egov_charger_DeptJob('담당자', 'chargerId', '', 'chargerNm', '');return false;">
-					<img alt="담당자" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="담당자" />
-				</a>
 				<div><form:errors path="chargerNm" cssClass="error"/></div>
 		       <form:hidden path="chargerId" />       
 			</td>

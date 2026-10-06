@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -28,16 +29,21 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.smt.sdm.service.DeptSchdulSearchVO;
 import egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO;
 import egovframework.com.cop.smt.sdm.service.EgovDeptSchdulManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -91,10 +97,10 @@ public class EgovDeptSchdulManageController {
 	 * 
 	 * @param model
 	 * @return "/cop/smt/sdm/EgovMain"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/EgovMain.do")
-	public String egovMain(ModelMap model) throws Exception {
+	@RequireAdmin
+	public String egovMain(ModelMap model) {
 		return "egovframework/com/cop/smt/sdm/EgovMain";
 	}
 
@@ -103,10 +109,10 @@ public class EgovDeptSchdulManageController {
 	 * 
 	 * @param model
 	 * @return "/cop/smt/sdm/EgovLeft"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/EgovLeft.do")
-	public String egovLeft(ModelMap model) throws Exception {
+	@RequireAdmin
+	public String egovLeft(ModelMap model) {
 		return "egovframework/com/cop/smt/sdm/EgovLeft";
 	}
 
@@ -117,11 +123,11 @@ public class EgovDeptSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "uss/olp/mgt/EgovDeptSchdulManageAuthorGroupPopup"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageAuthorGroupPopup.do")
+	@RequireAdmin
 	public String egovMeetingManageLisAuthorGroupPopupPost(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageAuthorGroupPopup(searchVO);
 		model.addAttribute("resultList", resultList);
@@ -136,11 +142,11 @@ public class EgovDeptSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageEmpLyrPopup.do")
+	@RequireAdmin
 	public String egovMeetingManageLisEmpLyrPopupPost(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageEmpLyrPopup(searchVO);
 		model.addAttribute("resultList", resultList);
@@ -154,10 +160,9 @@ public class EgovDeptSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMainList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageMainList.do")
-	public String egovDeptSchdulManageList(@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	public String egovDeptSchdulManageList(@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -190,11 +195,12 @@ public class EgovDeptSchdulManageController {
 	 * @param searchVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageListPopup.do")
-	public String egovDeptSchdulManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
-			throws Exception {
+	public String egovDeptSchdulManageListPopup(@ModelAttribute("searchVO") DeptSchdulSearchVO searchVO, ModelMap model) {
+
+		// 일지를 등록하는 사용자 본인이 등록한 일정만 보여준다 (요청 값은 신뢰하지 않고 로그인 사용자로 고정)
+		searchVO.setFrstRegisterId(EgovAuthorizationHelper.assertLoginUser().getUniqId());
 
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -228,12 +234,11 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDailyList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageDailyList.do")
+	@RequireAdmin
 	public String egovDeptSchdulManageDailyList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 검색 유지
 		model.addAttribute("searchKeyword",
@@ -292,12 +297,11 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageWeekList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageWeekList.do")
+	@RequireAdmin
 	public String egovDeptSchdulManageWeekList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 일정구분 검색 유지
 		model.addAttribute("searchKeyword",
@@ -408,6 +412,12 @@ public class EgovDeptSchdulManageController {
 
 		model.addAttribute("listWeekGrop", listWeekGrop);
 
+		// 2026.09.01 인덱스 사용 전 범위 검증(IndexOutOfBoundsException 방지)
+		if (iNowWeek < 0 || iNowWeek >= listWeekGrop.size()) {
+			iNowWeek = 0;
+			model.addAttribute("week", iNowWeek);
+		}
+
 		List<String> listWeek = listWeekGrop.get(iNowWeek);
 		commandMap.put("searchMode", "WEEK");
 		commandMap.put("schdulBgnde", listWeek.get(0));
@@ -427,12 +437,10 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageMonthList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageMonthList.do")
 	public String egovDeptSchdulManageMonthList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
 
 		// 일정구분 검색 유지
 		model.addAttribute("searchKeyword",
@@ -497,11 +505,14 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDetail"
-	 * @throws Exception
 	 */
 	@GetMapping("/cop/smt/sdm/EgovDeptSchdulManageDetail.do")
+	@RequireAdmin
 	public String egovDeptSchdulManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) throws Exception {
+			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) {
+
+		// 관리자 전용 — 다른 부서 일정도 조회한다. 없는 일정은 거부
+		requireDeptSchdul(deptSchdulManageVO);
 
 		// 공통코드 중요도 조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -530,10 +541,14 @@ public class EgovDeptSchdulManageController {
 	 * 
 	 * @param deptSchdulManageVO
 	 * @return redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do
-	 * @throws Exception
 	 */
 	@PostMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageDetail.do", params = "cmd=del")
-	public String egovDeptSchdulManageDelete(DeptSchdulManageVO deptSchdulManageVO) throws Exception {
+	@RequireAdmin
+	public String egovDeptSchdulManageDelete(DeptSchdulManageVO deptSchdulManageVO) {
+
+		// 같은 부서 일정만 삭제한다 (다른 부서 일정은 관리자도 불가)
+		DeptSchdulManageVO stored = requireDeptSchdul(deptSchdulManageVO);
+		EgovAuthorizationHelper.assertSameDept(stored == null ? null : stored.getSchdulDeptId());
 
 		egovDeptSchdulManageService.deleteDeptSchdulManage(deptSchdulManageVO);
 		return "redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do";
@@ -548,14 +563,18 @@ public class EgovDeptSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageModify.do")
+	@RequireAdmin
 	public String deptSchdulManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			DeptSchdulManageVO deptSchdulManageVO, ModelMap model) throws Exception {
+			DeptSchdulManageVO deptSchdulManageVO, ModelMap model, HttpServletRequest request) {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
+		// 같은 부서 일정만 수정폼에 접근한다 (다른 부서 일정은 관리자도 불가)
+		DeptSchdulManageVO resultDeptSchdulManageVOReuslt = requireDeptSchdul(deptSchdulManageVO);
+		EgovAuthorizationHelper.assertSameDept(resultDeptSchdulManageVOReuslt == null ? null : resultDeptSchdulManageVOReuslt.getSchdulDeptId());
+		EgovAttachmentGrants.allowDelete(request, resultDeptSchdulManageVOReuslt.getAtchFileId());
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify";
 
@@ -584,9 +603,6 @@ public class EgovDeptSchdulManageController {
 		// 일정종료일자(분)
 		model.addAttribute("schdulEnddeMM", getTimeMM());
 
-		DeptSchdulManageVO resultDeptSchdulManageVOReuslt = egovDeptSchdulManageService
-				.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
-
 		String sSchdulBgnde = resultDeptSchdulManageVOReuslt.getSchdulBgnde();
 		String sSchdulEndde = resultDeptSchdulManageVOReuslt.getSchdulEndde();
 
@@ -614,13 +630,13 @@ public class EgovDeptSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageModifyActor.do")
+	@RequireAdmin
 	public String deptSchdulManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<String, String> commandMap,
 			@Valid @ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
-			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+			ModelMap model, RedirectAttributes redirectAttributes) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -631,6 +647,13 @@ public class EgovDeptSchdulManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// 같은 부서 일정만 수정한다 (다른 부서 일정은 관리자도 불가). 부서는 저장된 값으로 고정해 다른 부서로 옮기지 못하게 한다
+		DeptSchdulManageVO storedBeforeUpdate = requireDeptSchdul(deptSchdulManageVO);
+		EgovAuthorizationHelper.assertSameDept(storedBeforeUpdate == null ? null : storedBeforeUpdate.getSchdulDeptId());
+		deptSchdulManageVO.setSchdulDeptId(storedBeforeUpdate.getSchdulDeptId());
+		// 첨부 그룹은 요청값이 아니라 소유권을 확인한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		deptSchdulManageVO.setAtchFileId(Objects.toString(storedBeforeUpdate.getAtchFileId(), ""));
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify";
 
@@ -701,6 +724,7 @@ public class EgovDeptSchdulManageController {
 			 * ***************************************************************** // 일정관리정보
 			 * 업데이트 처리
 			 */
+			deptSchdulManageVO.setSchdulKindCode("1");
 			egovDeptSchdulManageService.updateDeptSchdulManage(deptSchdulManageVO);
 			sLocationUrl = "redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do";
 		}
@@ -715,13 +739,12 @@ public class EgovDeptSchdulManageController {
 	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageRegist"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageRegist.do")
+	@RequireAdmin
 	public String deptSchdulManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, ModelMap model,
-			RedirectAttributes redirectAttributes)
-			throws Exception {
+			RedirectAttributes redirectAttributes) {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageRegist";
 
@@ -771,13 +794,13 @@ public class EgovDeptSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "/cop/smt/sdm/EgovDeptSchdulManageRegist"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sdm/EgovDeptSchdulManageRegistActor.do")
+	@RequireAdmin
 	public String deptSchdulManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -794,6 +817,8 @@ public class EgovDeptSchdulManageController {
 		LOGGER.info("cmd => {}", sCmd);
 
 		if (sCmd.equals("save")) {
+			// 일정 부서는 자기 부서만 (다른 부서 일정 등록 차단)
+			EgovAuthorizationHelper.assertSameDept(deptSchdulManageVO.getSchdulDeptId());
 			if (bindingResult.hasErrors()) {
 				// 공통코드 중요도 조회
 				ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -844,6 +869,8 @@ public class EgovDeptSchdulManageController {
 			deptSchdulManageVO
 					.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
+			// 부서일정(1)으로 고정한다. 개인일정(2)은 개인일정 경로로만 등록한다
+			deptSchdulManageVO.setSchdulKindCode("1");
 			egovDeptSchdulManageService.insertDeptSchdulManage(deptSchdulManageVO);
 			sLocationUrl = "redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do";
 		}
@@ -856,12 +883,9 @@ public class EgovDeptSchdulManageController {
 	 * 시간을 LIST를 반환한다.
 	 * 
 	 * @return List
-	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 24; i++) {
 			String sHH = "";
 			String strI = String.valueOf(i);
@@ -885,7 +909,6 @@ public class EgovDeptSchdulManageController {
 	 * 분을 LIST를 반환한다.
 	 * 
 	 * @return List
-	 * @throws
 	 */
 	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	private List getTimeMM() {
@@ -914,7 +937,6 @@ public class EgovDeptSchdulManageController {
 	 * 0을 붙여 반환
 	 * 
 	 * @return String
-	 * @throws
 	 */
 	public String dateTypeIntForString(int iInput) {
 		String sOutput = "";
@@ -927,31 +949,12 @@ public class EgovDeptSchdulManageController {
 		return sOutput;
 	}
 
-
 	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 * 부서일정(종류 1)만 돌려준다. 같은 테이블의 개인일정(종류 2)이나 없는 일정이면 거부한다
+	 * (부서일정 경로로 같은 부서원의 개인일정을 수정·삭제하는 것 차단).
 	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
+	private DeptSchdulManageVO requireDeptSchdul(DeptSchdulManageVO deptSchdulManageVO) {
+		DeptSchdulManageVO stored = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
+		return EgovAuthorizationHelper.requireTarget(stored != null && "1".equals(stored.getSchdulKindCode()) ? stored : null);
 	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
-
 }

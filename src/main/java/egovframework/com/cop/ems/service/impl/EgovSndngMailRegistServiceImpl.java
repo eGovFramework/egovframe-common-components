@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -62,10 +64,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 	 * 
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean insertSndngMail(SndngMailVO vo) throws Exception {
+	public boolean insertSndngMail(SndngMailVO vo) {
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		String recptnPersons = EgovStringUtil.isNullToString(vo.getRecptnPerson()).replaceAll(" ", "");
 		String[] recptnPersonList = recptnPersons.split(";");
@@ -73,7 +74,12 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 		for (int j = 0; j < recptnPersonList.length; j++) {
 
 			// 1-0.메세지ID를 생성한다.
-			String mssageId = egovMailMsgIdGnrService.getNextStringId();
+			String mssageId;
+			try {
+				mssageId = egovMailMsgIdGnrService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
 
 			// 1-1.발송메일 데이터를 만든다.
 			SndngMailVO mailVO = new SndngMailVO();
@@ -125,10 +131,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 	 * 
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean trnsmitXmlData(SndngMailVO vo) throws Exception {
+	public boolean trnsmitXmlData(SndngMailVO vo) {
 
 		// 1. 첨부파일 목록 (원파일명, 저장파일명)
 		String orignlFileList = "";
@@ -170,10 +175,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 	 * 
 	 * @param xml String
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean recptnXmlData(String xmlFile) throws Exception {
+	public boolean recptnXmlData(String xmlFile) {
 
 		// 1. XML파일에서 발송결과코드를 가져온다.
 		SndngMailDocument mailDoc = EgovXMLDoc.getXMLToClass(xmlFile);

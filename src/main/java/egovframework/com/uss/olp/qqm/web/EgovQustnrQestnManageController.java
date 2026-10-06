@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.qqm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +28,10 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
+import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
@@ -63,6 +68,9 @@ public class EgovQustnrQestnManageController {
 	@Resource(name = "egovQustnrQestnManageService")
 	private EgovQustnrQestnManageService egovQustnrQestnManageService;
 
+	@Resource(name = "egovQustnrManageService")
+	private EgovQustnrManageService egovQustnrManageService;
+
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
@@ -81,6 +89,7 @@ public class EgovQustnrQestnManageController {
      * @throws Exception
      */
 	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageStatistics.do")
+    @RequireAdmin
     public String egovQustnrQestnManageStatistics(@ModelAttribute("searchVO") ComDefaultVO searchVO, QustnrQestnManageVO qustnrQestnManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
         String sLocationUrl = "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics";
@@ -90,9 +99,6 @@ public class EgovQustnrQestnManageController {
 
         HashMap<String, String> mapParam = new HashMap<>();
         mapParam.put("qestnrQesitmId", qustnrQestnManageVO.getQestnrQesitmId());
-
-        // System.out.println("qustnrQestnManageVO.getQestnTyCode() :
-        // "+qustnrQestnManageVO.getQestnTyCode());
 
         if ("2".equals(qustnrQestnManageVO.getQestnTyCode())) {
             // 주관식 설문통계
@@ -121,6 +127,7 @@ public class EgovQustnrQestnManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageListPopup.do")
+	@RequireAdmin
 	public String egovQustnrQestnManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -173,7 +180,6 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="질문관리", order = 630 ,gid = 50)
 	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do")
 	public String egovQustnrQestnManageList(
@@ -190,18 +196,20 @@ public class EgovQustnrQestnManageController {
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
 		if(sCmd.equals("del")){
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
 			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
 			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
+			List<EgovMap> storedList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+			Object ownerId = qustnrOwnerId((storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("qestnrId"));
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrQestnManageService.deleteQustnrQestnManage(qustnrQestnManageVO);
 		}
 
@@ -249,6 +257,7 @@ public class EgovQustnrQestnManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
+	@RequireAdmin
 	public String egovQustnrQestnManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -266,6 +275,9 @@ public class EgovQustnrQestnManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
+			List<EgovMap> storedList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+			Object ownerId = qustnrOwnerId((storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("qestnrId"));
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrQestnManageService.deleteQustnrQestnManage(qustnrQestnManageVO);
 			/** 목록으로갈때 검색조건 유지 */
 			sLocationUrl = "redirect:/uss/olp/qqm/EgovQustnrQestnManageList.do?";
@@ -296,7 +308,8 @@ public class EgovQustnrQestnManageController {
 	 * @throws Exception
 	 */
 	@GetMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageModify.do")
-		public String qustnrQestnManageModifyView(
+		@RequireAdmin
+	public String qustnrQestnManageModifyView(
 				@RequestParam("qestnrQesitmId") String qestnrQesitmId,
 		        @ModelAttribute("searchVO") ComDefaultVO searchVO,
 		        @ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -324,9 +337,11 @@ public class EgovQustnrQestnManageController {
 		    QustnrQestnManageVO vo = new QustnrQestnManageVO();
 		    vo.setQestnrQesitmId(qestnrQesitmId);
 		    
-		    List<?> resultList =
+		    List<EgovMap> resultList =
 		        egovQustnrQestnManageService
 		            .selectQustnrQestnManageDetail(vo);
+		    Object ownerId = qustnrOwnerId((resultList == null || resultList.isEmpty()) ? null : resultList.get(0).get("qestnrId"));
+		    EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 		    model.addAttribute("resultList", resultList);
 		    model.addAttribute("qustnrQestnManageVO", vo);
 
@@ -344,6 +359,7 @@ public class EgovQustnrQestnManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageModify.do")
+	@RequireAdmin
 	public String qustnrQestnManageModifySave(
 	        @ModelAttribute("searchVO") ComDefaultVO searchVO,
 	        @Valid @ModelAttribute("qustnrQestnManageVO")
@@ -360,6 +376,10 @@ public class EgovQustnrQestnManageController {
 	        );
 	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
+
+	    List<EgovMap> storedList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+	    Object ownerId = qustnrOwnerId((storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("qestnrId"));
+	    EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 
 	    // 1. 공통코드 (에러 시 재렌더링 대비)
 	    ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -423,6 +443,7 @@ public class EgovQustnrQestnManageController {
 	 * @throws Exception
 	 */
 	@GetMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageRegist.do")
+		@RequireAdmin
 		public String qustnrQestnManageRegistForm(
 		        @ModelAttribute("searchVO") ComDefaultVO searchVO,
 		        @RequestParam Map<?, ?> commandMap,
@@ -476,6 +497,7 @@ public class EgovQustnrQestnManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageRegist.do")
+		@RequireAdmin
 		public String qustnrQestnManageRegistSubmit(
 		        @ModelAttribute("searchVO") ComDefaultVO searchVO,
 		        @Valid @ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -533,6 +555,9 @@ public class EgovQustnrQestnManageController {
 	        return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageRegist";
 	    }
 
+	    // 질문은 설문을 등록한 사람만 붙인다
+	    EgovAuthorizationHelper.assertOwner(qustnrOwnerId(qustnrQestnManageVO.getQestnrId()));
+
 	    // 로그인 정보
 	    LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 	    qustnrQestnManageVO.setFrstRegisterId(
@@ -561,6 +586,19 @@ public class EgovQustnrQestnManageController {
 	}
 
 	
+
+	/**
+	 * 질문·항목은 상위 설문을 등록한 사람이 관리한다. 설문 등록자를 돌려주고, 설문이 없으면 null 이다(소유권 검사에서 거부).
+	 */
+	private String qustnrOwnerId(Object qestnrId) throws Exception {
+		if (qestnrId == null || qestnrId.toString().isEmpty()) {
+			return null;
+		}
+		QustnrManageVO qustnrManageVO = new QustnrManageVO();
+		qustnrManageVO.setQestnrId(qestnrId.toString());
+		List<EgovMap> qustnrList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+		Object ownerId = (qustnrList == null || qustnrList.isEmpty()) ? null : qustnrList.get(0).get("frstRegisterId");
+		return ownerId == null ? null : ownerId.toString();
+	}
+
 }
-
-

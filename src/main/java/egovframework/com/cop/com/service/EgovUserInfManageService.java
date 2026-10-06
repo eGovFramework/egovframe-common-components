@@ -26,61 +26,54 @@ public interface EgovUserInfManageService {
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public Map<String, Object> selectUserList(UserInfVO userVO) throws Exception;
+	public Map<String, Object> selectUserList(UserInfVO userVO);
 
 	/**
 	 * 커뮤니티 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public Map<String, Object> selectCmmntyUserList(UserInfVO userVO) throws Exception;
+	public Map<String, Object> selectCmmntyUserList(UserInfVO userVO);
 
 	/**
 	 * 커뮤니티 관리자 목록을 조회한다.
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public Map<String, Object> selectCmmntyMngrList(UserInfVO userVO) throws Exception;
+	public Map<String, Object> selectCmmntyMngrList(UserInfVO userVO);
 
 	/**
 	 * 동호회 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public Map<String, Object> selectClubUserList(UserInfVO userVO) throws Exception;
+	public Map<String, Object> selectClubUserList(UserInfVO userVO);
 
 	/**
 	 * 동호회 운영자 목록을 조회한다.
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public Map<String, Object> selectClubOprtrList(UserInfVO userVO) throws Exception;
+	public Map<String, Object> selectClubOprtrList(UserInfVO userVO);
 
 	/**
 	 * 동호회에 대한 모든 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception;
+	public List<UserInfVO> selectAllClubUser(UserInfVO userVO);
 
 	/**
 	 * 커뮤니티에 대한 모든 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) throws Exception;
+	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO);
 }

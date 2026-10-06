@@ -84,7 +84,10 @@ function fn_egov_SelectBoxValue(sbName)
 				<select name="selUnityLink" id="selUnityLink" class="select" title="<spring:message code="input.cSelect"/>"><!-- 선택 -->
 				   <option value=''>--<spring:message code="input.select"/>--</option><!-- 선택하세요 -->
 				   <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-				   <option value='${resultInfo.unityLinkUrl}'>${resultInfo.unityLinkNm}</option>
+				   <%-- 2026.07.30 보안 조치 - javascript:/data: 등 위험 스킴 및 open redirect 차단(http/https만 허용), 속성값 이스케이프 --%>
+				   <c:if test="${fn:startsWith(fn:toLowerCase(resultInfo.unityLinkUrl), 'http://') or fn:startsWith(fn:toLowerCase(resultInfo.unityLinkUrl), 'https://')}">
+				   <option value='<c:out value="${resultInfo.unityLinkUrl}"/>'><c:out value="${resultInfo.unityLinkNm}"/></option>
+				   </c:if>
 				   </c:forEach>
 			   </select>
 			   <input class="btn01" type="submit" value="<spring:message code="uss.ion.ulm.unityLinkSample.moveButton"/>" onclick="fn_egov_link_UnityLink();" /><!-- 이동 -->

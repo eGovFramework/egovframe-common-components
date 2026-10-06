@@ -1,5 +1,7 @@
 package egovframework.com.http;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -19,10 +21,11 @@ import java.net.URLConnection;
  * </pre>
  */
 
+@Slf4j
 public class TestHttpTimeoutStatus2 {
 
 	public static void main(String[] args) {
-		System.out.println("Start Chceck URL");
+		log.debug("Start Chceck URL");
 		String httpSttusCd = null;
 		String siteUrl = "http://googlezzz.com:81";
 		long start = System.currentTimeMillis();
@@ -38,11 +41,11 @@ public class TestHttpTimeoutStatus2 {
 			httpSttusCd = "02";
 		}
 		
-		System.out.println("실행 결과 : " + httpSttusCd );
+		log.debug("실행 결과 : {}", httpSttusCd);
 		
 		long end = System.currentTimeMillis();
-		System.out.println("실행 시간 : " + ( end - start ) / 1000.0 + "초" );
-		System.out.println("Finish Chceck URL");
+		log.debug("실행 시간 : {}초", ( end - start ) / 1000.0);
+		log.debug("Finish Chceck URL");
 
 	}
 

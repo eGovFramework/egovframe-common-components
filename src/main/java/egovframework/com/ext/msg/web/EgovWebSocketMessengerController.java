@@ -20,10 +20,10 @@ package egovframework.com.ext.msg.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import jakarta.servlet.http.HttpSession;
 
@@ -60,6 +60,7 @@ public class EgovWebSocketMessengerController {
 	 * @return view name
 	 */
 	@RequestMapping(value = "/cop/msg/websocketMessengerMain.do")
+	@RequireAdmin
 	public String websocketMessengerMain(HttpSession session, ModelMap model) {
 		model.addAttribute("loginVO", session.getAttribute("loginVO"));
 		return "egovframework/com/ext/msg/EgovMessengerMain";
@@ -74,6 +75,7 @@ public class EgovWebSocketMessengerController {
 	 * @return view name
 	 */
 	@RequestMapping(value = "/cop/msg/websocketMessengePopup.do")
+	@RequireAdmin
 	public String websocketMessengePopup(@RequestParam(value = "roomId") String roomId,
 										 @RequestParam(value = "username") String username,
 										 HttpSession session, ModelMap model) {

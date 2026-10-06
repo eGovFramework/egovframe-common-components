@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
+import egovframework.com.cop.bbs.service.BoardVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.EgovBBSSatisfactionService;
 import egovframework.com.cop.bbs.service.Satisfaction;
@@ -45,6 +48,9 @@ public class EgovBBSSatisfactionController {
 	@Resource(name="EgovBBSSatisfactionService")
     protected EgovBBSSatisfactionService bbsSatisfactionService;
 
+    @Resource(name = "EgovArticleService")
+    private EgovArticleService egovArticleService;
+
     @Resource(name="propertiesService")
     protected EgovPropertyService propertyService;
 
@@ -59,10 +65,9 @@ public class EgovBBSSatisfactionController {
      * @param boardVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/stf/selectSatisfactionList.do")
-    public String selectSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	// 수정 처리된 후 만족도조사 등록 화면으로 처리되기 위한 구현
 	if (satisfactionVO.isModified()) {
@@ -87,6 +92,15 @@ public class EgovBBSSatisfactionController {
 	////----------------------------------------
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+	// 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 검사. 조회수는 올리지 않는다
+	BoardVO parent = new BoardVO();
+	parent.setBbsId(satisfactionVO.getBbsId());
+	parent.setNttId(satisfactionVO.getNttId());
+	parent = egovArticleService.selectArticleDetailNoCount(parent);
+	if (parent != null) {
+		EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+	}
 
 	model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -126,10 +140,12 @@ public class EgovBBSSatisfactionController {
      * @param boardVO
      * @param model
      * @return
-     * @throws Exception
+     *
+     * @deprecated 이 경로를 부르는 화면이 없다. 익명 게시판 기능이 빠지면서 이동 대상(/cop/bbs/anonymous/*)도 없어져 동작하지 않는다. 삭제 예정.
      */
+    @Deprecated(forRemoval = true)
     @RequestMapping("/cop/stf/anonymous/selectSatisfactionList.do")
-    public String selectAnonymousSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectAnonymousSatisfactionList(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	// 수정 처리된 후 만족도조사 등록 화면으로 처리되기 위한 구현
 	if (satisfactionVO.isModified()) {
@@ -153,6 +169,15 @@ public class EgovBBSSatisfactionController {
 	    return "egovframework/com/cop/stf/EgovSatisfactionList";
 	}
 	////----------------------------------------
+
+	// 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 기준(익명 경로도 같다)
+	BoardVO parent = new BoardVO();
+	parent.setBbsId(satisfactionVO.getBbsId());
+	parent.setNttId(satisfactionVO.getNttId());
+	parent = egovArticleService.selectArticleDetailNoCount(parent);
+	if (parent != null) {
+		EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+	}
 
 	model.addAttribute("anonymous", "true");
 
@@ -193,11 +218,10 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/insertSatisfaction.do")
     public String insertSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -209,6 +233,14 @@ public class EgovBBSSatisfactionController {
 		}
 
 		if (isAuthenticated) {
+		    // 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 검사. 조회수는 올리지 않는다
+		    BoardVO parent = new BoardVO();
+		    parent.setBbsId(satisfaction.getBbsId());
+		    parent.setNttId(satisfaction.getNttId());
+		    parent = egovArticleService.selectArticleDetailNoCount(parent);
+		    if (parent != null) {
+		    	EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+		    }
 		    satisfaction.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    satisfaction.setWrterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -232,11 +264,13 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
+     *
+     * @deprecated 이 경로를 부르는 화면이 없다. 익명 게시판 기능이 빠지면서 이동 대상(/cop/bbs/anonymous/*)도 없어져 동작하지 않는다. 삭제 예정.
      */
+    @Deprecated(forRemoval = true)
     @PostMapping("/cop/stf/anonymous/insertSatisfaction.do")
     public String insertAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		if (bindingResult.hasErrors()) {
 		    model.addAttribute("msg", "작성자 및 만족도는 필수 입력값입니다.");
@@ -244,6 +278,14 @@ public class EgovBBSSatisfactionController {
 		    return "forward:/cop/stf/anonymous/selectBoardArticle.do";
 		}
 
+		// 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 기준(익명 경로도 같다)
+		BoardVO parent = new BoardVO();
+		parent.setBbsId(satisfaction.getBbsId());
+		parent.setNttId(satisfaction.getNttId());
+		parent = egovArticleService.selectArticleDetailNoCount(parent);
+		if (parent != null) {
+			EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+		}
 		satisfaction.setFrstRegisterId("ANONYMOUS");
 		satisfaction.setWrterId("");
 		satisfaction.setStsfdgPassword(EgovFileScrty.encryptPassword(satisfaction.getStsfdgPassword(), satisfaction.getStsfdgNo()));
@@ -265,10 +307,9 @@ public class EgovBBSSatisfactionController {
      * @param satisfaction
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/deleteSatisfaction.do")
-    public String deleteSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
+    public String deleteSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) {
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -299,10 +340,12 @@ public class EgovBBSSatisfactionController {
      * @param satisfaction
      * @param model
      * @return
-     * @throws Exception
+     *
+     * @deprecated 이 경로를 부르는 화면이 없다. 익명 게시판 기능이 빠지면서 이동 대상(/cop/bbs/anonymous/*)도 없어져 동작하지 않는다. 삭제 예정.
      */
+    @Deprecated(forRemoval = true)
     @PostMapping("/cop/stf/anonymous/deleteSatisfaction.do")
-    public String deleteAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
+    public String deleteAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) {
 
 	//-------------------------------
 	// 패스워드 비교
@@ -334,10 +377,9 @@ public class EgovBBSSatisfactionController {
      * @param satisfactionVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/stf/selectSingleSatisfaction.do")
-    public String selectSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	//------------------------------------------
 	// JSP의 <head> 부분 처리 (javascript 생성)
@@ -377,12 +419,19 @@ public class EgovBBSSatisfactionController {
 
 	Satisfaction data = bbsSatisfactionService.selectSatisfaction(satisfactionVO);
 
+	// 작성자 본인만 상세정보를 볼 수 있도록 소유권 검증 (수정·삭제와 동일)
+	String loginUniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
+	if (data == null || data.getFrstRegisterId() == null || !data.getFrstRegisterId().equals(loginUniqId)) {
+	    model.addAttribute("subMsg", egovMessageSource.getMessage("errors.xss.checkerUser"));
+	    return "egovframework/com/cop/stf/EgovSatisfactionList";
+	}
+
 	satisfactionVO.setStsfdgNo(data.getStsfdgNo());
 	satisfactionVO.setNttId(data.getNttId());
 	satisfactionVO.setBbsId(data.getBbsId());
 	satisfactionVO.setWrterId(data.getWrterId());
 	satisfactionVO.setWrterNm(data.getWrterNm());
-	satisfactionVO.setStsfdgPassword(data.getStsfdgPassword());
+	satisfactionVO.setStsfdgPassword(null);
 	satisfactionVO.setStsfdgCn(data.getStsfdgCn());
 	satisfactionVO.setStsfdg(data.getStsfdg());
 	satisfactionVO.setUseAt(data.getUseAt());
@@ -398,10 +447,12 @@ public class EgovBBSSatisfactionController {
      * @param satisfactionVO
      * @param model
      * @return
-     * @throws Exception
+     *
+     * @deprecated 이 경로를 부르는 화면이 없다. 익명 게시판 기능이 빠지면서 이동 대상(/cop/bbs/anonymous/*)도 없어져 동작하지 않는다. 삭제 예정.
      */
+    @Deprecated(forRemoval = true)
     @RequestMapping("/cop/stf/anonymous/selectSingleSatisfaction.do")
-    public String selectAnonymousSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) throws Exception {
+    public String selectAnonymousSingleSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, ModelMap model) {
 
 	//------------------------------------------
 	// JSP의 <head> 부분 처리 (javascript 생성)
@@ -461,7 +512,8 @@ public class EgovBBSSatisfactionController {
 	    satisfactionVO.setBbsId(data.getBbsId());
 	    satisfactionVO.setWrterId(data.getWrterId());
 	    satisfactionVO.setWrterNm(data.getWrterNm());
-	    satisfactionVO.setStsfdgPassword(data.getStsfdgPassword());
+	    // 2026.07.30 보안 조치 - 화면 모델에 저장 비밀번호를 싣지 않는다.
+	    satisfactionVO.setStsfdgPassword(null);
 	    satisfactionVO.setStsfdgCn(data.getStsfdgCn());
 	    satisfactionVO.setStsfdg(data.getStsfdg());
 	    satisfactionVO.setUseAt(data.getUseAt());
@@ -481,11 +533,10 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/stf/updateSatisfaction.do")
     public String updateSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -497,6 +548,15 @@ public class EgovBBSSatisfactionController {
 		}
 
 		if (isAuthenticated) {
+		    // 작성자 본인만 수정 가능하도록 소유권 검증 (회원 만족도조사는 로그인 사용자 명의로만 등록됨)
+		    Satisfaction stored = bbsSatisfactionService.selectSatisfaction(satisfactionVO);
+		    String loginUniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
+		    if (stored == null || stored.getFrstRegisterId() == null
+			    || !stored.getFrstRegisterId().equals(loginUniqId)) {
+			model.addAttribute("subMsg", egovMessageSource.getMessage("errors.xss.checkerUser"));
+			return "forward:/cop/bbs/selectArticleDetail.do";
+		    }
+
 		    satisfaction.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    satisfaction.setStsfdgPassword("");	// dummy
@@ -519,19 +579,30 @@ public class EgovBBSSatisfactionController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
+     *
+     * @deprecated 이 경로를 부르는 화면이 없다. 익명 게시판 기능이 빠지면서 이동 대상(/cop/bbs/anonymous/*)도 없어져 동작하지 않는다. 삭제 예정.
      */
+    @Deprecated(forRemoval = true)
     @PostMapping("/cop/stf/anonymous/updateSatisfaction.do")
     public String updateAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	    BindingResult bindingResult, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		if (bindingResult.hasErrors()) {
 		    model.addAttribute("msg", "작성자 및 만족도는 필수 입력값입니다.");
 
 		    return "forward:/cop/bbs/anonymous/selectBoardArticle.do";
+		}
+
+		// 2026.07.30 보안 조치 - deleteAnonymousSatisfaction과 동일한 작성비밀번호 검증
+		satisfactionVO.setStsfdgNo(satisfaction.getStsfdgNo());
+		String dbpasswordForUpdate = bbsSatisfactionService.getSatisfactionPassword(satisfactionVO);
+		String enpasswordForUpdate = EgovFileScrty.encryptPassword(satisfactionVO.getConfirmPassword(), satisfaction.getStsfdgNo());
+		if (dbpasswordForUpdate == null || !dbpasswordForUpdate.equals(enpasswordForUpdate)) {
+		    model.addAttribute("subMsg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+		    return "forward:/cop/bbs/anonymous/selectArticleDetail.do";
 		}
 
 		satisfaction.setLastUpdusrId("ANONYMOUS");
@@ -546,31 +617,5 @@ public class EgovBBSSatisfactionController {
 
 		return "forward:/cop/bbs/anonymous/selectBoardArticle.do";
     }
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

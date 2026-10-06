@@ -3,11 +3,12 @@
  */
 package egovframework.com.cmm.web;
 
-import org.egovframe.rte.fdl.property.EgovPropertyService;
+
+//import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import egovframework.com.cmm.ComDefaultVO;
-import jakarta.annotation.Resource;
+//import jakarta.annotation.Resource;
 
 /**
  * EgovComAbstractController.java 클래스
@@ -23,21 +24,18 @@ import jakarta.annotation.Resource;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2022.05.04  이백행          최초 생성
+ *   2026-09-05  이백행          [2026년 컨트리뷰션] 호출부의 페이지 설정값을 유지
  *
  *      </pre>
  */
 public abstract class EgovComAbstractController {
 
-	@Resource(name = "propertiesService")
-	private EgovPropertyService egovPropertyService;
+//	@Resource(name = "propertiesService")
+//	private EgovPropertyService egovPropertyService;
 
-	public PaginationInfo builderPaginationInfo(ComDefaultVO comDefaultVO) {
-		if (comDefaultVO.getPageUnit() == 10) {
-			comDefaultVO.setPageUnit(egovPropertyService.getInt("pageUnit"));
-		}
-		if (comDefaultVO.getPageSize() == 10) {
-			comDefaultVO.setPageSize(egovPropertyService.getInt("pageSize"));
-		}
+	protected PaginationInfo builderPaginationInfo(ComDefaultVO comDefaultVO) {
+//		comDefaultVO.setPageUnit(egovPropertyService.getInt("pageUnit"));
+//		comDefaultVO.setPageSize(egovPropertyService.getInt("pageSize"));
 
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(comDefaultVO.getPageIndex());
@@ -50,5 +48,13 @@ public abstract class EgovComAbstractController {
 
 		return paginationInfo;
 	}
+
+	// EgovFileDownloadController
+
+	// EgovTroblReqstController
+
+	// EgovDeptSchdulManageController
+
+	// EgovQustnrRespondInfoController
 
 }

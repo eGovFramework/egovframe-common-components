@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.web.EgovComAbstractController;
 import egovframework.com.sec.drm.service.DeptAuthor;
 import egovframework.com.sec.drm.service.DeptAuthorVO;
@@ -64,6 +65,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/drm/EgovDeptAuthorListView.do")
+    @RequireAdmin
     public String selectDeptAuthorListView() throws Exception {
         return "egovframework/com/sec/drm/EgovDeptAuthorManage";
     }
@@ -78,6 +80,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 */
     @IncludedInfo(name="부서권한관리", listUrl="/sec/drm/EgovDeptAuthorList.do", order = 100,gid = 20)
     @RequestMapping(value = "/sec/drm/EgovDeptAuthorList.do")
+    @RequireAdmin
 	public String selectDeptAuthorList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO,
 			                            @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
 			                             ModelMap model) throws Exception {
@@ -119,6 +122,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sec/drm/EgovDeptAuthorInsert.do")
+	@RequireAdmin
 	public String insertDeptAuthor(@RequestParam("userIds") String userIds,
 			                       @RequestParam("authorCodes") String authorCodes,
 			                       @RequestParam("regYns") String regYns,
@@ -135,15 +139,8 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
     	String [] strAuthorCodes = authorCodes.split(";");
     	String [] strRegYns = regYns.split(";");
 
-    	for(int i=0; i<strUserIds.length;i++) {
-    		deptAuthor.setUniqId(strUserIds[i]);
-    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
-    		if(strRegYns[i].equals("N")) {
-				egovDeptAuthorService.insertDeptAuthor(deptAuthor);
-			} else {
-				egovDeptAuthorService.updateDeptAuthor(deptAuthor);
-			}
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovDeptAuthorService.updateDeptAuthorList(deptAuthor, strUserIds, strAuthorCodes, strRegYns);
 		 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
@@ -157,6 +154,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sec/drm/EgovDeptAuthorDelete.do")
+	@RequireAdmin
 	public String deleteDeptAuthor (@RequestParam("userIds") String userIds,
 			                        @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
                                      ModelMap model) throws Exception {
@@ -168,10 +166,8 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 		}
 		
     	String [] strUserIds = userIds.split(";");
-    	for (String strUserId : strUserIds) {
-    		deptAuthor.setUniqId(strUserId);
-    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovDeptAuthorService.deleteDeptAuthorList(deptAuthor, strUserIds);
 		
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
@@ -183,6 +179,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/drm/EgovDeptSearchView.do")
+    @RequireAdmin
     public String selectDeptListView() throws Exception {
         return "egovframework/com/sec/drm/EgovDeptSearch";
     }
@@ -195,6 +192,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 */
     //@IncludedInfo(name="부서목록관리", order = 101)
     @RequestMapping(value = "/sec/drm/EgovDeptSearchList.do")
+    @RequireAdmin
 	public String selectDeptList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO,
 			                             ModelMap model) throws Exception {
 

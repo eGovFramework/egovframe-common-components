@@ -115,7 +115,7 @@ function fn_egov_inqire_qnalist() {
 		<tr>
 			<th><label for="wrterNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="20" />
    				<div><form:errors path="wrterNm" cssClass="error" /></div>     
 			</td>
 		</tr>

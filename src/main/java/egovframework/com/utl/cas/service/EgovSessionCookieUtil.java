@@ -1,5 +1,5 @@
 /**
- * @Class Name  : EgovSessionUtil.java
+ * @Class Name  : EgovSessionCookieUtil.java
  * @Description : 세션 처리 관련 유틸리티
  * @Modification Information
  *

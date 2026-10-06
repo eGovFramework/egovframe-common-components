@@ -8,6 +8,8 @@
  *   2009.01.13     박정규          최초 생성
  *   2009.02.13     이삼섭          내용 추가
  *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
+ *   2026.07.09     EricSeokgon     지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
+ *   2026.08.14     content_j      split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
  *
  * @author 공통 서비스 개발팀 박정규
  * @since 2009. 01. 13
@@ -121,7 +123,7 @@ public class EgovStringUtil {
 	 * @return <code>true</code> - 입력받은 String 이 빈 문자열 또는 null인 경우
 	 */
 	public static boolean isEmpty(String str) {
-		return str == null || str.length() == 0;
+		return str == null || str.isEmpty();
 	}
 
 	/**
@@ -194,7 +196,7 @@ public class EgovStringUtil {
 	 * @return sb.toString() 새로운 문자열로 변환된 문자열
 	 */
 	public static String replace(String source, String subject, String object) {
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 		String srcStr = source;
@@ -218,7 +220,7 @@ public class EgovStringUtil {
 	 * @return sb.toString() 새로운 문자열로 변환된 문자열 / source 특정문자열이 없는 경우 원본 문자열
 	 */
 	public static String replaceOnce(String source, String subject, String object) {
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 		if (source.indexOf(subject) >= 0) {
@@ -241,7 +243,7 @@ public class EgovStringUtil {
 	 * @return sb.toString() 새로운 문자열로 변환된 문자열
 	 */
 	public static String replaceChar(String source, String subject, String object) {
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 		String srcStr = source;
@@ -254,6 +256,7 @@ public class EgovStringUtil {
 			if (srcStr.indexOf(chA) >= 0) {
 				preStr = srcStr.substring(0, srcStr.indexOf(chA));
 				nextStr = srcStr.substring(srcStr.indexOf(chA) + 1, srcStr.length());
+				rtnStr.setLength(0); // 반복 시 버퍼 누적 방지 (반복문 내 초기화)
 				srcStr = rtnStr.append(preStr).append(object).append(nextStr).toString();
 			}
 		}
@@ -509,7 +512,7 @@ public class EgovStringUtil {
 	public static String checkHtmlView(String strString) {
 		String strNew = "";
 
-		StringBuffer strTxt = new StringBuffer("");
+		StringBuilder strTxt = new StringBuilder("");
 
 		char chrBuff;
 		int len = strString.length();
@@ -549,26 +552,31 @@ public class EgovStringUtil {
 	/**
 	 * 문자열을 지정한 분리자에 의해 배열로 리턴하는 메서드.
 	 * @param source 원본 문자열
-	 * @param separator 분리자
+	 * @param separator 빈 문자열이 아닌 분리자
 	 * @return result 분리자로 나뉘어진 문자열 배열
+	 * @throws IllegalArgumentException 분리자가 빈 문자열인 경우
 	 */
 	public static String[] split(String source, String separator) throws NullPointerException {
 		String[] returnVal = null;
 		int cnt = 1;
 
 		int index = source.indexOf(separator);
+		if (separator.isEmpty()) {
+			throw new IllegalArgumentException("separator must not be empty");
+		}
 		int index0 = 0;
+		// 2026-08-14 content_j split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
 		while (index >= 0) {
 			cnt++;
-			index = source.indexOf(separator, index + 1);
+			index = source.indexOf(separator, index + separator.length());
 		}
 		returnVal = new String[cnt];
 		cnt = 0;
 		index = source.indexOf(separator);
 		while (index >= 0) {
 			returnVal[cnt] = source.substring(index0, index);
-			index0 = index + 1;
-			index = source.indexOf(separator, index + 1);
+			index0 = index + separator.length();
+			index = source.indexOf(separator, index + separator.length());
 			cnt++;
 		}
 		returnVal[cnt] = source.substring(index0);
@@ -644,7 +652,7 @@ public class EgovStringUtil {
 			while ((start != strLen) && Character.isWhitespace(str.charAt(start))) {
 				start++;
 			}
-		} else if (stripChars.length() == 0) {
+		} else if (stripChars.isEmpty()) {
 			return str;
 		} else {
 			while ((start != strLen) && (stripChars.indexOf(str.charAt(start)) != -1)) {
@@ -683,7 +691,7 @@ public class EgovStringUtil {
 			while ((end != 0) && Character.isWhitespace(str.charAt(end - 1))) {
 				end--;
 			}
-		} else if (stripChars.length() == 0) {
+		} else if (stripChars.isEmpty()) {
 			return str;
 		} else {
 			while ((end != 0) && (stripChars.indexOf(str.charAt(end - 1)) != -1)) {
@@ -725,19 +733,24 @@ public class EgovStringUtil {
 	/**
 	 * 문자열을 지정한 분리자에 의해 지정된 길이의 배열로 리턴하는 메서드.
 	 * @param source 원본 문자열
-	 * @param separator 분리자
+	 * @param separator 빈 문자열이 아닌 분리자
 	 * @param arraylength 배열 길이
 	 * @return 분리자로 나뉘어진 문자열 배열
+	 * @throws IllegalArgumentException 분리자가 빈 문자열인 경우
 	 */
 	public static String[] split(String source, String separator, int arraylength) throws NullPointerException {
 		String[] returnVal = new String[arraylength];
 		int cnt = 0;
 		int index0 = 0;
+		// 2026-08-14 content_j split() 구분자 2글자 이상 사용 시 필드에 잔여문자가 남는 오류 수정(index+1 → index + separator.length())
 		int index = source.indexOf(separator);
+		if (separator.isEmpty()) {
+			throw new IllegalArgumentException("separator must not be empty");
+		}
 		while (index >= 0 && cnt < (arraylength - 1)) {
 			returnVal[cnt] = source.substring(index0, index);
-			index0 = index + 1;
-			index = source.indexOf(separator, index + 1);
+			index0 = index + separator.length();
+			index = source.indexOf(separator, index + separator.length());
 			cnt++;
 		}
 		returnVal[cnt] = source.substring(index0);
@@ -826,7 +839,7 @@ public class EgovStringUtil {
 
 		String rtnStr = null;
 
-		StringBuffer strTxt = new StringBuffer("");
+		StringBuilder strTxt = new StringBuilder("");
 
 		char chrBuff;
 		int len = srcString.length();
@@ -863,14 +876,25 @@ public class EgovStringUtil {
 	 * @see
 	 */
 	public static String getTimeStamp() {
+		return getTimeStamp(System.currentTimeMillis());
+	}
+
+	/**
+	 * 지정한 시각(epoch millis)에 대한 17자리 TIMESTAMP 값을 구하는 기능 (테스트 가능하도록 분리)
+	 *
+	 * @param epochMillis 기준 시각(밀리초)
+	 * @return Timestamp 값
+	 */
+	static String getTimeStamp(long epochMillis) {
 
 		String rtnStr = null;
 
-		// 문자열로 변환하기 위한 패턴 설정(연도-월-일 시:분:초:초(자정이후 초))
-		String pattern = "yyyyMMddhhmmssSSS";
+		// 문자열로 변환하기 위한 패턴 설정(연도-월-일 시(24시간제):분:초:밀리초)
+		// 고유값 보장을 위해 24시간제(HH)를 사용한다. 12시간제(hh)는 오전/오후 값이 충돌한다.
+		String pattern = "yyyyMMddHHmmssSSS";
 
 		SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, Locale.KOREA);
-		Timestamp ts = new Timestamp(System.currentTimeMillis());
+		Timestamp ts = new Timestamp(epochMillis);
 
 		rtnStr = sdfCurrent.format(ts.getTime());
 

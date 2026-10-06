@@ -7,7 +7,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -63,6 +62,7 @@ public class EgovAuthorGroupController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/rgm/EgovAuthorGroupListView.do")
+    @RequireAdmin
     public String selectAuthorGroupListView() throws Exception {
 
         return "egovframework/com/sec/rgm/EgovAuthorGroupManage";
@@ -129,16 +129,8 @@ public class EgovAuthorGroupController {
     	String [] strRegYns = regYns.split(";");
     	String [] strMberTyCodes = mberTyCodes.split(";");// 2011.08.04 수정 부분
 
-    	for(int i=0; i<strUserIds.length;i++) {
-    		authorGroup.setUniqId(strUserIds[i]);
-    		authorGroup.setAuthorCode(strAuthorCodes[i]);
-    		authorGroup.setMberTyCode(strMberTyCodes[i]);// 2011.08.04 수정 부분
-    		if(strRegYns[i].equals("N")) {
-				egovAuthorGroupService.insertAuthorGroup(authorGroup);
-			} else {
-				egovAuthorGroupService.updateAuthorGroup(authorGroup);
-			}
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovAuthorGroupService.updateAuthorGroupList(authorGroup, strUserIds, strAuthorCodes, strMberTyCodes, strRegYns);
 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";
@@ -158,10 +150,8 @@ public class EgovAuthorGroupController {
                                      ModelMap model) throws Exception {
 
     	String [] strUserIds = userIds.split(";");
-    	for (String strUserId : strUserIds) {
-    		authorGroup.setUniqId(strUserId);
-    		egovAuthorGroupService.deleteAuthorGroup(authorGroup);
-    	}
+    	// 전체 목록을 서비스 메서드 하나로 넘겨 한 트랜잭션에서 처리한다(부분실패 시 정합성 보호).
+    	egovAuthorGroupService.deleteAuthorGroupList(authorGroup, strUserIds);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";

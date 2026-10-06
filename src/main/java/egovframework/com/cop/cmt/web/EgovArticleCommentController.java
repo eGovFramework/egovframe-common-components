@@ -1,5 +1,7 @@
 package egovframework.com.cop.cmt.web;
 
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
+import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
@@ -48,6 +51,9 @@ public class EgovArticleCommentController {
 	@Resource(name = "EgovArticleCommentService")
     protected EgovArticleCommentService egovArticleCommentService;
 
+	@Resource(name = "EgovArticleService")
+	private EgovArticleService egovArticleService;
+
     @Resource(name="propertiesService")
     protected EgovPropertyService propertyService;
 
@@ -62,10 +68,9 @@ public class EgovArticleCommentController {
      * @param boardVO
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/cmt/selectArticleCommentList.do")
-    public String selectArticleCommentList(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) throws Exception {
+    public String selectArticleCommentList(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) {
 
     	CommentVO articleCommentVO = new CommentVO();
 
@@ -87,6 +92,15 @@ public class EgovArticleCommentController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
+
+		// 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 검사. 조회수는 올리지 않는다
+		BoardVO parent = new BoardVO();
+		parent.setBbsId(commentVO.getBbsId());
+		parent.setNttId(commentVO.getNttId());
+		parent = egovArticleService.selectArticleDetailNoCount(parent);
+		if (parent != null) {
+			EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+		}
 
 		model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -130,11 +144,10 @@ public class EgovArticleCommentController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/insertArticleComment.do")
     public String insertArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
-	    BindingResult bindingResult, ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
+	    BindingResult bindingResult, ModelMap model, @RequestParam HashMap<String, String> map) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -146,6 +159,14 @@ public class EgovArticleCommentController {
 		}
 
 		if (isAuthenticated) {
+		    // 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 검사. 조회수는 올리지 않는다
+		    BoardVO parent = new BoardVO();
+		    parent.setBbsId(comment.getBbsId());
+		    parent.setNttId(comment.getNttId());
+		    parent = egovArticleService.selectArticleDetailNoCount(parent);
+		    if (parent != null) {
+		    	EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+		    }
 		    comment.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    comment.setWrterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    comment.setWrterNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
@@ -175,20 +196,14 @@ public class EgovArticleCommentController {
      * @param comment
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/deleteArticleComment.do")
-    public String deleteArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
-    		ModelMap model, @RequestParam HashMap<String, String> map, HttpServletRequest request) throws Exception {
-		@SuppressWarnings("unused")
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
+			ModelMap model, @RequestParam HashMap<String, String> map) {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
-		    // 작성자 본인만 삭제 가능하도록 소유권 검증 (댓글은 로그인 사용자 명의로만 등록됨)
-		    CommentVO storedComment = egovArticleCommentService.selectArticleCommentDetail(commentVO);
-		    EgovXssChecker.checkerUserXss(request, storedComment == null ? null : storedComment.getFrstRegisterId());
-
+		    checkCommentOwner(request, commentVO.getCommentNo());
 		    egovArticleCommentService.deleteArticleComment(commentVO);
 		}
 
@@ -211,10 +226,9 @@ public class EgovArticleCommentController {
      * @param commentVO
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/updateArticleCommentView.do")
-    public String updateArticleCommentView(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) throws Exception {
+    public String updateArticleCommentView(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	 //KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -251,6 +265,9 @@ public class EgovArticleCommentController {
 	model.addAttribute("type", "body");	// body import
 
 	articleCommentVO = egovArticleCommentService.selectArticleCommentDetail(commentVO);
+	// 2026.07.30 보안 조치 - 소유자 검증
+	// 2026.09.21 식별자 교정 - 댓글 WRTER_ID 는 등록 시 uniqId 로 저장하므로 uniqId 기준으로 비교한다.
+	EgovAuthorizationHelper.assertOwner(articleCommentVO == null ? null : articleCommentVO.getWrterId());
 
 	model.addAttribute("articleCommentVO", articleCommentVO);
 
@@ -267,11 +284,10 @@ public class EgovArticleCommentController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
     @PostMapping("/cop/cmt/updateArticleComment.do")
-    public String updateArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
-	    BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
+    public String updateArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
+	    BindingResult bindingResult, ModelMap model) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -283,10 +299,7 @@ public class EgovArticleCommentController {
 		}
 
 		if (isAuthenticated) {
-		    // 작성자 본인만 수정 가능하도록 소유권 검증 (댓글은 로그인 사용자 명의로만 등록됨)
-		    CommentVO storedComment = egovArticleCommentService.selectArticleCommentDetail(commentVO);
-		    EgovXssChecker.checkerUserXss(request, storedComment == null ? null : storedComment.getFrstRegisterId());
-
+		    checkCommentOwner(request, comment.getCommentNo());
 		    comment.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    egovArticleCommentService.updateArticleComment(comment);
@@ -296,6 +309,14 @@ public class EgovArticleCommentController {
 		}
 
 		return "forward:/cop/bbs/selectArticleDetail.do";
+    }
+
+    private void checkCommentOwner(HttpServletRequest request, String commentNo) {
+		CommentVO ownerVO = new CommentVO();
+		ownerVO.setCommentNo(commentNo);
+
+		CommentVO data = egovArticleCommentService.selectArticleCommentDetail(ownerVO);
+		EgovAuthorizationHelper.assertOwner(data == null ? null : data.getWrterId());
     }
 
 

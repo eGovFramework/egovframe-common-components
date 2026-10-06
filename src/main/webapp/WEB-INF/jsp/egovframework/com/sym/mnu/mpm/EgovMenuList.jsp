@@ -255,7 +255,8 @@ function checkNumber(str) {
   <tr>
    <td style="vertical-align:top">
 	<c:forEach var="result" items="${list_menulist}" varStatus="status" >
-	<input type="hidden" name="tmp_menuNmVal" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.progrmFileNm}|${result.menuNo}|${result.menuOrdr}|${result.menuNm}|${result.upperMenuId}|${result.menuDc}|${result.relateImagePath}|${result.relateImageNm}|${result.progrmFileNm}|">
+	<%-- 2026.07.30 보안 조치 - 속성값 이스케이프(HTML 속성 breakout 저장형 XSS 차단) --%>
+	<input type="hidden" name="tmp_menuNmVal" value="<c:out value='${result.menuNo}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.progrmFileNm}'/>|<c:out value='${result.menuNo}'/>|<c:out value='${result.menuOrdr}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuDc}'/>|<c:out value='${result.relateImagePath}'/>|<c:out value='${result.relateImageNm}'/>|<c:out value='${result.progrmFileNm}'/>|">
 	</c:forEach>
 	
 	<div class="tree" style="overflow:scroll; width:218px; height:383px; padding:5px; border:1px solid #ddd">

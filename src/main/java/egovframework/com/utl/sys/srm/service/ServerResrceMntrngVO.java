@@ -3,6 +3,9 @@ package egovframework.com.utl.sys.srm.service;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 개요
  * - 서버자원모니터링에 대한 Vo 클래스를 정의한다.
@@ -19,55 +22,25 @@ public class ServerResrceMntrngVO extends ServerResrceMntrng {
 	/**
 	 * 서버자원모니터링 서버명 조회조건
 	 */
+	@Getter
+	@Setter
 	private String strServerNm;
 	/**
 	 * 시작일자 검색조건
 	 */
+	@Getter
+	@Setter
 	private String strStartDt;
 	/**
 	 * 종료일자 검색조건
 	 */
+	@Getter
+	@Setter
 	private String strEndDt;
 	/**
 	 * 서버자원모니터링 목록
 	 */
 	private List<ServerResrceMntrngVO> serverResrceMntrngList;
-	/**
-	 * @return the strServerNm
-	 */
-	public String getStrServerNm() {
-		return strServerNm;
-	}
-	/**
-	 * @param strServerNm the strServerNm to set
-	 */
-	public void setStrServerNm(String strServerNm) {
-		this.strServerNm = strServerNm;
-	}
-	/**
-	 * @return the strStartDt
-	 */
-	public String getStrStartDt() {
-		return strStartDt;
-	}
-	/**
-	 * @param strStartDt the strStartDt to set
-	 */
-	public void setStrStartDt(String strStartDt) {
-		this.strStartDt = strStartDt;
-	}
-	/**
-	 * @return the strEndDt
-	 */
-	public String getStrEndDt() {
-		return strEndDt;
-	}
-	/**
-	 * @param strEndDt the strEndDt to set
-	 */
-	public void setStrEndDt(String strEndDt) {
-		this.strEndDt = strEndDt;
-	}
 	/**
 	 * @return the serverResrceMntrngList
 	 */

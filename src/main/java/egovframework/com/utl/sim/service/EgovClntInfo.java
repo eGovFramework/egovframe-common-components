@@ -33,9 +33,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String ipAddr IP주소
-	 * @exception Exception
 	 */
-	public static String getClntIP(HttpServletRequest request) throws Exception {
+	public static String getClntIP(HttpServletRequest request) {
 
 		String ipAddr = null;
 
@@ -49,28 +48,28 @@ public class EgovClntInfo {
 		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("Proxy-Client-IP");
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("WL-Proxy-Client-IP");
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("HTTP_CLIENT_IP");
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR");
 			if (ipAddr != null && ipAddr.contains(",")) {
 				ipAddr = ipAddr.split(",")[0].trim();
 			}
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("X-Real-IP");
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("X-RealIP");
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("REMOTE_ADDR");
 		}
-		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getRemoteAddr();
 		}
 
@@ -83,9 +82,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String osInfo OS 정보
-	 * @exception Exception
 	 */
-	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
+	public static String getClntOsInfo(HttpServletRequest request) {
 
 		String userAgent = request.getHeader("user-agent");
 		//2026.02.28 KISA 취약점 조취
@@ -116,9 +114,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webKind 웹브라우저 종류
-	 * @exception Exception
 	 */
-	public static String getClntWebKind(HttpServletRequest request) throws Exception {
+	public static String getClntWebKind(HttpServletRequest request) {
 
 		String userAgent = request.getHeader("user-agent");
 		//2026.02.28 KISA 취약점 조치
@@ -129,27 +126,27 @@ public class EgovClntInfo {
 		String ua = userAgent.toUpperCase();
 		// 웹브라우저 종류 조회
 		String webKind = "";
-		if (ua.indexOf("GECKO") != -1) {
-			if (ua.indexOf("NESCAPE") != -1) {
+		if (ua.contains("GECKO")) {
+			if (ua.contains("NESCAPE")) {
 				webKind = "Netscape (Gecko/Netscape)";
-			} else if (ua.indexOf("FIREFOX") != -1) {
+			} else if (ua.contains("FIREFOX")) {
 				webKind = "Mozilla Firefox (Gecko/Firefox)";
 			} else {
 				webKind = "Mozilla (Gecko/Mozilla)";
 			}
-		} else if (ua.indexOf("MSIE") != -1) {
-			if (ua.indexOf("OPERA") != -1) {
+		} else if (ua.contains("MSIE")) {
+			if (ua.contains("OPERA")) {
 				webKind = "Opera (MSIE/Opera/Compatible)";
 			} else {
 				webKind = "Internet Explorer (MSIE/Compatible)";
 			}
-		} else if (ua.indexOf("SAFARI") != -1) {
-			if (ua.indexOf("CHROME") != -1) {
+		} else if (ua.contains("SAFARI")) {
+			if (ua.contains("CHROME")) {
 				webKind = "Google Chrome";
 			} else {
 				webKind = "Safari";
 			}
-		} else if (userAgent.toUpperCase().indexOf("THUNDERBIRD") != -1) {
+		} else if (userAgent.toUpperCase().contains("THUNDERBIRD")) {
 			webKind = "Thunderbird";
 		} else {
 			webKind = "Other Web Browsers";
@@ -162,9 +159,8 @@ public class EgovClntInfo {
 	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webVer 웹브라우저 버전
-	 * @exception Exception
 	 */
-	public static String getClntWebVer(HttpServletRequest request) throws Exception {
+	public static String getClntWebVer(HttpServletRequest request) {
 
 		String userAgent = request.getHeader("user-agent");
 		//2026.02.28 KISA 취약점 조치

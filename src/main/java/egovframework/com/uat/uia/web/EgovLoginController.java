@@ -20,8 +20,8 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.LoginRequestVO;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.SearchIdRequestVO;
 import egovframework.com.cmm.SearchPasswordRequestVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -313,17 +313,19 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionMain.do")
-	public String actionMain(HttpServletRequest request, ModelMap model) throws Exception {
+	public String actionMain(HttpServletRequest request, ModelMap model, RedirectAttributes redirectAttributes)
+			throws Exception {
 
 		// 1. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
+			// 2026.08.25 Spring 6 이관 조치 - actionLogin 실패 경로와 동일하게 flash 로 전달
+			redirectAttributes.addFlashAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		if (user.getIp().equals("")) {
+		if (EgovStringUtil.isEmpty(user.getIp())) {
 			user.setIp(EgovClntInfo.getClntIP(request));
 		}
 
@@ -469,7 +471,14 @@ public class EgovLoginController {
 	 */
 	@RequestMapping(value = "/uat/uia/searchPassword.do")
 	public String searchPassword(@Valid @ModelAttribute("searchPasswordRequestVO") SearchPasswordRequestVO searchPasswordRequestVO,
-								BindingResult bindingResult, ModelMap model) throws Exception {
+								BindingResult bindingResult, ModelMap model, HttpServletRequest request) throws Exception {
+
+		// 2026.07.30 보안 조치 - 비밀번호 찾기 남용(무제한 시도) 방지: IP당 10분에 5회 제한
+		String clntIp = request.getRemoteAddr();
+		if (!egovframework.com.cmm.util.EgovRateLimiter.allow("searchPassword:" + clntIp, 5, 10 * 60 * 1000L)) {
+			model.addAttribute("resultInfo", egovMessageSource.getMessage("fail.common.idsearch"));
+			return "egovframework/com/uat/uia/EgovIdPasswordResult";
+		}
 
 		// Validation 에러 체크
 		if (bindingResult.hasErrors()) {
@@ -521,7 +530,7 @@ public class EgovLoginController {
 		 * x509Cert.getCert(); Base64 base64 = new Base64(); base64cert =
 		 * base64.encode(cert); log.info("+++ Base64로 변환된 인증서는 : " + base64cert);
 		 * 
-		 * } catch (GpkiApiException e) { e.printStackTrace(); }
+		 * } catch (GpkiApiException e) { throw new BaseRuntimeException(e); }
 		 */
 	}
 
@@ -579,8 +588,6 @@ public class EgovLoginController {
 		LOGGER.debug("OS : {}", os);
 
 		// String virusReturn = null;
-		@SuppressWarnings("unused")
-		String dn = "";
 
 		// 브라우저 이름을 받기위한 처리
 		String browser = EgovClntInfo.getClntWebKind(request);

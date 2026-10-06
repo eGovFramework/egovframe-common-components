@@ -20,6 +20,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.tbm.tbr.service.EgovTroblReqstService;
 import egovframework.com.sym.tbm.tbr.service.TroblReqst;
@@ -76,6 +77,7 @@ public class EgovTroblReqstController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/sym/tbm/tbr/selectTroblReqstListView.do")
+	@RequireAdmin
 	public String selectTroblReqstListView() throws Exception {
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstList";
 	}
@@ -133,7 +135,7 @@ public class EgovTroblReqstController {
 	public String selectTroblReqst(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, Model model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		troblReqstVO.setTroblId(troblId);
@@ -150,6 +152,7 @@ public class EgovTroblReqstController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbr/addViewTroblReqst.do")
+	@RequireAdmin
 	public String insertViewTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, ModelMap model)
 			throws Exception {
 
@@ -165,6 +168,7 @@ public class EgovTroblReqstController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbr/addTroblReqst.do")
+	@RequireAdmin
 	public String insertTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
 			@Valid @ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -195,14 +199,16 @@ public class EgovTroblReqstController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbr/updtViewTroblReqst.do")
+	@RequireAdmin
 	public String updateViewTroblReqst(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, Model model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
-
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		troblReqstVO.setTroblId(troblId);
-		model.addAttribute("troblReqst", egovTroblReqstService.selectTroblReqst(troblReqstVO));
+		TroblReqstVO stored = EgovAuthorizationHelper.requireTarget(egovTroblReqstService.selectTroblReqst(troblReqstVO));
+
+		model.addAttribute("troblReqst", stored);
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstUpdt";
@@ -215,9 +221,11 @@ public class EgovTroblReqstController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbr/updtTroblReqst.do")
+	@RequireAdmin
 	public String updateTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
 			@Valid @ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
@@ -259,9 +267,19 @@ public class EgovTroblReqstController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbr/requstTroblReqst.do")
+	@RequireAdmin
 	public String requstTroblReqst(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
 			throws Exception {
+
+		// 2026.08.08 KISA 보안취약점 조치 - 소유권 검증(관리자 또는 신청자 본인만 처리요청 가능)
+		TroblReqstVO lookup = new TroblReqstVO();
+		lookup.setTroblId(troblId);
+		TroblReqstVO stored = egovTroblReqstService.selectTroblReqst(lookup);
+		if (stored == null) {
+			throw new IllegalStateException("대상 정보가 없습니다.");
+		}
+		EgovAuthorizationHelper.assertAdminOrOwnerById(stored.getFrstRegisterId());
 
 		troblReqst.setTroblId(troblId);
 		troblReqst.setProcessSttus("R");
@@ -280,9 +298,19 @@ public class EgovTroblReqstController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/tbm/tbr/requstTroblReqstCancl.do")
+	@RequireAdmin
 	public String requstTroblReqstCancl(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
 			throws Exception {
+
+		// 2026.08.08 KISA 보안취약점 조치 - 소유권 검증(관리자 또는 신청자 본인만 처리취소 가능)
+		TroblReqstVO lookup = new TroblReqstVO();
+		lookup.setTroblId(troblId);
+		TroblReqstVO stored = egovTroblReqstService.selectTroblReqst(lookup);
+		if (stored == null) {
+			throw new IllegalStateException("대상 정보가 없습니다.");
+		}
+		EgovAuthorizationHelper.assertAdminOrOwnerById(stored.getFrstRegisterId());
 
 		troblReqst.setTroblId(troblId);
 		troblReqst.setProcessSttus("A");
@@ -306,32 +334,6 @@ public class EgovTroblReqstController {
 			throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
 		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

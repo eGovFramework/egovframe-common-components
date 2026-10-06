@@ -37,7 +37,8 @@
 	 * 초기화
 	 ******************************************************** */
 	function fn_egov_init_OnlinePollManage(){
-		document.getElementById('PollIemView').src="<c:url value='/uss/olp/opm/listOnlinePollItem.do' />?pollId=${onlinePollManage.pollId}";
+		// 항목 목록이 POST 전용이라 iframe src(GET) 대신 iframe 을 target 으로 하는 폼을 보낸다
+		document.pollItemForm.submit();
 	}
 	/* ********************************************************
 	 * 목록 으로 가기
@@ -83,6 +84,7 @@
 
 
 <form name="OnlinePollManageForm" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <!-- 상세정보 -->
 <table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 <caption>${pageTitle} <spring:message code="title.create" /></caption>
@@ -156,16 +158,19 @@
 <!-- 하단 버튼 -->
 <div class="btn">
 	<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/opm/updtOnlinePollManageView.do" method="post" style="float:left;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_OnlinePollManage(); return false;">
 		<input name="pollId" type="hidden" value="${onlinePollManage.pollId}">
 	</form>
 	<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/opm/detailOnlinePollManage.do" method="post" style="float:left; margin:0 0 0 3px;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_OnlinePollManage(); return false;">
 		<input name="pollId" type="hidden" value="${onlinePollManage.pollId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 	</form>
 
 	<form name="formList" action="${pageContext.request.contextPath}/uss/olp/opm/listOnlinePollManage.do" method="post" style="float:left; margin:0 0 0 3px;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_OnlinePollManage(); return false;">
 	</form>
 		
@@ -180,7 +185,11 @@
 </table>
 
 <!-- 온라인POLL항목 iframe  -->
-<iframe id="PollIemView" src="" title="온라인POLL항목"  width="100%" frameborder="0" scrolling="no" marginwidth="0" marginheight="0">
+<form name="pollItemForm" action="${pageContext.request.contextPath}/uss/olp/opm/listOnlinePollItem.do" method="post" target="PollIemView">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
+	<input type="hidden" name="pollId" value="<c:out value='${onlinePollManage.pollId}'/>"/>
+</form>
+<iframe id="PollIemView" name="PollIemView" src="" title="온라인POLL항목"  width="100%" frameborder="0" scrolling="no" marginwidth="0" marginheight="0">
 </iframe>
 
 

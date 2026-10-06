@@ -36,19 +36,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 
-	// display 속성 변경 시 null 체크와 HTMLElement 타입 체크를 수행하는 함수로 수정
-	function setDisplayById(id, displayValue) {
-		var el = document.getElementById(id);
-		if (el && el instanceof HTMLElement) {
-			el.style.display = displayValue;
-		}
-	}
-
-	function fn_egov_init_deptjob(){
-		fn_egov_hide_ListStyle();
-		setDisplayById(document.frm.searchDeptId.value, "");
-	}
-
 	function press(event) {
 		if (event.keyCode==13) {
 			fn_egov_select_deptjob('1');
@@ -65,13 +52,6 @@
 		document.frm.submit();	
 	}
 
-	function fn_egov_select_deptjobbx(deptId, deptJobBxId, deptJobBxNm) {
-		document.frm.searchDeptId.value = deptId; 
-		document.frm.searchDeptJobBxId.value = deptJobBxId; 
-		document.frm.deptJobBxNm.value = deptJobBxNm; 
-		document.frm.action = "<c:url value='/cop/smt/djm/selectDeptJobList.do'/>";
-		document.frm.submit();	
-	}
 	/* ********************************************************
 	* 부서업무 상세조회
 	******************************************************** */
@@ -88,24 +68,10 @@
 		document.frm.action = "<c:url value='/cop/smt/djm/addDeptJob.do'/>";
 		document.frm.submit();
 	}
-
-	function fn_egov_change_ListStyle(list){
-		fn_egov_hide_ListStyle();
-		setDisplayById(list, "");
-	}
-
-	function fn_egov_hide_ListStyle(){
-		<c:forEach var="resultBxFn" items="${resultBxList}" varStatus="st">
-		<c:if test="${tmpDeptId != resultBxFn.deptId}">
-		<c:set var="tmpDeptId" value="${resultBxFn.deptId}"/>
-		setDisplayById("${resultBxFn.deptId}", "none");
-		</c:if>
-		</c:forEach>	 
-	}
 </script>
 
 </head>
-<body onLoad="fn_egov_init_deptjob()">
+<body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
@@ -128,7 +94,6 @@
 					<option value=''>--<spring:message code="input.select" />--</option>
 					<option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> ><spring:message code="comCopSmtDjm.deptJobList.subject" /></option><!-- 제목 -->
 					<option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> ><spring:message code="comCopSmtDjm.deptJobList.content" /></option><!-- 내용 -->
-					<option value="2" <c:if test="${searchVO.searchCnd == '2'}">selected="selected"</c:if> ><spring:message code="comCopSmtDjm.deptJobList.charger" /></option><!-- 담당자 -->
 				</select>
 				<input class="s_input2 vat" name="searchWrd" type="text" value='<c:out value="${searchVO.searchWrd}"/>' size="25" onkeypress="press(event);" title="검색어 입력" />		
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fn_egov_select_deptjob('1'); return false;" />
@@ -136,96 +101,61 @@
 			</li>
 		</ul>
 	</div>
-		
-	<table>
-		<colgroup>
-			<col style="width:25%" />
-			<col style="" />
-		</colgroup>
-		<tr>
-			<!-- left -->
-			
-				<div id="scale" style="width:160px">
-					<c:forEach var="resultBx" items="${resultBxList}" varStatus="st">
-						<c:if test="${tmpDeptNm != resultBx.deptNm}">
-						<c:set var="tmpDeptNm" value="${resultBx.deptNm}"/>
-							<table class="board_list">
-								<tr> 
-									<th onclick="fn_egov_change_ListStyle('<c:out value="${resultBx.deptId}"/>')" style="cursor:hand">&nbsp;<c:out value='${resultBx.deptNm}'/></th>
-								</tr>
-							</table>
-							<div id="<c:out value="${resultBx.deptId}"/>">
-							<table width="100%" cellpadding="1" class="table-list" summary="<spring:message code="comCopSmtDjm.deptJobList.summary" />"><!-- 부서업무함에 대한 목록을 제공합니다. -->
-						</c:if>
-								<tr>
-									<td>&nbsp;&nbsp;
-										<input class="btn01" type="button" value="<c:out value="${resultBx.deptJobBxNm}"/>" onclick="fn_egov_select_deptjobbx('<c:out value="${resultBx.deptId}"/>', '<c:out value="${resultBx.deptJobBxId}"/>', '<c:out value="${resultBx.deptJobBxNm}"/>'); return false;"  style="text-align:left;">
-									</td>		    
-								</tr>
-						<c:if test="${tmpDeptNm != resultBxList[st.count].deptNm}">
-							</table>
-							</div>
-						</c:if>
-					</c:forEach>	  
-				</div>
-			
-			
-			<!-- right -->
-			<td style="vertical-align:top">
-				<table class="board_list">
-					<caption><spring:message code="comCopSmtDjm.deptJobList.title" /></caption>
-					<colgroup>
-						<col style="width:10%" />
-						<col style="" />
-						<col style="width:15%" />
-						<col style="width:15%" />
-					</colgroup>
-					<thead>
-						<tr>
-						   <th scope="col"><spring:message code="table.num" /></th><!-- 번호 -->
-						   <th scope="col"><spring:message code="comCopSmtDjm.deptJobList.subject" /></th><!-- 제목 -->
-						   <th scope="col"><spring:message code="comCopSmtDjm.deptJobList.charger" /></th><!-- 담당자 -->
-						   <th scope="col"><spring:message code="comCopSmtDjm.deptJobList.writerDate" /></th><!-- 작성일 -->
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="result" items="${resultList}" varStatus="status">
-							<c:if test="${result.priort == '1'}">
-								<c:set var="wtText" value="font-weight : bold; text-align : left; "/>
-							</c:if>
-							<c:if test="${result.priort == '2'}">
-								<c:set var="wtText" value="text-align : left;"/>
-							</c:if>
-							<c:if test="${result.priort == '3'}">
-								<c:set var="wtText" value="text-align : left;"/>
-							</c:if>
-							<tr>
-								<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-								<td>
-									<a href="javascript:void(0);" onclick="fn_egov_inqire_deptjob('<c:out value="${result.deptJobId}"/>'); return false;" style="${wtText}"><c:out value="${result.deptJobNm}"/></a>
-								</td>
-								<td><c:out value="${result.chargerNm}"/></td>
-								<td><c:out value="${fn:substring(result.frstRegisterPnttm, 0, 10)}"/></td>
-							</tr>
-						</c:forEach>
-						<c:if test="${fn:length(resultList) == 0}">
-							<tr>
-								<td colspan="4"><spring:message code="common.nodata.msg" /></td>
-							</tr>
-						</c:if>
-					</tbody>
-				</table>
-				
-				<!-- paging navigation -->
-				<div class="pagination">
-					<ul>
-						<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_deptjob"/>
-					</ul>
-				</div>			
-			</td>
-		</tr>
-	</table>
+	
 	</form:form>
+		
+
+		<table class="board_list">
+			<caption><spring:message code="comCopSmtDjm.deptJobList.title" /></caption>
+			<colgroup>
+				<col style="width:10%" />
+				<col style="" />
+				<col style="width:15%" />
+				<col style="width:15%" />
+			</colgroup>
+			<thead>
+				<tr>
+				   <th scope="col"><spring:message code="table.num" /></th><!-- 번호 -->
+				   <th scope="col"><spring:message code="comCopSmtDjm.deptJobList.subject" /></th><!-- 제목 -->
+				   <th scope="col"><spring:message code="comCopSmtDjm.deptJobList.charger" /></th><!-- 담당자 -->
+				   <th scope="col"><spring:message code="comCopSmtDjm.deptJobList.writerDate" /></th><!-- 작성일 -->
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach var="result" items="${resultList}" varStatus="status">
+					<c:if test="${result.priort == '1'}">
+						<c:set var="wtText" value="font-weight : bold; text-align : left; "/>
+					</c:if>
+					<c:if test="${result.priort == '2'}">
+						<c:set var="wtText" value="text-align : left;"/>
+					</c:if>
+					<c:if test="${result.priort == '3'}">
+						<c:set var="wtText" value="text-align : left;"/>
+					</c:if>
+					<tr>
+						<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+						<td>
+							<a href="javascript:void(0);" onclick="fn_egov_inqire_deptjob('<c:out value="${result.deptJobId}"/>'); return false;" style="${wtText}"><c:out value="${result.deptJobNm}"/></a>
+						</td>
+						<td><c:out value="${result.chargerNm}"/></td>
+						<td><c:out value="${fn:substring(result.frstRegisterPnttm, 0, 10)}"/></td>
+					</tr>
+				</c:forEach>
+				<c:if test="${fn:length(resultList) == 0}">
+					<tr>
+						<td colspan="4"><spring:message code="common.nodata.msg" /></td>
+					</tr>
+				</c:if>
+			</tbody>
+		</table>
+		
+		<!-- paging navigation -->
+		<div class="pagination">
+			<ul>
+				<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_deptjob"/>
+			</ul>
+		</div>
+
 </div>
 
 </body>

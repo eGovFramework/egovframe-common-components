@@ -21,6 +21,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.dbm.service.DbMntrng;
@@ -90,6 +91,7 @@ public class EgovDbMntrngController {
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
+
 		egovDbMntrngService.deleteDbMntrng(dbMntrng);
 
     	return "forward:/utl/sys/dbm/getDbMntrngList.do";
@@ -106,7 +108,8 @@ public class EgovDbMntrngController {
 	 */
 	@PostMapping("/utl/sys/dbm/addDbMntrng.do")
 	@RequireAdmin
-	public String insertDbMntrng(@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
+	public String insertDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
+			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
@@ -122,6 +125,8 @@ public class EgovDbMntrngController {
     	if (bindingResult.hasErrors()){
     		referenceData(model);
     		model.addAttribute("dbMntrng", dbMntrng);
+			// 형제 selectDbMntrngForRegist·updateDbMntrng와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("searchVO", searchVO);
     		return "egovframework/com/utl/sys/dbm/EgovDbMntrngRegist";
 		}else{
     		//아이디 설정
@@ -144,10 +149,11 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@PostMapping("/utl/sys/dbm/getDbMntrng.do")
+	@RequireAdmin
 	public String selectDbMntrng(@ModelAttribute("searchVO")DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		LOGGER.debug(" 조회조건 : {}", dbMntrng);
         DbMntrng result = egovDbMntrngService.selectDbMntrng(dbMntrng);
@@ -167,8 +173,12 @@ public class EgovDbMntrngController {
 	 */
 
 	@PostMapping("/utl/sys/dbm/getDbMntrngLog.do")
+	@RequireAdmin
 	public String selectDbMntrngLog(@ModelAttribute("searchVO")DbMntrngLog dbMntrngLog, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", dbMntrngLog);
         DbMntrngLog result = egovDbMntrngService.selectDbMntrngLog(dbMntrngLog);
         model.addAttribute("resultInfo", result);
@@ -240,12 +250,12 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="DB서비스모니터링", order = 2090 ,gid = 90)
 	@RequestMapping("/utl/sys/dbm/getDbMntrngList.do")
 	public String selectDbMntrngList(@ModelAttribute("searchVO") DbMntrng searchVO, ModelMap model)
 	  throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
 
 		//searchVO.setUniqId(user.getUniqId());
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -280,11 +290,12 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping("/utl/sys/dbm/getDbMntrngLogList.do")
+	@RequireAdmin
 	public String selectDbMntrngLogList(@ModelAttribute("searchVO") DbMntrngLog searchVO, ModelMap model)
 	  throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
 
 		//searchVO.setUniqId(user.getUniqId());
         // DB서비스모니터링 정보 조회.
@@ -377,31 +388,5 @@ public class EgovDbMntrngController {
 
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

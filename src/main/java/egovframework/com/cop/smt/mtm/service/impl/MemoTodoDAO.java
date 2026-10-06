@@ -60,6 +60,9 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 */
 	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) {
 		MemoTodoVO resultVO = (MemoTodoVO)selectOne("MemoTodoDAO.selectMemoTodo", memoTodoVO);
+		if (resultVO == null) {
+			return null;
+		}
 		resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 		resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 		resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));

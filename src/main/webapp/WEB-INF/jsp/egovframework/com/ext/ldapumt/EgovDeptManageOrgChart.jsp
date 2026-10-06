@@ -22,6 +22,19 @@
 		}
 	  }
 
+	  // 2026.07.30 보안 조치 - LDAP OU/CN 등 저장된 값을 allowHtml 트리 라벨에 쓰기 전 이스케이프
+	  function escapeHtml(value) {
+		if (value == null) {
+			return '';
+		}
+		return String(value)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;');
+	  }
+
 	  function ldapPost(url, data) {
 		return $.ajax({
 			type: "POST",
@@ -60,12 +73,12 @@
   		ldapPost(url, { 'dn' : dn}).done(function (d) {
   			d = d.deptManage;
   			if(!obj) {
-  				obj = [[ {v:d.id, f:d.text+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
+                  obj = [[ {v:d.id, f:escapeHtml(d.text)+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
   			}
   			
   			var objLength = obj.length;
   			for(var i=0; i < d.children.length;i++) {
-  				obj[i+objLength] = [ {v:d.children[i].id, f:'<div id="'+ d.children[i].id +'">'+d.children[i].text+'</div>'},d.id, 'child'];
+                  obj[i+objLength] = [ {v:d.children[i].id, f:'<div id="'+ escapeHtml(d.children[i].id) +'">'+escapeHtml(d.children[i].text)+'</div>'},d.id, 'child'];
   			}
 
 

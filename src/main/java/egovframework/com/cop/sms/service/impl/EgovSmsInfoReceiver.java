@@ -1,6 +1,7 @@
 package egovframework.com.cop.sms.service.impl;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -69,17 +70,20 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 
 	/**
 	 * SMS 결과 수신을 위한 Connection 및 Session 생성한다.
-	 *
-	 * @throws SMEException
 	 */
 	@Synchronized		// 221111	김혜준	2022 시큐어코딩 조치
-	public void open() throws SMEException {
-		this.factReceiver = new SMEConnectionFactoryImpl(connString);
-		this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
-		this.sessReceiver = connReceiver.createSession();
+	public void open() {
+		try {
+			this.factReceiver = new SMEConnectionFactoryImpl(connString);
+			this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
+			this.sessReceiver = connReceiver.createSession();
 
-		this.receiver = sessReceiver.createReceiver();
-		this.receiver.setListener(this);
+			this.receiver = sessReceiver.createReceiver();
+			this.receiver.setListener(this);
+		} catch (SMEException e) {
+			throw new BaseRuntimeException(e);
+		}
+
 		this.connReceiver.start();
 
 		this.isConnected = true;
@@ -127,19 +131,16 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 		tmp = SMEConfig.getLogLevel();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogLevel(tmp);
-			// System.out.println(tmp);
 		}
 
 		tmp = SMEConfig.getLogLayout();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogLayout(tmp);
-			// System.out.println(tmp);
 		}
 
 		tmp = SMEConfig.getLogPath();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogPath(tmp);
-			// System.out.println(tmp);
 		}
 
 		SMELogger.setUseConsoleLogger(SMEConfig.getUseConsoleLogger());
@@ -158,8 +159,6 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				int nRes = rpt.getResult(); 						// 결과코드
 				String doneTime = rpt.getDeliverTime(); 	// 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
 				String netCode = rpt.getDestination(); 		// 이동통신사 정보
-
-				//System.out.println("Receiver Number is :" + ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
 
 				String resultMsg = "";
 
@@ -250,14 +249,12 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				}
 
 				if (nRes != SMEMessage.RESULT_SUCCESS) {
-					//System.out.println("SMSMessage (msgId = " + msgId + ") report = " + rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
 					LOGGER.info("Done Time   : {}", doneTime);
 					LOGGER.info("Net Code    : {}", netCode);
 				} else {
-					//System.out.println("SMEMessage (msgId = " + msgId + ") report = " + rpt.getResult());
 					LOGGER.info("MessageId   : {}", msgId);
 					LOGGER.info("Result      : {}", nRes);
 					LOGGER.info("Result Msg. : {}", resultMsg);
@@ -285,7 +282,6 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 					}
 				}
 			} else {
-				//System.out.println("SMEReceiver Disconnected!!"); // 주석처리
 				LOGGER.debug("SMEReceiver Disconnected!!");
 				synchronized (this) {				// 221111	김혜준	2022 시큐어코딩 조치
 					this.isConnected = false;
@@ -397,21 +393,13 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 					close();
 					Thread.sleep(10000);
 
-					try	{
-						open();
-					} catch (SMEException ex) {
-						LOGGER.error("DEBUG: {}", ex.getMessage());
-						break;
-					}
+					open();
 				}
 
 				Thread.sleep(10000);
 			}
 			////--------------------------------
 
-		} catch (SMEException ex) {
-			LOGGER.error("Exception: {}", ex.getClass().getName());
-			LOGGER.error("Exception  Message: {}", ex.getMessage());
 		} catch (InterruptedException ie) {
 			EgovBasicLogger.ignore("InterruptedException", ie);
 		} finally {

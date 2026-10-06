@@ -5015,14 +5015,14 @@ function validateCmmnClCodeVO(form) {
             label: '분류코드',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 3
             }
         },
         clCodeNm: {
             label: '분류코드명',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 60
             }
         },
         clCodeDc: {
@@ -5054,14 +5054,14 @@ function validateCmmnCodeVO(form) {
             label: '코드ID',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 6
             }
         },
         codeIdNm: {
             label: '코드ID명',
             rules: {
                 required: true,
-                maxlength: 70
+                maxlength: 60
             }
         },
         codeIdDc: {
@@ -5158,13 +5158,6 @@ function validateZip(form) {
 // 부서관리 validation (사용자관리 - 부서관리 등록/수정)
 function validateDeptManage(form) {
     const rules = {
-        orgnztId: {
-            label: '부서ID',
-            rules: {
-                required: true,
-                maxlength: 50
-            }
-        },
         orgnztNm: {
             label: '부서명',
             rules: {
@@ -5484,4 +5477,70 @@ function validateQustnrRespondInfoVO(form) {
 // 휴가관리 validation (uss/ion/vct 등록/수정에서 사용하는 VO 접미사 호출명)
 function validateVcatnManageVO(form) {
     return validateVcatnManage(form);
+}
+
+// 게시물 스크랩 validation
+function validateArticleScrapVO(form) {
+    const rules = {
+        scrapNm: {
+            label: '스크랩명',
+            rules: {
+                required: true,
+                maxlength: 70
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 간부상태 validation
+function validateLeaderSttusVO(form) {
+    const rules = {
+        leaderNm: {
+            label: '간부명',
+            rules: {
+                required: true
+            }
+        },
+        leaderSttus: {
+            label: '간부상태',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 메모보고 validation
+function validateMemoReprtVO(form) {
+    const rules = {
+        reprtDe: {
+            label: '보고일자',
+            rules: {
+                required: true
+            }
+        },
+        reportrNm: {
+            label: '보고대상명',
+            rules: {
+                required: true
+            }
+        },
+        reprtSj: {
+            label: '제목',
+            rules: {
+                required: true,
+                maxlength: 255
+            }
+        },
+        reprtCn: {
+            label: '보고내용',
+            rules: {
+                required: true,
+                maxlength: 2500
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
 }

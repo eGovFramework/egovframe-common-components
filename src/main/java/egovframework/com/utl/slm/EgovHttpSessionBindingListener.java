@@ -1,5 +1,6 @@
 package egovframework.com.utl.slm;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionBindingEvent;
 import jakarta.servlet.http.HttpSessionBindingListener;
 
@@ -23,10 +24,10 @@ public class EgovHttpSessionBindingListener implements HttpSessionBindingListene
 	 * */
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
-		if (EgovMultiLoginPreventor.findByLoginId(event.getName())) {
-			EgovMultiLoginPreventor.invalidateByLoginId(event.getName());
+		HttpSession previousSession = EgovMultiLoginPreventor.loginUsers.put(event.getName(), event.getSession());
+		if (previousSession != null && previousSession != event.getSession()) {
+			previousSession.invalidate();
 		}
-		EgovMultiLoginPreventor.loginUsers.put(event.getName(), event.getSession());
 	}
 
 	/**

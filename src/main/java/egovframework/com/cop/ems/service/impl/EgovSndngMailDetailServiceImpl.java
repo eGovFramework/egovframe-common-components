@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.Globals;
 import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.sim.service.EgovFileTool;
@@ -45,10 +44,9 @@ public class EgovSndngMailDetailServiceImpl extends EgovAbstractServiceImpl impl
 	 * 발송메일을 상세 조회한다.
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
 	@Override
-	public SndngMailVO selectSndngMail(SndngMailVO vo) throws Exception {
+	public SndngMailVO selectSndngMail(SndngMailVO vo) {
 
 		// 1. 발송메일 정보를 조회한다.
 		SndngMailVO resultMailVO = sndngMailDetailDAO.selectSndngMail(vo);
@@ -59,26 +57,26 @@ public class EgovSndngMailDetailServiceImpl extends EgovAbstractServiceImpl impl
 	/**
 	 * 발송메일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
 	@Override
-	public void deleteSndngMail(SndngMailVO vo) throws Exception {
+	public void deleteSndngMail(SndngMailVO vo) {
 
 		// 1. 발송메일을 삭제한다.
 		sndngMailDetailDAO.deleteSndngMail(vo);
 
 		// 2. 발송요청XML파일을 삭제한다.
 		String xmlFile = vo.getMssageId() + ".xml";
-		EgovFileTool.deleteFile(Globals.MAIL_REQUEST_PATH, xmlFile);
+		// 저장은 EgovXMLDoc.getClassToXML()이 Globals.fileStorePath 아래에 파일명만으로 수행하므로
+		// 삭제도 같은 기준 경로를 사용한다.
+		EgovFileTool.deleteFile(xmlFile);
 	}
 
 	/**
 	 * 첨부파일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
 	@Override
-	public void deleteAtchmnFile(SndngMailVO vo) throws Exception {
+	public void deleteAtchmnFile(SndngMailVO vo) {
 
 		// 1. 첨부파일 목록을 삭제한다. (이삼섭 책임 제공)
 		FileVO fileVO = new FileVO();

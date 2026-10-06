@@ -72,6 +72,7 @@ function press() {
 }
 
 -->
+<c:if test="${!empty mtgPlaceResveExist}">alert("<spring:message code="comUssIonMtg.mtgPlaceManageList.resveExist" />");/* 예약이 남아 있어 회의실을 삭제할 수 없습니다. */</c:if>
 </script>
 </head>
 

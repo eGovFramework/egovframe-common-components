@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -66,6 +65,7 @@ public class EgovGroupManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/gmt/EgovGroupListView.do")
+    @RequireAdmin
     public String selectGroupListView()
             throws Exception {
         return "egovframework/com/sec/gmt/EgovGroupManage";
@@ -109,6 +109,7 @@ public class EgovGroupManageController {
 	 * @exception Exception
 	 */
     @PostMapping("/sec/gmt/EgovGroup.do")
+	@RequireAdmin
 	public String selectGroup(@ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
 								@ModelAttribute("groupManage") GroupManage groupManage,
 	    		               ModelMap model) throws Exception {
@@ -225,6 +226,7 @@ public class EgovGroupManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/gmt/EgovGroupSearchView.do")
+    @RequireAdmin
     public String selectGroupSearchView()
             throws Exception {
         return "egovframework/com/sec/gmt/EgovGroupSearch";
@@ -237,6 +239,7 @@ public class EgovGroupManageController {
 	 * @exception Exception
 	 */
     @RequestMapping(value = "/sec/gmt/EgovGroupSearchList.do")
+	@RequireAdmin
 	public String selectGroupSearchList(@ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
                                    ModelMap model) throws Exception {
     	/** paging */

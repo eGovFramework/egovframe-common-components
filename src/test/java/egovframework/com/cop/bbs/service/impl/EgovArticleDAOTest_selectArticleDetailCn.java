@@ -19,18 +19,15 @@ public class EgovArticleDAOTest_selectArticleDetailCn extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
-	
+
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
-//	@Commit
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectArticleDetailCn() {
 		// given
 		Board board = egovArticleDAOTest_AaaTestData.insertArticle();
-		
+
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId(board.getBbsId());
 		boardVO.setNttId(board.getNttId());

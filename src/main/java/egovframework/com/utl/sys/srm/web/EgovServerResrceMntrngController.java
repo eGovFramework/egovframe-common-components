@@ -4,7 +4,6 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -58,7 +57,6 @@ public class EgovServerResrceMntrngController {
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name = "서버자원모니터링-대상목록", order = 2170, gid = 90)
-	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/srm/selectMntrngServerList.do")
 	public String selectMntrngServerList(
 			@ModelAttribute("serverResrceMntrngVO") ServerResrceMntrngVO serverResrceMntrngVO, ModelMap model)
@@ -96,13 +94,7 @@ public class EgovServerResrceMntrngController {
 	public String selectServerResrceMntrngListView(
 			@ModelAttribute("pmServerResrceMntrng") ServerResrceMntrngVO pmServerResrceMntrng, ModelMap model)
 			throws Exception {
-
-		pmServerResrceMntrng
-				.setStrStartDt(EgovStringUtil.addMinusChar(EgovDateUtil.addMonth(EgovDateUtil.getToday(), -1)));
-		pmServerResrceMntrng.setStrEndDt(EgovStringUtil.addMinusChar(EgovDateUtil.getToday()));
-		model.addAttribute("pmServerResrceMntrng", pmServerResrceMntrng);
-
-		return "egovframework/com/utl/sys/srm/EgovServerResrceMntrngList";
+		return "forward:/utl/sys/srm/selectServerResrceMntrngList.do";
 	}
 
 	/**

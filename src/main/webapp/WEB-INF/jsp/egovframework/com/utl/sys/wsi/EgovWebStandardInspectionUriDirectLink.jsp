@@ -285,8 +285,11 @@
 					str = str.replaceAll("\\<form", "<form action=\"https://validator.w3.org/check\"");
 					str = str.replaceAll("\"images/", "\"https://validator.w3.org/images/");
 
-					out.println(str);
+					resp.append(str).append("\n");
 				}
+				// 2026.07.30 보안 조치 - 외부(validator.w3.org) 응답을 그대로 프록시하여
+				// 동일 출처로 서빙하지 않고, 살균(sanitize) 후 출력한다(JS/속성 컨텍스트 sink 무력화)
+				out.println(egovframework.com.cmm.EgovHtmlSanitizer.sanitize(resp.toString()));
 
 			}
 

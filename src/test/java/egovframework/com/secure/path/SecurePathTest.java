@@ -2,7 +2,6 @@ package egovframework.com.secure.path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +35,7 @@ public class SecurePathTest {
 		
 		String resultPath = EgovWebUtil.filePathBlackList(filePath, basePath);
 		
-		System.out.println(resultPath);
+		log.debug(resultPath);
 		assertEquals(resultPath, "/egovframe/upload/etc/hosts");
 	}
 

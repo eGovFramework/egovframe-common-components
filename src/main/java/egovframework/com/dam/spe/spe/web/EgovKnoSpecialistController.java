@@ -1,5 +1,7 @@
 package egovframework.com.dam.spe.spe.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.map.mat.service.EgovMapMaterialService;
 import egovframework.com.dam.map.mat.service.MapMaterial;
@@ -119,6 +122,7 @@ public class EgovKnoSpecialistController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialist.do")
+	@RequireAdmin
 	public String selectKnoSpecialist(KnoSpecialist knoSpecialist, ModelMap model) throws Exception {
 		KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
 		model.addAttribute("result", vo);
@@ -133,6 +137,7 @@ public class EgovKnoSpecialistController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/dam/spe/spe/EgovComDamSpecialistRegistView.do")
+	@RequireAdmin
 	public String selectKnoSpecialistRegistView(@ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
 			@ModelAttribute("mapMaterial") MapMaterial mapMaterial, ModelMap model,
 			RedirectAttributes redirectAttributes) throws Exception {
@@ -173,6 +178,7 @@ public class EgovKnoSpecialistController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/dam/spe/spe/EgovComDamSpecialistRegist.do")
+	@RequireAdmin
 	public String insertKnoSpecialist(@ModelAttribute("mapMaterial") MapMaterial mapMaterial,
 			@Valid @ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -233,10 +239,11 @@ public class EgovKnoSpecialistController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/dam/spe/spe/EgovComDamSpecialistModifyView.do")
+	@RequireAdmin
 	public String selectKnoSpecialistModifyView(@ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
 			ModelMap model) throws Exception {
 
-		KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
+		KnoSpecialist vo = EgovAuthorizationHelper.requireTarget(knoSpecialistService.selectKnoSpecialist(knoSpecialist));
 		model.addAttribute("knoSpecialist", vo);
 		return "egovframework/com/dam/spe/spe/EgovComDamSpecialistModify";
 	}
@@ -250,11 +257,13 @@ public class EgovKnoSpecialistController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/dam/spe/spe/EgovComDamSpecialistModify.do")
+	@RequireAdmin
 	public String updateKnoSpecialist(@Valid @ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		if (bindingResult.hasErrors()) {
 			//KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
@@ -279,6 +288,7 @@ public class EgovKnoSpecialistController {
 	 * @param speNm
 	 */
 	@PostMapping("/dam/spe/spe/EgovComDamSpecialistRemove.do")
+	@RequireAdmin
 	public String deleteKnoSpecialist(@ModelAttribute("loginVO") LoginVO loginVO, KnoSpecialist knoSpecialist,
 			ModelMap model) throws Exception {
 		knoSpecialistService.deleteKnoSpecialist(knoSpecialist);

@@ -1,5 +1,7 @@
 package egovframework.com.sym.ccm.cca.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.ccm.cca.service.CmmnCode;
 import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
@@ -106,6 +109,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cca/SelectCcmCmmnCodeDetail.do")
+	@RequireAdmin
 	public String selectCmmnCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO, CmmnCodeVO cmmnCodeVO,
 			ModelMap model) throws Exception {
 
@@ -125,6 +129,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cca/RegistCcmCmmnCodeView.do")
+	@RequireAdmin
 	public String insertCmmnCodeView(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, ModelMap model)
 			throws Exception {
 
@@ -148,6 +153,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cca/RegistCcmCmmnCode.do")
+	@RequireAdmin
 	public String insertCmmnCode(@ModelAttribute("searchVO") CmmnCodeVO cmmnCode,
 			@Valid @ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -193,12 +199,14 @@ public class EgovCcmCmmnCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cca/RemoveCcmCmmnCode.do")
+	@RequireAdmin
 	public String deleteCmmnCode(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		cmmnCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+
 		cmmnCodeManageService.deleteCmmnCode(cmmnCodeVO);
 
 		return "forward:/sym/ccm/cca/SelectCcmCmmnCodeList.do";
@@ -213,6 +221,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cca/UpdateCcmCmmnCodeView.do")
+	@RequireAdmin
 	public String updateCmmnCodeView(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, ModelMap model)
 			throws Exception {
 
@@ -233,11 +242,13 @@ public class EgovCcmCmmnCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cca/UpdateCcmCmmnCode.do")
+	@RequireAdmin
 	public String updateCmmnCode(@ModelAttribute("searchVO") CmmnCodeVO cmmnCode,
 			@Valid @ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		if (bindingResult.hasErrors()) {
 

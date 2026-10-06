@@ -165,7 +165,7 @@ public class EgovValidationControllerAdvice {
 		// {키이름} 패턴을 찾아서 대체
 		Pattern pattern = java.util.regex.Pattern.compile("\\{([^}]+)\\}");
 		Matcher matcher = pattern.matcher(message);
-		StringBuffer result = new StringBuffer();
+		StringBuilder result = new StringBuilder();
 
 		while (matcher.find()) {
 			String messageKey = matcher.group(1);
@@ -278,6 +278,12 @@ public class EgovValidationControllerAdvice {
 	 * @Size 유효성 검사에 대한 메시지 생성
 	 */
 	private String resolveSizeConstraintMessage(String defaultMessage, String fieldName, String annotationMessage, ConstraintViolation<Object> violation) {
+
+		// 사용자가 message 속성을 명시한 경우에는 공용 size 메시지로 덮어쓰지 않는다.
+		// null을 반환하면 resolveMessage()가 형제 제약과 동일하게 사용자 메시지를 처리한다.
+		if (annotationMessage != null) {
+			return null;
+		}
 
 		Integer max = getAnnotationValue(violation, "max");
 		Integer min = getAnnotationValue(violation, "min");

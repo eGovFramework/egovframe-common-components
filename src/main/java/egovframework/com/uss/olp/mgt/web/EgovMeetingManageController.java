@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.mgt.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -8,14 +10,12 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,6 +23,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.mgt.service.EgovMeetingManageService;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
@@ -62,11 +63,13 @@ public class EgovMeetingManageController {
     protected EgovPropertyService propertiesService;
 
     @RequestMapping("/uss/olp/mgt/EgovMeetingManageMain.do")
+    @RequireAdmin
     public String egovMeetingManageMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageMain";
     }
 
     @RequestMapping("/uss/olp/mgt/EgovMeetingManageLeft.do")
+    @RequireAdmin
     public String egovMeetingManageLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLeft";
     }
@@ -83,6 +86,7 @@ public class EgovMeetingManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/olp/mgt/EgovMain.do")
+    @RequireAdmin
     public String egovMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMain";
     }
@@ -94,6 +98,7 @@ public class EgovMeetingManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/olp/mgt/EgovLeft.do")
+    @RequireAdmin
     public String egovLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovLeft";
     }
@@ -196,6 +201,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageDetail.do")
+	@RequireAdmin
 	public String egovMeetingManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -225,9 +231,10 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageModifyView.do")
+	@RequireAdmin
 	public String meetingManageModifyView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			MeetingManageVO meetingManageVO,
+			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
 			ModelMap model,
     		RedirectAttributes redirectAttributes
     		)
@@ -240,11 +247,54 @@ public class EgovMeetingManageController {
 		}
 		
 		List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
-		model.addAttribute("resultList", resultList);
+		if (!resultList.isEmpty()) {
+			model.addAttribute("meetingManageVO", meetingModifyForm(resultList.get(0)));
+		}
 
 		return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
 	}
 	
+	/** 최초 수정 화면에서 조회 결과를 입력 폼에 담는다. */
+	private MeetingManageVO meetingModifyForm(EgovMap stored) {
+		MeetingManageVO form = new MeetingManageVO();
+		form.setMtgId(EgovStringUtil.isNullToString(stored.get("mtgId")));
+		form.setMtgNm(EgovStringUtil.isNullToString(stored.get("mtgNm")));
+		form.setMtgMtrCn(EgovStringUtil.isNullToString(stored.get("mtgMtrCn")));
+		form.setMtgSn(EgovStringUtil.isNullToString(stored.get("mtgSn")));
+		form.setMtgCo(EgovStringUtil.isNullToString(stored.get("mtgCo")));
+		form.setMtgDe(EgovStringUtil.isNullToString(stored.get("mtgDe")));
+		form.setMtgPlace(EgovStringUtil.isNullToString(stored.get("mtgPlace")));
+		form.setMtgBeginTime(EgovStringUtil.isNullToString(stored.get("mtgBeginTime")));
+		form.setMtgEndTime(EgovStringUtil.isNullToString(stored.get("mtgEndTime")));
+		form.setClsdrMtgAt(EgovStringUtil.isNullToString(stored.get("clsdrMtgAt")));
+		form.setReadngBeginDe(EgovStringUtil.isNullToString(stored.get("readngBeginDe")));
+		form.setReadngAt(EgovStringUtil.isNullToString(stored.get("readngAt")));
+		form.setMtgResultCn(EgovStringUtil.isNullToString(stored.get("mtgResultCn")));
+		form.setMtgResultEnnc(EgovStringUtil.isNullToString(stored.get("mtgResultEnnc")));
+		form.setEtcMatter(EgovStringUtil.isNullToString(stored.get("etcMatter")));
+		form.setMngtDeptId(EgovStringUtil.isNullToString(stored.get("mngtDeptId")));
+		form.setMngtDeptNm(EgovStringUtil.isNullToString(stored.get("mngtDeptNm")));
+		form.setMnaerId(EgovStringUtil.isNullToString(stored.get("mnaerId")));
+		// 기존 수정 화면과 직원 선택 팝업은 주관자 로그인 ID를 표시한다.
+		form.setMnaerNm(EgovStringUtil.isNullToString(stored.get("mnaerIds")));
+		form.setMnaerDeptId(EgovStringUtil.isNullToString(stored.get("mnaerDeptId")));
+		form.setMnaerDeptNm(EgovStringUtil.isNullToString(stored.get("mnaerDeptNm")));
+		form.setMtnAt(EgovStringUtil.isNullToString(stored.get("mtnAt")));
+		form.setNonatdrnCo(EgovStringUtil.isNullToString(stored.get("nonatdrnCo")));
+		form.setAtdrnCo(EgovStringUtil.isNullToString(stored.get("atdrnCo")));
+		String[] begin = form.getMtgBeginTime().split(":");
+		if (begin.length == 2) {
+			form.setMtgBeginHH(begin[0].replaceFirst("^0+(?!$)", ""));
+			form.setMtgBeginMM(begin[1].replaceFirst("^0+(?!$)", ""));
+		}
+		String[] end = form.getMtgEndTime().split(":");
+		if (end.length == 2) {
+			form.setMtgEndHH(end[0].replaceFirst("^0+(?!$)", ""));
+			form.setMtgEndMM(end[1].replaceFirst("^0+(?!$)", ""));
+		}
+		return form;
+	}
+
 	/**
 	  * 회의정보를 수정한다.
 	 * @param searchVO
@@ -257,6 +307,7 @@ public class EgovMeetingManageController {
 	 */
 	
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageModify.do")
+	@RequireAdmin
 	public String meetingManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,BindingResult bindingResult,
@@ -272,17 +323,18 @@ public class EgovMeetingManageController {
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+        List<EgovMap> storedList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+		Object owner = EgovAuthorizationHelper.requireTarget(storedList == null || storedList.isEmpty() ? null : storedList.get(0).get("frstRegisterId"));
         
     	if(bindingResult.hasErrors()){
-             List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
-             model.addAttribute("resultList", resultList);
              bindingResult.getAllErrors().forEach(e -> LOGGER.error(e.toString()));
              return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
     	}
     	
-    	//아이디 설정
+		//아이디 설정
 	
-        meetingManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        meetingManageVO.setFrstRegisterId(owner.toString());
         meetingManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
         egovMeetingManageService.updateMeetingManage(meetingManageVO);
@@ -299,6 +351,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "!cmd")
+	@RequireAdmin
 	public String meetingManageRegistView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
@@ -317,6 +370,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "cmd=save")
+	@RequireAdmin
 	public String meetingManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,

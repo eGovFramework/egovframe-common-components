@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
+import org.springframework.util.StringUtils;
+
 /**
  * 교차접속 스크립트 공격 취약성 방지(파라미터 문자열 교체)
  *
@@ -21,26 +23,38 @@ import java.util.regex.Pattern;
  *  2022.06.09   김장하      NSR 보안조치 (removeOSCmdRisk 함수에 윈도우 다중 명령 실행 키워드 추가)
  *  2023.08.10   신용호      removeLDAPInjectionRisk() 오류 수정
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
+ *  2026.06.28   Chung10kr clearXSSMinimum() 공백 검사를 StringUtils.hasText()로 단순화
  *  2026.07.10   유지보수    NCSC 보안점검 반영 (XSS/SSRF/세션고정 대응 유틸 추가)
+ *  2026.07.15   EricSeokgon fileInjectPathReplaceAll() 상위 경로 정규식 수정
+ *  2026.07.15   EricSeokgon 팝업 프로토콜 상대 URL 검증 강화
+ *  2026.07.17   EricSeokgon 정규식 반복 컴파일 제거 - 리터럴 치환은 String.replace(), 진성 정규식은 static Pattern 사전 컴파일
+ *  2026.07.17   EricSeokgon filePathReplaceAll() 상위 경로(..) 제거 후에도 남는 ".." 정리 (fileInjectPathReplaceAll과 동일)
  * </pre>
  */
 
 public class EgovWebUtil {
+
+	/** 공백 문자 클래스(\p{Space})는 리터럴 치환이 불가하므로 클래스 로딩 시 1회만 컴파일한다. */
+	private static final Pattern SPACE_PATTERN = Pattern.compile("\\p{Space}");
+
+	/** IPv4 주소 형식 검증 패턴. 호출마다 재컴파일하지 않도록 static final 로 유지한다. */
+	private static final Pattern IP_PATTERN = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
+
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (!StringUtils.hasText(value)) {
 			return "";
 		}
 
 		String returnValue = value;
 
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("\"", "&#34;");
-		returnValue = returnValue.replaceAll("\'", "&#39;");
-		returnValue = returnValue.replaceAll("\\.", "&#46;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
+		returnValue = returnValue.replace("&", "&amp;");
+		returnValue = returnValue.replace("<", "&lt;");
+		returnValue = returnValue.replace(">", "&gt;");
+		returnValue = returnValue.replace("\"", "&#34;");
+		returnValue = returnValue.replace("\'", "&#39;");
+		returnValue = returnValue.replace(".", "&#46;");
+		returnValue = returnValue.replace("%2E", "&#46;");
+		returnValue = returnValue.replace("%2F", "&#47;");
 		return returnValue;
 	}
 
@@ -50,42 +64,42 @@ public class EgovWebUtil {
 
 		returnValue = returnValue.replace("%00", "");
 
-		returnValue = returnValue.replaceAll("%", "&#37;");
+		returnValue = returnValue.replace("%", "&#37;");
 
 		// \\. => .
 
-		returnValue = returnValue.replaceAll("\\.\\./", ""); // ../
-		returnValue = returnValue.replaceAll("\\.\\.\\\\", ""); // ..\
-		returnValue = returnValue.replaceAll("\\./", ""); // ./
-		returnValue = returnValue.replaceAll("%2F", "");
+		returnValue = returnValue.replace("../", ""); // ../
+		returnValue = returnValue.replace("..\\", ""); // ..\
+		returnValue = returnValue.replace("./", ""); // ./
+		returnValue = returnValue.replace("%2F", "");
 
 		return returnValue;
 	}
 
 	public static String clearXSS(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (value == null || value.trim().isEmpty()) {
 			return "";
 		}
 
 		String returnValue = value;
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("%3C", "&lt;");
-		returnValue = returnValue.replaceAll("%3E", "&gt;");
+		returnValue = returnValue.replace("&", "&amp;");
+		returnValue = returnValue.replace("%2E", "&#46;");
+		returnValue = returnValue.replace("%2F", "&#47;");
+		returnValue = returnValue.replace("<", "&lt;");
+		returnValue = returnValue.replace(">", "&gt;");
+		returnValue = returnValue.replace("%3C", "&lt;");
+		returnValue = returnValue.replace("%3E", "&gt;");
 
 		return returnValue;
 	}
 
 	public static String filePathBlackList(String value) {
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("\\.\\.", "");
+		returnValue = returnValue.replace("..", "");
 
 		return returnValue;
 	}
@@ -113,42 +127,54 @@ public class EgovWebUtil {
 
 	/**
 	 * 행안부 보안취약점 점검 조치 방안.
+	 * 구분자(/, \)와 & 를 제거한 뒤, 그 과정에서 새로 생성된 ".."( 예: ".&." )까지 남지 않도록 정리한다.
 	 *
 	 * @param value
 	 * @return
 	 */
 	public static String filePathReplaceAll(String value) {
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\\\", "");
-		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
-		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replace("/", "");
+		returnValue = returnValue.replace("\\", "");
+		returnValue = returnValue.replace("..", ""); // ..
+		returnValue = returnValue.replace("&", "");
+		while (returnValue.contains("..")) {
+			returnValue = returnValue.replace("..", "");
+		}
 
 		return returnValue;
 	}
 
+	/**
+	 * 파일 주입(injection) 방지를 위해 파일명에서 구분자(/, \), 상위 경로(..), & 를 제거한다.
+	 * 구분자와 & 를 제거하는 과정에서 새로 ".."( 예: ".&." )가 만들어질 수 있으므로, 더 이상 남지 않을 때까지 반복 제거한다.
+	 *
+	 * @param value
+	 * @return
+	 */
 	public static String fileInjectPathReplaceAll(String value) {
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\..", ""); // ..
-		returnValue = returnValue.replaceAll("\\\\", "");// \
-		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replace("/", "");
+		returnValue = returnValue.replace("\\", "");// \
+		returnValue = returnValue.replace("..", ""); // ..
+		returnValue = returnValue.replace("&", "");
+		while (returnValue.contains("..")) {
+			returnValue = returnValue.replace("..", "");
+		}
 
 		return returnValue;
 	}
 
 	public static boolean isIPAddress(String str) {
-		Pattern ipPattern = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
-
-		return ipPattern.matcher(str).matches();
+		return IP_PATTERN.matcher(str).matches();
 	}
 
 	/**
@@ -185,8 +211,10 @@ public class EgovWebUtil {
 		if (requestUrl == null || requestUrl.isBlank()) {
 			throw new IllegalArgumentException("requestUrl is required");
 		}
-		String trimmed = requestUrl.trim();
-		if (!trimmed.startsWith("/") || trimmed.contains("://") || trimmed.contains("..")
+		// 브라우저가 URL 해석 전 제거하는 탭/개행(0x09/0x0A/0x0D)을 먼저 제거한 뒤 검증한다. (예: "/[TAB]/evil" 은 브라우저에서 "//evil" 로 해석됨)
+		String trimmed = requestUrl.replace("\t", "").replace("\n", "").replace("\r", "").trim();
+		if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\")
+				|| trimmed.contains("://") || trimmed.contains("..")
 				|| trimmed.contains("\"") || trimmed.contains("'") || trimmed.contains("<")
 				|| trimmed.contains(">") || trimmed.contains("\r") || trimmed.contains("\n")) {
 			throw new IllegalArgumentException("Invalid requestUrl");
@@ -255,16 +283,16 @@ public class EgovWebUtil {
 	}
 
 	public static String removeCRLF(String parameter) {
-		return parameter.replaceAll("\r", "").replaceAll("\n", "");
+		return parameter.replace("\r", "").replace("\n", "");
 	}
 
 	public static String removeSQLInjectionRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("%", "").replaceAll(";", "")
-			.replaceAll("-", "").replaceAll("\\+", "").replaceAll(",", "");
+		return SPACE_PATTERN.matcher(parameter).replaceAll("").replace("*", "").replace("%", "").replace(";", "")
+			.replace("-", "").replace("+", "").replace(",", "");
 	}
 
 	public static String removeOSCmdRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("\\|", "").replaceAll(";", "").replaceAll("&", "");
+		return SPACE_PATTERN.matcher(parameter).replaceAll("").replace("*", "").replace("|", "").replace(";", "").replace("&", "");
 	}
 
 	/**
@@ -278,7 +306,7 @@ public class EgovWebUtil {
 	public static String removeLDAPInjectionRisk(String value) {
 
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
@@ -287,10 +315,10 @@ public class EgovWebUtil {
 //		returnValue = returnValue.replaceAll(match, "");
 
 		/*특수문자 선택적 제거*/
-		returnValue = returnValue.replaceAll("\\*", "");
-		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replace("*", "");
+		returnValue = returnValue.replace("&", "");
 		returnValue = returnValue.replace("|", "");
-		returnValue = returnValue.replaceAll("//", "");
+		returnValue = returnValue.replace("//", "");
 		//...
 		//개별로 필요한 항목들 추가 필요
 

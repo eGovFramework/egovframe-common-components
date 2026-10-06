@@ -190,11 +190,13 @@ $(document).ready(function () {
 			<th><label for="bgnde"><spring:message code="comUssIonVct.common.startDate"/> </label><span class="pilsu">*</span></th><!-- 시작일자 -->
 			<td class="left">
 			    <c:out value='${vcatnManageVO.bgnde}'/>
+			    <form:errors path="bgnde" cssClass="error" />
 			</td>
 			<c:if test="${vcatnManageVO.vcatnSe ne '02' }">
 			<th><span id="nameSpan"><label for="endde"><spring:message code="comUssIonVct.common.endDate"/></label></span> <span class="pilsu">*</span></th><!-- 종료일자 -->
 			<td class="left">
 			    <c:out value='${vcatnManageVO.endde}'/>
+			    <form:errors path="endde" cssClass="error" />
 			</td>
 			</c:if>
 			<c:if test="${vcatnManageVO.vcatnSe eq '02' }">
@@ -208,6 +210,7 @@ $(document).ready(function () {
 			<th><spring:message code="comUssIonVct.common.vcatnResn"/> <span class="pilsu">*</span></th><!-- 휴가사유 -->
 			<td class="left" colspan="3">
 			    <textarea id="vcatnResnView" name="vcatnResnView" class="txta01" rows="4" cols="70" title='<spring:message code="comUssIonVct.common.vcatnResn"/>' readonly="readonly"><c:out value='${vcatnManageVO.vcatnResn}'/></textarea>
+			    <form:errors path="vcatnResn" cssClass="error" />
 			</td>
 		</tr>
 	</table>
@@ -228,6 +231,7 @@ $(document).ready(function () {
 				<span class="link">
 				<a id="VcatnSanctner" href="#LINK" title='<spring:message code="comUssIonRwd.common.searchNm"/>' data-dialog-title="<spring:message code="comUssIonVct.common.infrmlSanctnRegist"/>" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" style="vertical-align: middle" alt='<spring:message code="comUssIonVct.common.sanctnDtNm"/>' title='<spring:message code="comUssIonVct.common.sanctnDtNm"/>'></a><!-- 결재권자 지정 -->
 				</span>
+				<form:errors path="sanctnerId" cssClass="error" />
 			</td>
 			<th><spring:message code="comUssIonVct.common.orgnztNm"/></th><!-- 소속 -->
 			<td class="left">

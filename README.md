@@ -68,6 +68,39 @@ egovframe-common-components
 
 <img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://github.com/user-attachments/assets/aad11f93-b9d2-4bcf-bf45-c06365899a5d">
 
+## ⚠️ 보안 주의사항 (개발 적용 전 필수 변경)
+
+공통컴포넌트가 기본으로 제공하는 **암호화 키**와 **사용자 계정 정보**는 공개된 값입니다. 개발 환경에 적용하기 전 아래 두 가지를 반드시 변경하시기 바랍니다.
+
+### 1. Crypto 암호화 키 변경 (`algorithmKey` / `algorithmKeyHash`)
+
+표준프레임워크 Crypto 암호화 서비스는 **국정원 ARIA 암호화 알고리즘** 기반입니다.
+
+- 아래 파일의 `algorithmKey`, `algorithmKeyHash` **기본값 `egovframe` 을 반드시 다른 값으로 변경**해야 합니다.
+  - `src/main/resources/egovframework/egovProps/conf/egov-crypto-config.properties`
+  - `src/main/resources/egovframework/egovProps/globals.properties` 의 `Globals.File.algorithmKey`
+- 변경하지 않는 것은 **우리집 도어락 비밀번호를 `1234` 초기값 그대로 사용하는 것과 동일**합니다.
+- 참고 자료
+  - [Crypto 위키 가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte5.0:fdl:crypto)
+  - [해시키 생성 소스 샘플 (MakeHashedPassword.java)](https://github.com/eGovFramework/egovframe-common-components/blob/main/src/test/java/egovframework/com/crypto/MakeHashedPassword.java)
+
+### 2. 기본 사용자 계정 비밀번호 변경
+
+`script/dml` 의 초기 데이터에는 아래 테스트용 사용자 정보가 포함되어 있습니다. (**ID 대소문자 유의**)
+
+| 구분 | ID | 초기 PW |
+| --- | --- | --- |
+| 일반사용자 | `USER` | `rhdxhd12` |
+| 기업사용자 | `ENTERPRISE` | `rhdxhd12` |
+| 업무사용자1 | `TEST1` | `rhdxhd12` |
+| 업무사용자2 | `webmaster` | `rhdxhd12` |
+
+> 초기 비밀번호 `rhdxhd12` 는 "공통12" 를 영문 자판으로 입력한 값입니다.
+
+- 위 계정의 **비밀번호를 반드시 변경**하고, 사용하지 않는 계정은 **삭제**한 후 운영하시기 바랍니다.
+- 개발시 초기값을 그대로 사용할 경우, 그대로 배포까지 이어져서 누구나 알고 있는 계정정보로 시스템에 접근할 수 있어 심각한 보안 위험이 발생합니다.
+
+
 ## 5.0.1 패치 내용
 
 - 인증인가 처리 경로 공개로 검증 절차 우회 오류 수정

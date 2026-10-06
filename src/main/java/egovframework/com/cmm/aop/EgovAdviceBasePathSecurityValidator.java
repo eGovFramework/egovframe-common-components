@@ -34,8 +34,6 @@ public class EgovAdviceBasePathSecurityValidator {
 	public void beforeTargetMethod(JoinPoint thisJoinPoint) {
     	log.debug(" * AdviceBasePathValidator > beforeTargetMethod executed.");
 
-        @SuppressWarnings("unused")
-		Class<? extends Object> clazz = thisJoinPoint.getTarget().getClass();
         String className = thisJoinPoint.getTarget().getClass().getSimpleName();
         String methodName = thisJoinPoint.getSignature().getName();
 

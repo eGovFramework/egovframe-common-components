@@ -1,5 +1,7 @@
 package egovframework.com.dam.map.tea.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -102,6 +104,7 @@ public class EgovMapTeamController {
 	 * @param MapTeamVO
 	 */
 	@PostMapping("/dam/map/tea/EgovComDamMapTeamDetail.do")
+	@RequireAdmin
 	public String selectMapTeamDetail(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
 			throws Exception {
 		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
@@ -115,6 +118,7 @@ public class EgovMapTeamController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/dam/map/tea/EgovComDamMapTeamRegistView.do")
+	@RequireAdmin
 	public String insertMapTeamView(@ModelAttribute("mapTeam") MapTeam mapTeam) throws Exception {
 		return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 	}
@@ -128,6 +132,7 @@ public class EgovMapTeamController {
 	 * @param mapTeam
 	 */
 	@PostMapping("/dam/map/tea/EgovComDamMapTeamRegist.do")
+	@RequireAdmin
 	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult) throws Exception {
 
@@ -152,6 +157,7 @@ public class EgovMapTeamController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/dam/map/tea/EgovComDamMapTeamModifyView.do")
+	@RequireAdmin
 	public String updateMapTeamView(@ModelAttribute("mapTeam") MapTeam mapTeam, ModelMap model) throws Exception {
 		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
 		model.addAttribute("mapTeam", vo);
@@ -167,6 +173,7 @@ public class EgovMapTeamController {
 	 * @param mapTeam
 	 */
 	@PostMapping("/dam/map/tea/EgovComDamMapTeamModify.do")
+	@RequireAdmin
 	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -175,6 +182,7 @@ public class EgovMapTeamController {
 		}
 
 		mapTeam.setFrstRegisterId(loginVO.getUniqId());
+		mapTeam.setLastUpdusrId(loginVO.getUniqId());
 		mapTeamService.updateMapTeam(mapTeam);
 		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
 	}
@@ -188,6 +196,7 @@ public class EgovMapTeamController {
 	 * @param orgnztNm
 	 */
 	@PostMapping("/dam/map/tea/EgovComDamMapTeamRemove.do")
+	@RequireAdmin
 	public String deleteMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
 			throws Exception {
 		mapTeamService.deleteMapTeam(mapTeam);

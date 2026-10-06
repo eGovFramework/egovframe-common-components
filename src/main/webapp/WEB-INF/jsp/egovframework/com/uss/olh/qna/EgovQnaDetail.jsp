@@ -122,14 +122,17 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	<form name="qnaForm" action="${pageContext.request.contextPath}/uss/olh/qna/updateQnaView.do" method="post" style="float:left;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 			<input name="qaId" type="hidden" value="${result.qaId}">
 		</form>
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olh/qna/deleteQna.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_qna(this.form); return false;">
 			<input name="qaId" type="hidden" value="${result.qaId}">
 		</form>
 		<form name="formList" action="${pageContext.request.contextPath}/uss/olh/qna/selectQnaList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	</div><div style="clear:both;"></div>

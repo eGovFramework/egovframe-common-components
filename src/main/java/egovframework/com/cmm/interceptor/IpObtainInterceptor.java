@@ -1,5 +1,7 @@
 package egovframework.com.cmm.interceptor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import egovframework.com.cmm.LoginVO;
@@ -26,11 +28,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class IpObtainInterceptor implements HandlerInterceptor {
 
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	private static final Logger LOGGER = LoggerFactory.getLogger(IpObtainInterceptor.class);
 
-		System.out.println("### IpObtainInterceptor start... ");
-		
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+
+		LOGGER.debug("IpObtainInterceptor start...");
+
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		if (loginVO != null) {

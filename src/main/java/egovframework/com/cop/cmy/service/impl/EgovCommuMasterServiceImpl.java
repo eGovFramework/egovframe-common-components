@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,14 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	@Override
-	public String insertCommuMaster(Community community) throws FdlException {
+	public String insertCommuMaster(Community community) {
 		//게시판 ID 채번
-		String cmmntyId = idgenService.getNextStringId();
+		String cmmntyId;
+		try {
+			cmmntyId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		community.setCmmntyId(cmmntyId);
 
 		egovCommuMasterDAO.insertCommuMaster(community);
@@ -49,10 +55,10 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	@Override
-	public CommunityVO selectCommuMaster(CommunityVO cmmntyVO) throws Exception {
+	public CommunityVO selectCommuMaster(CommunityVO cmmntyVO) {
 		CommunityVO resultVO = egovCommuMasterDAO.selectCommuMasterDetail(cmmntyVO);
         if (resultVO == null) {
-			throw processException("info.nodata.msg");
+			throw new BaseRuntimeException(processException("info.nodata.msg"));
 		}
         return resultVO;
 	}
@@ -68,7 +74,7 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	@Override
-	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws Exception {
+	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) {
 		return egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
 	}
 

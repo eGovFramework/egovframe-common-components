@@ -2,6 +2,7 @@ package egovframework.com.cop.smt.wmr.web;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -25,6 +26,8 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.wmr.service.EgovWikMnthngReprtService;
 import egovframework.com.cop.smt.wmr.service.ReportrVO;
@@ -32,6 +35,7 @@ import egovframework.com.cop.smt.wmr.service.WikMnthngReprt;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -94,8 +98,7 @@ public class EgovWikMnthngReprtController {
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/wmr/selectReportrListPopup.do")
-	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model)
-			throws Exception {
+	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		return "egovframework/com/cop/smt/wmr/EgovReportrListPopup";
 	}
 
@@ -108,7 +111,7 @@ public class EgovWikMnthngReprtController {
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/wmr/selectReportrList.do")
-	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) throws Exception {
+	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// reportrVO.setUniqId(user.getUniqId());
@@ -147,7 +150,7 @@ public class EgovWikMnthngReprtController {
 	@IncludedInfo(name = "주간/월간보고관리", order = 410, gid = 40)
 	@RequestMapping("/cop/smt/wmr/selectWikMnthngReprtList.do")
 	public String selectWikMnthngReprtList(@ModelAttribute("searchVO") WikMnthngReprtVO wikMnthngReprtVO,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 로그인 객체 선언
@@ -188,7 +191,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@PostMapping("/cop/smt/wmr/addWikMnthngReprt.do")
 	public String addWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) {
 		String sLocationUrl = "egovframework/com/cop/smt/wmr/EgovWikMnthngReprtRegist";
 
 		// 파일업로드 제한
@@ -228,7 +231,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@PostMapping("/cop/smt/wmr/modifyWikMnthngReprt.do")
 	public String modifyWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model, HttpServletRequest request) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -243,6 +246,8 @@ public class EgovWikMnthngReprtController {
 		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		WikMnthngReprtVO resultVO = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
+		EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, resultVO.getAtchFileId());
 		resultVO.setSearchCnd(wikMnthngReprtVO.getSearchCnd());
 		resultVO.setSearchWrd(wikMnthngReprtVO.getSearchWrd());
 		resultVO.setSearchDe(wikMnthngReprtVO.getSearchDe());
@@ -268,12 +273,12 @@ public class EgovWikMnthngReprtController {
 	 */
 	@PostMapping("/cop/smt/wmr/selectWikMnthngReprt.do")
 	public String selectWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-		WikMnthngReprt wikMnthngReprt = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
+		WikMnthngReprt wikMnthngReprt = EgovAuthorizationHelper.requireTarget(wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO));
 		model.addAttribute("wikMnthngReprt", wikMnthngReprt);
 
 		/*
@@ -301,9 +306,17 @@ public class EgovWikMnthngReprtController {
 	 */
 	@PostMapping("/cop/smt/wmr/updateWikMnthngReprt.do")
 	public String updateWikMnthngReprt(final MultipartHttpServletRequest multiRequest, EgovSecurityMap securityMap,
-			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
+			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		WikMnthngReprtVO stored = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		// 첨부 그룹은 요청값이 아니라 소유권을 확인한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		wikMnthngReprtVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
+		// 작성자도 원본 값을 쓴다(요청값으로 타인 명의 변경 차단)
+		wikMnthngReprtVO.setWrterId(stored.getWrterId());
 
 		if (bindingResult.hasErrors()) {
 			// 파일업로드 제한
@@ -363,7 +376,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@PostMapping("/cop/smt/wmr/insertWikMnthngReprt.do")
 	public String insertWikMnthngReprt(final MultipartHttpServletRequest multiRequest,
-			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
+			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) {
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -405,6 +418,7 @@ public class EgovWikMnthngReprtController {
 		// 아이디 설정
 		wikMnthngReprtVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		wikMnthngReprtVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		wikMnthngReprtVO.setWrterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		wikMnthngReprtService.insertWikMnthngReprt(wikMnthngReprtVO);
 		sLocationUrl = "forward:/cop/smt/wmr/selectWikMnthngReprtList.do";
@@ -421,7 +435,7 @@ public class EgovWikMnthngReprtController {
 	 * @param wikMnthngReprt
 	 */
 	@PostMapping("/cop/smt/wmr/deleteWikMnthngReprt.do")
-	public String deleteWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
+	public String deleteWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -430,17 +444,23 @@ public class EgovWikMnthngReprtController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = wikMnthngReprtVO.getAtchFileId();
-
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
-
-		fileMngService.deleteAllFileInf(fvo);
-		// 첨부파일 삭제 End.............
-
 		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+
+		// 첨부파일 삭제를 위한 ID 생성 start....
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		// 조회 조건에 searchId(작성자/보고대상자)가 들어가므로 위의 setSearchId보다 뒤에 있어야 한다.
+		WikMnthngReprtVO stored = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
+
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
+
+			fileMngService.deleteAllFileInf(fvo);
+		}
+		// 첨부파일 삭제 End.............
 
 		wikMnthngReprtService.deleteWikMnthngReprt(wikMnthngReprtVO);
 		return "forward:/cop/smt/wmr/selectWikMnthngReprtList.do";
@@ -455,7 +475,7 @@ public class EgovWikMnthngReprtController {
 	 * @param wikMnthngReprt
 	 */
 	@PostMapping("/cop/smt/wmr/confirmWikMnthngReprt.do")
-	public String confirmWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
+	public String confirmWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 

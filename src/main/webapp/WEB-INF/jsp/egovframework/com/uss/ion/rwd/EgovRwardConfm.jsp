@@ -159,16 +159,19 @@
 			<th><spring:message code="comUssIonRwd.common.rwardNm"/> <span class="pilsu">*</span></th><!-- 포상명 -->
 			<td class="left">
 			    <c:out value='${rwardManageVO.rwardNm}'/>
+			    <form:errors path="rwardManage.rwardNm" cssClass="error" />
 			</td>
 			<th><spring:message code="comUssIonRwd.common.rwardDe"/> <span class="pilsu">*</span></th><!-- 포상일자 -->
 			<td class="left">
 			    <c:out value='${rwardManageVO.rwardDe}'/>
+			    <form:errors path="rwardManage.rwardDe" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonRwd.common.pblenCn"/> <span class="pilsu">*</span></th><!-- 공적사항 -->
 			<td class="left" colspan="3">
 			    <textarea id="pblenCn" name="pblenCn" class="txaClass" rows="4" cols="70" title="공적사항" readOnly><c:out value='${rwardManageVO.pblenCn}'/></textarea>
+			    <form:errors path="rwardManage.pblenCn" cssClass="error" />
 			</td>
 		</tr>
 		<!-- 첨부파일 테이블 레이아웃 설정 Start..-->

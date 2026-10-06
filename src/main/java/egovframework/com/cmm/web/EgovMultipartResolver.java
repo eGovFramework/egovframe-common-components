@@ -91,6 +91,7 @@ public class EgovMultipartResolver extends StandardServletMultipartResolver {
 	private void validateUploadedFiles(MultipartHttpServletRequest multipartRequest) throws SecurityException {
 		Map<String, List<MultipartFile>> fileMap = multipartRequest.getMultiFileMap();
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+		long maxFileSize = getMaxFileSize();
 
 		// 파일 개수 제한 검증 추가
 		validateFileCount(multipartRequest);
@@ -103,7 +104,7 @@ public class EgovMultipartResolver extends StandardServletMultipartResolver {
 
 			for (MultipartFile file : files) {
 				if (file != null && !file.isEmpty()) {
-					validateFile(file, whiteListFileUploadExtensions);
+					validateFile(file, whiteListFileUploadExtensions, maxFileSize);
 					LOGGER.debug("File validation passed for field [{}]: {} ({} bytes)",
 						fieldName, file.getOriginalFilename(), file.getSize());
 				}
@@ -116,9 +117,10 @@ public class EgovMultipartResolver extends StandardServletMultipartResolver {
 	 *
 	 * @param file 검증할 파일
 	 * @param whiteListFileUploadExtensions 허용된 파일 확장자 목록
+	 * @param maxFileSize 허용된 최대 파일 크기 (바이트)
 	 * @throws SecurityException 보안 검증 실패 시
 	 */
-	private void validateFile(MultipartFile file, String whiteListFileUploadExtensions) throws SecurityException {
+	private void validateFile(MultipartFile file, String whiteListFileUploadExtensions, long maxFileSize) throws SecurityException {
 		String fileName = file.getOriginalFilename();
 
 		if (fileName == null || fileName.trim().isEmpty()) {
@@ -161,7 +163,6 @@ public class EgovMultipartResolver extends StandardServletMultipartResolver {
 		}
 
 		// 파일 크기 검증 (기본값: 10MB)
-		long maxFileSize = getMaxFileSize();
 		if (file.getSize() > maxFileSize) {
 			LOGGER.warn("File size [{}] exceeds maximum allowed size [{}] for file: {}",
 				file.getSize(), maxFileSize, fileName);

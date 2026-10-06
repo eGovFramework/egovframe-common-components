@@ -1,8 +1,9 @@
 package egovframework.com.uss.ion.pwm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +26,14 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Locale;
 import jakarta.validation.Valid;
 
 /**
@@ -129,6 +132,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/detailPopup.do")
+	@RequireAdmin
 	public String egovPopupManageDetail(PopupManageVO popupManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 
@@ -157,6 +161,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/insertPopupView.do")
+	@RequireAdmin
 	public String insertPopupView(@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("popupManageVO", popupManageVO);
@@ -182,9 +187,10 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/updatePopupView.do")
+	@RequireAdmin
 	public String updatePopupView(@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, ModelMap model)
 			throws Exception {
-		PopupManageVO resultVO = egovPopupManageService.selectPopup(popupManageVO);
+		PopupManageVO resultVO = EgovAuthorizationHelper.requireTarget(egovPopupManageService.selectPopup(popupManageVO));
 
 		String sNtceBgnde = resultVO.getNtceBgnde();
 		String sNtceEndde = resultVO.getNtceEndde();
@@ -222,6 +228,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/updtPopup.do")
+	@RequireAdmin
 	public String egovPopupManageUpdt(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -234,6 +241,7 @@ public class EgovPopupManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		String sLocationUrl = "egovframework/com/uss/ion/pwm/EgovPopupUpdt";
 
@@ -290,6 +298,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/registPopup.do")
+	@RequireAdmin
 	public String egovPopupManageRegist(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -348,22 +357,27 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/ajaxPopupManageInfo.do")
+	@RequireAdmin
 	public void egovPopupManageInfoAjax(@RequestParam Map<?, ?> commandMap, HttpServletResponse response,
 			PopupManageVO popupManageVO) throws Exception {
 
 		// 2026.02.28 KISA 취약점 조취
 		response.setContentType("text/html;charset=utf-8");
+
+		LOGGER.debug("commandMap : {}", commandMap);
+		LOGGER.debug("popupManageVO : {}", popupManageVO);
+
+		PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
+		if (popupManageVOs == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+
+		String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
+				+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
+				+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
+
 		PrintWriter out = response.getWriter();
-
-			LOGGER.debug("commandMap : {}", commandMap);
-			LOGGER.debug("popupManageVO : {}", popupManageVO);
-
-			PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
-
-			String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
-					+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
-					+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
-
 		out.print(EgovWebUtil.clearXSSMinimum(sPrint));
 		out.flush();
 
@@ -393,9 +407,9 @@ public class EgovPopupManageController {
 
 		// 뷰 이름 인젝션 방지 - forward:/redirect: 등 스킴 접두사나 콜론이 포함된 값,
 		// 화이트리스트 등록값이라도 WEB-INF 등 애플리케이션 내부 자원을 가리키는 값은 뷰 이름으로 사용할 수 없다.
-		if (fileUrl2.contains(":") || fileUrl2.startsWith("/") || fileUrl2.toUpperCase().contains("WEB-INF")) {
+		if (fileUrl2.contains(":") || fileUrl2.startsWith("/") || fileUrl2.toUpperCase(Locale.ROOT).contains("WEB-INF")) {
 			LOGGER.debug("Open Popup > Unsafe fileUrl rejected: {}", fileUrl2);
-			return "egovframework/com/cmm/egovError";
+			return "egovframework/com/cmm/error/egovError";
 		}
 
 		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
@@ -407,9 +421,8 @@ public class EgovPopupManageController {
 				return fileUrl2;
 			}
 		}
-		// System.out.println("===>>> "+popupWhiteList.size());
 		LOGGER.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
 	}
 
 	/**
@@ -435,10 +448,8 @@ public class EgovPopupManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
 		ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i < 24; i++) {
 			String sHH = "";
 			String strI = String.valueOf(i);
@@ -464,10 +475,8 @@ public class EgovPopupManageController {
 	 * @return List
 	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeMM() {
 		ArrayList<ComDefaultCodeVO> listMM = new ArrayList<ComDefaultCodeVO>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i < 60; i++) {
 
 			String sMM = "";

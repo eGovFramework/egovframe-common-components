@@ -90,18 +90,21 @@
 	<div class="btn">
 
 		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/sam/stp/StplatCnUpdtView.do" method="post" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />">
 			<input name="useStplatId" type="hidden" value="<c:out value="${result.useStplatId}" />">
 			<input name="cmd" type="hidden" value="">
 		</form>
 		
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/sam/stp/StplatCnDelete.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_stplatcn('<c:out value="${result.useStplatId}"/>', this.form); return false;">
 			<input name="useStplatId" type="hidden" value="<c:out value="${result.useStplatId}" />">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 	
 		<form name="formList" action="${pageContext.request.contextPath}/uss/sam/stp/StplatListInqire.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

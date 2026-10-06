@@ -111,6 +111,7 @@
             SELECT  CNTC_MSSAGE_ID      	cntcMessageId
                  ,  CNTC_MSSAGE_NM      	cntcMessageNm
                  ,  UPPER_CNTC_MSSAGE_ID  	upperCntcMessageId
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTNCNTCMESSAGE
              WHERE  CNTC_MSSAGE_ID = #{cntcMessageId}
                AND  USE_AT          = 'Y'
@@ -124,6 +125,7 @@
                  ,  IEM_NM          	itemNm
                  ,  IEM_TY        		itemType
                  ,  IEM_LT          	itemLt
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTNCNTCMESSAGEITEM
              WHERE  CNTC_MSSAGE_ID = #{cntcMessageId}
                AND  IEM_ID         = #{itemId}

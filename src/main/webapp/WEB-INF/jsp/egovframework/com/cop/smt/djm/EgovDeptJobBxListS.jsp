@@ -30,6 +30,9 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 	function fn_egov_init_deptjobbx(){
+		if("${deptJobBxNotEmpty}" == "true"){
+			alert("<spring:message code="comCopSmtDjm.deptJobBxList.deptJobBxNotEmpty" />");/* 부서업무가 남아 있어 부서업무함을 삭제할 수 없습니다. */
+		}
 		var opener = parent.window.dialogArguments;
 	}
 	

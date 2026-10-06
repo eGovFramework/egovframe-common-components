@@ -15,7 +15,9 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.sit.service.EgovSiteService;
 import egovframework.com.uss.ion.sit.service.SiteVO;
@@ -114,6 +116,7 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/selectSiteDetail.do")
+	@RequireAdmin
 	public String selectSiteDetail(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
 		SiteVO vo = egovSiteService.selectSiteDetail(siteVO);
 		model.addAttribute("siteVO", vo);
@@ -130,6 +133,7 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/insertSiteView.do")
+	@RequireAdmin
 	public String insertSiteView(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
 		model.addAttribute("siteThemaClCode", siteThemaClCode());
 		model.addAttribute("siteVO", siteVO);
@@ -147,6 +151,7 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/insertSite.do")
+	@RequireAdmin
 	public String insertSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -176,9 +181,11 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/updateSiteView.do")
+	@RequireAdmin
 	public String updateSiteView(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
 		model.addAttribute("siteThemaClCode", siteThemaClCode());
-		model.addAttribute("siteVO", egovSiteService.selectSiteDetail(siteVO));
+		SiteVO stored = egovSiteService.selectSiteDetail(siteVO);
+		model.addAttribute("siteVO", stored);
 
 		return "egovframework/com/uss/ion/sit/EgovSiteUpdt";
 	}
@@ -192,7 +199,9 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/updateSite.do")
+	@RequireAdmin
 	public String updateSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("siteThemaClCode", siteThemaClCode());
@@ -219,37 +228,12 @@ public class EgovSiteController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/sit/deleteSite.do")
+	@RequireAdmin
 	public String deleteSite(@ModelAttribute("siteVO") SiteVO siteVO) throws Exception {
 		egovSiteService.deleteSite(siteVO);
 
 		return "forward:/uss/ion/sit/selectSiteList.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

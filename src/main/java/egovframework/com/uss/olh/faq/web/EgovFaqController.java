@@ -1,6 +1,7 @@
 package egovframework.com.uss.olh.faq.web;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -23,11 +24,14 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.Globals;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -119,6 +123,7 @@ public class EgovFaqController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/faq/selectFaqDetail.do")
+	@RequireAdmin
 	public String selectFaqDetail(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -168,9 +173,12 @@ public class EgovFaqController {
 	@PostMapping("/uss/olh/faq/insertFaq.do")
 	public String insertFaqCn(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
-			BindingResult bindingResult) throws Exception {
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 파일업로드 제한 - 재표시 JSP 가 자바스크립트 인자로 그대로 출력한다
+			model.addAttribute("fileUploadExtensions", Globals.FILE_UP_EXTS);
+			model.addAttribute("fileUploadMaxSize", Globals.FILE_UP_MAX_SIZE);
 			return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 		}
 
@@ -214,7 +222,7 @@ public class EgovFaqController {
 	@RequireAdmin
 	@PostMapping("/uss/olh/faq/updateFaqView.do")
 	public String updateFaqView(@RequestParam("faqId") String faqId, @ModelAttribute("searchVO") FaqVO searchVO,
-			ModelMap model) throws Exception {
+			ModelMap model, HttpServletRequest request) throws Exception {
 
 		FaqVO faqVO = new FaqVO();
 
@@ -222,7 +230,9 @@ public class EgovFaqController {
 		faqVO.setFaqId(faqId);
 
 		// 변수명은 CoC 에 따라 JSTL사용을 위해
-		model.addAttribute("faqVO", egovFaqService.selectFaqDetail(faqVO));
+		FaqVO stored = EgovAuthorizationHelper.requireTarget(egovFaqService.selectFaqDetailNoCount(faqVO));
+		EgovAttachmentGrants.allowDelete(request, stored.getAtchFileId());
+		model.addAttribute("faqVO", stored);
 
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
@@ -252,7 +262,14 @@ public class EgovFaqController {
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
+		FaqVO stored = EgovAuthorizationHelper.requireTarget(egovFaqService.selectFaqDetailNoCount(faqVO));
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		faqVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
+
 		if (bindingResult.hasErrors()) {
+			// 파일업로드 제한 - 재표시 JSP 가 자바스크립트 인자로 그대로 출력한다
+			model.addAttribute("fileUploadExtensions", Globals.FILE_UP_EXTS);
+			model.addAttribute("fileUploadMaxSize", Globals.FILE_UP_MAX_SIZE);
 			return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 		}
 
@@ -300,45 +317,23 @@ public class EgovFaqController {
 	public String deleteFaq(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO) throws Exception {
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = faqVO.getAtchFileId();
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		FaqVO stored = EgovAuthorizationHelper.requireTarget(egovFaqService.selectFaqDetailNoCount(faqVO));
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
 
 		egovFaqService.deleteFaq(faqVO);
 
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(atchFileId);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
 
-		fileMngService.deleteAllFileInf(fvo);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 		// 첨부파일 삭제 End.............
 
 		return "forward:/uss/olh/faq/selectFaqList.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

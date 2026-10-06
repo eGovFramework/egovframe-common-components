@@ -35,9 +35,6 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class EgovUrlRewriteFilter implements Filter {
 
-	@SuppressWarnings("unused")
-	private FilterConfig config;
-
 	private String targetURI;
 	private String httpsPort;
 	private String httpPort;
@@ -48,7 +45,6 @@ public class EgovUrlRewriteFilter implements Filter {
 	public void init(FilterConfig config) throws ServletException {
 
 		String delimiter = ",";
-		this.config = config;
 
 		this.targetURI = config.getInitParameter("targetURI");
 		if (this.targetURI == null || this.targetURI.trim().isEmpty()) {
@@ -78,7 +74,7 @@ public class EgovUrlRewriteFilter implements Filter {
 
 			if (pm.match(uriPattern.trim(), uri)) {
 
-				if (getProtocol.toLowerCase().equals("http")) {
+				if ("http".equalsIgnoreCase(getProtocol)) {
 
 					response.setContentType("text/html");
 
@@ -88,7 +84,7 @@ public class EgovUrlRewriteFilter implements Filter {
 
 				}
 
-			} else if (getProtocol.toLowerCase().equals("https")) {
+			} else if ("https".equalsIgnoreCase(getProtocol)) {
 
 				response.setContentType("text/html");
 

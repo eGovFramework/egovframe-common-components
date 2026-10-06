@@ -34,6 +34,19 @@
 <body>
 	<script>
 	
+		// 2026.07.30 보안 조치 - innerHTML에 삽입되는 외부(Facebook) 데이터 이스케이프
+		function escapeHtml(value) {
+			if (value == null) {
+				return '';
+			}
+			return String(value)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+		}
+
 		window.fbAsyncInit = function() {
 			var appId = "<c:out value='${facebookAppId}' />";
 			// https 페이지에서 호출하지 않을 시, accessToken과 userID 값은 임의로 설정이 필요하다.
@@ -79,7 +92,7 @@
 								  for (var i = 0; i < data.length; i++) {
 										html += '<tr>';
 										html += '<td class="left" style="padding:20px 8px">';
-										html += '<img src="' + data[i].picture + '" alt="' + response.name + '" align="middle"/>';
+										html += '<img src="' + escapeHtml(data[i].picture) + '" alt="' + escapeHtml(response.name) + '" align="middle"/>';
 										html += '</td>';
 										html += '</tr>'
 									}

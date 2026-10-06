@@ -46,6 +46,7 @@ import jakarta.annotation.Resource;
  *  ----------   ---------   ---------------------------
  *  2020.11.02   신용호              불필요한 멤버변수 지역변수로 변경
  *  2022.11.11   김혜준              시큐어코딩 처리
+ *  2026.07.10   EricSeokgon         이메일 본문 생성 시 문자열 연결(+=)을 StringBuilder로 변경(불필요한 중간 String 생성 제거)
  *
  * </pre>
  */
@@ -221,27 +222,29 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		// 2022.11.11 시큐어코딩 처리
 		if (StringUtils.isNotEmpty(text)) {
 			text = EgovStringUtil.replace(text, "{모니터링종류}", "서버자원서비스모니터링");
-			errorContents = "서버명 : ";
-			errorContents += serverResrceMntrng.getServerNm();
-			errorContents += "\n";
-			errorContents += "서버IP : ";
-			errorContents += serverResrceMntrng.getServerEqpmnIp();
-			errorContents += "\n";
-			errorContents += "CPU사용률 : ";
-			errorContents += serverResrceMntrng.getCpuUseRt();
-			errorContents += "\n";
-			errorContents += "메모리사용률 : ";
-			errorContents += serverResrceMntrng.getMoryUseRt();
-			errorContents += "\n";
-			errorContents += "서비스상태 : 비정상";
-			errorContents += "\n";
-			errorContents += "내용 : ";
-			errorContents += serverResrceMntrng.getLogInfo();
-			errorContents += "\n";
-			errorContents += "생성일시 : ";
-			errorContents += EgovDateUtil.convertDate(serverResrceMntrng.getCreatDt(), "", "", "");
-			errorContents += "\n";
-			errorContents += serverResrceMntrng.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
+			StringBuilder errorContentsBuilder = new StringBuilder();
+			errorContentsBuilder.append("서버명 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getServerNm());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("서버IP : ");
+			errorContentsBuilder.append(serverResrceMntrng.getServerEqpmnIp());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("CPU사용률 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getCpuUseRt());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("메모리사용률 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getMoryUseRt());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("서비스상태 : 비정상");
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("내용 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getLogInfo());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("생성일시 : ");
+			errorContentsBuilder.append(EgovDateUtil.convertDate(serverResrceMntrng.getCreatDt(), "", "", ""));
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append(serverResrceMntrng.getServerNm()).append(" 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.");
+			errorContents = errorContentsBuilder.toString();
 			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
 			msg.setText(text);
 		}

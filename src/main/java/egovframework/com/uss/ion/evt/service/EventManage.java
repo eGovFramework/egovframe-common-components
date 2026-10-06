@@ -4,7 +4,6 @@ import egovframework.com.cmm.ComDefaultVO;
 
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -328,14 +327,14 @@ public class EventManage extends ComDefaultVO {
 	}
 
 	/**
-	 * @return the garden
+	 * @return the psncpa
 	 */
 	public int getPsncpa() {
 		return psncpa;
 	}
 
 	/**
-	 * @param garden the garden to set
+	 * @param psncpa the psncpa to set
 	 */
 	public void setPsncpa(int psncpa) {
 		this.psncpa = psncpa;

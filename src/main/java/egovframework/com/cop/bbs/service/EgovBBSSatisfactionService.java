@@ -24,58 +24,51 @@ public interface EgovBBSSatisfactionService {
      * 
      * @param bbsId
      * @return
-     * @throws Exception
      */
-    public boolean canUseSatisfaction(String bbsId) throws Exception;
+    public boolean canUseSatisfaction(String bbsId);
     
     /**
      * 만족도조사에 대한 목록을 조회 한다.
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO) throws Exception;
+    public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO);
     
     /**
      * 만족도조사를 등록한다.
      * 
      * @param satisfaction
-     * @throws Exception
      */
-    public void insertSatisfaction(Satisfaction satisfaction) throws Exception;
+    public void insertSatisfaction(Satisfaction satisfaction);
     
     /**
      * 만족도조사를 삭제한다.
      * 
      * @param satisfactionVO
-     * @throws Exception
      */
-    public void deleteSatisfaction(SatisfactionVO satisfactionVO) throws Exception;
+    public void deleteSatisfaction(SatisfactionVO satisfactionVO);
     
     /**
      * 만족도조사에 대한 내용을 조회한다.
      *      
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO) throws Exception;
+    public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO);
     
     /**
      * 만족도조사에 대한 내용을 수정한다.
      * 
      * @param satisfaction
-     * @throws Exception
      */
-    public void updateSatisfaction(Satisfaction satisfaction) throws Exception;
+    public void updateSatisfaction(Satisfaction satisfaction);
    
     /**
      * 만족도조사 패스워드를 가져온다.
      * 
      * @param satisfaction
      * @return
-     * @throws Exception
      */
-    public String getSatisfactionPassword(Satisfaction satisfaction) throws Exception;
+    public String getSatisfactionPassword(Satisfaction satisfaction);
 }

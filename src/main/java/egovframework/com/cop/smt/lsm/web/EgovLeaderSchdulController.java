@@ -1,5 +1,7 @@
 package egovframework.com.cop.smt.lsm.web;
 
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -75,7 +77,7 @@ public class EgovLeaderSchdulController {
 	 * @param emplyrVO
 	 */
 	@RequestMapping("/cop/smt/lsm/selectEmplyrListPopup.do")
-	public String selectEmplyrListPopup(@ModelAttribute("searchVO") EmplyrVO emplyrVO, ModelMap model) throws Exception{
+	public String selectEmplyrListPopup(@ModelAttribute("searchVO") EmplyrVO emplyrVO, ModelMap model) {
 		return "egovframework/com/cop/smt/lsm/EgovEmplyrListPopup";
 	}
 
@@ -87,7 +89,7 @@ public class EgovLeaderSchdulController {
 	 * @param emplyrVO
 	 */
 	@RequestMapping("/cop/smt/lsm/selectEmplyrList.do")
-	public String selectEmplyrList(@ModelAttribute("searchVO") EmplyrVO emplyrVO, ModelMap model) throws Exception{
+	public String selectEmplyrList(@ModelAttribute("searchVO") EmplyrVO emplyrVO, ModelMap model) {
 		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		//emplyrVO.setUniqId(user.getUniqId());
@@ -124,7 +126,7 @@ public class EgovLeaderSchdulController {
 	 */
 	@IncludedInfo(name="간부일정관리", order = 390 ,gid = 40)
 	@RequestMapping(value = "/cop/smt/lsm/usr/selectLeaderSchdulList.do")
-	public String selectLeaderSchdulList(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
+	public String selectLeaderSchdulList(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) {
 
 		model.addAttribute("leaderSchdulVO", leaderSchdulVO);
 
@@ -139,7 +141,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSchdulVO
 	 */
 	@RequestMapping(value = "/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do")
-	public String selectLeaderSchdulMonthList(@ModelAttribute("searchVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
+	public String selectLeaderSchdulMonthList(@ModelAttribute("searchVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) {
 		//일정구분 검색 유지
 		//if(leaderSchdulVO.getSearchKeywordEx() != null){
 		//	leaderSchdulVO.setSearchKeywordEx(new String(leaderSchdulVO.getSearchKeywordEx().getBytes("8859_1"), "UTF-8"));
@@ -195,7 +197,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSchdulVO
 	 */
 	@RequestMapping(value = "/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do")
-	public String selectLeaderSchdulWeekList(@ModelAttribute("searchVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
+	public String selectLeaderSchdulWeekList(@ModelAttribute("searchVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) {
 		//일정구분 검색 유지
 		//if(leaderSchdulVO.getSearchKeywordEx() != null){
 		//	leaderSchdulVO.setSearchKeywordEx(new String(leaderSchdulVO.getSearchKeywordEx().getBytes("8859_1"), "UTF-8"));
@@ -344,7 +346,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSchdulVO
 	 */
 	@RequestMapping(value = "/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do")
-	public String selectLeaderSchdulDailyList(@ModelAttribute("searchVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
+	public String selectLeaderSchdulDailyList(@ModelAttribute("searchVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) {
 		//검색 유지
 		//if(leaderSchdulVO.getSearchKeywordEx() != null){
 		//	leaderSchdulVO.setSearchKeywordEx(new String(leaderSchdulVO.getSearchKeywordEx().getBytes("8859_1"), "UTF-8"));
@@ -409,7 +411,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSchdulVO
 	 */
 	@PostMapping("/cop/smt/lsm/usr/selectLeaderSchdul.do")
-	public String selectLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,  ModelMap model) throws Exception{
+	public String selectLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,  ModelMap model) {
 		/*
 		 * 공통코드
 		 * 간부일정구분
@@ -447,7 +449,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSchdulVO
 	 */
 	@PostMapping("/cop/smt/lsm/mng/modifyLeaderSchdul.do")
-	public String modifyLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
+	public String modifyLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) {
 
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulModify";
 
@@ -485,6 +487,8 @@ public class EgovLeaderSchdulController {
 		model.addAttribute("schdulEnddeMM", getTimeMM());
 
     	LeaderSchdulVO resultVO = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
+        // 2026.07.30 보안 조치 - 소유자 검증
+        EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
 
     	String sSchdulBgnde = resultVO.getSchdulBgnDe();
     	String sSchdulEndde = resultVO.getSchdulEndDe();
@@ -513,13 +517,11 @@ public class EgovLeaderSchdulController {
      * @param LeaderSchdulVO
      * @param model
      * @return
-     * @throws Exception
      */
 	@RequestMapping("/cop/smt/lsm/mng/addLeaderSchdul.do")
 	public String addLeaderSchdul(
 			@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
-    		ModelMap model)
-	throws Exception {
+			ModelMap model) {
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulRegist";
 
     	// 0. Spring Security 사용자권한 처리
@@ -580,7 +582,7 @@ public class EgovLeaderSchdulController {
 	 */
 	@PostMapping("/cop/smt/lsm/mng/insertLeaderSchdul.do")
 	public String insertLeaderSchdul(@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
-		    BindingResult bindingResult, ModelMap model) throws Exception {
+		    BindingResult bindingResult, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -636,7 +638,7 @@ public class EgovLeaderSchdulController {
 	 */
 	@PostMapping("/cop/smt/lsm/mng/updateLeaderSchdul.do")
 	public String updateLeaderSchdul(@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
-			BindingResult bindingResult, ModelMap model) throws Exception{
+			BindingResult bindingResult, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -648,6 +650,10 @@ public class EgovLeaderSchdulController {
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulModify";
+
+		// 2026.07.30 보안 조치 - 소유자 검증
+		LeaderSchdulVO storedSchdul = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
+		EgovAuthorizationHelper.assertOwner(storedSchdul == null ? null : storedSchdul.getFrstRegisterId());
 
 		//서버  validate 체크
 		if(bindingResult.hasErrors()){
@@ -687,13 +693,15 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSchdul
 	 */
 	@PostMapping("/cop/smt/lsm/mng/deleteLeaderSchdul.do")
-	public String deleteLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
+	public String deleteLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+		LeaderSchdulVO stored = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
 		leaderSchdulService.deleteLeaderSchdul(leaderSchdulVO);
 		return "forward:/cop/smt/lsm/usr/selectLeaderSchdulList.do";
 	}
@@ -706,7 +714,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSttusVO
 	 */
 	@RequestMapping("/cop/smt/lsm/usr/selectLeaderSttusList.do")
-	public String selectLeaderSttusListView(@ModelAttribute("searchVO") LeaderSttusVO leaderSttusVO, ModelMap model) throws Exception{
+	public String selectLeaderSttusListView(@ModelAttribute("searchVO") LeaderSttusVO leaderSttusVO, ModelMap model) {
 		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSttusListView";
 
@@ -756,7 +764,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSttusVO
 	 */
 	@RequestMapping("/cop/smt/lsm/mng/selectLeaderSttusList.do")
-	public String selectLeaderSttusList(@ModelAttribute("searchVO") LeaderSttusVO leaderSttusVO, ModelMap model) throws Exception{
+	public String selectLeaderSttusList(@ModelAttribute("searchVO") LeaderSttusVO leaderSttusVO, ModelMap model) {
 		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSttusList";
 
@@ -793,7 +801,7 @@ public class EgovLeaderSchdulController {
 	@PostMapping("/cop/smt/lsm/mng/addLeaderSttus.do")
 	public String addLeaderSttus(
 			@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult,
-			ModelMap model) throws Exception{
+			ModelMap model) {
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSttusRegist";
 
     	// 0. Spring Security 사용자권한 처리
@@ -824,7 +832,7 @@ public class EgovLeaderSchdulController {
 	 * @param LeaderSttus
 	 */
 	@PostMapping("/cop/smt/lsm/mng/modifyLeaderSttus.do")
-	public String modifyLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String modifyLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -833,6 +841,8 @@ public class EgovLeaderSchdulController {
     	}
 
     	LeaderSttusVO resultVO = leaderSchdulService.selectLeaderSttus(leaderSttusVO);
+		// 2026.07.30 보안 조치 - 소유자 검증
+		EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
 		resultVO.setSearchCnd(leaderSttusVO.getSearchCnd());
 		resultVO.setSearchWrd(leaderSttusVO.getSearchWrd());
 		resultVO.setPageIndex(leaderSttusVO.getPageIndex());
@@ -860,13 +870,21 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSttusVO
 	 */
 	@PostMapping("/cop/smt/lsm/mng/updateLeaderSttus.do")
-	public String updateLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String updateLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
+		LeaderSttusVO lookup = new LeaderSttusVO();
+		lookup.setLeaderId(leaderSttusVO.getLeaderId());
+		LeaderSttusVO stored = leaderSchdulService.selectLeaderSttus(lookup);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+
 		if (bindingResult.hasErrors()) {
-			//LeaderSttus result = leaderSchdulService.selectLeaderSttus(leaderSttusVO);
-		    //model.addAttribute("leaderSttus", result);
+			// 검증 실패로 수정 화면을 다시 표시할 때 표시 경로(modifyLeaderSttus)와 동일하게 간부상태 공통코드 목록을 복원한다.
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM061");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("leaderSttus", listComCode);
 		    return "egovframework/com/cop/smt/lsm/EgovLeaderSttusUpdt";
 		}
 
@@ -886,7 +904,7 @@ public class EgovLeaderSchdulController {
 	 * @param leaderSttusVO
 	 */
 	@PostMapping("/cop/smt/lsm/mng/insertLeaderSttus.do")
-	public String insertLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String insertLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -901,6 +919,11 @@ public class EgovLeaderSchdulController {
 
 		//서버  validate 체크
 		if(bindingResult.hasErrors()){
+			// 검증 실패로 등록 화면을 다시 표시할 때 표시 경로(addLeaderSttus)와 동일하게 간부상태 공통코드 목록을 복원한다.
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM061");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("leaderSttus", listComCode);
 			return sLocationUrl;
 		}
 
@@ -927,21 +950,24 @@ public class EgovLeaderSchdulController {
 	 * @param LeaderSttus
 	 */
 	@PostMapping("/cop/smt/lsm/mng/deleteLeaderSttus.do")
-	public String deleteLeaderSttus(@ModelAttribute("leaderSttusVO") LeaderSttus leaderSttus, ModelMap model) throws Exception{
+	public String deleteLeaderSttus(@ModelAttribute("leaderSttusVO") LeaderSttus leaderSttus, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-    	leaderSchdulService.deleteLeaderSttus(leaderSttus);
+        LeaderSttusVO lookup = new LeaderSttusVO();
+		lookup.setLeaderId(leaderSttus.getLeaderId());
+		LeaderSttusVO stored = leaderSchdulService.selectLeaderSttus(lookup);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		leaderSchdulService.deleteLeaderSttus(leaderSttus);
 		return "forward:/cop/smt/lsm/mng/selectLeaderSttusList.do";
 	}
 
 	/**
 	 * 시간의 LIST를 반환한다.
 	 * @return  List
-	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeHH (){
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
@@ -968,7 +994,6 @@ public class EgovLeaderSchdulController {
 	/**
 	 * 분의 LIST를 반환한다.
 	 * @return  List
-	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeMM (){
     	ArrayList<ComDefaultCodeVO> listMM = new ArrayList<>();
@@ -994,7 +1019,6 @@ public class EgovLeaderSchdulController {
 	/**
 	 * 0을 붙여 반환
 	 * @return  String
-	 * @throws
 	 */
     private String dateTypeIntForString(int iInput){
 		String sOutput = "";

@@ -1,5 +1,8 @@
 package egovframework.com.dam.app.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.app.service.EgovKnoAppraisalService;
 import egovframework.com.dam.app.service.KnoAppraisal;
@@ -121,8 +125,10 @@ public class EgovKnoAppraisalController {
 	 * @param KnoAppraisalVO
 	 */
 	@PostMapping("/dam/app/EgovComDamAppraisal.do")
+	@RequireAdmin
 	public String selectKnoAppraisal(KnoAppraisal knoAppraisal, ModelMap model) throws Exception {
 		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
+		assertExpert(vo);
 		model.addAttribute("result", vo);
 		return "egovframework/com/dam/app/EgovComDamAppraisalDetail";
 	}
@@ -136,10 +142,12 @@ public class EgovKnoAppraisalController {
 	 * @param knoAps
 	 */
 	@GetMapping(value = "/dam/app/EgovComDamAppraisalModify.do")
+	@RequireAdmin
 	public String updateKnoAppraisalView(@ModelAttribute("knoId") KnoAppraisal knoAppraisal, ModelMap model)
 			throws Exception {
 
 		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
+		assertExpert(vo);
 		model.addAttribute("knoAppraisal", vo);
 		return "egovframework/com/dam/app/EgovComDamAppraisalModify";
 	}
@@ -153,26 +161,44 @@ public class EgovKnoAppraisalController {
 	 * @param knoAps
 	 */
 	@PostMapping(value = "/dam/app/EgovComDamAppraisalModify.do")
+	@RequireAdmin
 	public String updateKnoAppraisal(@Valid @ModelAttribute("knoId") KnoAppraisal knoAppraisal, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
+		KnoAppraisal stored = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
+		assertExpert(stored);
+
 		if (bindingResult.hasErrors()) {
-			KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
-			model.addAttribute("knoAppraisal", vo);
+			model.addAttribute("knoAppraisal", stored);
 			return "egovframework/com/dam/app/EgovComDamAppraisalModify";
 		}
 
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		// 2026.07.30 보안 조치 - 인증 없이 평가정보를 수정할 수 있던 상태
+		LoginVO loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		// 아이디 설정
-		if (loginVO != null) {
 			knoAppraisal.setLastUpdusrId(loginVO.getUniqId());
 			knoAppraisal.setSpeId(loginVO.getUniqId());
-		}
 
 		knoAppraisalService.updateKnoAppraisal(knoAppraisal);
 		return "forward:/dam/app/EgovComDamAppraisalList.do";
+	}
+
+	/**
+	 * 평가는 작성자가 아니라 지식유형의 지정 전문가(COMTNDAMPRO.EXPERT_ID)가 한다. 관리자도 예외가 아니다.
+	 * 목록 SQL 이 같은 조건으로 거르므로 상세·수정도 맞춘다.
+	 */
+	private void assertExpert(KnoAppraisal stored) throws Exception {
+		if (stored == null) {
+			throw new IllegalStateException("대상 정보가 없습니다.");
+		}
+		LoginVO loginVO = EgovAuthorizationHelper.assertLoginUser();
+		KnoAppraisal lookup = new KnoAppraisal();
+		lookup.setKnoTypeCd(stored.getKnoTypeCd());
+		lookup.setSpeId(loginVO.getUniqId());
+		if (knoAppraisalService.selectKnoAppraisalExpertCnt(lookup) == 0) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
 	}
 
 }

@@ -2,6 +2,7 @@ package egovframework.com.sec.ram.web;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -10,8 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -138,17 +140,18 @@ public class EgovAuthorManageController {
     @RequireAdmin
     public String insertAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
-    		                    ModelMap model) throws Exception {
+    		                    ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sec/ram/EgovAuthorInsert";
 		} else {
 			egovAuthorManageService.insertAuthor(authorManage);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+			// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 
-			model.addAttribute("searchCondition", authorManage.getSearchCondition());
-			model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-			model.addAttribute("pageIndex", authorManage.getPageIndex());
+			redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
@@ -163,19 +166,23 @@ public class EgovAuthorManageController {
 	 */
     @PostMapping("/sec/ram/EgovAuthorUpdate.do")
     @RequireAdmin
-    public String updateAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
+    public String updateAuthor(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
+			                    @Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
-    		                    Model model) throws Exception {
+    		                    Model model, RedirectAttributes redirectAttributes) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 형제 selectAuthor와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("authorManageVO", authorManageVO);
 			return "egovframework/com/sec/ram/EgovAuthorUpdate";
 		} else {
 			egovAuthorManageService.updateAuthor(authorManage);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 
-			model.addAttribute("searchCondition", authorManage.getSearchCondition());
-			model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-			model.addAttribute("pageIndex", authorManage.getPageIndex());
+			redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
@@ -190,13 +197,14 @@ public class EgovAuthorManageController {
     @PostMapping("/sec/ram/EgovAuthorDelete.do")
     @RequireAdmin
     public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage,
-    		                    Model model) throws Exception {
+    		                    Model model, RedirectAttributes redirectAttributes) throws Exception {
 
     	egovAuthorManageService.deleteAuthor(authorManage);
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-		model.addAttribute("searchCondition", authorManage.getSearchCondition());
-		model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-		model.addAttribute("pageIndex", authorManage.getPageIndex());
+    	// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+    	redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 		return "redirect:/sec/ram/EgovAuthorList.do";
 	}
@@ -212,10 +220,10 @@ public class EgovAuthorManageController {
     @RequireAdmin
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
     		                       @ModelAttribute("authorManage") AuthorManage authorManage,
-    		                        Model model) throws Exception {
+    		                        Model model, RedirectAttributes redirectAttributes) throws Exception {
     	// 2026.03.23 kisa 보안점검 대응 조치
     	if (ObjectUtils.isEmpty(authorCodes)) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
 		String [] strAuthorCodes = authorCodes.split(";");
@@ -224,11 +232,12 @@ public class EgovAuthorManageController {
 			egovAuthorManageService.deleteAuthor(authorManage);
 		}
     	
-		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 
-		model.addAttribute("searchCondition", authorManage.getSearchCondition());
-		model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-		model.addAttribute("pageIndex", authorManage.getPageIndex());
+		redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 		return "redirect:/sec/ram/EgovAuthorList.do";
 	}
@@ -239,6 +248,7 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/ram/accessDenied.do")
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     public String accessDenied() throws Exception {
         return "egovframework/com/cmm/error/accessDenied";
     }

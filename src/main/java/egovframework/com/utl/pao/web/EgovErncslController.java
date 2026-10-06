@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.utl.pao.service.EgovPrntngOutpt;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
 import jakarta.annotation.Resource;
@@ -65,6 +65,7 @@ public class EgovErncslController extends HttpServlet {
 	 * @see
 	*/
 	@RequestMapping(value = "/utl/pao/EgovErncsl.do")
+	@RequireAdmin
 	public void doGet(@RequestParam("sOrgCode") String orgCode, @RequestParam("sErncslSe") String erncslSe, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 

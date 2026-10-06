@@ -1,5 +1,7 @@
 package egovframework.com.sym.mnu.bmm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.Map;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
@@ -120,7 +123,8 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @PostMapping("/sym/mnu/bmm/EgovBkmkMenuManageDelete.do")
-    public String deleteMenuManageList(
+    @RequireAdmin
+	public String deleteMenuManageList(
             @RequestParam("checkMenuIds") String checkMenuIds ,
             @ModelAttribute("bkmkMenuManageVO") BkmkMenuManageVO bkmkMenuManageVO,
             ModelMap model)
@@ -140,6 +144,14 @@ public class EgovBkmkMenuManageController {
             return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
         }
 	        String [] temp = checkMenuIds.split(",");
+
+	        for (String element : temp) {
+	            BkmkMenuManageVO keyVO = new BkmkMenuManageVO();
+	            keyVO.setMenuId(element);
+	            keyVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+	            BkmkMenuManageVO stored = bkmkMenuManageService.selectBkmkMenuManageResult(keyVO);
+	            EgovAuthorizationHelper.assertOwnerById(stored == null ? null : stored.getUserId());
+	        }
 	
 	        for (String element : temp) {
 	            BkmkMenuManage bkmk = new BkmkMenuManage();
@@ -161,6 +173,7 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @PostMapping("/sym/mnu/bmm/addBkmkInf.do")
+    @RequireAdmin
     public String addBkmkMenuManage( @ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage, SessionStatus status, ModelMap model) throws Exception {
 
         if(!bkmkMenuManage.getMenuId().equals("")){
@@ -180,6 +193,7 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @RequestMapping("/sym/mnu/bmm/openPopup.do")
+    @RequireAdmin
     public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
         String requestUrl = (String)commandMap.get("requestUrl");
@@ -202,11 +216,9 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping("/sym/mnu/bmm/selectMenuList.do")
+    @RequireAdmin
     public String selectMenuList(@ModelAttribute("bkmkMenuManageVO") BkmkMenuManageVO bkmkMenuManageVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-        String popFlag = (String)commandMap.get("PopFlag");
-
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         bkmkMenuManageVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -247,6 +259,7 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @PostMapping("/sym/mnu/bmm/registBkmkInf.do")
+    @RequireAdmin
     public String registBkmkInf(@Valid @ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage,
             BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
@@ -280,6 +293,7 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/sym/mnu/bmm/previewBkmkInf.do")
+    @RequireAdmin
     public String previewBkmkInf(@ModelAttribute("searchVO") BkmkMenuManageVO bkmkMenuManageVO,ModelMap model)
             throws Exception {
         String resultMsg    = "";

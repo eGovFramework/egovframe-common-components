@@ -3,6 +3,7 @@ package egovframework.com.ext.oauth.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,19 +50,13 @@ public class OAuthLogin {
 	}
 
 	// 230825 카카오톡 scope 변경으로 인한 scope 처리 추가
-	public String getOAuthURL() {
-		if (oauthVO.getOrigin().equals("naver")) { // naver의 경우 state가 필수 조건에 포함
-			return this.oauthService.getAuthorizationUrl() + "&state=test&scope=" + oauthVO.getScope();
-		} else { // 필수, 추가 동의 항목 포함
-			return this.oauthService.getAuthorizationUrl() + "&scope=" + oauthVO.getScope();
-		}
+	// CSRF(로그인 CSRF) 방어를 위해 호출자가 생성·세션에 보관한 state를 모든 제공자 인가 URL에 부착한다.
+	public String getOAuthURL(String state) {
+		// scribejava가 state를 표준 방식으로 부착한다(naver는 state 필수, google·kakao도 동일 적용).
+		return this.oauthService.getAuthorizationUrl(state) + "&scope=" + oauthVO.getScope();
 	}
 
 	public OAuthUniversalUser getUserProfile(String code) throws Exception {
-		// System.out.println("===>>> oauthService.getApiKey() =
-		// "+oauthService.getApiKey());
-		// System.out.println("===>>> oauthService.getApiSecret() =
-		// "+oauthService.getApiSecret());
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 
 		OAuthRequest request = new OAuthRequest(Verb.GET, this.oauthVO.getProfileUrl());
@@ -103,23 +98,29 @@ public class OAuthLogin {
 
 		if (oauthVO.getOrigin().equals("google")) {
 			user.setServiceName(OAuthConfig.GOOGLE_SERVICE_NAME);
-			user.setUserId(rootNode.get("sub").asText());
-			String uname = rootNode.get("name").asText();
+			user.setUserId(rootNode.path("sub").asText(""));
+			String uname = rootNode.path("name").asText("");
 			user.setUserName(uname);
 //			getEmails(user, rootNode);
 
 		} else if (oauthVO.getOrigin().equals("naver")) {
 			user.setServiceName(OAuthConfig.NAVER_SERVICE_NAME);
-			JsonNode resNode = rootNode.get("response");
-			user.setUserId(resNode.get("id").asText());
-			user.setNickName(resNode.get("nickname").asText());
-			user.setEmail(resNode.get("email").asText());
+			JsonNode resNode = rootNode.path("response");
+			user.setUserId(resNode.path("id").asText(""));
+			user.setNickName(resNode.path("nickname").asText(""));
+			user.setEmail(resNode.path("email").asText(""));
 
 		} else if (oauthVO.getOrigin().equals("kakao")) {
 			user.setServiceName(OAuthConfig.KAKAO_SERVICE_NAME);
-			JsonNode resNode = rootNode.get("properties");
-			user.setUserId(rootNode.get("id").asText());
-			user.setNickName(resNode.get("nickname").asText());
+			JsonNode resNode = rootNode.path("properties");
+			user.setUserId(rootNode.path("id").asText(""));
+			user.setNickName(resNode.path("nickname").asText(""));
+		}
+
+		// 사용자 식별자는 선택 동의 항목이 아니므로 누락 시 프로필 응답으로 취급하지 않는다.
+		// 이 메서드에는 제공자의 오류 응답도 전달되며, 기존에도 그 경우 예외가 콜백까지 전파됐다.
+		if (StringUtils.isEmpty(user.getUserId())) {
+			throw new IllegalStateException("OAuth 프로필 응답에 사용자 식별자가 없습니다. service=" + oauthVO.getOrigin());
 		}
 
 		return user;

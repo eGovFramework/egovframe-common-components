@@ -52,6 +52,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2022.11.11   김혜준       시큐어코딩 처리
  *  2024.10.29   win777	    디렉토리 생성 성공 시 생성된 절대경로를 리턴하도록 변경
  *  2025.02.06   신용호       deleteFile() KISA 시큐어코딩 처리
+ *  2026.07.09   EricSeokgon  지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * </pre>
  */
@@ -100,7 +101,8 @@ public class EgovFileTool {
 
 		String result = "";
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
+		// basePath가 구분자로 끝나지 않아도 경로가 올바르게 구성되도록 결합한다.
+		File file = new File(EgovWebUtil.filePathBlackList(new File(basePath, filePath).getPath()));
 		if (file.exists()) {
 			result = file.getAbsolutePath();
 			if (!file.delete()) {
@@ -145,7 +147,7 @@ public class EgovFileTool {
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
-				file.getAbsolutePath();
+				result = file.getAbsolutePath();
 			} else {
 				LOGGER.error("[file.mkdirs] file : Path Creation Fail");
 			}
@@ -325,7 +327,7 @@ public class EgovFileTool {
 			return "";
 		}
 		String result = "";
-		File file = new File(EgovWebUtil.filePathBlackList(fileDeletePath));
+		File file = new File(EgovWebUtil.filePathBlackList(new File(basePath, fileDeletePath).getPath()));
 		if (file.isFile()) {
 			result = deletePath(basePath, fileDeletePath);
 		} else {
@@ -366,9 +368,9 @@ public class EgovFileTool {
 			// 파일이며, 존재하면 파싱 시작
 			if (file.exists() && file.isFile()) {
 
-				// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
+				// 1. 파일 텍스트 내용을 읽어서 StringBuilder에 쌓는다.
 				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				StringBuffer strBuff = new StringBuffer();
+				StringBuilder strBuff = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
 					if (line.length() < MAX_STR_LEN) {
@@ -386,6 +388,9 @@ public class EgovFileTool {
 
 					if (parField != 1) {
 						if ((filedCnt % parField) == 1) {
+							// 2026.09.03 레코드가 시작될 때 새 List를 할당한다.
+							// (할당하지 않으면 모든 레코드가 같은 List 인스턴스를 참조하게 된다.)
+							arr = new ArrayList<>();
 							if (strArr[i] != null) {
 								arr.add(strArr[i]);
 							}

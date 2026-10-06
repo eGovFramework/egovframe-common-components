@@ -81,7 +81,6 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * 지식정보제공/지식정보요청를(을) 등록한다.
      * @param qindvdlInfoPolicy  지식정보제공/지식정보요청 정보가 담김 객체
      */
-    @SuppressWarnings("unused")
 	public void insertRequestOffer(RequestOfferVO requestOfferVO) {
     	if(requestOfferVO.getCmd().equals("save")){
     		insert("RequestOffer.insertRequestOfferSave", requestOfferVO);
@@ -92,7 +91,6 @@ public class RequestOfferDao extends EgovComAbstractDAO {
 
     		//단말노드가 아닐때 탐색
     		if(mapAnsParents != null){
-	    		Map<?, ?> mapAnsParentsSearch = null;
 	    		String sAnsParents = (String)mapAnsParents.get("knoId");
 
 	    		LOGGER.info("sAnsParents>" + sAnsParents);

@@ -96,6 +96,9 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 */
 	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) {
 		MemoReprtVO resultVO = (MemoReprtVO)selectOne("MemoReprtDAO.selectMemoReprt", memoReprtVO);
+		if (resultVO == null) {
+			return null;
+		}
 		resultVO.setReprtDe(EgovDateUtil.convertDate(resultVO.getReprtDe(), "0000", "yyyy-MM-dd"));
 		return resultVO;
 	}

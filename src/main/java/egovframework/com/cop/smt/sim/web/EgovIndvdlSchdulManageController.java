@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -33,11 +34,14 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.sim.service.EgovIndvdlSchdulManageService;
 import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -89,32 +93,13 @@ public class EgovIndvdlSchdulManageController {
 	private EgovFileMngUtil fileUtil;
 
 	/**
-	 * 일정 작성자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
-	 *
-	 * @param user 현재 로그인한 사용자
-	 * @param frstRegisterId 일정 작성자 ID(frstRegisterId)
-	 * @return 소유자이거나 관리자이면 true
-	 */
-	private boolean isOwner(LoginVO user, String frstRegisterId) {
-		if (user == null || user.getUniqId() == null) {
-			return false;
-		}
-		if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
-			return true;
-		}
-		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
-		return authorities != null && authorities.contains("ROLE_ADMIN");
-	}
-
-	/**
 	 * 메인페이지/일정관리조회
 	 * 
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMainList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageMainList.do")
-	public String egovIndvdlSchdulManageMainList(ModelMap model) throws Exception {
+	public String egovIndvdlSchdulManageMainList(ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -146,12 +131,10 @@ public class EgovIndvdlSchdulManageController {
 	 * @param indvdlSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageDailyList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do")
 	public String egovIndvdlSchdulManageDailyList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -216,12 +199,11 @@ public class EgovIndvdlSchdulManageController {
 	 * @param indvdlSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageWeekList"
-	 * @throws Exception
 	 */
 	@SuppressWarnings({ "rawtypes", "unused", "unchecked" })
 	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageWeekList.do")
 	public String egovIndvdlSchdulManageWeekList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) throws Exception {
+			@RequestParam Map commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -339,6 +321,12 @@ public class EgovIndvdlSchdulManageController {
 
 		model.addAttribute("listWeekGrop", listWeekGrop);
 
+		// 2026.09.01 인덱스 사용 전 범위 검증(IndexOutOfBoundsException 방지)
+		if (iNowWeek < 0 || iNowWeek >= listWeekGrop.size()) {
+			iNowWeek = 0;
+			model.addAttribute("week", iNowWeek);
+		}
+
 		List listWeek = (List) listWeekGrop.get(iNowWeek);
 		commandMap.put("searchMode", "WEEK");
 		commandMap.put("schdulBgnde", listWeek.get(0));
@@ -358,12 +346,10 @@ public class EgovIndvdlSchdulManageController {
 	 * @param indvdlSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMonthList"
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageMonthList.do")
 	public String egovIndvdlSchdulManageMonthList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<String, String> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -424,13 +410,11 @@ public class EgovIndvdlSchdulManageController {
 	 * @param indvdlSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageList"
-	 * @throws Exception
 	 */
 	@IncludedInfo(name = "일정관리", order = 330, gid = 40)
 	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageList.do")
 	public String egovIndvdlSchdulManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model)
-			throws Exception {
+			@RequestParam Map<?, ?> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -451,11 +435,10 @@ public class EgovIndvdlSchdulManageController {
 	 * @param indvdlSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageDetail"
-	 * @throws Exception
 	 */
 	@GetMapping("/cop/smt/sim/EgovIndvdlSchdulManageDetail.do")
 	public String egovIndvdlSchdulManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) throws Exception {
+			IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -464,10 +447,11 @@ public class EgovIndvdlSchdulManageController {
 		}
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 일정을 조회할 수 있다.
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 개인일정(종류 2)을 조회할 수 있다(부서일정 상세 경로 우회 차단).
 		IndvdlSchdulManageVO existingSchdul = egovIndvdlSchdulManageService
 				.selectIndvdlSchdulManageDetailVO(indvdlSchdulManageVO);
-		if (existingSchdul == null || !isOwner(loginVO, existingSchdul.getFrstRegisterId())) {
+		if (existingSchdul == null || !"2".equals(existingSchdul.getSchdulKindCode())
+				|| !EgovAuthorizationHelper.isAdminOrOwner(existingSchdul.getFrstRegisterId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -510,25 +494,19 @@ public class EgovIndvdlSchdulManageController {
 	 * @param indvdlSchdulManageVO
 	 * @param model
 	 * @return redirect:/cop/smt/sim/EgovIndvdlSchdulManageList.do
-	 * @throws Exception
 	 */
 	@PostMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageDetail.do", params = "cmd=del")
-	public String egovIndvdlSchdulManageDelete(IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model)
-			throws Exception {
+	public String egovIndvdlSchdulManageDelete(IndvdlSchdulManageVO indvdlSchdulManageVO, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 일정을 삭제할 수 있다.
-		IndvdlSchdulManageVO existingSchdul = egovIndvdlSchdulManageService
-				.selectIndvdlSchdulManageDetailVO(indvdlSchdulManageVO);
-		if (existingSchdul == null || !isOwner(loginVO, existingSchdul.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		IndvdlSchdulManageVO existingSchdul = requirePersonalSchdul(indvdlSchdulManageVO);
+		EgovAuthorizationHelper.assertAdminOrOwner(existingSchdul.getFrstRegisterId());
 
 		egovIndvdlSchdulManageService.deleteIndvdlSchdulManage(indvdlSchdulManageVO);
 		return "redirect:/cop/smt/sim/EgovIndvdlSchdulManageList.do";
@@ -543,13 +521,11 @@ public class EgovIndvdlSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModify"
-	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageModify.do")
 	public String indvdlSchdulManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model, HttpServletRequest request) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -559,15 +535,11 @@ public class EgovIndvdlSchdulManageController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정폼을 조회할 수 있다.
-		IndvdlSchdulManageVO existingSchdulForModify = egovIndvdlSchdulManageService
-				.selectIndvdlSchdulManageDetailVO(indvdlSchdulManageVO);
-		if (existingSchdulForModify == null || !isOwner(loginVO, existingSchdulForModify.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		IndvdlSchdulManageVO existingSchdulForModify = requirePersonalSchdul(indvdlSchdulManageVO);
+		EgovAuthorizationHelper.assertAdminOrOwner(existingSchdulForModify.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, existingSchdulForModify.getAtchFileId());
 
 		String sLocationUrl = "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModify";
-
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		// 공통코드 중요도 조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -626,13 +598,12 @@ public class EgovIndvdlSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModifyActor"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageModifyActor.do")
 	public String indvdlSchdulManageModifyActor(final MultipartHttpServletRequest multiRequest, ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -646,11 +617,17 @@ public class EgovIndvdlSchdulManageController {
 
 		// 소유권(작성자) 검증 - 신규 등록이 아닌 기존 일정 수정인 경우 작성자 본인 또는 관리자만 수정할 수 있다.
 		if (indvdlSchdulManageVO.getSchdulId() != null && !indvdlSchdulManageVO.getSchdulId().isEmpty()) {
-			IndvdlSchdulManageVO existingSchdulForActor = egovIndvdlSchdulManageService
-					.selectIndvdlSchdulManageDetailVO(indvdlSchdulManageVO);
-			if (existingSchdulForActor == null || !isOwner(loginVO, existingSchdulForActor.getFrstRegisterId())) {
-				return "egovframework/com/cmm/error/accessDenied";
-			}
+			IndvdlSchdulManageVO existingSchdulForActor = requirePersonalSchdul(indvdlSchdulManageVO);
+			EgovAuthorizationHelper.assertAdminOrOwner(existingSchdulForActor.getFrstRegisterId());
+			// 첨부 그룹은 요청값이 아니라 소유권을 확인한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+			indvdlSchdulManageVO.setAtchFileId(Objects.toString(existingSchdulForActor.getAtchFileId(), ""));
+			// 일정종류·부서·담당자도 원본 값을 쓴다(요청값으로 부서일정 전환·타인 담당 지정 차단)
+			indvdlSchdulManageVO.setSchdulKindCode(existingSchdulForActor.getSchdulKindCode());
+			indvdlSchdulManageVO.setSchdulDeptId(existingSchdulForActor.getSchdulDeptId());
+			indvdlSchdulManageVO.setSchdulChargerId(existingSchdulForActor.getSchdulChargerId());
+		} else {
+			// 원본이 없으면 이어 붙일 기존 첨부도 없다
+			indvdlSchdulManageVO.setAtchFileId("");
 		}
 
 		String sLocationUrl = "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModify";
@@ -741,13 +718,12 @@ public class EgovIndvdlSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageRegist"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageRegist.do")
 	public String indvdlSchdulManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageRegist";
 
@@ -797,13 +773,12 @@ public class EgovIndvdlSchdulManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageRegistActor"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do")
 	public String indvdlSchdulManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -873,6 +848,9 @@ public class EgovIndvdlSchdulManageController {
 			// 일정 담당자 자신으로 등록(2017.08.12 modify by jdh)
 			indvdlSchdulManageVO
 					.setSchdulChargerId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+			// 개인일정(2)으로 고정한다. 부서일정(1)은 관리자 전용 부서일정 경로로만 등록한다
+			indvdlSchdulManageVO.setSchdulKindCode("2");
+			indvdlSchdulManageVO.setSchdulDeptId("");
 
 			egovIndvdlSchdulManageService.insertIndvdlSchdulManage(indvdlSchdulManageVO);
 			sLocationUrl = "redirect:/cop/smt/sim/EgovIndvdlSchdulManageList.do";
@@ -886,12 +864,9 @@ public class EgovIndvdlSchdulManageController {
 	 * 시간을 LIST를 반환한다.
 	 * 
 	 * @return List
-	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
     	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 24; i++) {
 			String sHH = "";
 			String strI = String.valueOf(i);
@@ -915,12 +890,9 @@ public class EgovIndvdlSchdulManageController {
 	 * 분을 LIST를 반환한다.
 	 * 
 	 * @return List
-	 * @throws
 	 */
-	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeMM() {
     	ArrayList<ComDefaultCodeVO> listMM = new ArrayList<>();
-		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 60; i++) {
 
 			String sMM = "";
@@ -944,7 +916,6 @@ public class EgovIndvdlSchdulManageController {
 	 * 0을 붙여 반환
 	 * 
 	 * @return String
-	 * @throws
 	 */
 	public String dateTypeIntForString(int iInput) {
 		String sOutput = "";
@@ -957,4 +928,12 @@ public class EgovIndvdlSchdulManageController {
 		return sOutput;
 	}
 
+	/**
+	 * 개인일정(종류 2)만 돌려준다. 같은 테이블의 부서일정(종류 1)이나 없는 일정이면 거부한다
+	 * (개인일정 경로로 부서일정을 수정·삭제해 부서일정의 같은 부서 검사를 우회하는 것 차단).
+	 */
+	private IndvdlSchdulManageVO requirePersonalSchdul(IndvdlSchdulManageVO indvdlSchdulManageVO) {
+		IndvdlSchdulManageVO stored = egovIndvdlSchdulManageService.selectIndvdlSchdulManageDetailVO(indvdlSchdulManageVO);
+		return EgovAuthorizationHelper.requireTarget(stored != null && "2".equals(stored.getSchdulKindCode()) ? stored : null);
+	}
 }

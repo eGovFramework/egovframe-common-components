@@ -69,6 +69,7 @@ function fncEgovVcatnManageList(){
 
 <div class="wTableFrm">
 	<form name="vcatnManage" id="vcatnManage" method="post" >
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 		<input type="hidden" name="applcntId" value="<c:out value='${vcatnManageVO.applcntId}'/>"/>
 		<input type="hidden" name="vcatnSe"   value="<c:out value='${vcatnManageVO.vcatnSe}'/>"/>
@@ -172,6 +173,7 @@ function fncEgovVcatnManageList(){
 	<div class="btn">
 		<c:if test="${vcatnManageVO.confmAt eq 'A' }">
 		<form id="updtForm" name="updtForm" action="${pageContext.request.contextPath}/uss/ion/vct/EgovVcatnManageDetail.do" method="post" style="display:inline-block; vertical-align:top">  
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type="hidden" name="cmd"       value="updt"/>
 		<input type="hidden" name="applcntId" value="<c:out value='${vcatnManageVO.applcntId}'/>"/>
 		<input type="hidden" name="vcatnSe"   value="<c:out value='${vcatnManageVO.vcatnSe}'/>"/>
@@ -182,6 +184,7 @@ function fncEgovVcatnManageList(){
 		</form>
 		
 		<form id="deleteForm" name="deleteForm" action="${pageContext.request.contextPath}/uss/ion/vct/deleteVcatnManage.do" method="post" style="display:inline-block; vertical-align:top">  
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type="hidden" name="applcntId" value="<c:out value='${vcatnManageVO.applcntId}'/>"/>
 		<input type="hidden" name="vcatnSe"   value="<c:out value='${vcatnManageVO.vcatnSe}'/>"/>
 		<input type="hidden" name="bgnde"     value="<c:out value='${vcatnManageVO.bgnde}'/>"/>

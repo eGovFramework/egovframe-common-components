@@ -103,7 +103,7 @@
 				<td>
 					<c:choose>
 			    		<c:when test="${result.frstRegisterId == uniqId}">
-							<a href="<c:url value='/cop/ncm/selectNcrdInf.do?ncrdId='/><c:out value='${result.ncrdId}'/>">
+							<a href="<c:url value='/cop/ncm/selectNcrdInf.do?ncrdId='/><c:out value='${result.ncrdId}'/>" onclick="fn_egov_update_ncrdInf('<c:out value='${result.ncrdId}'/>'); return false;">
 							<c:out value="${result.ncrdNm}"/></a>
 			    		</c:when>
 			    		<c:otherwise>

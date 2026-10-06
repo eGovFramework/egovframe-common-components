@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.ssi.syi.ist.service.CntcSttus;
 import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
@@ -59,6 +60,7 @@ public class EgovCntcSttusController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/ist/getCntcSttusDetail.do")
+	@RequireAdmin
 	public String selectCntcSttusLogDetail(CntcSttus cntcSttus, ModelMap model) throws Exception {
 		CntcSttus vo = cntcSttusService.selectCntcSttusDetail(cntcSttus);
 		model.addAttribute("result", vo);
@@ -110,13 +112,11 @@ public class EgovCntcSttusController {
 	 * @return
 	 */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap) {
-		String ret = "";
-		for (Object key : commandMap.keySet()) {
-			Object value = commandMap.get(key);
-
-			ret += "key:" + key.toString() + " value:" + value.toString();
+		StringBuilder ret = new StringBuilder();
+		for (Map.Entry<?, ?> entry : commandMap.entrySet()) {
+			ret.append("key:").append(entry.getKey()).append(" value:").append(entry.getValue());
 		}
-		return ret;
+		return ret.toString();
 	}
 
 }

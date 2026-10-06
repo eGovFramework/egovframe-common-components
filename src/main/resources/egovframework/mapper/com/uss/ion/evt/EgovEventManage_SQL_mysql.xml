@@ -129,6 +129,7 @@
 	                    mge.REFRN_URL            AS refrnUrl         ,
 	                    mge.RCEPT_BGNDE       AS rceptBeginDe     ,
 	                    mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                    mge.FRST_REGISTER_ID     AS frstRegisterId   ,
 	                    TO_DAYS(mge.EVENT_ENDDE)-TO_DAYS(mge.EVENT_BGNDE)+1 as eventTemp1 ,
 	                   (select count(*) from COMTNEVENTATDRN  where  EVENT_ID = mge.EVENT_ID) as eventAtdrnCount,
 	                    TO_DAYS(mge.RCEPT_BGNDE)- TO_DAYS(CAST(DATE_FORMAT(now(),'%Y%m%d') AS CHAR(8))) AS eventDayCount,
@@ -291,7 +292,7 @@
 				  FROM   (select @RNUM:=0) R, COMTNEVENTMANAGE mge
 				         left join COMTNEVENTATDRN atdrn
 				         ON   atdrn.EVENT_ID = mge.EVENT_ID
-				         and  atdrn.APPLCNT_ID = #{searchKeyword}
+				         and  atdrn.APPLCNT_ID = #{applcntId}
 				 WHERE    1=1
 			     AND     (CAST(DATE_FORMAT(now(),'%Y%m%d') AS CHAR(8) CHARACTER SET utf8mb4) COLLATE utf8mb4_unicode_ci BETWEEN RCEPT_BGNDE AND RCEPT_ENDDE
 			              or atdrn.confm_At is not null)

@@ -70,6 +70,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 
 <div class="wTableFrm">
 <form name="QustnrRespondInfoForm" id="QustnrRespondInfoForm" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoModify.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -157,17 +158,20 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 	<div class="btn">
 		<!-- 수정 버튼 -->
 		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoModify.do" method="post" onsubmit="fn_egov_modify_QustnrRespondInfo('${resultList[0].qestnrQesrspnsId}'); return false;" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 		<input name="qestnrQesrspnsId" type="hidden" value="${resultList[0].qestnrQesrspnsId}">
 		</form>
 		<!-- 삭제 버튼 -->
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code='button.delete' />" onclick="fn_egov_delete_QustnrRespondInfo('${resultList[0].qestnrQesrspnsId}'); return false;">
 			<input name="qestnrQesrspnsId" type="hidden" value="${resultList[0].qestnrQesrspnsId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		<!-- 목록 버튼 -->
 		<form name="formList" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		  <input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrRespondInfo(); return false;">
 		</form>
 		

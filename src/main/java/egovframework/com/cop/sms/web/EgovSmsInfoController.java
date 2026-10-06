@@ -61,11 +61,10 @@ public class EgovSmsInfoController {
 	 * @param smsVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@IncludedInfo(name = "문자메시지", order = 310, gid = 40)
 	@RequestMapping("/cop/sms/selectSmsList.do")
-	public String selectSmsList(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
+	public String selectSmsList(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -107,10 +106,9 @@ public class EgovSmsInfoController {
 	 * @param smsVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/sms/addSms.do")
-	public String addSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
+	public String addSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) {
 
 		Sms sms = new Sms();
 
@@ -128,11 +126,9 @@ public class EgovSmsInfoController {
 	 * @param status
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/sms/insertSms.do")
-	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @Valid @ModelAttribute("sms") Sms sms, BindingResult bindingResult, SessionStatus status, ModelMap model)
-			throws Exception {
+	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @Valid @ModelAttribute("sms") Sms sms, BindingResult bindingResult, SessionStatus status, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -181,10 +177,9 @@ public class EgovSmsInfoController {
 	 * @param smsVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/sms/selectSms.do")
-	public String selectSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
+	public String selectSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

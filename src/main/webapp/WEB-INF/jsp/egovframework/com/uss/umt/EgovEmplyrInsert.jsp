@@ -145,23 +145,23 @@ function fnIdCheck1(){
     var retVal;
     var url = "<c:url value='/uss/umt/EgovIdDplctCnfirmView.do'/>";
     var varParam = new Object();
-    varParam.checkId = document.userManageVO.emplyrId.value;
+    varParam.checkId = document.emplyrManageVO.emplyrId.value;
     var openParam = "dialogWidth:303px;dialogHeight:250px;scroll:no;status:no;center:yes;resizable:yes;";
     retVal = window.showModalDialog(url, varParam, openParam);
     if(retVal) {
-        document.userManageVO.emplyrId.value = retVal;
+        document.emplyrManageVO.emplyrId.value = retVal;
     }
 }
 
 function showModalDialogCallback(retVal) {
 	if(retVal) {
-	    document.userManageVO.emplyrId.value = retVal;
+	    document.emplyrManageVO.emplyrId.value = retVal;
 	}
 }
 
 function fnListPage(){
-    document.userManageVO.action = "<c:url value='/uss/umt/EgovEmplyrManage.do'/>";
-    document.userManageVO.submit();
+    document.emplyrManageVO.action = "<c:url value='/uss/umt/EgovEmplyrManage.do'/>";
+    document.emplyrManageVO.submit();
 }
 
 function fnInsert(form){
@@ -193,7 +193,7 @@ function fn_egov_inqire_cert() {
 }
 
 function fn_egov_dn_info_setting(dn) {
-	var frm = document.userManageVO;
+	var frm = document.emplyrManageVO;
 
 	frm.subDn.value = dn;
 }
@@ -245,7 +245,7 @@ if (typeof(opener.fn_egov_dn_info_setting) == 'undefined') {
 		<tr>
 			<th><label for="emplyrNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="emplyrNm" title="${title} ${inputTxt}" size="50" maxlength="60" />
+				<form:input path="emplyrNm" title="${title} ${inputTxt}" size="50" maxlength="50" />
 				<div><form:errors path="emplyrNm" cssClass="error" /></div> 
 			</td>
 		</tr>
@@ -362,9 +362,9 @@ if (typeof(opener.fn_egov_dn_info_setting) == 'undefined') {
 		<tr>
 			<th><label for="areaNo">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <form:input path="areaNo" id="areaNo" title="${title} ${inputSelect}" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="homemiddleTelno" id="homemiddleTelno" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="homeendTelno" id="homeendTelno"  size="5" maxlength="5" style="width:40px;"/>
+                    <form:input path="areaNo" id="areaNo" title="${title} ${inputSelect}" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="homemiddleTelno" id="homemiddleTelno" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="homeendTelno" id="homeendTelno"  size="5" maxlength="4" style="width:40px;"/>
                     <div><form:errors path="areaNo" cssClass="error" /></div>
                     <div><form:errors path="homemiddleTelno" cssClass="error" /></div>
                     <div><form:errors path="homeendTelno" cssClass="error" /></div>

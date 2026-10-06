@@ -119,8 +119,10 @@ public class ChatServerEndPoint {
 			outgoingChatMessage.setName(username);
 			outgoingChatMessage.setMessage(filteredIncommingMessage);
 
-			for (Session session : chatroomUsers) { // NOPMD-CloseResource
-				session.getBasicRemote().sendObject(outgoingChatMessage);
+			synchronized (chatroomUsers) {
+				for (Session session : chatroomUsers) { // NOPMD-CloseResource
+					session.getBasicRemote().sendObject(outgoingChatMessage);
+				}
 			}
 		}
 	}
@@ -131,8 +133,10 @@ public class ChatServerEndPoint {
 			throws IOException, EncodeException {
 		chatroomUsers.remove(userSession);
 
-		for (Session session : chatroomUsers) { // NOPMD-CloseResource
-			session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+		synchronized (chatroomUsers) {
+			for (Session session : chatroomUsers) { // NOPMD-CloseResource
+				session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+			}
 		}
 	}
 
@@ -158,9 +162,11 @@ public class ChatServerEndPoint {
 	private Set<String> getUsers() {
 		HashSet<String> returnSet = new HashSet<String>();
 
-		for (Session session : chatroomUsers) { // NOPMD-CloseResource
-			if (session.getUserProperties().get("username") != null) {
-				returnSet.add(session.getUserProperties().get("username").toString());
+		synchronized (chatroomUsers) {
+			for (Session session : chatroomUsers) { // NOPMD-CloseResource
+				if (session.getUserProperties().get("username") != null) {
+					returnSet.add(session.getUserProperties().get("username").toString());
+				}
 			}
 		}
 		return returnSet;

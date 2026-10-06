@@ -126,7 +126,7 @@ String sTodate = formatter.format(new java.util.Date());
 	
 	function fnEgovSchdulTodate() {
 
-		location.href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageMonthList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.IndvdlSchdulManageVO.schdulSe.value;
+		location.href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageMonthList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.IndvdlSchdulManageVO.schdulSe.value;
 
 	}
 	

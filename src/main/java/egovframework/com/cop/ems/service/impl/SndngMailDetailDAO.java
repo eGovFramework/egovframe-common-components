@@ -31,7 +31,6 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
 	public SndngMailVO selectSndngMail(SndngMailVO vo) {
 		return (SndngMailVO) selectOne("sndngMailDetailDAO.selectSndngMail", vo);
@@ -41,7 +40,6 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 	 * 발송메일을 삭제한다.
 	 * 
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
 	public int deleteSndngMail(SndngMailVO vo) {
         return delete("sndngMailDetailDAO.deleteSndngMail", vo);

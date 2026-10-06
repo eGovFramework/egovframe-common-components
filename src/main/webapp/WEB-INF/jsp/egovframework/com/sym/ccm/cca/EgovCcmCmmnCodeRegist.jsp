@@ -109,7 +109,7 @@ function fncShowMessg(){
 		<tr>
 			<th><label for="codeId">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="codeId" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="codeId" title="${title} ${inputTxt}" size="70" maxlength="6" />
    				<div><form:errors path="codeId" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -119,7 +119,7 @@ function fncShowMessg(){
 		<tr>
 			<th><label for="codeIdNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="codeIdNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="codeIdNm" title="${title} ${inputTxt}" size="70" maxlength="60" />
    				<div><form:errors path="codeIdNm" cssClass="error" /></div>     
 			</td>
 		</tr>

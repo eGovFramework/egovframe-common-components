@@ -4,15 +4,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
+
+import egovframework.com.cmm.config.EgovConfigCryptoTest;
 
 @Configuration
 
 @ImportResource({
 
-//	"classpath*:egovframework/spring/com/**/context-*.xml",
-
-		"classpath*:egovframework/spring/com/context-crypto.xml",
 		"classpath*:egovframework/spring/com/context-datasource.xml",
 		"classpath*:egovframework/spring/com/context-egovuserdetailshelper.xml",
 		"classpath*:egovframework/spring/com/context-mapper.xml",
@@ -25,9 +25,35 @@ import org.springframework.context.annotation.ImportResource;
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.bbs.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovBBSMasterDAO.class }) })
+@Import(EgovConfigCryptoTest.class)
+
+@ComponentScan(
+
+		useDefaultFilters = false,
+
+		basePackages = {
+
+				"egovframework.com.cop.bbs.service.impl",
+
+		},
+
+		includeFilters = {
+
+				@Filter(
+
+						type = FilterType.ASSIGNABLE_TYPE,
+
+						classes = {
+
+								EgovBBSMasterDAO.class,
+
+						}
+
+				)
+
+		}
+
+)
 
 public class EgovBBSMasterDAOTest_AAA_Configuration {
 

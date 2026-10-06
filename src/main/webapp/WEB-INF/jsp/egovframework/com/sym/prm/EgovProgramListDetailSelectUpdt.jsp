@@ -118,7 +118,7 @@ function selectList(){
 		<tr>
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.progrmKoreanNm"/> <span class="pilsu">*</span></th><!-- 한글명 -->
 			<td class="left">
-			    <form:input path="progrmKoreanNm" size="60"  maxlength="60"  title="${vprogrmKoreanNm}"/><!-- 한글명 -->
+			    <form:input path="progrmKoreanNm" size="60"  maxlength="50"  title="${vprogrmKoreanNm}"/><!-- 한글명 -->
       			<div><form:errors path="progrmKoreanNm" cssClass="error" /></div>
 			</td>
 		</tr>

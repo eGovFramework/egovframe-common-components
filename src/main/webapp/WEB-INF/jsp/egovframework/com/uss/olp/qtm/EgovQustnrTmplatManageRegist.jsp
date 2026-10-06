@@ -94,6 +94,13 @@ function fnImgChange(obj) {
         return;
     }
 
+    // 서버가 넘긴 이미지 한도(바이트)로 크기 검사 (false면 불허용)
+    if (!EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", <c:out value='${fileUploadMaxSize}'/>)) {
+        obj.value = "";
+        document.getElementById("DIV_IMG_VIEW").style.display = "none";
+        return;
+    }
+
 
     // 미리보기 영역 보이기
     document.getElementById("DIV_IMG_VIEW").style.display = "block";
@@ -166,6 +173,7 @@ function fnImgChange(obj) {
 				<input type="file" id="qestnrTmplatImage" name="qestnrTmplatImage" onchange="fnImgChange(obj)" title="<spring:message code='comUssOlpQtm.regist.qestnrTmplatTy'/><spring:message code='input.cSelect'/>"><!-- title="템플릿유형이미지 선택" -->
 	    		<input type="text" id="uploadFileName" value="" readonly style="width:150px;"/><!-- 파일명 보이게 하는 기능 -->
 	    	</div>
+			<div><form:errors path="qestnrTmplatImagepathnm" cssClass="error" /></div>
 	    	<div id="DIV_IMG_VIEW" style="display:none;">
 		     	<img src="" name="IMG_VIEW" id="IMG_VIEW" align="middle" alt="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>" title="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>"><!-- alt="이미지미리보기" title="이미지미리보기" -->
 		     	<!-- onLoad="if(this.width>65){this.width=65}" -->

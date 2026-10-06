@@ -7,9 +7,9 @@ import java.net.URLEncoder;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,6 +42,7 @@ public class EgovAdressCntcController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/adr/getAdressCntcApi.do")
+	@RequireAdmin
 	public void getAddrApi(HttpServletRequest req, ModelMap model, HttpServletResponse response) throws Exception {
 
 		String currentPage = req.getParameter("currentPage");
@@ -60,7 +61,7 @@ public class EgovAdressCntcController {
 			+ URLEncoder.encode(confmKey, "UTF-8");
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));) {//2022.01 Resources should be closed
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String tempStr = null;
 			while (true) {
 				tempStr = br.readLine();
@@ -84,6 +85,7 @@ public class EgovAdressCntcController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/adr/getAdressCntcTestApi.do")
+	@RequireAdmin
 	public void getAddrApiTest(HttpServletRequest req, ModelMap model, HttpServletResponse response) throws Exception {
 
 		String currentPage = req.getParameter("currentPage");
@@ -102,7 +104,7 @@ public class EgovAdressCntcController {
 			+ URLEncoder.encode(confmKey, "UTF-8");
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));){//2022.01 Resources should be closed
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String tempStr = null;
 			while (true) {
 				tempStr = br.readLine();

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +51,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
 
 
     @Override
-	public void deleteNcrdItem(NameCardVO nameCardVO) throws Exception {
+	public void deleteNcrdItem(NameCardVO nameCardVO) {
 
     	ncrdMngDAO.deleteNcrdItemUser(nameCardVO);
     	ncrdMngDAO.deleteNcrdItem(nameCardVO);
@@ -62,11 +64,15 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#insertNcrdItem(egovframework.com.cop.ncm.num.service.NameCard)
      */
     @Override
-	public void insertNcrdItem(NameCard nameCard) throws Exception {
+	public void insertNcrdItem(NameCard nameCard) {
 	nameCard.setTelNo(nameCard.getNationNo() + nameCard.getAreaNo() + nameCard.getMiddleTelNo() + nameCard.getEndTelNo());
 	nameCard.setMbtlNum(nameCard.getIdntfcNo() + nameCard.getMiddleMbtlNum() + nameCard.getEndMbtlNum());
 
-	nameCard.setNcrdId(idgenService.getNextStringId());
+	try {
+		nameCard.setNcrdId(idgenService.getNextStringId());
+	} catch (FdlException e) {
+		throw new BaseRuntimeException(e);
+	}
 
 	NameCardUser ncrdUser = new NameCardUser();
 
@@ -85,7 +91,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#insertNcrdUseInf(egovframework.com.cop.ncm.num.service.NameCardUser)
      */
     @Override
-	public void insertNcrdUseInf(NameCardUser ncrdUser) throws Exception {
+	public void insertNcrdUseInf(NameCardUser ncrdUser) {
 	ncrdUser.setRegistSeCode("REGC04");
 
 	ncrdMngDAO.insertNcrdUseInf(ncrdUser);
@@ -97,7 +103,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#selectNcrdItem(egovframework.com.cop.ncm.num.service.NameCard)
      */
     @Override
-	public NameCardVO selectNcrdItem(NameCardVO ncrdVO) throws Exception {
+	public NameCardVO selectNcrdItem(NameCardVO ncrdVO) {
 	return ncrdMngDAO.selectNcrdItem(ncrdVO);
     }
 
@@ -107,7 +113,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#selectNcrdItems(egovframework.com.cop.ncm.num.service.NameCard)
      */
     @Override
-	public Map<String, Object> selectNcrdItems(NameCardVO ncrdVO) throws Exception {
+	public Map<String, Object> selectNcrdItems(NameCardVO ncrdVO) {
 	List<NameCardVO> result = ncrdMngDAO.selectNcrdItemList(ncrdVO);
 	int cnt = ncrdMngDAO.selectNcrdItemListCnt(ncrdVO);
 
@@ -125,7 +131,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#selectNcrdUseInf(egovframework.com.cop.ncm.num.service.NameCardUser)
      */
     @Override
-	public Map<String, Object> selectNcrdUseInfs(NameCardUser ncrdUser) throws Exception {
+	public Map<String, Object> selectNcrdUseInfs(NameCardUser ncrdUser) {
 	List<NameCardUser> result = ncrdMngDAO.selectNcrdUseInfs(ncrdUser);
 	int cnt = ncrdMngDAO.selectNcrdUseInfsCnt(ncrdUser);
 
@@ -143,7 +149,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#updateNcrdItem(egovframework.com.cop.ncm.num.service.NameCard)
      */
     @Override
-	public void updateNcrdItem(NameCard nameCard) throws Exception {
+	public void updateNcrdItem(NameCard nameCard) {
 	nameCard.setTelNo(nameCard.getNationNo() + nameCard.getAreaNo() + nameCard.getMiddleTelNo() + nameCard.getEndTelNo());
 	nameCard.setMbtlNum(nameCard.getIdntfcNo() + nameCard.getMiddleMbtlNum() + nameCard.getEndMbtlNum());
 
@@ -157,7 +163,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#updateNcrdUseInf(egovframework.com.cop.ncm.num.service.NameCardUser)
      */
     @Override
-	public void updateNcrdUseInf(NameCardUser ncrdUser) throws Exception {
+	public void updateNcrdUseInf(NameCardUser ncrdUser) {
 	ncrdMngDAO.updateNcrdUseInf(ncrdUser);
     }
 
@@ -167,7 +173,7 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#selectMyNcrdItems(egovframework.com.cop.ncm.num.service.NameCard)
      */
     @Override
-	public Map<String, Object> selectMyNcrdItems(NameCardVO ncrdVO) throws Exception {
+	public Map<String, Object> selectMyNcrdItems(NameCardVO ncrdVO) {
 	List<NameCardVO> result = ncrdMngDAO.selectMyNcrdItemList(ncrdVO);
 	int cnt = ncrdMngDAO.selectMyNcrdItemListCnt(ncrdVO);
 

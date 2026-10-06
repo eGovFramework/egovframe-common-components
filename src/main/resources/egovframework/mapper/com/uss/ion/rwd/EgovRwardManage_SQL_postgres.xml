@@ -96,6 +96,7 @@
                   rwd.RETURN_RESN         AS returnResn       ,
                   rwd.ATCH_FILE_ID        AS atchFileId       , 
                   rwd.INFRML_SANCTN_ID    AS infrmlSanctnId   ,
+                  rwd.FRST_REGISTER_ID    AS frstRegisterId   ,
                   mst.USER_NM             AS rwardManNm       ,
                  (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID )   AS orgnztNm    ,
                  (select mst1.USER_NM from COMVNUSERMASTER mst1 where  mst1.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,

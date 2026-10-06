@@ -23,6 +23,21 @@ var chkValue        = "";
 var vHtmlCode       = "";
 
 /*
+ * 2026.07.30 보안 조치 - 저장형 XSS 차단(document.write에 사용되는 메뉴명 등 HTML 이스케이프)
+ */
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
+/*
  * 노드 , 트리 구성 이미지 정보
  */
 function preloadIcons() {
@@ -59,7 +74,7 @@ function createTree(arrName, vYeobu, checkValue) {
 		if (startNode !=0) {
 			var _getTreeArrayId = getTreeArrayId(startNode)
 			var nodeValues = treeNodes[getTreeArrayId(startNode)].split("|");
-			vHtmlCode +="<div class='LeftMenuTitle'><font color='#00000'><b>" + nodeValues[2] + "</b></font></div></td></tr>"
+			vHtmlCode +="<div class='LeftMenuTitle'><font color='#00000'><b>" + escapeHtml(nodeValues[2]) + "</b></font></div></td></tr>"
 		} else vHtmlCode +="<img src='"+imgpath+"menu_base.gif' border='0' align='absbottom' alt='' >메뉴목록<br></td></tr>";
 		var recursedNodes = new Array();
 		addTreeNode(startNode, recursedNodes);
@@ -147,13 +162,13 @@ function addTreeNode(parentNode, recursedNodes) {
 			else recursedNodes.push(1);
 
 			if (hasChildNode) {
-				vHtmlCode +=vHtmlCodeBg+nodeValues[2]+"</td></tr>";
+				vHtmlCode +=vHtmlCodeBg+escapeHtml(nodeValues[2])+"</td></tr>";
 			} else{
 				// Start link
 				if(recursedNodes.length==1){
-				   vHtmlCode +=vHtmlCodeBg+"<a href=javascript:fn_MovePage('" + i + "');>"+nodeValues[2]+"</a></td></tr>";
+				   vHtmlCode +=vHtmlCodeBg+"<a href=javascript:fn_MovePage('" + i + "');>"+escapeHtml(nodeValues[2])+"</a></td></tr>";
 				}else{
-				   vHtmlCode +=vHtmlCodeBgList+"<a href=javascript:fn_MovePage('" + i + "');>"+nodeValues[2]+"</a></td></tr>";
+				   vHtmlCode +=vHtmlCodeBgList+"<a href=javascript:fn_MovePage('" + i + "');>"+escapeHtml(nodeValues[2])+"</a></td></tr>";
 				}
 			}
 

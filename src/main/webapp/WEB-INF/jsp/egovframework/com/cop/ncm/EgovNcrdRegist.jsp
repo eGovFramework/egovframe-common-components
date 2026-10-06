@@ -94,7 +94,7 @@
 		<tr>
 			<th><spring:message code="cop.ncrdNm" /> <span class="pilsu">*</span></th>
 			<td class="left" colspan="3">
-				<input id="ncrdNm" type="text" name="ncrdNm" value='<c:out value="${ncrdVO.ncrdNm}" />' maxlength="60" style="width:231px" />
+				<input id="ncrdNm" type="text" name="ncrdNm" value='<c:out value="${ncrdVO.ncrdNm}" />' maxlength="50" style="width:231px" />
 				<input type="hidden" name="ncrdTrgterId" value='<c:out value="${ncrdVO.ncrdTrgterId}" />' /><br />	      
 				<form:errors path="ncrdNm" />		
 			</td>
@@ -122,7 +122,7 @@
 		<tr>
 			<th><spring:message code="cop.emailAdres" />  <span class="pilsu">*</span></th>
 			<td class="left" colspan="3">
-				<input id="emailAdres" type="text" name="emailAdres" value="" maxlength="60" ><br />
+				<input id="emailAdres" type="text" name="emailAdres" value="" maxlength="50" ><br />
 	      		<form:errors path="emailAdres" />
 			</td>
 		</tr>
@@ -147,8 +147,8 @@
 					<option value="018">018</option>
 					<option value="019">019</option>
 				</select>  	   	    
-				<input id="middleMbtlNum" name="middleMbtlNum" type="text" value="" maxlength="5" style="width:50px" /> -
-				<input id="endMbtlNum" name="endMbtlNum" type="text" value="" maxlength="5" style="width:50px" />
+				<input id="middleMbtlNum" name="middleMbtlNum" type="text" value="" maxlength="4" style="width:50px" /> -
+				<input id="endMbtlNum" name="endMbtlNum" type="text" value="" maxlength="4" style="width:50px" />
 			</td>
 		</tr>
 		<tr>

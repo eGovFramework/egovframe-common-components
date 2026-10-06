@@ -22,8 +22,8 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
 import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovEntrprsManageService;
 import egovframework.com.uss.umt.service.PasswordManageVO;
@@ -198,6 +198,7 @@ public class EgovEntrprsManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEntrprsSelectUpdtView.do")
+	@RequireAdmin
 	public String updateEntrprsMberView(@RequestParam("selectedId") String entrprsmberId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -207,7 +208,7 @@ public class EgovEntrprsManageController {
 			return "forward:/uss/umt/EgovEntrprsManage.do";
 		}
 
-		if (!EgovUmtAuthorizationHelper.canModifyUser(entrprsmberId)) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(entrprsmberId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -251,7 +252,7 @@ public class EgovEntrprsManageController {
 	@RequireAdmin
 	public String updateLockIncorrect(EntrprsManageVO entrprsManageVO, Model model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치 - 계정 잠금해제는 관리자만
-		egovAssertAdminOrOwner(null);
+		EgovAuthorizationHelper.assertAdmin();
 
 
 		// 미인증 사용자에 대한 보안처리
@@ -275,6 +276,7 @@ public class EgovEntrprsManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEntrprsSelectUpdt.do")
+	@RequireAdmin
 	public String updateEntrprsMber(@Valid @ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO,
 			BindingResult bindingResult,
 			Model model) throws Exception {
@@ -291,7 +293,7 @@ public class EgovEntrprsManageController {
 			return "forward:/uss/umt/EgovEntrprsManage.do";
 		}
 
-		if (!EgovUmtAuthorizationHelper.canModifyUser(currentEntrprs.getUniqId())) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(currentEntrprs.getUniqId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -345,8 +347,14 @@ public class EgovEntrprsManageController {
 		return "forward:/uss/umt/EgovEntrprsManage.do";
 	}
 
-	// 탈퇴 처리 기능에 대한 예시
+	/**
+	 * 탈퇴 처리 기능에 대한 예시.
+	 *
+	 * @deprecated 이 경로를 부르는 화면이 없고, 삭제 함수가 요구하는 회원 구분(예: {@code USR01:})을 붙이지 않아 아무것도 지우지 않은 채 성공 메시지를 낸다. 회원 삭제는 관리자 회원관리의 삭제 기능을 쓴다. 삭제 예정.
+	 */
+	@Deprecated(forRemoval = true)
 	@RequestMapping(value = "/uss/umt/EgovEntrprsWithdraw.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String withdrawEntrprsMber(Model model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -378,21 +386,7 @@ public class EgovEntrprsManageController {
 			@ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
 			@RequestParam Map<String, Object> commandMap, Model model) throws Exception {
 
-		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
-
-		comDefaultCodeVO.setCodeId("COM022");
-		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		comDefaultCodeVO.setCodeId("COM014");
-		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		comDefaultCodeVO.setCodeId("COM026");
-		List<CmmnDetailCode> entrprsSeCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		comDefaultCodeVO.setCodeId("COM027");
-		List<CmmnDetailCode> indutyCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-
-		model.addAttribute("passwordHint_result", passwordHintResult);
-		model.addAttribute("sexdstnCode_result", sexdstnCodeResult);
-		model.addAttribute("entrprsSeCode_result", entrprsSeCodeResult);
-		model.addAttribute("indutyCode_result", indutyCodeResult);
+		addEntrprsSbscrbCodeListToModel(model);
 
 		if (!"".equals(commandMap.get("realname"))) {
 			model.addAttribute("applcntNm", commandMap.get("realname"));
@@ -411,15 +405,17 @@ public class EgovEntrprsManageController {
 	 * 
 	 * @param entrprsManageInsertVO 기업회원가입신청정보 (비밀번호 검증 포함)
 	 * @param bindingResult         입력값검증용 bindingResult
+	 * @param model                 화면모델
 	 * @return forward:/uat/uia/egovLoginUsr.do
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovEntrprsSbscrb.do", method = RequestMethod.POST)
 	public String sbscrbEntrprsMber(@Valid @ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
-			BindingResult bindingResult)
+			BindingResult bindingResult, Model model)
 			throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			addEntrprsSbscrbCodeListToModel(model);
 			return "egovframework/com/uss/umt/EgovEntrprsSbscrb";
 		}
 
@@ -460,6 +456,7 @@ public class EgovEntrprsManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEntrprsPasswordUpdt.do")
+	@RequireAdmin
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("entrprsPasswordManageVO") EntrprsPasswordManageVO entrprsPasswordManageVO,
@@ -518,6 +515,7 @@ public class EgovEntrprsManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEntrprsPasswordUpdtView.do")
+	@RequireAdmin
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("entrprsPasswordManageVO") EntrprsPasswordManageVO entrprsPasswordManageVO) throws Exception {
@@ -534,6 +532,24 @@ public class EgovEntrprsManageController {
 		model.addAttribute("entrprsPasswordManageVO", entrprsPasswordManageVO);
 		model.addAttribute("userSearchVO", userSearchVO);
 		return "egovframework/com/uss/umt/EgovEntrprsPasswordUpdt";
+	}
+
+	private void addEntrprsSbscrbCodeListToModel(Model model) {
+		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+
+		comDefaultCodeVO.setCodeId("COM022");
+		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		comDefaultCodeVO.setCodeId("COM014");
+		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		comDefaultCodeVO.setCodeId("COM026");
+		List<CmmnDetailCode> entrprsSeCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		comDefaultCodeVO.setCodeId("COM027");
+		List<CmmnDetailCode> indutyCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+
+		model.addAttribute("passwordHint_result", passwordHintResult);
+		model.addAttribute("sexdstnCode_result", sexdstnCodeResult);
+		model.addAttribute("entrprsSeCode_result", entrprsSeCodeResult);
+		model.addAttribute("indutyCode_result", indutyCodeResult);
 	}
 
 	private void addEntrprsCodeListToModel(Model model) throws Exception {
@@ -574,31 +590,5 @@ public class EgovEntrprsManageController {
 		vo.setPassword2("");
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

@@ -84,6 +84,15 @@ public class BndtManageDAO extends EgovComAbstractDAO {
     public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) {
         return (Integer)selectOne("bndtManageDAO.selectBndtDiaryTotCnt", bndtManageVO);
     }
+
+    /**
+	 * 당직일지 등록자를 조회한다.
+	 * @param bndtDiaryVO - bndtId(당직자), bndtDe(당직일자)
+	 * @return String - 등록자 고유ID
+	 */
+    public String selectBndtDiaryRegisterId(BndtDiaryVO bndtDiaryVO) {
+        return (String)selectOne("bndtManageDAO.selectBndtDiaryRegisterId", bndtDiaryVO);
+    }
 	
     /***** 당직 체크관리 *****/	
 

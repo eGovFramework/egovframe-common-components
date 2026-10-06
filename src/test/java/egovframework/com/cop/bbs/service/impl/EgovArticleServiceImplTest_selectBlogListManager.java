@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectBlogListManager extends EgovTestV1 {
+class EgovArticleServiceImplTest_selectBlogListManager extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
@@ -25,11 +25,8 @@ public class EgovArticleServiceImplTest_selectBlogListManager extends EgovTestV1
 	@Autowired
 	private EgovArticleService egovArticleService;
 
-	@SuppressWarnings("unchecked")
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void selectBlogListManager() {
 		// given
 		BoardVO boardVO = null;
 		boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
@@ -40,6 +37,7 @@ public class EgovArticleServiceImplTest_selectBlogListManager extends EgovTestV1
 
 		// when
 		Map<String, Object> blogListManager = egovArticleService.selectBlogListManager(boardVO);
+		@SuppressWarnings("unchecked")
 		List<BoardMasterVO> resultList = (List<BoardMasterVO>) blogListManager.get("resultList");
 		String resultCnt = (String) blogListManager.get("resultCnt");
 

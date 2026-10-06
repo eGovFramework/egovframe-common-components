@@ -1,5 +1,7 @@
 package egovframework.com.sym.prm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -14,12 +16,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.ems.service.EgovSndngMailRegistService;
 import egovframework.com.cop.ems.service.SndngMailVO;
@@ -79,6 +81,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListDetailSelect.do")
+	@RequireAdmin
 	public String selectProgrm(@RequestParam("progrmFileNm") String progrmFileNm,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -144,6 +147,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/prm/EgovProgrmManageListDelete.do")
+	@RequireAdmin
 	public String deleteProgrmManageList(@RequestParam("checkedProgrmFileNmForDel") String checkedProgrmFileNmForDel,
 			@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -181,6 +185,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/prm/EgovProgramListRegistView.do")
+	@RequireAdmin
 	public String insertProgrmListView(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -202,6 +207,7 @@ public class EgovProgrmManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/prm/EgovProgramListRegist.do")
+	@RequireAdmin
 	public String insertProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String resultMsg = "";
@@ -234,6 +240,7 @@ public class EgovProgrmManageController {
 	 */
 	/* 프로그램목록수정 */
 	@PostMapping("/sym/prm/EgovProgramListDetailSelectUpdt.do")
+	@RequireAdmin
 	public String updateProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
 			BindingResult bindingResult,@ModelAttribute("searchVO") ComDefaultVO searchVO, Model model) throws Exception {
 		String resultMsg = "";
@@ -270,6 +277,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/prm/EgovProgramListManageDelete.do")
+	@RequireAdmin
 	public String deleteProgrmList(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -335,6 +343,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstDetailSelect.do")
+	@RequireAdmin
 	public String selectProgrmChangeRequst(@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -364,6 +373,7 @@ public class EgovProgrmManageController {
 	 */
 	/* 프로그램변경요청등록 */
 	@PostMapping("/sym/prm/EgovProgramChangRequstStre.do")
+	@RequireAdmin
 	public String insertProgrmChangeRequst(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -391,6 +401,8 @@ public class EgovProgrmManageController {
 			if (progrmManageDtlVO.getRqesterProcessCn() == null || progrmManageDtlVO.getRqesterProcessCn().equals("")) {
 				progrmManageDtlVO.setRqesterProcessCn("");
 			}
+			// 요청자는 요청값이 아니라 로그인 사용자다(타인 명의 등록 차단)
+			progrmManageDtlVO.setRqesterPersonId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			progrmManageService.insertProgrmChangeRequst(progrmManageDtlVO);
 			resultMsg = egovMessageSource.getMessage("success.common.insert");
 			sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstSelect.do";
@@ -413,6 +425,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/prm/EgovProgramChangRequstDetailSelectUpdt.do")
+	@RequireAdmin
 	public String updateProgrmChangeRequst(@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -425,6 +438,10 @@ public class EgovProgrmManageController {
 		}
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		// 요청자 확인은 요청값이 아니라 DB 원본으로 하고, 저장도 원본 요청자로 한다(타인 요청 탈취 차단)
+		ProgrmManageDtlVO stored = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getRqesterPersonId());
+		progrmManageDtlVO.setRqesterPersonId(stored.getRqesterPersonId());
 		// beanValidator 처리
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("progrmManageDtlVO",progrmManageDtlVO);
@@ -462,6 +479,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/prm/EgovProgramChangRequstDelete.do")
+	@RequireAdmin
 	public String deleteProgrmChangeRequst(@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -473,10 +491,12 @@ public class EgovProgrmManageController {
 		}
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		// 저장된 변경요청의 요청자(RQESTER_ID, uniqId) 본인만 삭제 가능
+		ProgrmManageDtlVO stored = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getRqesterPersonId());
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (EgovStringUtil.isNullToString(progrmManageDtlVO.getRqesterPersonId())
-				.equals(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getId()))) {
-			// progrmManageDtlVO.setRqesterPersonId(user.getId());
+				.equals(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()))) {
 			model.addAttribute("resultMsg", egovMessageSource.getMessage("success.common.delete"));
 			progrmManageService.deleteProgrmChangeRequst(progrmManageDtlVO);
 			sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstSelect.do";
@@ -541,6 +561,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstProcessDetailSelect.do")
+	@RequireAdmin
 	public String selectProgrmChangRequstProcess(
 			@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -554,6 +575,10 @@ public class EgovProgrmManageController {
 			progrmManageDtlVO.setRqesterNo(progrmManageDtlVO.getTmpRqesterNo());
 		}
 		ProgrmManageDtlVO resultVO = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
+		if (resultVO == null) {
+			model.addAttribute("resultMsg", egovMessageSource.getMessage("fail.common.select"));
+			return "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do";
+		}
 		if (resultVO.getProcessDe() != null) {
 			resultVO.setProcessDe(resultVO.getProcessDe().trim());// 2011.08.22
 		}
@@ -574,13 +599,12 @@ public class EgovProgrmManageController {
 	 *         "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do"
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do")
+	@RequireAdmin
 	public String updateProgrmChangRequstProcess(
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
-		boolean result = true;
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -638,7 +662,7 @@ public class EgovProgrmManageController {
 																															// 처리
 																															// 되었습니다
 				sndngMailVO.setAtchFileId(null);
-				result = sndngMailRegistService.insertSndngMail(sndngMailVO);
+				sndngMailRegistService.insertSndngMail(sndngMailVO);
 				sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do";
 			} else {
 				model.addAttribute("resultMsg", egovMessageSource
@@ -667,6 +691,7 @@ public class EgovProgrmManageController {
 	 */
 	/* 프로그램변경요청처리 삭제 */
 	@PostMapping("/sym/prm/EgovProgramChangRequstProcessDelete.do")
+	@RequireAdmin
 	public String deleteProgrmChangRequstProcess(
 			@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -675,6 +700,9 @@ public class EgovProgrmManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+		// 저장된 변경요청의 요청자(RQESTER_ID, uniqId) 본인만 삭제 가능
+		ProgrmManageDtlVO stored = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getRqesterPersonId());
 		progrmManageService.deleteProgrmChangeRequst(progrmManageDtlVO);
 
 		return "forward:/sym/prm/EgovProgramChangeRequstProcessListSelect.do";
@@ -731,6 +759,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramChgHstListDetailSelect.do")
+	@RequireAdmin
 	public String selectProgramChgHstListDetail(
 			@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -755,6 +784,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListSearch.do")
+	@RequireAdmin
 	public String selectProgrmListSearch(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -795,6 +825,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListSearchNew.do")
+	@RequireAdmin
 	public String selectProgrmListSearchNew(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리

@@ -58,6 +58,15 @@ function fn_egov_detail_RequestOffer(knoId){
 }
 
 /* ********************************************************
+ * 등록화면 이동 함수 (등록화면이 POST 전용)
+ ******************************************************** */
+function fn_egov_regist_RequestOffer(){
+	var vFrom = document.listForm;
+	vFrom.action = "<c:url value='/dam/spe/req/registRequestOffer.do' />";
+	vFrom.submit();
+}
+
+/* ********************************************************
  * 검색 함수
  ******************************************************** */
 function fn_egov_search_RequestOffer(){
@@ -91,7 +100,7 @@ function fn_egov_search_RequestOffer(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${searchKeyword}'/>" maxlength="35" size="10" onkeyup="if(window.event.keyCode==13){fn_egov_search_RequestOffer(); return false;}" title="<spring:message code="title.search"/>" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_RequestOffer(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/dam/spe/req/registRequestOffer.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="<c:url value='/dam/spe/req/registRequestOffer.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="fn_egov_regist_RequestOffer(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>

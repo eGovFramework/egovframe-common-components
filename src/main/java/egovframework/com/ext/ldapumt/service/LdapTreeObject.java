@@ -21,6 +21,9 @@ package egovframework.com.ext.ldapumt.service;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * Ldap데이터를 HTML jsTree프레임워크에서 사용할 수 있도록 변환한 객체
@@ -103,27 +106,10 @@ public class LdapTreeObject implements Serializable {
 		USER, DEPT
 	}
 
-	@SuppressWarnings("unused")
+	@Getter @Setter
 	private class State implements Serializable {
 		private static final long serialVersionUID = 9002883980244257854L;
 		boolean opened = true;
-
-		public boolean isOpened() {
-			return opened;
-		}
-
-		public void setOpened(boolean opened) {
-			this.opened = opened;
-		}
-
-		public boolean isDisabled() {
-			return disabled;
-		}
-
-		public void setDisabled(boolean disabled) {
-			this.disabled = disabled;
-		}
-
 		boolean disabled = false;
 	}
 
@@ -132,7 +118,7 @@ public class LdapTreeObject implements Serializable {
 		this.id = id;
 	}
 
-	@SuppressWarnings("unused")
+	@Getter @Setter
 	private class Child implements Serializable {
 		private static final long serialVersionUID = 5457240443272184153L;
 
@@ -144,39 +130,6 @@ public class LdapTreeObject implements Serializable {
 		}
 
 		String id;
-
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}
-
-		public String getText() {
-			return text;
-		}
-
-		public void setText(String text) {
-			this.text = text;
-		}
-
-		public boolean isChildren() {
-			return children;
-		}
-
-		public void setChildren(boolean children) {
-			this.children = children;
-		}
-
-		public Icon getIcon() {
-			return icon;
-		}
-
-		public void setIcon(Icon icon) {
-			this.icon = icon;
-		}
-
 		String text;
 		boolean children = false;
 		Icon icon = Icon.DEPT;

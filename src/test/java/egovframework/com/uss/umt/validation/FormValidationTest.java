@@ -15,6 +15,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.ServletRequestDataBinder;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * 시스템명 : 실행환경시스템
@@ -69,6 +72,7 @@ public class FormValidationTest {
 		assertTrue(errors.hasFieldErrors("empAge"));
 	}
 
+	@Getter @Setter
 	private class Employee {
 
 		private String empId;
@@ -76,42 +80,6 @@ public class FormValidationTest {
 		private int empAge;
 		private Date birthDate;
 
-		public String getEmpId() {
-			return empId;
-		}
-
-		@SuppressWarnings("unused")
-		public void setEmpId(String empId) {
-			this.empId = empId;
-		}
-
-		public String getEmpName() {
-			return empName;
-		}
-
-		@SuppressWarnings("unused")
-		public void setEmpName(String empName) {
-			this.empName = empName;
-		}
-
-		public int getEmpAge() {
-			return empAge;
-		}
-
-		@SuppressWarnings("unused")
-		public void setEmpAge(int empAge) {
-			this.empAge = empAge;
-		}
-
-		@SuppressWarnings("unused")
-		public Date getBirthDate() {
-			return birthDate;
-		}
-
-		@SuppressWarnings("unused")
-		public void setBirthDate(Date birthDate) {
-			this.birthDate = birthDate;
-		}
 	}
 
 	private class EmployeeValidator implements Validator {

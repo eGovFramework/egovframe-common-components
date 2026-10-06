@@ -97,7 +97,7 @@
 		<tr>
 			<th><spring:message code="cop.ncrdNm" /> <span class="pilsu">*</span></th>
 			<td class="left" colspan="3">
-				<input id="ncrdNm" type="text" name="ncrdNm" value='<c:out value="${ncrdVO.ncrdNm}" />' maxlength="60" style="width:231px" />
+				<input id="ncrdNm" type="text" name="ncrdNm" value='<c:out value="${ncrdVO.ncrdNm}" />' maxlength="50" style="width:231px" />
 				<input name="ncrdTrgterId" type="hidden" value='<c:out value="${ncrdVO.ncrdTrgterId}" />' /><br />
 				<form:errors path="ncrdNm" />
 			</td>
@@ -125,7 +125,7 @@
 		<tr>
 			<th><spring:message code="cop.emailAdres" /> <span class="pilsu">*</span></th>
 			<td class="left" colspan="3">
-				<input id="emailAdres" type="text" name="emailAdres" value='<c:out value="${ncrdVO.emailAdres}" />' title="이메일주소" maxlength="60" /><br />
+				<input id="emailAdres" type="text" name="emailAdres" value='<c:out value="${ncrdVO.emailAdres}" />' title="이메일주소" maxlength="50" /><br />
 	      		<form:errors path="emailAdres" />
 			</td>
 		</tr>
@@ -133,9 +133,9 @@
 			<th><spring:message code="cop.telNo" /> </th>
 			<td class="left" colspan="3">
 				<input id="nationNo" type="text" name="nationNo" value='<c:out value="${ncrdVO.nationNo}" />' maxlength="5" style="width:50px" /> -
-				<input id="areaNo" type="text" name="areaNo" value='<c:out value="${ncrdVO.areaNo}" />' maxlength="5" style="width:50px" /> -
-				<input id="middleTelNo" type="text" name="middleTelNo" value='<c:out value="${ncrdVO.middleTelNo}" />' maxlength="5" style="width:50px" /> -
-				<input id="endTelNo" type="text" name="endTelNo" value='<c:out value="${ncrdVO.endTelNo}" />' maxlength="5" style="width:50px" />
+				<input id="areaNo" type="text" name="areaNo" value='<c:out value="${ncrdVO.areaNo}" />' maxlength="4" style="width:50px" /> -
+				<input id="middleTelNo" type="text" name="middleTelNo" value='<c:out value="${ncrdVO.middleTelNo}" />' maxlength="4" style="width:50px" /> -
+				<input id="endTelNo" type="text" name="endTelNo" value='<c:out value="${ncrdVO.endTelNo}" />' maxlength="4" style="width:50px" />
 			</td>
 		</tr>
 		<tr>
@@ -151,8 +151,8 @@
 					<option value="019" <c:if test="${ncrdVO.idntfcNo == '019'}"> selected="selected" </c:if> >019</option>
 				</select>
 				-
-				<input id="middleMbtlNum" type="text" name="middleMbtlNum" value='<c:out value="${ncrdVO.middleMbtlNum}" />' maxlength="5" style="width:50px" /> -
-				<input id="endMbtlNum" type="text" name="endMbtlNum" value='<c:out value="${ncrdVO.endMbtlNum}" />' maxlength="5" style="width:50px" />
+				<input id="middleMbtlNum" type="text" name="middleMbtlNum" value='<c:out value="${ncrdVO.middleMbtlNum}" />' maxlength="4" style="width:50px" /> -
+				<input id="endMbtlNum" type="text" name="endMbtlNum" value='<c:out value="${ncrdVO.endMbtlNum}" />' maxlength="4" style="width:50px" />
 			</td>
 		</tr>
 		<tr>

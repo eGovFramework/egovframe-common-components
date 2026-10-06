@@ -1,6 +1,5 @@
 package egovframework.com.sym.log.ulg.web;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -10,10 +9,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
@@ -100,6 +99,7 @@ public class EgovUserLogController {
 	 * @throws Exception
 	 */
 	@GetMapping("/sym/log/ulg/SelectUserLogDetail.do")
+	@RequireAdmin
 	public String selectUserLog(@ModelAttribute("searchVO") UserLog userLog,
 			@RequestParam("occrrncDe") String occrrncDe, @RequestParam("rqesterId") String rqesterId,
 			@RequestParam("srvcNm") String srvcNm, @RequestParam("methodNm") String methodNm, ModelMap model)

@@ -7,6 +7,7 @@
 		<html>
 		<body>
 		<form name='form1' id='form1' method='post'>
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input type='hidden' name='dn' id='dn'>			
 		<table border='1px' style='border:1px solid #E7E7E7'>
 			<tr id='line1'>

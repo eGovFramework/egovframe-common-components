@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
@@ -112,6 +114,15 @@ public class EgovNoteManageController {
 		if (sCmd.equals("reply")) {
 			model.addAttribute("cmd", sCmd);
 
+			// 2026.07.30 보안 조치 - 현재 사용자가 해당 쪽지의 수신자인지 확인
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			NoteManageVO recptnCheckVO = new NoteManageVO();
+			recptnCheckVO.setNoteId(noteManage.getNoteId());
+			recptnCheckVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+			if (egovNoteManageService.selectNoteRecptnCheck(recptnCheckVO) <= 0) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
+
 			Map<?, ?> mapNoteManage = egovNoteManageService.selectNoteManage(noteManage);
 
 			String noteSj = (String) mapNoteManage.get("noteSj");
@@ -139,6 +150,7 @@ public class EgovNoteManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ntm/registEgovNoteManageActor.do")
+	@RequireAdmin
 	public String EgovNoteRecptnRegist(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("noteManage") NoteManageVO noteManage, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -161,18 +173,6 @@ public class EgovNoteManageController {
 		// 아이디 설정
 		noteManage.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		noteManage.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> fvoList = null;
-		String atchFileId = "";
-
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
-
-		if (!files.isEmpty()) {
-			fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
-		}
-		noteManage.setAtchFileId(atchFileId);
 
 		String recptnEmpList = (String) commandMap.get("recptnEmpList");
 		if (recptnEmpList != null && recptnEmpList.trim().isEmpty()) {
@@ -208,6 +208,18 @@ public class EgovNoteManageController {
 			return sLocationUrl;
 		}
 
+		// 첨부파일 관련 첨부파일ID 생성
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
+
+		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+
+		if (!files.isEmpty()) {
+			fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+		}
+		noteManage.setAtchFileId(atchFileId);
+
 		// 쪽지등록
 		egovNoteManageService.insertNoteManage(noteManage, commandMap);
 		
@@ -230,6 +242,7 @@ public class EgovNoteManageController {
 	 */
 
 	@RequestMapping("/uss/ion/ntm/listEgovNoteEmpListPopup.do")
+	@RequireAdmin
 	public String EgovEgovNoteEmpList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 

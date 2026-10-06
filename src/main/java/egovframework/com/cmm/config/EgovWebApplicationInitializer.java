@@ -236,13 +236,8 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 	}
 
 	private static boolean isCsrfProtectionEnabled(WebApplicationContext rootContext) {
-		try {
-			EgovSecurityConfig securityConfig = rootContext.getBean(EgovSecurityConfig.class);
-			return securityConfig.isCsrf();
-		} catch (Exception e) {
-			LOGGER.warn("Failed to resolve CSRF configuration. CSRF attribute filter is not registered.", e);
-			return false;
-		}
+		EgovSecurityConfig securityConfig = rootContext.getBean(EgovSecurityConfig.class);
+		return securityConfig.isCsrf();
 	}
 
 	private static int parseIntProperty(String key, int defaultValue) {

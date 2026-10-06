@@ -3,8 +3,6 @@ package egovframework.com.cmm.interceptor;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,10 +34,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class AuthenticInterceptor implements HandlerInterceptor {
 
-	@SuppressWarnings("unused")
-	@Autowired
-	private Environment environment;
-
 	/** 관리자 접근 권한 패턴 목록 */
 	private List<String> adminAuthPatternList;
 
@@ -54,9 +48,10 @@ public class AuthenticInterceptor implements HandlerInterceptor {
 	/**
 	 * 인증된 사용자 여부로 인증 여부를 체크한다.
 	 * 관리자 권한에 따라 접근 페이지 권한을 체크한다.
+	 * @throws ModelAndViewDefiningException 
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ModelAndViewDefiningException {
 		//인증된사용자 여부
 		boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		//미민증사용자 체크

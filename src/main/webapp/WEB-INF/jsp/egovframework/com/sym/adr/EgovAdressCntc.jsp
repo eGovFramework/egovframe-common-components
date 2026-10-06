@@ -34,6 +34,20 @@
 <script type="text/javaScript" language="javascript">
 var csrfHeaderName = "${_csrf.headerName}";
 var csrfToken = "${_csrf.token}";
+
+// 2026.07.30 보안 조치 - innerHTML에 삽입되는 외부 주소 API 응답값 이스케이프
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
 function egovCsrfBeforeSend(xhr) {
 	if (csrfHeaderName && csrfToken) {
 		xhr.setRequestHeader(csrfHeaderName, csrfToken);
@@ -186,24 +200,24 @@ function makeList(xmlInput){
             var zipNo = getVal("zipNo");
 
             htmlStr += "<tr>";
-            htmlStr += "<td>"+roadAddr+"</td>";
-            htmlStr += "<td>"+roadAddrPart1+"</td>";
-            htmlStr += "<td>"+roadAddrPart2+"</td>";
-            htmlStr += "<td>"+jibunAddr+"</td>";
-            htmlStr += "<td>"+engAddr+"</td>";
-            htmlStr += "<td>"+zipNo+"</td>";
+            htmlStr += "<td>"+escapeHtml(roadAddr)+"</td>";
+            htmlStr += "<td>"+escapeHtml(roadAddrPart1)+"</td>";
+            htmlStr += "<td>"+escapeHtml(roadAddrPart2)+"</td>";
+            htmlStr += "<td>"+escapeHtml(jibunAddr)+"</td>";
+            htmlStr += "<td>"+escapeHtml(engAddr)+"</td>";
+            htmlStr += "<td>"+escapeHtml(zipNo)+"</td>";
             htmlStr += "</tr>";
         }
     } else {
         // jQuery 객체(jQuery 방식)
         $(xmlInput).find("juso").each(function(){
             htmlStr += "<tr>";
-            htmlStr += "<td>"+$(this).find('roadAddr').text()+"</td>";
-            htmlStr += "<td>"+$(this).find('roadAddrPart1').text()+"</td>";
-            htmlStr += "<td>"+$(this).find('roadAddrPart2').text()+"</td>";
-            htmlStr += "<td>"+$(this).find('jibunAddr').text()+"</td>";
-            htmlStr += "<td>"+$(this).find('engAddr').text()+"</td>";
-            htmlStr += "<td>"+$(this).find('zipNo').text()+"</td>";
+            htmlStr += "<td>"+escapeHtml($(this).find('roadAddr').text())+"</td>";
+            htmlStr += "<td>"+escapeHtml($(this).find('roadAddrPart1').text())+"</td>";
+            htmlStr += "<td>"+escapeHtml($(this).find('roadAddrPart2').text())+"</td>";
+            htmlStr += "<td>"+escapeHtml($(this).find('jibunAddr').text())+"</td>";
+            htmlStr += "<td>"+escapeHtml($(this).find('engAddr').text())+"</td>";
+            htmlStr += "<td>"+escapeHtml($(this).find('zipNo').text())+"</td>";
             htmlStr += "</tr>";
         });
     }

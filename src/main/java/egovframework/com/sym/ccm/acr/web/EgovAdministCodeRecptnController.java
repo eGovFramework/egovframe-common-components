@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
@@ -68,6 +69,7 @@ public class EgovAdministCodeRecptnController {
 	 * @throws Exception
 	 */
     @PostMapping("/sym/ccm/acr/addAdministCode.do")
+	@RequireAdmin
 	public String insertAdministCodeRecptn (AdministCodeRecptn administCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -93,6 +95,7 @@ public class EgovAdministCodeRecptnController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/acr/getAdministCodeDetail.do")
+ 	@RequireAdmin
  	public String selectAdministCodeDetail (@ModelAttribute("administCode") AdministCodeRecptn administCode
 			, @ModelAttribute("administCodeRecptnVO") AdministCodeRecptnVO administCodeRecptnVO
 			, ModelMap model
@@ -172,6 +175,7 @@ public class EgovAdministCodeRecptnController {
      * @throws Exception
      */
     @RequestMapping(value = "/sym/ccm/acr/getAdministCodeRecptnMainList.do")
+	@RequireAdmin
 	public String selectAdministCodeRecptnMainList (@ModelAttribute("searchVO") AdministCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -196,13 +200,11 @@ public class EgovAdministCodeRecptnController {
      * @return
      */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap){
-		String ret = "";
-       	for(Object key:commandMap.keySet()){
-    		Object value = commandMap.get(key);
-
-    		ret += "key:" + key.toString() + " value:" + value.toString();
+		StringBuilder ret = new StringBuilder();
+       	for(Map.Entry<?, ?> entry : commandMap.entrySet()){
+    		ret.append("key:").append(entry.getKey()).append(" value:").append(entry.getValue());
     	}
-       	return ret;
+       	return ret.toString();
 	}
 
 }

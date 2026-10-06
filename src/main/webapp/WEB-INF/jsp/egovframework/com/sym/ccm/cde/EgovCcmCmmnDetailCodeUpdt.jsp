@@ -96,7 +96,7 @@ function fn_egov_inqire_code() {
 		<tr>
 			<th><label for="code">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="code" title="${title} ${inputTxt}" size="70" maxlength="70" readonly="true" />
+			    <form:input path="code" title="${title} ${inputTxt}" size="70" maxlength="15" readonly="true" />
    				<div><form:errors path="code" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -106,7 +106,7 @@ function fn_egov_inqire_code() {
 		<tr>
 			<th><label for="codeNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="codeNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="codeNm" title="${title} ${inputTxt}" size="70" maxlength="60" />
    				<div><form:errors path="codeNm" cssClass="error" /></div>     
 			</td>
 		</tr>

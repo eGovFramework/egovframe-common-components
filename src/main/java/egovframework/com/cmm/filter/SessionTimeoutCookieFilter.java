@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
@@ -77,10 +76,6 @@ public class SessionTimeoutCookieFilter implements Filter {
 
 //        String serverYMD = format.format(dateServer);
 //        String expiryYMD = format.format(dateExpiry);
-		// System.out.println("=====>>> serverYMD = "+serverYMD);
-		// System.out.println("=====>>> expiryYMD = "+expiryYMD);
-		// System.out.println("=====>>> server TimeStamp = "+serverTime);
-		// System.out.println("=====>>> expire TimeStamp = "+sessionExpireTime);
 
 		httpResponse.addCookie(cookie);
 

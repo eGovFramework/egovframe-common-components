@@ -1,5 +1,6 @@
 package egovframework.com.cop.sms.service.impl;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,10 +56,15 @@ public class EgovSmsInfoSender {
      * SMEConfig 설정파일로부터 필요한 연결 정보 및 로그 관련 정보를 얻는다.
      *
      * @param configFile
-     * @throws Exception
      */
-    public EgovSmsInfoSender(String configFile) throws Exception {
-	SMEConfig.configSet(configFile);
+    public EgovSmsInfoSender(String configFile) {
+	try {
+		SMEConfig.configSet(configFile);
+	} catch (BaseRuntimeException e) {
+		throw new BaseRuntimeException(e);
+	} catch (Exception e) {
+		throw new BaseRuntimeException(e);
+	}
 
 	connString = SMEConfig.getSmsUrl();
 	smsId = SMEConfig.getSmsId();
@@ -88,16 +94,18 @@ public class EgovSmsInfoSender {
     /**
      * SMS 연결을 위한 Connection 및 Session 생성한다.
      * 발송건이 있을 경우만 open()을 호출하고 close()를 호출하여 종료한다.
-     * 만약 DB 와 연동시 select로 데이타 검출시 데이타가 없으면
-     * open()을 호출하지 않는다. (중요!!! 꼭 데이타가 있을 경우만 open() 을 하여 접속)
-     *
-     * @throws SMEException
+     * 만약 DB 와 연동시 select로 데이터 검출시 데이터가 없으면
+     * open()을 호출하지 않는다. (중요!!! 꼭 데이터가 있을 경우만 open() 을 하여 접속)
      */
-    public void open() throws SMEException {
-	this.factSender = new SMEConnectionFactoryImpl(connString);
-	this.connSender = factSender.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
-	this.sessSender = connSender.createSession();
-	this.sender = sessSender.createSender();
+    public void open() {
+	try {
+		this.factSender = new SMEConnectionFactoryImpl(connString);
+		this.connSender = factSender.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
+		this.sessSender = connSender.createSession();
+		this.sender = sessSender.createSender();
+	} catch (SMEException e) {
+		throw new BaseRuntimeException(e);
+	}
 
 	// 현재 발송한 호에 대해서 리포트 수신을 위해서는 true 로 설정해야  리포트 수신을 할 수 있다.
 	// 만약 false 로 세팅하고 발송을 하면 현재 발송한 호에 대해서는 결과수신을 할 수 없다.
@@ -115,7 +123,7 @@ public class EgovSmsInfoSender {
      * @param smsConn
      * @return
      */
-    public SmsConnection send(SmsConnection smsConn) throws SMEException {
+    public SmsConnection send(SmsConnection smsConn) {
 	SMERequest request = null;
 
 	try {
@@ -129,11 +137,11 @@ public class EgovSmsInfoSender {
 
 	    // callbackurl
 	    // 무선인터넷 주소  휴대전화 인터넷 (WAP) 페이지 접속용 URL
-	    // 단문자메세지 외의 별도 과금이 되므로 WAP 페이지가 있는 기관에서만 사용
+	    // 단문자메시지 외의 별도 과금이 되므로 WAP 페이지가 있는 기관에서만 사용
 	    // 해당 URL 접속시 수신자에게 과금이 되므로 주의.
 	    request.setCallbackURL(smsConn.getCallBackUrl()); //CallbackURL은 선택사항 입니다.
 
-	    // message (메세지내용)
+	    // message (메시지내용)
 	    request.setText(smsConn.getText());
 
 	    // serial *MUST* be unique number in single SME.
@@ -177,7 +185,7 @@ public class EgovSmsInfoSender {
 	    }
 
 	} catch (SMEException ex) {
-	    throw ex;
+		throw new BaseRuntimeException(ex);
 	}
 
 	return smsConn;

@@ -126,7 +126,7 @@ public class IndvdlYrycManage extends ComDefaultVO {
 	}
 
 	/**
-	 * @param mberId the mberNm to set
+	 * @param mberNm the mberNm to set
 	 */
 	public void setMberNm(String mberNm) {
 		this.mberNm = mberNm;

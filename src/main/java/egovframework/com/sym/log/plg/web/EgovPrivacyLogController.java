@@ -8,9 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.plg.service.EgovPrivacyLogService;
 import egovframework.com.sym.log.plg.service.PrivacyLog;
@@ -82,6 +82,7 @@ public class EgovPrivacyLogController {
 	 * @throws Exception
 	 */
 	@GetMapping("/sym/log/plg/SelectPrivacyLogDetail.do")
+	@RequireAdmin
 	public String selectWebLog(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 

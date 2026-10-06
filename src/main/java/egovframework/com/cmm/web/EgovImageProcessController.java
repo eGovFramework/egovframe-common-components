@@ -1,20 +1,18 @@
 package egovframework.com.cmm.web;
 
-import egovframework.com.cmm.LoginVO;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.SessionVO;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
@@ -64,8 +63,6 @@ public class EgovImageProcessController extends HttpServlet {
 	@Resource(name = "EgovFileMngService")
 	private EgovFileMngService fileService;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovImageProcessController.class);
-
 	/** getImage.do가 인라인(image/*)으로 제공할 수 있는 안전한 이미지 확장자 화이트리스트 */
 	private static final List<String> SAFE_INLINE_IMAGE_EXTENSIONS =
 			Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
@@ -78,28 +75,27 @@ public class EgovImageProcessController extends HttpServlet {
 	 * @param sessionVO
 	 * @param model
 	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/getImage.do")
 	public void getImageInf(SessionVO sessionVO, ModelMap model, @RequestParam Map<String, Object> commandMap,
-			HttpServletRequest request, HttpServletResponse response) throws Exception {
+			HttpServletRequest request, HttpServletResponse response) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
 
 		// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추
 		// 불가능하도록 조치
 		String param_atchFileId = (String) commandMap.get("atchFileId");
 		if (param_atchFileId == null || param_atchFileId.isEmpty()) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
 		param_atchFileId = param_atchFileId.replaceAll(" ", "+");
 		byte[] decodedBytes = Base64.getDecoder().decode(param_atchFileId);
 		String decodedString = cryptoService.decrypt(new String(decodedBytes));
 		if (decodedString == null || decodedString.isEmpty()) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
 		String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
 		String decodedFileId = StringUtils.substringAfter(decodedString, "|");
@@ -111,7 +107,7 @@ public class EgovImageProcessController extends HttpServlet {
 		boolean isSameSessionId = StringUtils.equals(decodedSessionId, sessionId);
 
 		if (!isSameSessionId) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
 
 		FileVO vo = new FileVO();
@@ -130,11 +126,11 @@ public class EgovImageProcessController extends HttpServlet {
 
 		FileVO fvo = fileService.selectFileInf(vo);
 		if (fvo == null) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
 		// 2026.07.13 KISA 보안취약점 조치 - fileSn을 atchFileId에 바인딩
 		if (fvo.getAtchFileId() == null || !fvo.getAtchFileId().equals(decodedFileId)) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
 
 		// String fileLoaction = fvo.getFileStreCours() + fvo.getStreFileNm();
@@ -171,35 +167,11 @@ public class EgovImageProcessController extends HttpServlet {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			EgovResourceCloseHelper.close(bStream);
 		}
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

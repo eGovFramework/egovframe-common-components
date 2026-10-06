@@ -98,6 +98,9 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 */
 	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) {
 		WikMnthngReprtVO resultVO = (WikMnthngReprtVO)selectOne("WikMnthngReprtDAO.selectWikMnthngReprt", wikMnthngReprtVO);
+		if (resultVO == null) {
+			return null;
+		}
 		resultVO.setReprtDe(EgovDateUtil.convertDate(resultVO.getReprtDe(), "0000", "yyyy-MM-dd"));
 		resultVO.setReprtBgnDe(EgovDateUtil.convertDate(resultVO.getReprtBgnDe(), "0000", "yyyy-MM-dd"));
 		resultVO.setReprtEndDe(EgovDateUtil.convertDate(resultVO.getReprtEndDe(), "0000", "yyyy-MM-dd"));

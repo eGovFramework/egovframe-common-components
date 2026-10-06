@@ -82,13 +82,13 @@ public class FileSystemUtils {
 			}
 			osName = osName.toLowerCase();
 			// match
-			if (osName.indexOf("windows") != -1) {
+			if (osName.contains("windows")) {
 				os = WINDOWS;
-			} else if (osName.indexOf("linux") != -1 || osName.indexOf("sun os") != -1 || osName.indexOf("sunos") != -1 || osName.indexOf("solaris") != -1
-					|| osName.indexOf("mpe/ix") != -1 || osName.indexOf("freebsd") != -1 || osName.indexOf("irix") != -1 || osName.indexOf("digital unix") != -1
-					|| osName.indexOf("unix") != -1 || osName.indexOf("mac os x") != -1) {
+			} else if (osName.contains("linux") || osName.contains("sun os") || osName.contains("sunos") || osName.contains("solaris")
+					|| osName.contains("mpe/ix") || osName.contains("freebsd") || osName.contains("irix") || osName.contains("digital unix")
+					|| osName.contains("unix") || osName.contains("mac os x")) {
 				os = UNIX;
-			} else if (osName.indexOf("hp-ux") != -1 || osName.indexOf("aix") != -1) {
+			} else if (osName.contains("hp-ux") || osName.contains("aix")) {
 				os = POSIX_UNIX;
 			} else {
 				os = OTHER;
@@ -234,7 +234,7 @@ public class FileSystemUtils {
 		// not, still assuming it is on the last non-blank line)
 		for (int i = lines.size() - 1; i >= 0; i--) {
 			String line = lines.get(i);
-			if (line.length() > 0) {
+			if (!line.isEmpty()) {
 				return parseDir(line, path);
 			}
 		}
@@ -305,7 +305,7 @@ public class FileSystemUtils {
 	 * @throws IOException if an error occurs
 	 */
 	private long freeSpaceUnix(String path, boolean kb, boolean posix) throws IOException {
-		if (path.length() == 0) {
+		if (path.isEmpty()) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
 		path = FilenameUtils.normalize(path);
@@ -314,16 +314,16 @@ public class FileSystemUtils {
 
 		// build and run the 'dir' command
 		String flags = "-";
-		if (kb && osName.indexOf("hp-ux") == -1) {
+		if (kb && !osName.contains("hp-ux")) {
 			flags += "k";
 		}
-		if (posix && osName.indexOf("hp-ux") == -1) {
+		if (posix && !osName.contains("hp-ux")) {
 			flags += "P";
 		}
 
 		String dfCommand = "df";
 
-		if (osName.indexOf("hp-ux") != -1) {
+		if (osName.contains("hp-ux")) {
 			dfCommand = "bdf";
 		}
 
@@ -421,7 +421,7 @@ public class FileSystemUtils {
 				// os command problem, throw exception
 				throw new IOException("Command line returned OS error code '" + proc.exitValue() + "' for command " + Arrays.asList(cmdAttribs));
 			}
-			if (lines.size() == 0) {
+			if (lines.isEmpty()) {
 				// unknown problem, throw exception
 				throw new IOException("Command line did not return any info " + "for command " + Arrays.asList(cmdAttribs));
 			}
@@ -453,10 +453,13 @@ public class FileSystemUtils {
 	private Process openProcess(String[] cmdAttribs) throws IOException {
 		//return Runtime.getRuntime().exec(cmdAttribs);
 		// Runtime.exec 사용 시 Command Injection 위험이 있으므로 사용하지 말 것...
-		// 현재는 빈 프로세스를 리턴하게 구성함...
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		Process process = processBuilder.start();
-		return process;
+		// 명령 실행은 비활성화된 상태임.
+		// 기존의 new ProcessBuilder().start()는 커맨드 목록이 비어 있어
+		// IOException이 아닌 IndexOutOfBoundsException(unchecked)을 던지므로,
+		// 호출부의 catch (IOException) 블록을 우회해 예외가 그대로 전파됨.
+		// 선언된 IOException을 던져 호출부(ProcessMonChecker 등)가 기존
+		// 오류 처리 경로로 정상 동작하도록 함.
+		throw new IOException("Process execution is disabled (command injection prevention). command=" + Arrays.toString(cmdAttribs));
 	}
 
 	/**

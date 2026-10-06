@@ -1,6 +1,7 @@
 package egovframework.com.uss.olp.qrm.web;
 
-import java.util.ArrayList;
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
@@ -136,6 +138,7 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
+	@RequireAdmin
 	public String egovQustnrRespondManageDetail(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -144,6 +147,9 @@ public class EgovQustnrRespondManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			List<EgovMap> storedList = egovQustnrRespondManageService.selectQustnrRespondManageDetail(qustnrRespondManageVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrRespondManageService.deleteQustnrRespondManage(qustnrRespondManageVO);
 			sLocationUrl = "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do";
 		} else {
@@ -176,6 +182,7 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageModifyView.do")
+	@RequireAdmin
 	public String qustnrRespondManageModify(
 			@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, 
 			RedirectAttributes redirectAttributes,
@@ -205,6 +212,8 @@ public class EgovQustnrRespondManageController {
 
 		List<EgovMap> resultList = egovQustnrRespondManageService
 				.selectQustnrRespondManageDetail(qustnrRespondManageVO);
+		Object ownerId = (resultList == null || resultList.isEmpty()) ? null : resultList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 		model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageModify";
@@ -222,6 +231,7 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageModify.do")
+	@RequireAdmin
 	public String qustnrRespondManageModify(
 			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
 			BindingResult bindingResult, 
@@ -235,6 +245,10 @@ public class EgovQustnrRespondManageController {
 			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		List<EgovMap> storedList = egovQustnrRespondManageService.selectQustnrRespondManageDetail(qustnrRespondManageVO);
+		Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 
 		// 성별코드조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -281,6 +295,7 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageRegistView.do")
+	@RequireAdmin
 	public String qustnrRespondManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO, 
@@ -321,6 +336,7 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageRegist.do")
+	@RequireAdmin
 	public String qustnrRespondManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,

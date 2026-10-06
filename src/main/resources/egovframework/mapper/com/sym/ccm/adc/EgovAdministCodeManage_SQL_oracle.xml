@@ -68,6 +68,7 @@
 			     ,  CREAT_DE                        creatDe
 			     ,  ABL_DE                          ablDe
 			     ,  USE_AT                          useAt
+			     ,  A.FRST_REGISTER_ID  frstRegisterId
 			  FROM  COMTCADMINISTCODE A
              WHERE  ADMINIST_ZONE_SE   = #{administZoneSe}
                AND  ADMINIST_ZONE_CODE = #{administZoneCode}

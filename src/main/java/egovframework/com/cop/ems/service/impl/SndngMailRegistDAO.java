@@ -34,7 +34,6 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
 	public SndngMailVO insertSndngMail(SndngMailVO vo) {
 		insert("sndngMailRegistDAO.insertSndngMail", vo);
@@ -46,7 +45,6 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return List
-	 * @exception Exception
 	 */
 	public List<AtchmnFileVO> selectAtchmnFileList(SndngMailVO vo) {
 		return selectList("sndngMailRegistDAO.selectAtchmnFileList", vo);
@@ -57,7 +55,6 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
 	public SndngMailVO updateSndngMail(SndngMailVO vo) {
 		update("sndngMailRegistDAO.updateSndngMail", vo);

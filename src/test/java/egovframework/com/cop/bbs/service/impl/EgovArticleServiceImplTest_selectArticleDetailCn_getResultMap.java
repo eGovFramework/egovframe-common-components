@@ -1,22 +1,32 @@
 package egovframework.com.cop.bbs.service.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.Test;
 
-public class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
 
 	// https://www.programcreek.com/java-api-examples/?api=org.apache.ibatis.builder.xml.XMLMapperBuilder
 
 	@Test
-	public void printResultMapInfo() throws Exception {
+	void printResultMapInfo() {
 		Configuration configuration = new Configuration();
 		String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
-		InputStream inputStream = Resources.getResourceAsStream(resource);
+		InputStream inputStream;
+		try {
+			inputStream = Resources.getResourceAsStream(resource);
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
+		}
 		XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
 				configuration.getSqlFragments());
 		builder.parse();
@@ -25,25 +35,25 @@ public class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
 		String id = "boardMasterList";
 		ResultMap resultMap = configuration.getResultMap(id);
 
-		System.out.println("\n-------------------+✨ mappedColumns ✨+--------------------");
-		System.out.println(resultMap.getMappedColumns());
+		log.debug("\n-------------------+✨ mappedColumns ✨+--------------------");
+		log.debug(String.valueOf(resultMap.getMappedColumns()));
 
-		System.out.println("\n------------------+✨ mappedProperties ✨+------------------");
-		System.out.println(resultMap.getMappedProperties());
+		log.debug("\n------------------+✨ mappedProperties ✨+------------------");
+		log.debug(String.valueOf(resultMap.getMappedProperties()));
 
-		System.out.println("\n------------------+✨ idResultMappings ✨+------------------");
-		resultMap.getIdResultMappings().forEach(rm -> System.out.println(rm));
+		log.debug("\n------------------+✨ idResultMappings ✨+------------------");
+		resultMap.getIdResultMappings().forEach(rm -> log.debug(String.valueOf(rm)));
 
-		System.out.println("\n---------------+✨ propertyResultMappings ✨+---------------");
-		resultMap.getPropertyResultMappings().forEach(rm -> System.out.println(rm));
+		log.debug("\n---------------+✨ propertyResultMappings ✨+---------------");
+		resultMap.getPropertyResultMappings().forEach(rm -> log.debug(String.valueOf(rm)));
 
-		System.out.println("\n-------------+✨ constructorResultMappings ✨+--------------");
-		resultMap.getConstructorResultMappings().forEach(rm -> System.out.println(rm));
+		log.debug("\n-------------+✨ constructorResultMappings ✨+--------------");
+		resultMap.getConstructorResultMappings().forEach(rm -> log.debug(String.valueOf(rm)));
 
-		System.out.println("\n------------------+✨ resultMappings ✨+--------------------");
-		resultMap.getResultMappings().forEach(rm -> System.out.println(rm));
+		log.debug("\n------------------+✨ resultMappings ✨+--------------------");
+		resultMap.getResultMappings().forEach(rm -> log.debug(String.valueOf(rm)));
 
-		resultMap.getResultMappings().forEach(rm -> System.out.println(rm.getProperty()));
+		resultMap.getResultMappings().forEach(rm -> log.debug(rm.getProperty()));
 
 		StringBuffer sb = new StringBuffer("\n");
 		resultMap.getResultMappings().forEach(rm -> {
@@ -58,10 +68,14 @@ public class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
 			sb.append("());\n");
 		});
 
-		System.out.println(sb);
+		log.debug(sb.toString());
 
-		System.out.println();
-		inputStream.close();
+		log.debug("");
+		try {
+			inputStream.close();
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
+		}
 	}
 
 }

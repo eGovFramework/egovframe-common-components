@@ -8,10 +8,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -73,6 +73,7 @@ public class EgovMainMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMainMenuIndex.do")
+	@RequireAdmin
 	public String selectMainMenuIndex(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			@RequestParam("menuNo") String menuNo, @RequestParam("chkURL") String chkURL, ModelMap model)
 			throws Exception {
@@ -93,6 +94,7 @@ public class EgovMainMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMainMenu.do")
+	@RequireAdmin
 	public String selectMainMenu(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 
@@ -125,6 +127,7 @@ public class EgovMainMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMainMenuHead.do")
+	@RequireAdmin
 	public String selectMainMenuHead(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 
@@ -158,6 +161,7 @@ public class EgovMainMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMainMenuLeft.do")
+	@RequireAdmin
 	public String selectMainMenuLeft(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			@RequestParam("vStartP") String vStartP, ModelMap model) throws Exception {
 		int iMenuNo = Integer.parseInt(vStartP);
@@ -189,6 +193,7 @@ public class EgovMainMenuManageController {
 	 */
 	/* Right Menu 조회 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMainMenuRight.do")
+	@RequireAdmin
 	public String selectMainMenuRight(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			@RequestParam("vStartP") String vStartP, ModelMap model) throws Exception {
 		int iMenuNo = Integer.parseInt(vStartP);

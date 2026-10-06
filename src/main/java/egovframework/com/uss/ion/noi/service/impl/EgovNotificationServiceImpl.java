@@ -28,6 +28,7 @@ import jakarta.annotation.Resource;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.06.08  한성곤          최초 생성
+ *   2026.07.09  EricSeokgon      지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * </pre>
  */
@@ -50,14 +51,14 @@ public class EgovNotificationServiceImpl extends EgovAbstractServiceImpl impleme
 
     @Override
     public void insertNotificationInf(NotificationVO notificationVO) throws Exception {
-        StringBuffer time = new StringBuffer();
+        StringBuilder time = new StringBuilder();
         time.append(notificationVO.getNtfcDate().replaceAll("-", ""));
         time.append(notificationVO.getNtfcHH().length() == 1 ? "0" + notificationVO.getNtfcHH() : notificationVO.getNtfcHH());
         time.append(notificationVO.getNtfcMM().length() == 1 ? "0" + notificationVO.getNtfcMM() : notificationVO.getNtfcMM());
         time.append("00");
         notificationVO.setNtfcTime(time.toString());
 
-        StringBuffer interval = new StringBuffer();
+        StringBuilder interval = new StringBuilder();
         String[] array = notificationVO.getBhNtfcIntrvl();
         if (array == null) {
             throw new RuntimeException("Method insertNotificationInf : array is null\n");
@@ -80,14 +81,14 @@ public class EgovNotificationServiceImpl extends EgovAbstractServiceImpl impleme
 
     @Override
     public void updateNotifictionInf(NotificationVO notificationVO) throws Exception {
-        StringBuffer time = new StringBuffer();
+        StringBuilder time = new StringBuilder();
         time.append(notificationVO.getNtfcDate().replaceAll("-", ""));
         time.append(notificationVO.getNtfcHH().length() == 1 ? "0" + notificationVO.getNtfcHH() : notificationVO.getNtfcHH());
         time.append(notificationVO.getNtfcMM().length() == 1 ? "0" + notificationVO.getNtfcMM() : notificationVO.getNtfcMM());
         time.append("00");
         notificationVO.setNtfcTime(time.toString());
 
-        StringBuffer interval = new StringBuffer();
+        StringBuilder interval = new StringBuilder();
         String[] array = notificationVO.getBhNtfcIntrvl();
         if (array != null) {
             for (int i = 0; i < array.length; i++) {
@@ -109,7 +110,7 @@ public class EgovNotificationServiceImpl extends EgovAbstractServiceImpl impleme
 
     @Override
     public boolean checkNotification(NotificationVO notificationVO) throws Exception {
-        StringBuffer time = new StringBuffer();
+        StringBuilder time = new StringBuilder();
         time.append(notificationVO.getNtfcDate().replaceAll("-", ""));
         time.append(notificationVO.getNtfcHH().length() == 1 ? "0" + notificationVO.getNtfcHH() : notificationVO.getNtfcHH());
         time.append(notificationVO.getNtfcMM().length() == 1 ? "0" + notificationVO.getNtfcMM() : notificationVO.getNtfcMM());

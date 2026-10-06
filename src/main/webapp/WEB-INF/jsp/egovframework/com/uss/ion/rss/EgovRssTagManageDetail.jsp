@@ -56,6 +56,7 @@ function fn_egov_delete_RssTagManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form name="RssTagManageForm" action="${pageContext.request.contextPath}/uss/ion/rss/detailRssTagManage.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -159,12 +160,14 @@ function fn_egov_delete_RssTagManage(){
 		</form>
 			
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/rss/detailRssTagManage.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_RssTagManage(); return false;" />
 		<input name="rssId" type="hidden" value="${rssManage.rssId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 	
 		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/rss/listRssTagManage.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="" />
 		</form>
 	</div>

@@ -20,11 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovEmplyrManageService;
@@ -33,7 +33,6 @@ import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.EmplyrManageVO;
 import egovframework.com.uss.umt.service.EmplyrManageInsertVO;
 import egovframework.com.uss.umt.service.EmplyrPasswordManageVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import jakarta.annotation.Resource;
 
@@ -192,7 +191,7 @@ public class EgovEmplyrManageController {
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrInsert.do")
 	@RequireAdmin
-	public String insertUser(@Valid @ModelAttribute("userManageVO") EmplyrManageInsertVO emplyrManageInsertVO, 
+	public String insertUser(@Valid @ModelAttribute("emplyrManageVO") EmplyrManageInsertVO emplyrManageInsertVO,
 			BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -203,6 +202,35 @@ public class EgovEmplyrManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
+
+			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+
+			// 패스워드힌트목록을 코드정보로부터 조회
+			comDefaultCodeVO.setCodeId("COM022");
+			List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 성별구분코드를 코드정보로부터 조회
+			comDefaultCodeVO.setCodeId("COM014");
+			List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 사용자상태코드를 코드정보로부터 조회
+			comDefaultCodeVO.setCodeId("COM013");
+			List<CmmnDetailCode> emplyrSttusCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 소속기관코드를 코드정보로부터 조회 - COM025
+			comDefaultCodeVO.setCodeId("COM025");
+			List<CmmnDetailCode> insttCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			// 조직정보를 조회 - ORGNZT_ID정보
+			comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+			List<CmmnDetailCode> orgnztIdResult = cmmUseService.selectOgrnztIdDetail(comDefaultCodeVO);
+			// 그룹정보를 조회 - GROUP_ID정보
+			comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+			List<CmmnDetailCode> groupIdResult = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
+
+			model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+			model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
+			model.addAttribute("emplyrSttusCode_result", emplyrSttusCodeResult);// 사용자상태코드목록
+			model.addAttribute("insttCode_result", insttCodeResult); // 소속기관코드목록
+			model.addAttribute("orgnztId_result", orgnztIdResult); // 조직정보 목록
+			model.addAttribute("groupId_result", groupIdResult); // 그룹정보 목록
+
 			return "egovframework/com/uss/umt/EgovEmplyrInsert";
 		} else {
 			if ("".equals(emplyrManageInsertVO.getOrgnztId())) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -237,7 +265,7 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
-		if (!isSelfTarget(uniqId)) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(uniqId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -295,7 +323,7 @@ public class EgovEmplyrManageController {
 	@RequireAdmin
 	public String updateLockIncorrect(EmplyrManageVO emplyrManageVO, Model model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치 - 계정 잠금해제는 관리자만
-		egovAssertAdminOrOwner(null);
+		EgovAuthorizationHelper.assertAdmin();
 
 
 		// 미인증 사용자에 대한 보안처리
@@ -335,7 +363,7 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
-		if (!isSelfTarget(currentEmplyr.getUniqId())) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(currentEmplyr.getUniqId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -385,10 +413,6 @@ public class EgovEmplyrManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
-		}
-
-		if (!isSelfOnlyDeleteTargets(checkedIdForDel)) {
-			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		emplyrManageService.deleteEmplyr(checkedIdForDel);
@@ -486,6 +510,7 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrPasswordUpdt.do")
+	@RequireAdmin
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("emplyrPasswordManageVO") EmplyrPasswordManageVO emplyrPasswordManageVO,
@@ -545,6 +570,7 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrPasswordUpdtView.do")
+	@RequireAdmin
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("emplyrPasswordManageVO") EmplyrPasswordManageVO emplyrPasswordManageVO) throws Exception {
@@ -610,67 +636,11 @@ public class EgovEmplyrManageController {
 		return null;
 	}
 
-	private String getLoginUniqId() {
-		LoginVO loginUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		return loginUser == null ? "" : EgovStringUtil.isNullToString(loginUser.getUniqId());
-	}
-
-	private boolean isSelfTarget(String targetUniqId) {
-		String loginUniqId = getLoginUniqId();
-		return !loginUniqId.isEmpty()
-				&& targetUniqId != null
-				&& loginUniqId.equals(targetUniqId);
-	}
-
-	private boolean isSelfOnlyDeleteTargets(String checkedIdForDel) {
-		String loginUniqId = getLoginUniqId();
-		if (loginUniqId.isEmpty()) {
-			return false;
-		}
-		String[] delIds = EgovStringUtil.isNullToString(checkedIdForDel).split(",");
-		if (delIds.length == 0 || (delIds.length == 1 && delIds[0].isEmpty())) {
-			return false;
-		}
-		for (String element : delIds) {
-			String[] id = element.split(":");
-			if (id.length < 2 || !loginUniqId.equals(id[1])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	private static void clearUmtPasswordFields(PasswordManageVO vo) {
 		vo.setOldPassword("");
 		vo.setPassword("");
 		vo.setPassword2("");
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

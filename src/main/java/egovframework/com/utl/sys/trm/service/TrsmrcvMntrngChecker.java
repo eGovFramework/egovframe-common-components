@@ -1,7 +1,7 @@
 package egovframework.com.utl.sys.trm.service;
 
 /**
- * @Class Name : EgovTrsmrcvMntrngChecker.java
+ * @Class Name : TrsmrcvMntrngChecker.java
  * @Description : 송수신모니터링을 위한 Check interface
  * @Modification Information
  *

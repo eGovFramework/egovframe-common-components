@@ -111,6 +111,13 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
 		BndtManageVO bndtManageVOTemp = new BndtManageVO();
 		bndtManageVOTemp = bndtManageDAO.selectBndtManage(bndtManageVO);
+
+		// 해당 당직 행이 없으면 조회 결과가 없다. 같은 클래스의 엑셀 일괄등록 경로와 동일하게
+		// 결과를 확인한 뒤 사용한다.
+		if (bndtManageVOTemp == null) {
+			return null;
+		}
+
 		bndtManageVOTemp.setBndtDe(EgovDateUtil.formatDate(bndtManageVOTemp.getBndtDe(), "-"));
 
 		return bndtManageVOTemp;
@@ -160,6 +167,21 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) throws Exception {
 		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
 		return bndtManageDAO.selectBndtDiaryTotCnt(bndtManageVO);
+	}
+
+	/**
+	 * 당직일지 등록자를 조회한다.
+	 *
+	 * @param bndtDiaryVO - bndtId(당직자), bndtDe(당직일자)
+	 * @return String - 등록자 고유ID, 일지가 없으면 null
+	 * @exception Exception
+	 */
+	@Override
+	public String selectBndtDiaryRegisterId(BndtDiaryVO bndtDiaryVO) throws Exception {
+		BndtDiaryVO lookup = new BndtDiaryVO();
+		lookup.setBndtId(bndtDiaryVO.getBndtId());
+		lookup.setBndtDe(EgovStringUtil.removeMinusChar(bndtDiaryVO.getBndtDe()));
+		return bndtManageDAO.selectBndtDiaryRegisterId(lookup);
 	}
 
 	/***** 당직 체크관리 *****/
@@ -452,12 +474,16 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 					HSSFCell cell = null;
 					cell = row.getCell(0); // 당직일자
 					sBndtDe = getCellValueAsString(cell);
+					// 당직일자가 비어 있거나 8자리 미만이면 해당 행 스킵 (xlsx 처리와 동일)
+					if (sBndtDe == null || sBndtDe.trim().isEmpty() || sBndtDe.trim().length() < 8) {
+						continue;
+					}
 					cell = row.getCell(1); // 당직자ID
 					sTempId = getCellValueAsString(cell);
 					cell = row.getCell(2); // 당직자명
 					sTempNm = getCellValueAsString(cell);
-					checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
-					checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+					checkBndtManageVO.setTempBndtId(sTempId); // 당직자ID
+					checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자명
 
 					// 최두영 로직변경
 					bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
@@ -526,8 +552,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 							sTempId = getCellValueAsString(cell);
 							cell = row.getCell(2); // 당직자명
 							sTempNm = getCellValueAsString(cell);
-							checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
-							checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+							checkBndtManageVO.setTempBndtId(sTempId); // 당직자ID
+							checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자명
 
 							// 최두영 로직변경
 							bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
@@ -612,7 +638,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		int iWeek = 0;
 		sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
 		// KISA 보안약점 조치 - 널(null) 값 체크
-		if (sDayOfWeek == null) {
+		// getDateWeekString과 동일하게 8자리 미만이면 substring 파싱 예외를 피하고 0을 반환한다.
+		if (sDayOfWeek == null || sDayOfWeek.length() < 8) {
 			return 0;
 		}
 		targetDate.set(Integer.parseInt(sDayOfWeek.substring(0, 4)), Integer.parseInt(sDayOfWeek.substring(4, 6)) - 1,

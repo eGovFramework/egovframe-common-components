@@ -1,7 +1,13 @@
 package egovframework.com.utl.fcc.service;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
@@ -95,5 +101,128 @@ public class EgovStringUtilTest {
         Assertions.assertEquals(EgovStringUtil.getAuxiliaryParticle(""), "는");
     }
 
+    // === split(String, String): 구분자 길이별 동작 검증 ===
+
+    // 한글자 구분자: 기존 동작 유지 확인(회귀 방지)
+    @Test
+    void splitWithSingleCharSeparator(){
+        String[] result = EgovStringUtil.split("a,b,c", ",");
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 수정 전엔 index+1로 이동해 구분자의 두번째 글자가 다음 필드에 남았음
+    @Test
+    void splitWithTwoCharSeparator_noResidualChar(){
+        String[] result = EgovStringUtil.split("a::b::c", "::");
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 동일한 수정을 3글자 구분자로도 검증
+    @Test
+    void splitWithThreeCharSeparator_noResidualChar(){
+        String[] result = EgovStringUtil.split("a###b###c", "###");
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 구분자가 없으면 원본 문자열이 단일 요소로 반환되어야 함
+    @Test
+    void splitReturnsWholeStringWhenSeparatorNotFound(){
+        String[] result = EgovStringUtil.split("abc", "::");
+        Assertions.assertArrayEquals(new String[]{"abc"}, result);
+    }
+
+    // === split(String, String, int): 구분자 길이별 동작 검증 ===
+
+    // 다중글자 구분자 + 배열 길이가 전체 필드 수와 정확히 일치하는 경우
+    @Test
+    void splitWithLimit_twoCharSeparator(){
+        String[] result = EgovStringUtil.split("a::b::c", "::", 3);
+        Assertions.assertArrayEquals(new String[]{"a", "b", "c"}, result);
+    }
+
+    // 배열 길이를 초과하는 나머지는 구분자를 포함한 채 마지막 필드에 남아야 함
+    @Test
+    void splitWithLimit_remainderKeptInLastField(){
+        String[] result = EgovStringUtil.split("a::b::c::d", "::", 2);
+        Assertions.assertArrayEquals(new String[]{"a", "b::c::d"}, result);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", "abc" })
+    void splitRejectsEmptySeparator(String source) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EgovStringUtil.split(source, ""));
+    }
+
+    @ParameterizedTest
+    @MethodSource("emptySeparatorWithLimits")
+    void splitWithLimitRejectsEmptySeparator(String source, int limit) {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> EgovStringUtil.split(source, "", limit));
+    }
+
+    private static Stream<Arguments> emptySeparatorWithLimits() {
+        return Stream.of(
+                Arguments.of("", 1),
+                Arguments.of("", 3),
+                Arguments.of("abc", 1),
+                Arguments.of("abc", 3));
+    }
+
+    @ParameterizedTest
+    @MethodSource("emptyFieldCases")
+    void splitPreservesEmptyFields(String source, String separator, String[] expected) {
+        Assertions.assertArrayEquals(expected, EgovStringUtil.split(source, separator));
+        Assertions.assertArrayEquals(expected, EgovStringUtil.split(source, separator, expected.length));
+    }
+
+    private static Stream<Arguments> emptyFieldCases() {
+        return Stream.of(
+                Arguments.of("", ",", new String[]{""}),
+                Arguments.of(",a", ",", new String[]{"", "a"}),
+                Arguments.of("a,", ",", new String[]{"a", ""}),
+                Arguments.of("a,,b", ",", new String[]{"a", "", "b"}),
+                Arguments.of("::a::::", "::", new String[]{"", "a", "", ""}));
+    }
+
+    @ParameterizedTest
+    @MethodSource("paddedFieldCases")
+    void splitWithLimitPadsUnusedFields(String source, String[] expected) {
+        Assertions.assertArrayEquals(expected, EgovStringUtil.split(source, "::", 4));
+    }
+
+    private static Stream<Arguments> paddedFieldCases() {
+        return Stream.of(
+                Arguments.of("", new String[]{"", "", "", ""}),
+                Arguments.of("a::b", new String[]{"a", "b", "", ""}));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "", "a::b::c" })
+    void splitWithLimitOnePreservesTheWholeSource(String source) {
+        Assertions.assertArrayEquals(new String[]{source}, EgovStringUtil.split(source, "::", 1));
+    }
+
+    @ParameterizedTest
+    @MethodSource("nullInputs")
+    void splitPreservesNullInputExceptions(String source, String separator) {
+        Assertions.assertThrows(NullPointerException.class, () -> EgovStringUtil.split(source, separator));
+        Assertions.assertThrows(NullPointerException.class, () -> EgovStringUtil.split(source, separator, 2));
+    }
+
+    private static Stream<Arguments> nullInputs() {
+        return Stream.of(
+                Arguments.of(null, ","),
+                Arguments.of("abc", null),
+                Arguments.of(null, null));
+    }
+
+    @Test
+    void splitWithLimitPreservesZeroLengthException() {
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> EgovStringUtil.split("abc", ",", 0));
+    }
+
+    @Test
+    void splitWithLimitPreservesNegativeLengthException() {
+        Assertions.assertThrows(NegativeArraySizeException.class, () -> EgovStringUtil.split("abc", ",", -1));
+    }
 
 }

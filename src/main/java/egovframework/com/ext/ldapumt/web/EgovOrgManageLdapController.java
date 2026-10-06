@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -59,7 +58,6 @@ public class EgovOrgManageLdapController {
      * @throws Exception
      */
 	@PostMapping("/ext/ldapumt/dpt/getDeptManageSublist.do")
-	@RequireAdmin
 	public ModelAndView selectDeptManageSublist(@RequestParam("dn") String dn, ModelMap model) throws Exception {
 		validateDn(dn);
 		model.addAttribute("deptManage", orgManageLdapService.selectDeptManageSubList(dn));

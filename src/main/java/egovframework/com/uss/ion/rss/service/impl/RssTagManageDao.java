@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -60,7 +61,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @return List -조회한목록이담긴List
 	 * @throws Exception
 	 */
-	public List<ComDefaultCodeVO> selectRssTagManageTableList() throws Exception {
+	public List<ComDefaultCodeVO> selectRssTagManageTableList() {
 
 		String columnLabelTableName = "TABLE_NAME";
 		String columnLabelTableSchema = "TABLE_SCHEM";
@@ -93,6 +94,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 					arrListResult.add(codeVO);
 				}
 			}
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			if (tables != null) {
 				try {
@@ -115,7 +118,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @return List -조회한목록이담긴List
 	 * @throws Exception
 	 */
-	public List<Map<String, String>> selectRssTagManageTableColumnList(Map<String, String> map) throws Exception {
+	public List<Map<String, String>> selectRssTagManageTableColumnList(Map<String, String> map) {
 
 		String sTableName = map.get("tableName");
 		String sDbType = map.get("dbType");
@@ -165,6 +168,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 					arrListResult.add(hmResult);
 				}
 			}
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			if (rs != null) {
 				try {

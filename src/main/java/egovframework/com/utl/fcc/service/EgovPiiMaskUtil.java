@@ -243,7 +243,7 @@ public class EgovPiiMaskUtil {
 
     private static String maskAllJuminNo(String text) {
         Matcher m = JUMIN_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (m.find()) {
             String replacement = m.group(1) + "-" + m.group(2).charAt(0) + "******";
             m.appendReplacement(sb, Matcher.quoteReplacement(replacement));
@@ -255,7 +255,7 @@ public class EgovPiiMaskUtil {
     private static String maskAllPhoneNo(String text) {
         // 1) 하이픈 포함 번호 치환
         Matcher m = PHONE_HYPHEN_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (m.find()) {
             String replacement = m.group(1) + "-" + m.group(2).replaceAll("\\d", "*") + "-" + m.group(3);
             m.appendReplacement(sb, Matcher.quoteReplacement(replacement));
@@ -265,7 +265,7 @@ public class EgovPiiMaskUtil {
         // 2) 하이픈 없는 번호 치환 — 단일 마스킹(maskPhoneNo)과 동일 규칙 적용.
         //    1)에서 가려진 결과는 하이픈/별표를 포함하므로 연속 10~11자리 패턴에 매칭되지 않는다.
         Matcher mp = PHONE_PLAIN_PATTERN.matcher(sb.toString());
-        StringBuffer sb2 = new StringBuffer();
+        StringBuilder sb2 = new StringBuilder();
         while (mp.find()) {
             mp.appendReplacement(sb2, Matcher.quoteReplacement(maskPlainPhoneDigits(mp.group(1))));
         }
@@ -275,7 +275,7 @@ public class EgovPiiMaskUtil {
 
     private static String maskAllEmail(String text) {
         Matcher m = EMAIL_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (m.find()) {
             String local = m.group(1);
             String domain = m.group(2);
@@ -291,7 +291,7 @@ public class EgovPiiMaskUtil {
 
     private static String maskAllCardNo(String text) {
         Matcher m = CARD_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (m.find()) {
             char sep = m.group(0).charAt(4);
             String replacement = m.group(1) + sep + "****" + sep + "****" + sep + m.group(4);
@@ -303,7 +303,7 @@ public class EgovPiiMaskUtil {
 
     private static String maskAllBizRegNo(String text) {
         Matcher m = BIZ_REG_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (m.find()) {
             String replacement = m.group(1) + "-" + m.group(2) + "-*****";
             m.appendReplacement(sb, Matcher.quoteReplacement(replacement));
@@ -314,7 +314,7 @@ public class EgovPiiMaskUtil {
 
     private static String maskAllPrivateIp(String text) {
         Matcher m = PRIVATE_IP_PATTERN.matcher(text);
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         while (m.find()) {
             String replacement = m.group(1) + ".***";
             m.appendReplacement(sb, Matcher.quoteReplacement(replacement));

@@ -1,5 +1,7 @@
 package egovframework.com.uss.olh.wor.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.wor.service.EgovWordDicaryService;
 import egovframework.com.uss.olh.wor.service.WordDicaryVO;
@@ -101,6 +104,7 @@ public class EgovWordDicaryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/wor/selectWordDicaryDetail.do")
+	@RequireAdmin
 	public String selectWordDicaryDetail(WordDicaryVO wordDicaryVO, @ModelAttribute("searchVO") WordDicaryVO searchVO, ModelMap model) throws Exception {
 
 		WordDicaryVO vo = egovWordDicaryService.selectWordDicaryDetail(wordDicaryVO);
@@ -118,6 +122,7 @@ public class EgovWordDicaryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/wor/insertWordDicaryView.do")
+	@RequireAdmin
 	public String insertWordDicaryView(@ModelAttribute("searchVO") WordDicaryVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("wordDicaryVO", new WordDicaryVO());
@@ -135,6 +140,7 @@ public class EgovWordDicaryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/wor/insertWordDicary.do")
+	@RequireAdmin
 	public String insertWordDicary(
 		@ModelAttribute("searchVO") WordDicaryVO searchVO,
 		@Valid @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
@@ -165,12 +171,14 @@ public class EgovWordDicaryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/wor/updateWordDicaryView.do")
+	@RequireAdmin
 	public String updateWordDicaryView(@RequestParam("wordId") String wordId, @ModelAttribute("searchVO") WordDicaryVO searchVO, ModelMap model) throws Exception {
 
 		WordDicaryVO wordDicaryVO = new WordDicaryVO();
 		wordDicaryVO.setWordId(wordId);
 
-		model.addAttribute("wordDicaryVO", egovWordDicaryService.selectWordDicaryDetail(wordDicaryVO));
+		WordDicaryVO stored = EgovAuthorizationHelper.requireTarget(egovWordDicaryService.selectWordDicaryDetail(wordDicaryVO));
+		model.addAttribute("wordDicaryVO", stored);
 
 		return "egovframework/com/uss/olh/wor/EgovWordDicaryUpdt";
 	}
@@ -185,10 +193,12 @@ public class EgovWordDicaryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/wor/updateWordDicary.do")
+	@RequireAdmin
 	public String updateWordDicary(
 		@ModelAttribute("searchVO") WordDicaryVO searchVO,
 		@Valid @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
 		BindingResult bindingResult, Model model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/wor/EgovWordDicaryUpdt";
@@ -212,7 +222,9 @@ public class EgovWordDicaryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/wor/deleteWordDicary.do")
+	@RequireAdmin
 	public String deleteWordDicary(WordDicaryVO wordDicaryVO, @ModelAttribute("searchVO") WordDicaryVO searchVO) throws Exception {
+
 
 		egovWordDicaryService.deleteWordDicary(wordDicaryVO);
 

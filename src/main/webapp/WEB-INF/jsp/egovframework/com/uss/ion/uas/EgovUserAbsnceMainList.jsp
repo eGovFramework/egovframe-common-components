@@ -35,12 +35,14 @@
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 function fncSelectUserAbsnce(userId, regYn) {
-	if(regYn == 'N') {
-        location.replace("<c:url value='/uss/ion/uas/addViewUserAbsnce.do'/>?userId="+userId);
-	}
     document.listForms.userId.value = userId;
     document.listForms.regYn.value = regYn;
-    document.listForms.action = "<c:url value='/uss/ion/uas/getUserAbsnce.do'/>";
+    // 대상 화면이 POST 전용이라 location 이동(GET) 대신 폼으로 보낸다
+    if(regYn == 'N') {
+        document.listForms.action = "<c:url value='/uss/ion/uas/addViewUserAbsnce.do'/>";
+    } else {
+        document.listForms.action = "<c:url value='/uss/ion/uas/getUserAbsnce.do'/>";
+    }
     document.listForms.submit();
 }
 

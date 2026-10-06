@@ -124,7 +124,7 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 				<input class="s_input" name="searchWrd" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<c:if test="${preview != 'true'}">
-					<span class="btn_b"><button type="button" class="btn_b" onclick="fn_egov_postNavigate('<c:url value='/cop/bbs/insertArticleView.do' />', null, document.articleForm); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></button></span><!-- 등록 -->
+					<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_postNavigate('<c:url value='/cop/bbs/insertArticleView.do' />', null, document.articleForm); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 				</c:if>
 			</li>
 		</ul>

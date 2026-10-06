@@ -40,6 +40,7 @@ import jakarta.servlet.http.HttpServletRequestWrapper;
  *   2018.03.21  신용호          getParameterMap()구현 추가
  *   2019.01.31  신용호          whiteList 태그 추가
  *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(부울 표현식 단순화), AvoidReassigningParameters(매개변수 재할당 방지)
+ *   2026.07.09  EricSeokgon      지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  *      </pre>
  */
@@ -77,7 +78,6 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] != null) {
 				values[i] = getSafeParamData(values[i]);
-				//System.out.println( "[HTMLTagFilter getParameterValues] "+ parameter + "===>>>"+values[i] );
 			} else {
 				values[i] = null;
 			}
@@ -100,7 +100,6 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		}
 
 		value = getSafeParamData(value);
-		//System.out.println( "[HTMLTagFilter getParameter] "+ parameter + "===>>>"+value );
 		return value;
 	}
 
@@ -113,9 +112,9 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 	public Map<String, String[]> getParameterMap() {
 		Map<String, String[]> valueMap = super.getParameterMap();
 
-		String[] values;
-		for (String key : valueMap.keySet()) {
-			values = valueMap.get(key);
+		for (Map.Entry<String, String[]> entry : valueMap.entrySet()) {
+			String key = entry.getKey();
+			String[] values = entry.getValue();
 
 			if (isRichTextParameter(key)) {
 				continue;
@@ -124,13 +123,9 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			for (int i = 0; i < values.length; i++) {
 				if (values[i] != null) {
 					values[i] = getSafeParamData(values[i]);
-    				//System.out.println( "[HTMLTagFilter getParameterMap] "+ key + "===>>>"+values[i] );
-				} else {
-					values[i] = null;
 				}
 			}
 
-            //System.out.println( String.format("키 : %s, 값 : %s", key, valueMap.get(key)) );
 		}
 
 		return valueMap;
@@ -141,7 +136,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 	}
 
 	private String getSafeParamData(String value) {
-		StringBuffer strBuff = new StringBuffer();
+		StringBuilder strBuff = new StringBuilder();
 
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
@@ -152,7 +147,6 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 				} else {
 					strBuff.append(c);
 				}
-				//System.out.println("checkNextWhiteListTag = "+checkNextWhiteListTag(i, value));
 				break;
 			case '>':
 				if (!checkPrevWhiteListTag(i, value)) {
@@ -160,7 +154,6 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 				} else {
 					strBuff.append(c);
 				}
-				//System.out.println("checkPrevWhiteListTag = "+checkPrevWhiteListTag(i, value));
 				break;
 			// case '&':
 			// strBuff.append("&amp;");
@@ -194,14 +187,12 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		// int beginIndex = 0;
 		int endIndex = 0;
 		for (String whiteListData : whiteListTag) {
-			// System.out.println("===>>> whiteListData="+whiteListData);
 			endIndex = index + whiteListData.length();
 			if (data.length() > endIndex) {
 				extractData = data.substring(index, endIndex);
 			} else {
 				extractData = "";
 			}
-			// System.out.println("extractData="+extractData);
 			if (whiteListData.equals(extractData)) {
 				return true; // whiteList 대상으로 판정
 			}
@@ -215,16 +206,13 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		int beginIndex = 0;
 		int endIndex = 0;
 		for (String whiteListData : whiteListTag) {
-			// System.out.println("===>>> whiteListData="+whiteListData);
 			beginIndex = index - whiteListData.length() + 1;
 			endIndex = index + 1;
-			// System.out.println(" range ["+beginIndex+" ~ "+endIndex+"]");
 			if (beginIndex >= 0) {
 				extractData = data.substring(beginIndex, endIndex);
 			} else {
 				extractData = "";
 			}
-			// System.out.println("extractData="+extractData);
 			if (whiteListData.equals(extractData)) {
 				return true; // whiteList 대상으로 판정
 			}

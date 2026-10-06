@@ -69,6 +69,14 @@
 		newForm.appendChild( newfileSn );
 		newForm.appendChild( newAtchFileId );
 
+<c:if test="${not empty _csrf}">
+		var newCsrf = document.createElement( 'input' );
+		newCsrf.setAttribute("type","hidden");
+		newCsrf.setAttribute("name","<c:out value='${_csrf.parameterName}'/>");
+		newCsrf.setAttribute("value","<c:out value='${_csrf.token}'/>");
+		newForm.appendChild( newCsrf );
+</c:if>
+
 		newForm.method = "post";
 		newForm.action = "<c:url value='/cmm/fms/deleteFileInfs.do'/>";
 		newForm.target = "iframe_egov_file_delete"
@@ -90,9 +98,11 @@
 </script>
 
 <!-- <form name="fileForm" action="" method="post" >  -->
+<c:if test="${updateFlag eq 'Y'}">
 <input type="hidden" name="atchFileId" value="<c:out value='${atchFileId}'/>">
 <input type="hidden" name="fileSn" >
 <input type="hidden" name="fileListCnt" id="fileListCnt" value="<c:out value='${fileListCnt}'/>">
+</c:if>
 <c:set var="fileCount" value="${fn:length(fileList) }" />
 <!-- </form>  -->
 
@@ -105,7 +115,7 @@
 			<c:choose>
 				<c:when test="${updateFlag eq 'Y'}">
 					<c:out value="${fileVO.orignlFileNm}"/>&nbsp;[<c:out value="${fileVO.fileMg}"/>&nbsp;byte]
-					<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_del.png' />" class="cursor" onClick="fn_egov_deleteFile('<c:out value="${atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>','egov_file_view_table_tr_${status.count}');" alt="<spring:message code="title.attachedFileDelete" />">
+					<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_del.png' />" class="cursor" onClick="fn_egov_deleteFile('<c:out value="${fileVO.atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>','egov_file_view_table_tr_${status.count}');" alt="<spring:message code="title.attachedFileDelete" />">
 				</c:when>
 				<c:otherwise>
 					<a href="javascript:fn_egov_downFile('<c:out value="${fileVO.atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>')">

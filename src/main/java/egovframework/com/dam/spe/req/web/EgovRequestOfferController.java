@@ -1,8 +1,14 @@
 package egovframework.com.dam.spe.req.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -35,6 +41,7 @@ import egovframework.com.dam.spe.req.service.EgovRequestOfferService;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -166,6 +173,7 @@ public class EgovRequestOfferController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/spe/req/detailRequestOffer.do")
+	@RequireAdmin
 	public String EgovRequestOfferDetail(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			RequestOfferVO requestOfferVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -184,6 +192,9 @@ public class EgovRequestOfferController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			RequestOfferVO stored = EgovAuthorizationHelper.requireTarget(egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO));
+			EgovAuthorizationHelper.assertOwner(writerOf(stored));
+			assertDesignatedExpert(stored);
 
 			HashMap<String, String> hmParam = new HashMap<String, String>();
 			hmParam.put("ansParents", requestOfferVO.getKnoId());
@@ -209,6 +220,9 @@ public class EgovRequestOfferController {
 		if (!sCmd.equals("del")) {
 			// 상세정보 불러오기
 			RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+			if (requestOfferVOs == null) {
+				return "forward:/dam/spe/req/listRequestOffer.do";
+			}
 			model.addAttribute("requestOfferVO", requestOfferVOs);
 
 			// 조직유형 불러오기
@@ -258,9 +272,10 @@ public class EgovRequestOfferController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/spe/req/updtRequestOffer.do")
+	@RequireAdmin
 	public String EgovRequestOfferModify(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO,
-			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+			ModelMap model, RedirectAttributes redirectAttributes, HttpServletRequest request) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -271,6 +286,12 @@ public class EgovRequestOfferController {
 
 		// 수정정보 불러오기
 		RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+		if (requestOfferVOs == null) {
+			return "forward:/dam/spe/req/listRequestOffer.do";
+		}
+		EgovAuthorizationHelper.assertOwner(writerOf(requestOfferVOs));
+		assertDesignatedExpert(requestOfferVOs);
+		EgovAttachmentGrants.allowDelete(request, requestOfferVOs.getAtchFileId());
 		model.addAttribute("requestOfferVO", requestOfferVOs);
 
 		// 조직유형 불러오기
@@ -313,6 +334,7 @@ public class EgovRequestOfferController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/spe/req/updtRequestOfferActor.do")
+	@RequireAdmin
 	public String EgovRequestOfferModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,
@@ -328,6 +350,18 @@ public class EgovRequestOfferController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+		RequestOfferVO storedOffer = EgovAuthorizationHelper.requireTarget(egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO));
+		EgovAuthorizationHelper.assertOwner(writerOf(storedOffer));
+		assertDesignatedExpert(storedOffer);
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		requestOfferVO.setAtchFileId(Objects.toString(storedOffer.getAtchFileId(), ""));
+		// 전문가·요청자·답변 위치도 원본 값을 쓴다(요청값으로 타인 명의·다른 글 답변으로 바꾸기 차단)
+		requestOfferVO.setSpeId(storedOffer.getSpeId());
+		requestOfferVO.setEmplyrId(storedOffer.getEmplyrId());
+		requestOfferVO.setAnsParents(storedOffer.getAnsParents());
+		requestOfferVO.setAnsDepth(storedOffer.getAnsDepth());
+		requestOfferVO.setAnsSeq(storedOffer.getAnsSeq());
+		requestOfferVO.setAnsNumber(storedOffer.getAnsNumber());
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
@@ -356,8 +390,8 @@ public class EgovRequestOfferController {
 			return "egovframework/com/dam/spe/req/EgovComDamRequestOfferUpdt";
 		}
 
-		// 아이디 설정
-		requestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		// 아이디 설정 (원 작성자는 유지, 최종수정자만 갱신)
+		requestOfferVO.setFrstRegisterId(storedOffer == null ? "" : EgovStringUtil.isNullToString(storedOffer.getFrstRegisterId()));
 		requestOfferVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		// 첨부파일 관련 ID 생성 start....
@@ -399,6 +433,7 @@ public class EgovRequestOfferController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/spe/req/registRequestOffer.do")
+	@RequireAdmin
 	public String EgovRequestOfferRegist(
 			// @ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO,
@@ -459,6 +494,7 @@ public class EgovRequestOfferController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/spe/req/registRequestOfferActor.do")
+	@RequireAdmin
 	public String EgovRequestOfferRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,
@@ -506,17 +542,6 @@ public class EgovRequestOfferController {
 			return "egovframework/com/dam/spe/req/EgovComDamRequestOfferRegist";
 		}
 
-		// 첨부파일 관련 첨부파일ID 생성
-		String atchFileId = "";
-
-		final List<MultipartFile> files = multiRequest.getFiles("file_1");
-
-		if (!files.isEmpty()) {
-			List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-			atchFileId = fileMngService.insertFileInfs(fvoList);
-			requestOfferVO.setAtchFileId(atchFileId);
-		}
-
 		// 아이디 설정
 		requestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		requestOfferVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
@@ -554,10 +579,43 @@ public class EgovRequestOfferController {
 			requestOfferVO.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		}
 
+		// 첨부파일 관련 첨부파일ID 생성
+		String atchFileId = "";
+
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
+
+		if (!files.isEmpty()) {
+			List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList);
+		}
+		// 새 자료에는 이번 요청에서 만든 첨부만 연결한다(요청값 atchFileId 로 남의 첨부 그룹 연결 → 삭제 허가 취득 차단)
+		requestOfferVO.setAtchFileId(atchFileId);
+
 		// 저장
 		egovRequestOfferVOService.insertRequestOffer(requestOfferVO);
 
 		return "forward:/dam/spe/req/listRequestOffer.do";
 	}
 
+
+	/**
+	 * 작성자 — 요청 글은 요청한 사람, 전문가 답변(speId 있음)은 답변한 지정 전문가.
+	 */
+	private static String writerOf(RequestOfferVO stored) {
+		return EgovStringUtil.isEmpty(stored.getSpeId()) ? stored.getFrstRegisterId() : stored.getSpeId();
+	}
+
+	/**
+	 * 전문가 답변은 지금도 지식전문가로 지정된 사람만 고친다(답변 등록과 같은 기준).
+	 */
+	private void assertDesignatedExpert(RequestOfferVO stored) throws Exception {
+		if (EgovStringUtil.isEmpty(stored.getSpeId())) {
+			return;
+		}
+		HashMap<String, String> hmParam = new HashMap<String, String>();
+		hmParam.put("speId", stored.getSpeId());
+		if (!egovRequestOfferVOService.selectRequestOfferSpeCheck(hmParam)) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
+	}
 }

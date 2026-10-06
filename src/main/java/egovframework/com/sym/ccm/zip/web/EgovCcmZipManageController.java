@@ -1,6 +1,7 @@
 package egovframework.com.sym.ccm.zip.web;
 
-import java.io.IOException;
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -25,11 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.WebUtils;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.sym.ccm.zip.service.EgovCcmRdnmadZipManageService;
 import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
 import egovframework.com.sym.ccm.zip.service.Zip;
@@ -153,6 +155,7 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmZipRemove.do")
+	@RequireAdmin
 	public String deleteZip(@ModelAttribute("loginVO") LoginVO loginVO, Zip zip, ZipVO searchVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -173,6 +176,7 @@ public class EgovCcmZipManageController {
 	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist"
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmZipRegistView.do")
+	@RequireAdmin
 	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip, ZipVO searchVO,
 			ModelMap model) {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -192,8 +196,9 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmZipRegist.do")
+	@RequireAdmin
 	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("zip") Zip zip,
-			BindingResult bindingResult, ZipVO searchVO, ModelMap model) {
+			BindingResult bindingResult, ZipVO searchVO, ModelMap model, RedirectAttributes redirectAttributes) {
 		model.addAttribute("searchList", searchVO.getSearchList());
 		
 		boolean isRoadAddr = "2".equals(searchVO.getSearchList());
@@ -224,6 +229,8 @@ public class EgovCcmZipManageController {
 			zipManageService.insertZip(zip);
 		}
 
+		// 2026.08.25 Spring 6 이관 조치 - 목록 분기값(searchList) 명시 전달
+		redirectAttributes.addAttribute("searchList", searchVO.getSearchList());
 		return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
 	}
 
@@ -238,6 +245,7 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmExcelZipRegist.do")
+	@RequireAdmin
 	public String insertExcelZip(@ModelAttribute("loginVO") LoginVO loginVO, final HttpServletRequest request,
 			@RequestParam Map<String, Object> commandMap, @ModelAttribute("searchVO") ZipVO searchVO, Model model) throws Exception {
 		String[] fileExtension = { "XLS", "XLSX" };
@@ -298,6 +306,7 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmZipDetail.do")
+	@RequireAdmin
 	public String selectZipDetail(@ModelAttribute("loginVO") LoginVO loginVO, Zip zip, ZipVO searchVO, ModelMap model)
 			throws Exception {
 		if ("1".equals(searchVO.getSearchList())) {
@@ -370,6 +379,7 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmZipModifyView.do")
+	@RequireAdmin
 	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip, ZipVO searchVO,
 			ModelMap model) throws Exception {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -397,9 +407,12 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/zip/EgovCcmZipModify.do")
+	@RequireAdmin
 	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("zip") Zip zip,
-			BindingResult bindingResult, ZipVO searchVO, ModelMap model) throws Exception {
+			BindingResult bindingResult, ZipVO searchVO, ModelMap model, RedirectAttributes redirectAttributes)
+			throws Exception {
 		if (zip.getSn() == 0) {
+			redirectAttributes.addAttribute("searchList", searchVO.getSearchList());
 			return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
 		}
 		boolean isRoadAddr = "2".equals(searchVO.getSearchList());
@@ -419,6 +432,8 @@ public class EgovCcmZipManageController {
 		} else {
 			zipManageService.updateZip(zip);
 		}
+		// 2026.08.25 Spring 6 이관 조치 - 목록 분기값(searchList) 명시 전달
+		redirectAttributes.addAttribute("searchList", searchVO.getSearchList());
 		return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
 	}
 
@@ -428,6 +443,7 @@ public class EgovCcmZipManageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/sym/ccm/zip/EgovAdressPop.do")
+	@RequireAdmin
 	public String selectAddPop() {
 		return "egovframework/com/sym/ccm/zip/EgovAdressPop";
 	}

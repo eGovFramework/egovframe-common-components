@@ -3,6 +3,8 @@ package egovframework.com.utl.sim;
 import java.io.File;
 import java.net.ConnectException;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
@@ -54,7 +56,7 @@ public class TestPdfConverter {
 			try {
 				connection.connect();
 			} catch (ConnectException e) {
-				e.printStackTrace();
+				throw new BaseRuntimeException(e);
 			}
 			//원본 디렉토리에 targetPdf 명칭지정
 			File outputFile = new File(sourcePath + targetPath + targetFileName);

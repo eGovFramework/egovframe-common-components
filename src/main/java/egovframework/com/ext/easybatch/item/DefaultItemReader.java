@@ -18,6 +18,8 @@
  */
 package egovframework.com.ext.easybatch.item;
 
+import java.util.Arrays;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
@@ -112,7 +114,6 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 	// DB 입력인 경우 사용되는 설정
 	private DataSource dataSource;
 	private String sql;
-	@SuppressWarnings("unused")
 	private String[] params;
 
 	public void setDataSource(DataSource dataSource) {
@@ -230,6 +231,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 
 				if (tempParams != null) {
 					this.params = tempParams.split(",");
+					LOGGER.debug(Arrays.toString(this.params));
 				}
 
 				try {

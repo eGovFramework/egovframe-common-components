@@ -1,5 +1,7 @@
 package egovframework.com.validation.ipaddress;
 
+import lombok.extern.slf4j.Slf4j;
+
 import egovframework.com.cmm.EgovWebUtil;
 
 /**
@@ -18,6 +20,7 @@ import egovframework.com.cmm.EgovWebUtil;
  * </pre>
  */
 
+@Slf4j
 public class IpAddressTest {
 
 	public static void main(String[] args) {
@@ -26,7 +29,7 @@ public class IpAddressTest {
 		String addr[] = {"127.0.0.1", "235.0.0.88", "aa.bb.cc.dd", "257.256.256.256"};
 		
 		for (int i = 0 ; i < addr.length; i++) {
-			System.out.println(EgovWebUtil.isIPAddress(addr[i]));
+			log.debug(String.valueOf(EgovWebUtil.isIPAddress(addr[i])));
 		}
 	}
 

@@ -1,5 +1,7 @@
 package egovframework.com.stream.filter;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,12 +23,13 @@ import java.util.stream.Collectors;
  */
 
 
+@Slf4j
 public class TestStreamFilter1 {
 
 	public static void main(String[] args) {
 		ArrayList<String> list = new ArrayList<>(Arrays.asList("Apple","Banana","Melon","Grape","Strawberry"));
 		List<String> newList = list.stream().filter(t->t.length()>5).collect(Collectors.toList());
-		System.out.println("list size = "+newList.size());
+		log.debug("list size = {}", newList.size());
 		
 	}
 

@@ -31,7 +31,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param chargerVO
 	 */
-	public Map<String, Object> selectChargerList(ChargerVO chargerVO) throws Exception;
+	public Map<String, Object> selectChargerList(ChargerVO chargerVO);
 	
 	
 	/**
@@ -41,7 +41,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptVO
 	 */
-	public Map<String, Object> selectDeptList(DeptVO deptVO) throws Exception;
+	public Map<String, Object> selectDeptList(DeptVO deptVO);
 	
 	/**
 	 * 부서 정보를 조회한다.
@@ -50,7 +50,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param String
 	 */
-	public String selectDept(String deptVO) throws Exception;
+	public String selectDept(String deptVO);
 	
 	/**
 	 * 부서업무함 목록을 조회한다.
@@ -59,7 +59,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBxVO
 	 */
-	public Map<String, Object> selectDeptJobBxList(DeptJobBxVO deptJobBxVO) throws Exception;
+	public Map<String, Object> selectDeptJobBxList(DeptJobBxVO deptJobBxVO);
 	
 	/**
 	 * 부서업무함 목록 전체를 조회한다.
@@ -68,7 +68,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBxVO
 	 */
-	public List<DeptJobBxVO> selectDeptJobBxListAll() throws Exception;
+	public List<DeptJobBxVO> selectDeptJobBxListAll();
 
 	/**
 	 * 부서업무함 정보를 조회한다.
@@ -77,7 +77,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBxVO
 	 */
-	public DeptJobBxVO selectDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception;
+	public DeptJobBxVO selectDeptJobBx(DeptJobBxVO deptJobBxVO);
 
 	/**
 	 * 부서업무함 정보를 수정한다.
@@ -86,7 +86,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBxVO
 	 */
-	public void updateDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception;
+	public void updateDeptJobBx(DeptJobBxVO deptJobBxVO);
 
 	/**
 	 * 부서업무함 정보의 표시순서를 수정한다.
@@ -95,7 +95,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBx
 	 */
-	public boolean updateDeptJobBxOrdr(DeptJobBxVO deptJobBxVO) throws Exception;
+	public boolean updateDeptJobBxOrdr(DeptJobBxVO deptJobBxVO);
 	
 	/**
 	 * 등록시 부서업무함의 순서를 조회한다.
@@ -104,7 +104,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptId
 	 */
-	public int selectDeptJobBxOrdr(String deptId) throws Exception;
+	public int selectDeptJobBxOrdr(String deptId);
 	
 	/**
 	 * 부서업무함 정보를 등록한다.
@@ -113,7 +113,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBxVO
 	 */
-	public void insertDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception;
+	public void insertDeptJobBx(DeptJobBxVO deptJobBxVO);
 	
 	/**
 	 * 부서내 부서업무함명의 건수를 조회한다.
@@ -122,7 +122,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBx
 	 */
-	public int selectDeptJobBxCheck(DeptJobBx deptJobBx) throws Exception;
+	public int selectDeptJobBxCheck(DeptJobBx deptJobBx);
 
 	/**
 	 * 부서업무함 정보를 삭제한다.
@@ -131,7 +131,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobBx
 	 */
-	public void deleteDeptJobBx(DeptJobBx deptJobBx) throws Exception;
+	public void deleteDeptJobBx(DeptJobBx deptJobBx);
 
 	/**
 	 * 부서업무 목록을 조회한다.
@@ -140,7 +140,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobVO
 	 */
-	public Map<String, Object> selectDeptJobList(DeptJobVO deptJobVO) throws Exception;
+	public Map<String, Object> selectDeptJobList(DeptJobVO deptJobVO);
 
 	/**
 	 * 부서업무 정보를 조회한다.
@@ -149,7 +149,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJobVO
 	 */
-	public DeptJobVO selectDeptJob(DeptJobVO deptJobVO) throws Exception;
+	public DeptJobVO selectDeptJob(DeptJobVO deptJobVO);
 
 	/**
 	 * 부서업무 정보를 수정한다.
@@ -158,7 +158,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJob
 	 */
-	public void updateDeptJob(DeptJob deptJob) throws Exception;
+	public void updateDeptJob(DeptJob deptJob);
 
 	/**
 	 * 부서업무 정보를 등록한다.
@@ -167,7 +167,7 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJob
 	 */
-	public void insertDeptJob(DeptJob deptJob) throws Exception;
+	public void insertDeptJob(DeptJob deptJob);
 
 	/**
 	 * 부서업무 정보를 삭제한다.
@@ -176,6 +176,6 @@ public interface EgovDeptJobService {
 	 * 
 	 * @param deptJob
 	 */
-	public void deleteDeptJob(DeptJob deptJob) throws Exception;
+	public void deleteDeptJob(DeptJob deptJob);
 
 }

@@ -40,7 +40,7 @@ public class EgovMybatisUtil {
 		}
 
 		if (o instanceof String) {
-			if (((String) o).length() == 0) {
+			if (((String) o).isEmpty()) {
 				return true;
 			}
 		} else if (o instanceof Collection) {
@@ -103,7 +103,7 @@ public class EgovMybatisUtil {
 				return true;
 			}
 		} else if (obj instanceof Integer && obj2 instanceof Integer) {
-			if ((Integer) obj == (Integer) obj2) {
+			if (obj.equals(obj2)) {
 				return true;
 			}
 		}

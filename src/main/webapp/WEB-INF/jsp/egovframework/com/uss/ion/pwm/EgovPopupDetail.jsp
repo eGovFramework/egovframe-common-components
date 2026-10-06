@@ -64,6 +64,7 @@ function fn_egov_delete_PopupManage(){
 	<h2><spring:message code="ussIonPwm.popupDetail.popupDetail"/></h2><!-- 팝업창관리 상세보기 -->
 
 	<form name="PopupManageForm" action="${pageContext.request.contextPath}/uss/ion/pwm/detailPopup.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -122,17 +123,20 @@ function fn_egov_delete_PopupManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">		
 		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/pwm/updatePopupView.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
 			</form>
 		
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/pwm/detailPopup.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		 
 		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/pwm/listPopup.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_PopupManage(); return false;" />
 		</form>
 	</div>

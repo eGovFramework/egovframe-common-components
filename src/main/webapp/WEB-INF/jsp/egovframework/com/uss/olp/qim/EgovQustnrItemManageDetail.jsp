@@ -72,6 +72,7 @@ function fn_egov_delete_QustnrItemManage(){
 
 <div class="wTableFrm">
 <form name="QustnrItemManageForm" id="QustnrItemManageForm" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageModify.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -143,17 +144,20 @@ function fn_egov_delete_QustnrItemManage(){
 	<div class="btn">
 		<!-- 수정 버튼 -->
 		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageModify.do" method="post" onsubmit="fn_egov_modify_QustnrItemManage(); return false;" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 			<input name="qestnrTmplatId" type="hidden" value="${resultList[0].qustnrIemId}">
 		</form>
 		<!-- 삭제 버튼 -->
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code='button.delete' />" onclick="fn_egov_delete_QustnrItemManage(); return false;">
 			<input name="qestnrTmplatId" type="hidden" value="${resultList[0].qustnrIemId}">
 			<input name="cmd" type="hidden" value="del">
 		</form>
 		<!-- 목록 버튼 -->
 		<form name="formList" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		  <input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrItemManage(); return false;">
 		</form>
 		

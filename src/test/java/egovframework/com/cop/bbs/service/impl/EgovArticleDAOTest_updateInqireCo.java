@@ -1,12 +1,10 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
@@ -17,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_updateInqireCo extends EgovTestV1 {
+class EgovArticleDAOTest_updateInqireCo extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
@@ -26,26 +24,28 @@ public class EgovArticleDAOTest_updateInqireCo extends EgovTestV1 {
 	private EgovArticleDAO egovArticleDAO;
 
 	@Autowired
-	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Autowired
-	@Qualifier("egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
 	@Test
-	@Rollback(true)
-//	@Rollback(false)
-	public void test() throws Exception {
-		log.debug("test");
-
+	void updateInqireCo() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		Board board = new Board();
 		board.setBbsId(boardMaster.getBbsId());
-		board.setNttId(egovNttIdGnrService.getNextLongId());
+		try {
+			board.setNttId(egovNttIdGnrService.getNextLongId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId(board.getBbsId());
@@ -58,18 +58,9 @@ public class EgovArticleDAOTest_updateInqireCo extends EgovTestV1 {
 		boardVO.setInqireCo(egovArticleDAO.selectMaxInqireCo(boardVO));
 		log.debug("getInqireCo={}", boardVO.getInqireCo());
 
-		boolean updateInqireCo = false;
-		try {
-			egovArticleDAO.updateInqireCo(boardVO);
-			updateInqireCo = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-
-		log.debug("updateInqireCo={}", updateInqireCo);
+		egovArticleDAO.updateInqireCo(boardVO);
 
 		// then
-		assertEquals(updateInqireCo, true);
 	}
 
 }

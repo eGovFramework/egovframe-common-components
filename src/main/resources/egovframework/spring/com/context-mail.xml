@@ -42,7 +42,8 @@
         p:port="587"
         p:protocol="smtp"
         p:username="아이디" 
-        p:password="비밀번호">
+        p:password="비밀번호"
+        p:defaultEncoding="UTF-8">
         <property name="javaMailProperties"> 
             <props>
                 <prop key="mail.smtp.auth">true</prop> 

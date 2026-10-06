@@ -112,7 +112,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * @return LoginVO
 	 */
     public int selectPassedDayChangePWD(LoginVO vo) {
-    	return selectOne("LoginUsr.selectPassedDayChangePWD", vo);
+    	Integer passedDay = (Integer) selectOne("LoginUsr.selectPassedDayChangePWD", vo);
+    	return passedDay == null ? 0 : passedDay;
     }
 
 	/**

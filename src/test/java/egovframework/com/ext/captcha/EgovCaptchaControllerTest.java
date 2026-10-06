@@ -101,7 +101,7 @@ class EgovCaptchaControllerTest {
 
 	private void assertCaptcha(RequestStub request, String pgNm, int expectedLength) {
 		assertNotNull(request.session);
-		String captcha = (String) request.sessionAttributes.get("captcha" + pgNm);
+		String captcha = (String) request.sessionAttributes.get("captcha." + pgNm);
 		assertNotNull(captcha);
 		assertEquals(expectedLength, captcha.length());
 		assertTrue(captcha.matches("[A-Za-z0-9]+"));

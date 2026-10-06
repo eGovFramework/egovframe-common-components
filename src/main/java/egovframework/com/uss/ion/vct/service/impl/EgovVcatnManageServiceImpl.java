@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ism.service.EgovInfrmlSanctnService;
 import egovframework.com.uss.ion.ism.service.InfrmlSanctn;
@@ -153,7 +154,18 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		// InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn("003",
 		// vcatnManageVO);
 		vcatnManageVO.setInfrmlSanctnId(infrmlSanctn.getInfrmlSanctnId());
-		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(uniqId);
+		// 연차 잔여일수는 차감 대상과 같은 사람 것을 읽어야 한다. 아래 갱신은 applcntId 앞으로 걸리는데
+		// (setUsid) 조회만 로그인 사용자로 하면, 관리자가 타인의 휴가를 수정할 때 관리자의 잔여일수로 계산한
+		// 값이 그 사람의 연차 행에 덮인다. 등록 경로는 컨트롤러가 applcntId 를 로그인 사용자로 세팅하므로
+		// 동작이 같다.
+		String yrycOwnerId = EgovStringUtil.isNullToString(vcatnManageVO.getApplcntId());
+		if ("".equals(yrycOwnerId)) {
+			yrycOwnerId = uniqId;
+		}
+		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(yrycOwnerId);
+		if (vcatnManageVO1 == null) {
+			vcatnManageVO1 = new VcatnManageVO();
+		}
 		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
 		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
@@ -282,10 +294,10 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	@SuppressWarnings("unused")
 	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+		LOGGER.debug("getUserSe={}", _loginVO.getUserSe());
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO == null || loginVO.getUniqId() == null) {
@@ -310,10 +322,11 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		 */
 		infrmlSanctnService.deleteInfrmlSanctn(converToInfrmlSanctnObject(vcatnManageVO));
 
-		LoginVO user = loginVO;
-
 		// 개인연차조회
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
+		if (vcatnManageVO1 == null) {
+			vcatnManageVO1 = new VcatnManageVO();
+		}
 		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
 		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
@@ -409,6 +422,22 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
 		vcatnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManageVO.getReqstDe()));
 
+		// 지정된 승인권자 본인 또는 관리자만 승인·반려 가능하도록 소유권 검증 (deleteVcatnManage와 동일)
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null) {
+			throw new EgovBizException("인증 정보가 없습니다.");
+		}
+		VcatnManageVO existing = vcatnManageDAO.selectVcatnManage(vcatnManageVO);
+		if (existing == null) {
+			throw new EgovBizException("권한이 없습니다.");
+		}
+		if (!loginVO.getUniqId().equals(existing.getSanctnerId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new EgovBizException("권한이 없습니다.");
+			}
+		}
+
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if ("C".equals(vcatnManageVO.getConfmAt())) {
 			/*
@@ -432,6 +461,9 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 			// 연차 반환처리
 			// 개인연차조회
 			VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
+			if (vcatnManageVO1 == null) {
+				vcatnManageVO1 = new VcatnManageVO();
+			}
 			double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
 			double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 			double iCountYryc = 0.0;
@@ -596,31 +628,5 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		return infrmlSanctn;
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

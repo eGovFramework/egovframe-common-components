@@ -1,5 +1,7 @@
 package egovframework.com.dam.map.mat.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.dam.map.mat.service.EgovMapMaterialService;
 import egovframework.com.dam.map.mat.service.MapMaterial;
@@ -110,6 +114,7 @@ public class EgovMapMaterialController {
 	 * @param MapMaterialVO
 	 */
 	@PostMapping("/dam/map/mat/EgovComDamMapMaterial.do")
+	@RequireAdmin
 	public String selectMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
 			throws Exception {
 		MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
@@ -126,6 +131,7 @@ public class EgovMapMaterialController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/map/mat/EgovComDamMapMaterialRegistView.do")
+	@RequireAdmin
 	public String insertMapMaterialView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("mapMaterial") MapMaterialVO mapMaterial, ModelMap model) throws Exception {
 
@@ -148,7 +154,8 @@ public class EgovMapMaterialController {
 	 * @param MapMaterialVO
 	 */
 	@PostMapping("/dam/map/mat/EgovComDamMapMaterialRegist.do")
-	public String insertMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
+	@RequireAdmin
+	public String insertMapMaterial(
 			@Valid @ModelAttribute("mapMaterial") MapMaterialVO mapMaterial, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -163,7 +170,9 @@ public class EgovMapMaterialController {
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
 
-		mapMaterial.setFrstRegisterId(loginVO.getUniqId());
+		// 등록자는 요청 바인딩이 아니라 로그인 사용자다
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		mapMaterial.setFrstRegisterId(loginVO == null ? "" : loginVO.getUniqId());
 		mapMaterialService.insertMapMaterial(mapMaterial);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
@@ -179,11 +188,12 @@ public class EgovMapMaterialController {
 	 * @throws Exception
 	 */
 	@PostMapping("/dam/map/mat/EgovComDamMapMaterialModifyView.do")
+	@RequireAdmin
 	public String updateMapMaterialView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") MapMaterialVO searchVO,
 			@ModelAttribute("mapMaterial") MapMaterial mapMaterial, ModelMap model) throws Exception {
 
-		MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+		MapMaterial vo = EgovAuthorizationHelper.requireTarget(mapMaterialService.selectMapMaterial(mapMaterial));
 		model.addAttribute("mapMaterial", vo);
 
 		return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
@@ -198,10 +208,13 @@ public class EgovMapMaterialController {
 	 * @param MapMaterialVO
 	 */
 	@PostMapping("/dam/map/mat/EgovComDamMapMaterialModify.do")
-	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
+	@RequireAdmin
+	public String updateMapMaterial(
 			@ModelAttribute("searchVO") MapMaterialVO searchVO,
 			@Valid @ModelAttribute("mapMaterial") MapMaterial mapMaterial, BindingResult bindingResult,
 			ModelMap model) throws Exception {
+
+		MapMaterial stored = EgovAuthorizationHelper.requireTarget(mapMaterialService.selectMapMaterial(mapMaterial));
 
 		if (bindingResult.hasErrors()) {
 			//MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
@@ -209,7 +222,10 @@ public class EgovMapMaterialController {
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 		}
 
-		mapMaterial.setFrstRegisterId(loginVO.getUniqId());
+		// 등록자는 원본, 수정자는 로그인 사용자(요청 바인딩 loginVO 를 쓰지 않는다)
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		mapMaterial.setFrstRegisterId(stored.getFrstRegisterId());
+		mapMaterial.setLastUpdusrId(loginVO == null ? "" : loginVO.getUniqId());
 		mapMaterialService.updateMapMaterial(mapMaterial);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
@@ -223,6 +239,7 @@ public class EgovMapMaterialController {
 	 * @param MapMaterialVO
 	 */
 	@PostMapping("/dam/map/mat/EgovComDamMapMaterialRemove.do")
+	@RequireAdmin
 	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
 			throws Exception {
 		mapMaterialService.deleteMapMaterial(mapMaterial);
@@ -237,6 +254,7 @@ public class EgovMapMaterialController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/dam/map/mat/EgovKnoTypeCdCheckAjax.do")
+	@RequireAdmin
 	public ModelAndView EgovKnoTypeCdCheckAjax(@RequestParam Map<String, Object> commandMap) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");

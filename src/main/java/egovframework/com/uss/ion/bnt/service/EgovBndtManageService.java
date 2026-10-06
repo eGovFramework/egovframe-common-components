@@ -64,6 +64,14 @@ public interface EgovBndtManageService {
 	 */
     public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) throws Exception;
 
+    /**
+	 * 당직일지 등록자를 조회한다. 일지는 한 번에 점검항목 행을 같은 등록자로 넣는다.
+	 * @param bndtDiaryVO - bndtId(당직자), bndtDe(당직일자)
+	 * @return String - 등록자 고유ID, 일지가 없으면 null
+	 * @exception Exception
+	 */
+    public String selectBndtDiaryRegisterId(BndtDiaryVO bndtDiaryVO) throws Exception;
+
     /***** 당직 체크관리 *****/
 	/**
 	 * 당직체크관리 정보를 관리하기 위해 등록된 당직체크관리 목록을 조회한다.

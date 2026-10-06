@@ -33,7 +33,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 
     /**
 	 * 사용자부재목록 총 개수를 조회한다.
-	 * @param mainImageVO - 사용자부재 VO
+	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return int
 	 */
     public int selectUserAbsnceListTotCnt(UserAbsnceVO userAbsnceVO) {

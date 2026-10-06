@@ -148,8 +148,8 @@ function fn_egov_open_Popup(cnt, schdulId){
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td>
-		 <c:if test="${resultInfo.schdulKindCode == '1'}"><spring:message code="comCopSmtSdm.popupList.diaryPersonal" /></c:if><!-- 개인일정 -->
-		 <c:if test="${resultInfo.schdulKindCode == '2'}"><spring:message code="comCopSmtSdm.popupList.diaryDept" /></c:if>    <!-- 부서일정 -->
+		 <c:if test="${resultInfo.schdulKindCode == '1'}"><spring:message code="comCopSmtSdm.popupList.diaryDept" /></c:if><!-- 부서일정 -->
+		 <c:if test="${resultInfo.schdulKindCode == '2'}"><spring:message code="comCopSmtSdm.popupList.diaryPersonal" /></c:if><!-- 개인일정 -->
 		</td>
 		<td>${resultInfo.schdulNm}</td>
 		<td><button class="btn_s2" onClick="fn_egov_open_Popup('${status.count}', '${resultInfo.schdulId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>

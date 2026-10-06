@@ -1,5 +1,7 @@
 package egovframework.com.cmm.filter;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * HTMLTagFilter whiteList처리를 위한 Test Class 구현
  * @author 표준프레임워크 신용호
@@ -15,6 +17,7 @@ package egovframework.com.cmm.filter;
  * </pre>
  */
 
+@Slf4j
 public class TestWhiteListTagV2 {
 
 	// Tag 화이트 리스트 ( 허용할 태그 등록 )
@@ -28,9 +31,9 @@ public class TestWhiteListTagV2 {
 						+"<a href='http://www.abc.com'>mypage</a><br>"
 						+"<a href='http://www.img.com'><img src='http://test.img.com'></a>"
 						+ "Good day~!<";
-		System.out.println("paramData = "+paramData);
+		log.debug("paramData = {}", paramData);
 		String safeParamData = getSafeParamData(paramData);
-		System.out.println("safeParamData = "+safeParamData);
+		log.debug("safeParamData = {}", safeParamData);
 		
 	}
 
@@ -45,14 +48,14 @@ public class TestWhiteListTagV2 {
 					strBuff.append("&lt;");
 				else 
 					strBuff.append(c);
-				System.out.println("checkNextWhiteListTag = "+checkNextWhiteListTag(i, value));
+				log.debug("checkNextWhiteListTag = {}", checkNextWhiteListTag(i, value));
 				break;
 			case '>':
 				if ( checkPrevWhiteListTag(i, value) == false )
 					strBuff.append("&gt;");
 				else 
 					strBuff.append(c);
-				System.out.println("checkPrevWhiteListTag = "+checkPrevWhiteListTag(i, value));
+				log.debug("checkPrevWhiteListTag = {}", checkPrevWhiteListTag(i, value));
 				break;
 			//case '&':
 			//	strBuff.append("&amp;");
@@ -74,18 +77,18 @@ public class TestWhiteListTagV2 {
 	}
 
 	static private boolean checkNextWhiteListTag(int index, String data) {
-		System.out.println("[checkNextWhiteListTag]---------------------------------------------");
+		log.debug("[checkNextWhiteListTag]---------------------------------------------");
 		String extractData = searchTagForward(index, data);
-		System.out.println("checkNextWhiteListTag FIND = "+extractData);
+		log.debug("checkNextWhiteListTag FIND = {}", extractData);
 		
 		int resultIndex = 0;
 		String compareString = "";
 		for(String whiteListData: whiteListTag) {
-		    System.out.println("===>>> whiteListData="+whiteListData);
+		    log.debug("===>>> whiteListData={}", whiteListData);
 		    compareString = whiteListData.substring(0, whiteListData.length()-1);
-		    System.out.println("===>>> whiteListData compare String ="+compareString);
+		    log.debug("===>>> whiteListData compare String ={}", compareString);
 		    resultIndex = extractData.indexOf(compareString);
-		    System.out.println("===>>> resultIndex ="+resultIndex);
+		    log.debug("===>>> resultIndex ={}", resultIndex);
 			if ( resultIndex == 0 )
 		    	return true;
 		}
@@ -94,19 +97,19 @@ public class TestWhiteListTagV2 {
 	}
 	
 	static private boolean checkPrevWhiteListTag(int index, String data) {
-		System.out.println("[checkPrevWhiteListTag]---------------------------------------------");
+		log.debug("[checkPrevWhiteListTag]---------------------------------------------");
 		String extractData = searchTagBackward(index, data);
-		System.out.println("checkPrevWhiteListTag FIND = "+extractData);
+		log.debug("checkPrevWhiteListTag FIND = {}", extractData);
 		
 		int resultIndex = 0;
 		String compareString = "";
 		for(String whiteListData: whiteListTag) {
-		    System.out.println("===>>> whiteListData="+whiteListData);
+		    log.debug("===>>> whiteListData={}", whiteListData);
 		    compareString = whiteListData.substring(0, whiteListData.length()-1);
-		    System.out.println("===>>> whiteListData compare String ="+compareString);
+		    log.debug("===>>> whiteListData compare String ={}", compareString);
 		    
 		    resultIndex = extractData.indexOf(compareString);
-		    System.out.println("===>>> resultIndex ="+resultIndex);
+		    log.debug("===>>> resultIndex ={}", resultIndex);
 			if ( resultIndex == 0 )
 		    	return true;
 		}
@@ -117,9 +120,9 @@ public class TestWhiteListTagV2 {
 	static private String searchTagForward(int index, String data) {
 		int endIndex = data.indexOf(">", index);
 		if ( endIndex < 0 )
-			System.out.println("===>>> searchTagForward TAG= NOT FOUND");
+			log.debug("===>>> searchTagForward TAG= NOT FOUND");
 		else {
-			System.out.println("===>>> searchTagForward TAG="+data.substring(index,endIndex+1));
+			log.debug("===>>> searchTagForward TAG={}", data.substring(index,endIndex+1));
 			return data.substring(index,endIndex+1);
 		}
 		return "";
@@ -128,9 +131,9 @@ public class TestWhiteListTagV2 {
 	static private String searchTagBackward(int index, String data) {
 		int beginIndex = data.lastIndexOf("<", index);
 		if ( beginIndex < 0 )
-			System.out.println("===>>> searchTagBackward TAG= NOT FOUND");
+			log.debug("===>>> searchTagBackward TAG= NOT FOUND");
 		else {
-			System.out.println("===>>> searchTagBackward TAG="+data.substring(beginIndex,index+1));
+			log.debug("===>>> searchTagBackward TAG={}", data.substring(beginIndex,index+1));
 			return data.substring(beginIndex,index+1);
 		}
 		return "";

@@ -18,6 +18,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.nsm.service.EgovNtwrkSvcMntrngService;
@@ -65,13 +66,9 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="네트워크서비스모니터링", order = 2120 ,gid = 90)
     @RequestMapping("/utl/sys/nsm/selectNtwrkSvcMntrngList.do")
 	public String selectNtwrkSvcMntrngList(@ModelAttribute("searchVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, ModelMap model) throws Exception{
-    	//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 		ntwrkSvcMntrngVO.setPageUnit(propertyService.getInt("pageUnit"));
 		ntwrkSvcMntrngVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -171,6 +168,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrngVO
 	 */
     @PostMapping("/utl/sys/nsm/selectNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String selectNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, ModelMap model) throws Exception{
     	NtwrkSvcMntrng ntwrkSvcMntrng = ntwrkSvcMntrngService.selectNtwrkSvcMntrng(ntwrkSvcMntrngVO);
 
@@ -208,6 +206,7 @@ public class EgovNtwrkSvcMntrngController {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("ntwrkSvcMntrngVO", ntwrkSvcMntrngVO);
@@ -320,6 +319,7 @@ public class EgovNtwrkSvcMntrngController {
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
 	@RequestMapping("/utl/sys/nsm/selectNtwrkSvcMntrngLogList.do")
+	@RequireAdmin
 	public String selectNtwrkSvcMntrngLogList(@ModelAttribute("searchVO") NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO, ModelMap model) throws Exception{
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -359,7 +359,6 @@ public class EgovNtwrkSvcMntrngController {
 			}
 
 			list.set(k, logVO);
-			//System.out.println(list.get(k).getCreatDt());
 		}
 
 		// 조회시작시
@@ -382,6 +381,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrngLogVO
 	 */
 	@PostMapping("/utl/sys/nsm/selectNtwrkSvcMntrngLog.do")
+	@RequireAdmin
 	public String selectNtwrkSvcMntrngLog(@ModelAttribute("ntwrkSvcMntrngLogVO") NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO, ModelMap model) throws Exception{
 		NtwrkSvcMntrngLogVO ntwrkSvcMntrngLog = ntwrkSvcMntrngService.selectNtwrkSvcMntrngLog(ntwrkSvcMntrngLogVO);
 		if(ntwrkSvcMntrngLog.getCreatDt() != null && !ntwrkSvcMntrngLog.getCreatDt().equals("")){

@@ -46,14 +46,17 @@ import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.bnr.service.BannerVO;
 import egovframework.com.uss.ion.bnr.service.EgovBannerService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 public class EgovBannerController {
 
     @Resource(name="egovMessageSource")
@@ -78,9 +81,9 @@ public class EgovBannerController {
 	 * @exception Exception
 	 */
     @RequestMapping("/uss/ion/bnr/selectBannerListView.do")
+    @RequireAdmin
     public String selectBannerListView() throws Exception {
-
-        return "egovframework/com/uss/ion/bnr/EgovBannerList";
+    	return "forward:/uss/ion/bnr/selectBannerList.do";
     }
 
 	/**
@@ -128,12 +131,13 @@ public class EgovBannerController {
 			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                   ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
-
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+		log.debug("getUserSe={}", _loginVO.getUserSe());
 
     	bannerVO.setBannerId(bannerId);
 
-    	model.addAttribute("bannerVO", egovBannerService.selectBanner(bannerVO));
+    	BannerVO stored = egovBannerService.selectBanner(bannerVO);
+    	model.addAttribute("bannerVO", stored);
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
     	return "egovframework/com/uss/ion/bnr/EgovBannerUpdt";
 	}
@@ -144,6 +148,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/bnr/addViewBanner.do")
+	@RequireAdmin
 	public String insertViewBanner(@ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        ModelMap model) throws Exception {
 
@@ -156,7 +161,6 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
@@ -173,7 +177,6 @@ public class EgovBannerController {
 
 	    	String uploadFolder = "";
 	    	String bannerImage = "";
-	    	String bannerImageFile = "";
 	    	String atchFileId = "";
 
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -188,7 +191,6 @@ public class EgovBannerController {
 	        	while (iter.hasNext()) {
 	        	    vo = iter.next();
 	        	    bannerImage = vo.getOrignlFileNm();
-	        	    bannerImageFile = vo.getStreFileNm();
 	        	}
 	    	}
 
@@ -212,7 +214,6 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @SuppressWarnings("unused")
 	@RequireAdmin
 	@PostMapping("/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
@@ -220,6 +221,7 @@ public class EgovBannerController {
 			                    BindingResult bindingResult,
                                 SessionStatus status,
                                 ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("bannerVO", bannerVO);
@@ -230,7 +232,6 @@ public class EgovBannerController {
 
 			String uploadFolder = "";
 			String bannerImage = "";
-			String bannerImageFile = "";
 			String atchFileId = "";
 
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
@@ -245,7 +246,6 @@ public class EgovBannerController {
 				while (iter.hasNext()) {
 					vo = iter.next();
 					bannerImage = vo.getOrignlFileNm();
-					bannerImageFile = vo.getStreFileNm();
 				}
 
 				if (vo == null) {
@@ -303,7 +303,8 @@ public class EgovBannerController {
 			                        SessionStatus status,
 			                        ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+		log.debug("getUserSe={}", _loginVO.getUserSe());
 
     	// 2026.03.23 kisa 보안점검 대응 조치
     	  if (ObjectUtils.isEmpty(bannerIds)) {
@@ -311,6 +312,9 @@ public class EgovBannerController {
 			return "forward:/uss/ion/bnr/selectBannerList.do";
 		  }
 		String [] strBannerIds = bannerIds.split(";");
+
+		for (String strBannerId : strBannerIds) {
+		}
 
 		for (String strBannerId : strBannerIds) {
 			bannerVO.setBannerId(strBannerId);
@@ -372,32 +376,6 @@ public class EgovBannerController {
 		model.addAttribute("bannerList", bannerVO.getBannerList());
 
 		return "egovframework/com/uss/ion/bnr/EgovBannerMainList";
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

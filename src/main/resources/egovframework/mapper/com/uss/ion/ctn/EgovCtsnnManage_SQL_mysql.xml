@@ -92,6 +92,7 @@
                   ctn.SANCTN_DT           AS sanctnDt        ,  
                   ctn.RETURN_RESN         AS returnResn      ,  
                   ctn.INFRML_SANCTN_ID    AS infrmlSanctnId  ,
+                  ctn.FRST_REGISTER_ID    AS frstRegisterId  ,
                   mst.USER_NM             AS usNm            ,
                  (select org.ORGNZT_NM from COMTNORGNZTINFO org where  org.ORGNZT_ID = mst.ORGNZT_ID)       AS orgnztNm    ,
                  (select mst1.USER_NM from COMVNUSERMASTER mst1 where  mst1.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,

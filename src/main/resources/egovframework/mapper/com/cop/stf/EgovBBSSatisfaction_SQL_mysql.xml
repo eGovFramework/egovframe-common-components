@@ -27,6 +27,7 @@
 		<result property="stsfdgCn" column="STSFDG_CN"/>
 		<result property="stsfdg" column="STSFDG"/>
 		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
 		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
 	</resultMap>
@@ -94,6 +95,7 @@
 			SELECT
 				a.STSFDG_NO, a.NTT_ID, a.BBS_ID, 
 				a.WRTER_ID, a.WRTER_NM, a.PASSWORD, a.STSFDG_CN, a.STSFDG, a.USE_AT,
+				a.FRST_REGISTER_ID,
 				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d %H:%i:%S') 
 				as FRST_REGIST_PNTTM,
 				b.USER_NM as FRST_REGISTER_NM

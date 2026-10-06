@@ -6,6 +6,7 @@
  *     수정일         수정자                   수정내용
  *     -------          --------        ---------------------------
  *   2009.02.13       이삼섭                  최초 생성
+ *   2026.07.09       EricSeokgon             지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 02. 13
@@ -70,11 +71,7 @@ public class EgovNumberUtil {
 		String searchStr = String.valueOf(searchInt);
 
 		// 특정숫자가 존재하는지 하여 위치값을 리턴한다. 없을 시 -1
-		if (sourceStr.indexOf(searchStr) == -1) {
-			return false;
-		} else {
-			return true;
-		}
+		return sourceStr.contains(searchStr);
 	}
 
 	/**
@@ -136,11 +133,15 @@ public class EgovNumberUtil {
 	/**
 	 * 체크할 숫자 중에서 숫자인지 아닌지 체크하는 기능
 	 * 숫자이면 True, 아니면 False를 반환한다
+	 * null 또는 빈 문자열은 False를 반환한다.
 	 * @param checkStr - 체크문자열
 	 * @return 숫자여부
 	 * @see
 	 */
 	public static Boolean getNumberValidCheck(String checkStr) {
+		if (checkStr == null || checkStr.isEmpty()) {
+			return false;
+		}
 
 		int i;
 		//String sourceStr = String.valueOf(sourceInt);
@@ -176,7 +177,7 @@ public class EgovNumberUtil {
 		String subject = String.valueOf(cnvrSrcNumber);
 		String object = String.valueOf(cnvrTrgtNumber);
 
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 

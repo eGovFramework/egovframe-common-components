@@ -2,6 +2,7 @@ package egovframework.com.cop.smt.dsm.web;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -28,11 +29,16 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.dsm.service.DiaryManageVO;
 import egovframework.com.cop.smt.dsm.service.EgovDiaryManageService;
+import egovframework.com.cop.smt.sim.service.EgovIndvdlSchdulManageService;
+import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -68,6 +74,9 @@ public class EgovDiaryManageController {
 	@Resource(name = "egovDiaryManageService")
 	private EgovDiaryManageService egovDiaryManageService;
 
+	@Resource(name = "egovIndvdlSchdulManageService")
+	private EgovIndvdlSchdulManageService egovIndvdlSchdulManageService;
+
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -80,24 +89,6 @@ public class EgovDiaryManageController {
 	private EgovFileMngUtil fileUtil;
 
 	/**
-	 * 일지 작성자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
-	 *
-	 * @param user 현재 로그인한 사용자
-	 * @param frstRegisterId 일지 작성자 ID(frstRegisterId)
-	 * @return 소유자이거나 관리자이면 true
-	 */
-	private boolean isOwner(LoginVO user, String frstRegisterId) {
-		if (user == null || user.getUniqId() == null) {
-			return false;
-		}
-		if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
-			return true;
-		}
-		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
-		return authorities != null && authorities.contains("ROLE_ADMIN");
-	}
-
-	/**
 	 * 일지관리 목록을 조회한다.
 	 * 
 	 * @param searchVO
@@ -105,12 +96,11 @@ public class EgovDiaryManageController {
 	 * @param diaryManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
-	 * @throws Exception
 	 */
 	@IncludedInfo(name = "일지관리", order = 340, gid = 40)
 	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageList.do")
 	public String egovDiaryManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, ModelMap model) {
 
 //		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
@@ -156,11 +146,10 @@ public class EgovDiaryManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageDetail"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageDetail.do")
 	public String egovDiaryManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, DiaryManageVO diaryManageVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -169,9 +158,9 @@ public class EgovDiaryManageController {
 		}
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 일지를 조회/삭제할 수 있다.
+		// 소유권(작성자) 검증 - 조회는 작성자 본인 또는 관리자, 삭제는 작성자 본인만 가능하다.
 		DiaryManageVO existingDiary = egovDiaryManageService.selectDiaryManageDetail(diaryManageVO);
-		if (existingDiary == null || !isOwner(loginVO, existingDiary.getFrstRegisterId())) {
+		if (existingDiary == null || !EgovAuthorizationHelper.isAdminOrOwner(existingDiary.getFrstRegisterId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -180,6 +169,22 @@ public class EgovDiaryManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			EgovAuthorizationHelper.assertOwner(existingDiary.getFrstRegisterId());
+
+			// 첨부파일 삭제 start....
+			// 삭제 폼은 atchFileId를 전송하지 않으므로, 소유권 검증을 위해 이미 조회해 둔 원본의
+			// 첨부파일ID를 사용한다. 형제 핸들러(mrm·wmr·djm)와 동일하게 레코드를 지우기 전에
+			// 첨부그룹을 미사용 처리한다.
+			String atchFileId = existingDiary.getAtchFileId();
+
+			if (atchFileId != null && !atchFileId.isEmpty()) {
+				FileVO fvo = new FileVO();
+				fvo.setAtchFileId(atchFileId);
+
+				fileMngService.deleteAllFileInf(fvo);
+			}
+			// 첨부파일 삭제 End.............
+
 			egovDiaryManageService.deleteDiaryManage(diaryManageVO);
 			sLocationUrl = "redirect:/cop/smt/dsm/EgovDiaryManageList.do";
 		} else {
@@ -198,13 +203,11 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModify"
-	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageModify.do")
 	public String diaryManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model, HttpServletRequest request) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -218,9 +221,8 @@ public class EgovDiaryManageController {
 
 		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정폼을 조회할 수 있다.
 		DiaryManageVO existingDiaryForModify = egovDiaryManageService.selectDiaryManageDetail(diaryManageVO);
-		if (existingDiaryForModify == null || !isOwner(loginVO, existingDiaryForModify.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		EgovAuthorizationHelper.assertOwner(existingDiaryForModify == null ? null : existingDiaryForModify.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, existingDiaryForModify.getAtchFileId());
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageModify";
 
@@ -248,14 +250,12 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModifyActor"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageModifyActor.do")
 	public String diaryManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
-			RedirectAttributes redirectAttributes)
-			throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -270,17 +270,20 @@ public class EgovDiaryManageController {
 		// 소유권(작성자) 검증 - 기존 일지 수정인 경우 작성자 본인 또는 관리자만 수정할 수 있다.
 		if (diaryManageVO.getDiaryId() != null && !diaryManageVO.getDiaryId().isEmpty()) {
 			DiaryManageVO existingDiary = egovDiaryManageService.selectDiaryManageDetail(diaryManageVO);
-			if (existingDiary == null || !isOwner(loginVO, existingDiary.getFrstRegisterId())) {
-				return "egovframework/com/cmm/error/accessDenied";
-			}
+			EgovAuthorizationHelper.assertOwner(existingDiary == null ? null : existingDiary.getFrstRegisterId());
+			// 첨부 그룹은 요청값이 아니라 소유권을 확인한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+			diaryManageVO.setAtchFileId(Objects.toString(existingDiary.getAtchFileId(), ""));
+		} else {
+			// 원본이 없으면 이어 붙일 기존 첨부도 없다
+			diaryManageVO.setAtchFileId("");
 		}
 
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-		redirectAttributes.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-		redirectAttributes.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageModify";
 
@@ -343,13 +346,11 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "/cop/smt/dsm/EgovDiaryManageRegist"
-	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@GetMapping("/cop/smt/dsm/EgovDiaryManageRegist.do")
 	public String diaryManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -383,14 +384,12 @@ public class EgovDiaryManageController {
 	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/DiaryManageRegistActor"
-	 * @throws Exception
 	 */
 	@PostMapping("/cop/smt/dsm/EgovDiaryManageRegistActor.do")
 	public String diaryManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
-			RedirectAttributes redirectAttributes)
-			throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model) {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -406,8 +405,8 @@ public class EgovDiaryManageController {
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-		redirectAttributes.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-		redirectAttributes.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageRegist";
 
@@ -419,6 +418,12 @@ public class EgovDiaryManageController {
 
 				return sLocationUrl;
 			}
+			// 연결할 일정은 본인이 등록한 일정만 (일정 선택 팝업에 없는 남의 일정 ID 를 넣어 일지 화면으로 내용을 보는 것 차단)
+			IndvdlSchdulManageVO schdulKey = new IndvdlSchdulManageVO();
+			schdulKey.setSchdulId(diaryManageVO.getSchdulId());
+			IndvdlSchdulManageVO linkedSchdul = EgovAuthorizationHelper.requireTarget(
+					egovIndvdlSchdulManageService.selectIndvdlSchdulManageDetailVO(schdulKey));
+			EgovAuthorizationHelper.assertAdminOrOwner(linkedSchdul.getFrstRegisterId());
 
 			// 첨부파일 관련 첨부파일ID 생성
 			List<FileVO> fvoList = null;

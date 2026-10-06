@@ -15,12 +15,14 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.vct.service.EgovVcatnManageService;
 import egovframework.com.uss.ion.vct.service.VcatnManageVO;
@@ -37,6 +39,7 @@ import jakarta.validation.Valid;
  * 상세내용
  * - 휴가관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 휴가관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 소유권(관리자 예외 없음): 휴가 신청 수정·삭제 = 신청자(applcntId), 승인·반려 = 지정 결재자(sanctnerId)
  * </pre>
  *
  * @author 이용
@@ -76,9 +79,9 @@ public class EgovVcatnManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/uss/ion/vct/EgovVcatnManageListView.do")
+	@RequireAdmin
 	public String selectVcatnManageListView() throws Exception {
-
-		return "egovframework/com/uss/ion/vct/EgovVcatnManageList";
+		return "forward:/uss/ion/vct/EgovVcatnManageList.do";
 	}
 
 	/**
@@ -153,6 +156,7 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/EgovVcatnManageDetail.do")
+	@RequireAdmin
 	public String selectVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -166,6 +170,10 @@ public class EgovVcatnManageController {
 		if (deteil == null) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
 			return "forward:/uss/ion/vct/EgovVcatnManageList.do";
+		}
+		if (sCmd.equals("updt")) {
+			// 휴가는 신청자(APPLCNT_ID) 본인만 수정할 수 있다.
+			EgovAuthorizationHelper.assertOwner(deteil.getApplcntId());
 		}
 
 		model.addAttribute("vcatnManageVO", deteil);
@@ -190,6 +198,7 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/EgovVcatnRegist.do")
+	@RequireAdmin
 	public String insertViewVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null) {
@@ -268,6 +277,7 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/insertVcatnManage.do")
+	@RequireAdmin
 	public String insertVcatnManage(@Valid @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult,
 			SessionStatus status, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -395,6 +405,9 @@ public class EgovVcatnManageController {
 					model.addAttribute("errorMessage", sTempMessage);
 
 					VcatnManageVO vcatnManageVO1 = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
+					if (vcatnManageVO1 == null) {
+						vcatnManageVO1 = new VcatnManageVO();
+					}
 					vcatnManageVO1.setApplcntId(user.getUniqId());
 					vcatnManageVO1.setApplcntNm(user.getName());
 					vcatnManageVO1.setOrgnztNm(user.getOrgnztNm());
@@ -416,6 +429,9 @@ public class EgovVcatnManageController {
 
 				VcatnManageVO vcatnManageVO1 = egovVcatnManageService
 						.selectIndvdlYrycManage(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+				if (vcatnManageVO1 == null) {
+					vcatnManageVO1 = new VcatnManageVO();
+				}
 				vcatnManageVO1.setApplcntId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 				vcatnManageVO1.setApplcntNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
 				vcatnManageVO1.setOrgnztNm(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
@@ -440,6 +456,7 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/updtVcatnManage.do")
+	@RequireAdmin
 	public String updtVcatnManage(@Valid @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 		String sTemp = null;
@@ -452,10 +469,16 @@ public class EgovVcatnManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+		// 휴가는 신청자(APPLCNT_ID) 본인만 수정할 수 있다. 수정 대상은 *Key 필드로 식별된다.
+		VcatnManageVO lookup = new VcatnManageVO();
+		lookup.setApplcntId(vcatnManageVO.getApplcntIdKey());
+		lookup.setVcatnSe(vcatnManageVO.getVcatnSeKey());
+		lookup.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgndeKey()));
+		lookup.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEnddeKey()));
+		VcatnManageVO stored = egovVcatnManageService.selectVcatnManage(lookup);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getApplcntId());
+
 		if (bindingResult.hasErrors()) {
-			System.out.println("#########################");
-			System.out.println("#########################");
-			System.out.println("#########################");
 
 			vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 			vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
@@ -489,6 +512,12 @@ public class EgovVcatnManageController {
 		if (user != null) {
 			// 221116 김혜준 2022 시큐어코딩 조치
 			vcatnManageVO.setFrstRegisterId(EgovStringUtil.isNullToString(user.getUniqId()));
+			// 2026.08.09 KISA 보안취약점 조치: 삭제(소유자 검증됨) 후 재등록되는 신규 레코드의 신청자ID를
+			// 폼 제출값이 아니라 삭제 대상 레코드의 소유자(applcntIdKey)로 강제한다. 그대로 두면 자기 신청
+			// 건을 지우고 신청자ID만 타인 것으로 재등록해 소유권을 위조하고 그 사람의 연차 잔여일수까지
+			// 건드릴 수 있었다. 메서드 앞에서 applcntIdKey 로 조회한 레코드의 신청자가 본인인지 검증하므로
+			// 이 경로는 자기 휴가에만 탄다.
+			vcatnManageVO.setApplcntId(EgovStringUtil.isNullToString(vcatnManageVO.getApplcntIdKey()));
 			sTemp = egovVcatnManageService.updtVcatnManage(vcatnManageVO);
 
 			if (sTemp.equals("01")) {
@@ -511,6 +540,9 @@ public class EgovVcatnManageController {
 				model.addAttribute("errorMessage", sTempMessage);
 
 				VcatnManageVO vcatnManageVO1 = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
+				if (vcatnManageVO1 == null) {
+					vcatnManageVO1 = new VcatnManageVO();
+				}
 				vcatnManageVO1.setApplcntId(user.getUniqId());
 				vcatnManageVO1.setApplcntNm(user.getName());
 				vcatnManageVO1.setOrgnztNm(user.getOrgnztNm());
@@ -537,10 +569,16 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/deleteVcatnManage.do")
+	@RequireAdmin
 	public String deleteVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, SessionStatus status,
 			ModelMap model) throws Exception {
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
+		// 휴가는 신청자(APPLCNT_ID) 본인만 삭제할 수 있다.
+		VcatnManageVO stored = egovVcatnManageService.selectVcatnManage(vcatnManageVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getApplcntId());
+		// 약식결재 삭제 대상은 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+		vcatnManageVO.setInfrmlSanctnId(stored.getInfrmlSanctnId());
 		egovVcatnManageService.deleteVcatnManage(vcatnManageVO);
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -604,6 +642,7 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/EgovVcatnConfm.do")
+	@RequireAdmin
 	public String selectVcatnConfm(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, ModelMap model) throws Exception {
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
@@ -614,6 +653,8 @@ public class EgovVcatnManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.select"));
 			return "forward:/uss/ion/vct/EgovVcatnConfmList.do";
 		}
+		// 지정된 승인권자(SANCTNER_ID)만 승인 화면을 연다
+		EgovAuthorizationHelper.assertOwner(vcatnManageVOTemp.getSanctnerId());
 
 		model.addAttribute("vcatnManageVO", vcatnManageVOTemp);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -628,7 +669,8 @@ public class EgovVcatnManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/vct/updtVcatnConfm.do")
-	public String updtVcatnManageConfm(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult, SessionStatus status,
+	@RequireAdmin
+	public String updtVcatnManageConfm(@Valid @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
@@ -641,6 +683,12 @@ public class EgovVcatnManageController {
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		// 지정된 승인권자(SANCTNER_ID)만 승인·반려한다. 조회 키는 승인 UPDATE 의 WHERE 와 같다
+		VcatnManageVO storedConfm = egovVcatnManageService.selectVcatnManage(vcatnManageVO);
+		EgovAuthorizationHelper.assertOwner(storedConfm == null ? null : storedConfm.getSanctnerId());
+		// 결재 갱신 대상은 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+		vcatnManageVO.setInfrmlSanctnId(storedConfm.getInfrmlSanctnId());
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("vcatnManageVO", vcatnManageVO);
@@ -663,6 +711,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage
 	 */
 	@PostMapping("/uss/ion/vct/EgovVcatnReturn.do")
+	@RequireAdmin
 	public String selectSanctnerListPopup(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, ModelMap model)
 			throws Exception {
 		return "egovframework/com/uss/ion/vct/EgovVcatnReturn";

@@ -1,7 +1,5 @@
 package egovframework.com.cmm.web;
 
-import egovframework.com.cmm.LoginVO;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -13,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -21,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovBrowserUtil;
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,15 +66,14 @@ public class EgovFileDownloadController {
 	 *
 	 * @param commandMap
 	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cmm/fms/FileDown.do")
 	public void cvplFileDownload(@RequestParam Map<String, Object> commandMap, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -86,13 +84,13 @@ public class EgovFileDownloadController {
 			// 불가능하도록 조치
 			String param_atchFileId = (String) commandMap.get("atchFileId");
 			if (param_atchFileId == null || param_atchFileId.isEmpty()) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 			param_atchFileId = param_atchFileId.replaceAll(" ", "+");
 			byte[] decodedBytes = Base64.getDecoder().decode(param_atchFileId);
 			String decodedString = cryptoService.decrypt(new String(decodedBytes));
 			if (decodedString == null || decodedString.isEmpty()) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 			String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
 			String decodedFileId = StringUtils.substringAfter(decodedString, "|");
@@ -107,7 +105,7 @@ public class EgovFileDownloadController {
 			boolean isSameSessionId = StringUtils.equals(decodedSessionId, sessionId);
 
 			if (!isSameSessionId) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 
 			FileVO fileVO = new FileVO();
@@ -115,11 +113,11 @@ public class EgovFileDownloadController {
 			fileVO.setFileSn(fileSn);
 			FileVO fvo = fileService.selectFileInf(fileVO);
 			if (fvo == null) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 			// 2026.07.13 KISA 보안취약점 조치 - fileSn을 atchFileId에 바인딩
 			if (fvo.getAtchFileId() == null || !fvo.getAtchFileId().equals(decodedFileId)) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 
 			File uFile = new File(fvo.getFileStreCours(), fvo.getStreFileNm());
@@ -160,7 +158,12 @@ public class EgovFileDownloadController {
 			} else {
 				response.setContentType("application/x-msdownload");
 
-				PrintWriter printwriter = response.getWriter(); // NOPMD - CloseResource
+				PrintWriter printwriter;
+				try {
+					printwriter = response.getWriter(); // NOPMD - CloseResource
+				} catch (IOException e) {
+					throw new BaseRuntimeException(e);
+				}
 
 				printwriter.println("<html>");
 				printwriter.println("<br><br><br><h2>Could not get file name:<br>"
@@ -175,32 +178,6 @@ public class EgovFileDownloadController {
 				printwriter.close();
 			}
 		}
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

@@ -70,12 +70,10 @@ public class EgovSndngMailRegistController {
 	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@IncludedInfo(name = "메일발송", order = 360, gid = 40)
 	@RequestMapping("/cop/ems/insertSndngMailView.do")
-	public String insertSndngMailView(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
-			throws Exception {
+	public String insertSndngMailView(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) {
 
 		model.addAttribute("resultInfo", sndngMailVO);
 		return "egovframework/com/cop/ems/EgovMailRegist";
@@ -87,13 +85,11 @@ public class EgovSndngMailRegistController {
 	 * @param multiRequest MultipartHttpServletRequest
 	 * @param sndngMailVO  SndngMailVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@PostMapping("/cop/ems/insertSndngMail.do")
 	public String insertSndngMail(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, BindingResult bindingResult, ModelMap model,
-			HttpServletRequest request)
-			throws Exception {
+			HttpServletRequest request) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("resultInfo", sndngMailVO);
@@ -154,11 +150,9 @@ public class EgovSndngMailRegistController {
 	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@PostMapping("/cop/ems/backSndngMailRegist.do")
-	public String backSndngMailRegist(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
-			throws Exception {
+	public String backSndngMailRegist(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) {
 
 		return "redirect:/cop/ems/selectSndngMailList.do";
 	}

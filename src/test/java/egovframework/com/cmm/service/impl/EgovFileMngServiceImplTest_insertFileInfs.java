@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.annotation.Resource;
-
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.test.EgovTestV1;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -28,12 +29,14 @@ public class EgovFileMngServiceImplTest_insertFileInfs extends EgovTestV1 {
 	private EgovIdGnrService egovFileIdGnrService;
 
 	@Test
-	public void test() throws Exception {
-		log.debug("test");
-
+	public void test() {
 		// given
 		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+		try {
+			fvo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		int maxFileSN = egovFileMngService.getMaxFileSN(fvo);
 		log.debug("maxFileSN={}", maxFileSN);
 

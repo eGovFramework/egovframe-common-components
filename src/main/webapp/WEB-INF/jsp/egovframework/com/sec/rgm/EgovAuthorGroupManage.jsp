@@ -209,7 +209,7 @@ function press() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorGroupList.do" method="post" modelAttribute="searchVO">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/rgm/EgovAuthorGroupList.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 권한그룹관리 목록 -->
 	<!-- 검색영역 -->

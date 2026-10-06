@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.uss.olh.qna.service.EgovQnaService;
 import egovframework.com.uss.olh.qna.service.QnaDefaultVO;
 import egovframework.com.uss.olh.qna.service.QnaVO;
@@ -150,16 +151,13 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/selectQnaDetail.do")
+	@RequireAdmin
 	public String selectQnaDetail(@RequestParam("qaId") String qaId, QnaVO qnaVO,
 			@ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model, HttpServletRequest request) throws Exception {
 
 		qnaVO.setQaId(qaId);
 
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
-
-		// 작성자 본인만 열람 가능하도록 소유권 검증
-		// (updateQna/deleteQna와 동일하게 EgovXssChecker.checkerUserXss로 통일)
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+		QnaVO vo = EgovAuthorizationHelper.requireTarget(egovQnaService.selectQnaDetail(qnaVO));
 
 		// 조회수 수정처리
 		egovQnaService.updateQnaInqireCo(qnaVO);
@@ -186,6 +184,7 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/insertQnaView.do")
+	@RequireAdmin
 	public String insertQnaView(@ModelAttribute("searchVO") QnaVO searchVO, QnaVO qnaVO, Model model) throws Exception {
 
 		// 인증여부 체크
@@ -221,6 +220,7 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/insertQna.do")
+	@RequireAdmin
 	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @Valid @ModelAttribute("qnaVO") QnaVO qnaVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -257,10 +257,11 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/updateQnaView.do")
+	@RequireAdmin
 	public String updateQnaView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
 
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
+		QnaVO vo = EgovAuthorizationHelper.requireTarget(egovQnaService.selectQnaDetail(qnaVO));
 
 		// 작성 비밀번호를 얻는다.
 //		String writngPassword = vo.getWritngPassword();
@@ -283,6 +284,7 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/updateQna.do")
+	@RequireAdmin
 	public String updateQna(HttpServletRequest request, @ModelAttribute("searchVO") QnaVO searchVO,
 			@Valid @ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult) throws Exception {
 
@@ -291,20 +293,6 @@ public class EgovQnaController {
 			return "egovframework/com/uss/olh/qna/EgovQnaUpdt";
 		}
 
-		// --------------------------------------------------------------------------------------------
-		// @ XSS 사용자권한체크 START
-		// param1 : 사용자고유ID(uniqId,esntlId)
-		// --------------------------------------------------------
-		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-		// step1 DB에서 해당 게시물의 uniqId 조회
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
-
-		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
-		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-		// --------------------------------------------------------
-		// @ XSS 사용자권한체크 END
-		// --------------------------------------------------------------------------------------------
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -333,24 +321,10 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/deleteQna.do")
+	@RequireAdmin
 	public String deleteQna(HttpServletRequest request, QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO)
 			throws Exception {
 
-		// --------------------------------------------------------------------------------------------
-		// @ XSS 사용자권한체크 START
-		// param1 : 사용자고유ID(uniqId,esntlId)
-		// --------------------------------------------------------
-		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-
-		// step1 DB에서 해당 게시물의 uniqId 조회
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
-
-		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
-		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-		// --------------------------------------------------------
-		// @ XSS 사용자권한체크 END
-		// --------------------------------------------------------------------------------------------
 
 		egovQnaService.deleteQna(qnaVO);
 
@@ -403,6 +377,7 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/qna/selectQnaAnswerDetail.do")
+	@RequireAdmin
 	public String selectQnaAnswerDetail(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -422,6 +397,7 @@ public class EgovQnaController {
 	 * @return "/uss/olh/qna/EgovQnaAnswerUpdt"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/qna/updateQnaAnswerView.do")
 	public String updateQnaAnswerView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
 			throws Exception {
@@ -447,6 +423,7 @@ public class EgovQnaController {
 	 * @return "forward:/uss/olh/qnm/selectQnaAnswerList.do"
 	 * @throws Exception
 	 */
+	@RequireAdmin
 	@PostMapping("/uss/olh/qna/updateQnaAnswer.do")
 	public String updateQnaAnswer(@Valid QnaVO qnaVO, BindingResult bindingResult,
 			 @ModelAttribute("searchVO") QnaVO searchVO,

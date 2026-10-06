@@ -1,9 +1,5 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import jakarta.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
@@ -16,18 +12,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovBBSMasterDAOTest_AAA_Configuration.class })
-public class EgovBBSMasterDAOTest_insertBBSMasterInf extends EgovTestV1 {
+class EgovBBSMasterDAOTest_insertBBSMasterInf extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
 
-	@Resource(name = "egovBBSMstrIdGnrService")
+	@Autowired
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 	@Test
-	public void test() {
-		log.debug("test");
-
+	void insertBBSMasterInf() {
 		// given
 		BoardMaster boardMaster = new BoardMaster();
 		try {
@@ -37,14 +31,8 @@ public class EgovBBSMasterDAOTest_insertBBSMasterInf extends EgovTestV1 {
 		}
 
 		// when
-		boolean result = false;
-		try {
-			egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-		
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+
 		boardMaster.setBbsTyCode("BBST01"); // COM101 BBST01 통합게시판
 		boardMaster.setBbsNm("");
 		boardMaster.setBbsIntrcn("");
@@ -59,7 +47,6 @@ public class EgovBBSMasterDAOTest_insertBBSMasterInf extends EgovTestV1 {
 		boardMaster.setBlogAt("");
 
 		// then
-		assertEquals(result, true);
 	}
 
 }

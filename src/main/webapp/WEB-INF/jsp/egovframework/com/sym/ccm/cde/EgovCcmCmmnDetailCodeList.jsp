@@ -71,6 +71,7 @@ function fn_egov_regist_codedetail(){
 <body onload="fn_egov_init()">
 
 <form name="CcmDeCodeForm" action="${pageContext.request.contextPath}/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do" method="post" onsubmit="fn_egov_search_code(); return false;"> 
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	

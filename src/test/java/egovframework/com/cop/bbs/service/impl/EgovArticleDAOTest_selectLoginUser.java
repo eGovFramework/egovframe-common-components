@@ -2,8 +2,7 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import jakarta.annotation.Resource;
-
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.jupiter.api.Test;
@@ -19,37 +18,28 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectLoginUser extends EgovTestV1 {
+class EgovArticleDAOTest_selectLoginUser extends EgovTestV1 {
 
-	@Resource(name = "egovBBSMstrIdGnrService")
-	private EgovIdGnrService egovBBSMstrIdGnrService;
-
-	@Resource(name = "egovNttIdGnrService")
-	private EgovIdGnrService egovNttIdGnrService;
-
-	@Resource(name = "egovBlogIdGnrService")
+	@Autowired
 	private EgovIdGnrService egovBlogIdGnrService;
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
-	
+
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
-	
+
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
-//	@Commit
-	public void test() throws Exception {
-		log.debug("test");
-
+	void selectLoginUser() {
 		// given
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 //		Blog blog = insertBlogMaster(loginVO);
 		Blog blog = egovArticleDAOTest_AaaTestData.insertBlogMaster(loginVO);
-		
+
 		BoardVO boardVO = new BoardVO();
 		boardVO.setFrstRegisterId(blog.getFrstRegisterId());
 		boardVO.setBlogId(blog.getBlogId());
@@ -62,9 +52,13 @@ public class EgovArticleDAOTest_selectLoginUser extends EgovTestV1 {
 		assertEquals(loginUser, 1);
 	}
 
-	Blog insertBlogMaster(LoginVO loginVO) throws FdlException {
+	Blog insertBlogMaster(LoginVO loginVO) {
 		Blog blog = new Blog();
-		blog.setBlogId(egovBlogIdGnrService.getNextStringId());
+		try {
+			blog.setBlogId(egovBlogIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 //		blog.setBbsId(""); // 게시판 ID
 		blog.setBlogIntrcn("test 블로그 소개");
 		blog.setBlogNm("test 블로그 명");

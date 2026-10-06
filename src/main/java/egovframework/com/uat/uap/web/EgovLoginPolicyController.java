@@ -29,11 +29,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uap.service.EgovLoginPolicyService;
 import egovframework.com.uat.uap.service.LoginPolicy;
@@ -56,6 +58,7 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uat/uap/selectLoginPolicyListView.do")
+	@RequireAdmin
 	public String selectLoginPolicyListView() throws Exception {
 		return "egovframework/com/uat/uap/EgovLoginPolicyList";
 	}
@@ -122,11 +125,12 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/addLoginPolicyView.do")
+	@RequireAdmin
 	public String insertLoginPolicyView(@RequestParam("emplyrId") String emplyrId,
                                         @ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO,
                                          ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		loginPolicyVO.setEmplyrId(emplyrId);
@@ -143,9 +147,11 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/addLoginPolicy.do")
+	@RequireAdmin
 	public String insertLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("loginPolicyVO", loginPolicy);
@@ -158,10 +164,11 @@ public class EgovLoginPolicyController {
 			egovLoginPolicyService.insertLoginPolicy(loginPolicy);
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 
-			model.addAttribute("emplyrId", loginPolicy.getEmplyrId());
-			model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
-			model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
-			model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+			// 2026.08.25 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+			redirectAttributes.addAttribute("emplyrId", loginPolicy.getEmplyrId());
+			redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
 
 			return "redirect:/uat/uap/getLoginPolicy.do";
 		}
@@ -173,9 +180,11 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/updtLoginPolicy.do")
+	@RequireAdmin
 	public String updateLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("loginPolicyVO", loginPolicy);
@@ -187,9 +196,9 @@ public class EgovLoginPolicyController {
 			egovLoginPolicyService.updateLoginPolicy(loginPolicy);
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 
-			model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
-			model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
-			model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+			redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
 
 			return "redirect:/uat/uap/selectLoginPolicyList.do";
 		}
@@ -201,45 +210,21 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uat/uap/removeLoginPolicy.do")
+	@RequireAdmin
 	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+
 
 		egovLoginPolicyService.deleteLoginPolicy(loginPolicy);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 
-		model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
-		model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
-		model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+		redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
 
 		return "redirect:/uat/uap/selectLoginPolicyList.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

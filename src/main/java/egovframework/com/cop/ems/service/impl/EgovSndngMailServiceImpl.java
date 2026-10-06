@@ -45,11 +45,9 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 	 * 메일을 발송한다
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	@SuppressWarnings("unused")
-	public boolean sndngMail(SndngMailVO sndngMailVO) throws Exception {
+	public boolean sndngMail(SndngMailVO sndngMailVO) {
 
 		String recptnPerson = (sndngMailVO.getRecptnPerson() == null) ? "" : sndngMailVO.getRecptnPerson(); // 수신자
 		String subject = (sndngMailVO.getSj() == null) ? "" : sndngMailVO.getSj(); // 메일제목
@@ -76,9 +74,6 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 				// 메일을 전송합니다
 				egovMultiPartEmail.send(recptnPerson, subject, emailCn);
 			}
-
-			Throwable t = new Throwable();
-
 		} catch (EmailException ex) {
 			sndngMailVO.setSndngResultCode("F"); // 발송결과 실패
 			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.

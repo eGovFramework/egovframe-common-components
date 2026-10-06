@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -46,6 +47,7 @@ import jakarta.validation.Valid;
  *   2018.08.09  신용호          X-XSS 관련 크롬에서 오탐되는 부분 수정
  *   2018.09.10  신용호          selectMenuCreatManagList 불필요한 로직 제거
  *   2025.07.17  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.09  EricSeokgon      PMD UseCollectionIsEmpty: size() == 0 대신 isEmpty() 사용
  *
  *      </pre>
  */
@@ -112,7 +114,7 @@ public class EgovMenuCreateManageController {
 		 * searchVO.setSearchKeyword(vo.getAuthorCode()); } }
 		 */
 		List<EgovMap> resultList = menuCreateManageService.selectMenuCreatManagList(searchVO);
-		if (resultList.size() == 0) {
+		if (resultList.isEmpty()) {
 			resultMsg = egovMessageSource.getMessage("info.nodata.msg");
 		}
 		model.addAttribute("resultList", resultList);
@@ -132,6 +134,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSelect.do")
+	@RequireAdmin
 	public String selectMenuCreatList(@ModelAttribute MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -155,6 +158,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mcm/EgovMenuCreatInsert.do")
+	@RequireAdmin
 	public String insertMenuCreatList(@RequestParam("checkedAuthorForInsert") String checkedAuthorForInsert,
 			@RequestParam("checkedMenuNoForInsert") String checkedMenuNoForInsert,
 			@Valid @ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -189,6 +193,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSiteMapSelect.do")
+	@RequireAdmin
 	public String selectMenuCreatSiteMap(@ModelAttribute("menuSiteMapVO") MenuSiteMapVO menuSiteMapVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -235,13 +240,8 @@ public class EgovMenuCreateManageController {
 	 * null ? "" :
 	 * EgovStringUtil.isNullToString(EgovMenuCreateManageController.class.
 	 * getProtectionDomain().getCodeSource().getLocation().getPath());
-	 * //System.out.println("===>>> currentPath = "+currentPath); String path =
-	 * currentPath.substring(0, currentPath.lastIndexOf("WEB-INF"));
 	 * menuSiteMapVO.setTmpRootPath(path);
 	 * menuSiteMapVO.setBndeFilePath("/html/egovframework/com/sym/mnu/mcm/");
-	 * //System.out.println("===>>> path = "+path);
-	 * //System.out.println("===>>> menuSiteMapVO.getMapCreatId() = "+menuSiteMapVO.
-	 * getMapCreatId());
 	 * 
 	 * // 사이트맵 파일 생성 위치 지정 if ("WINDOWS".equals(Globals.OS_TYPE)) { // menuSiteMapVO
 	 * // .setTmp_rootPath("D:/egovframework/workspace/egovcmm/src/main/webapp" //
@@ -271,6 +271,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mcm/EgovSiteMap.do")
+	@RequireAdmin
 	public String selectSiteMap(@ModelAttribute("menuCreatVO") MenuSiteMapVO menuSiteMapVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -287,7 +288,7 @@ public class EgovMenuCreateManageController {
 		model.addAttribute("list_menulist", resultList);
 
 		model.addAttribute("resultVO", menuSiteMapVO);
-		return "egovframework/com/sym/mnu/mcm/EgovSiteMap";
+		return "egovframework/com/sym/mnu/stm/EgovSiteMap";
 	}
 
 }

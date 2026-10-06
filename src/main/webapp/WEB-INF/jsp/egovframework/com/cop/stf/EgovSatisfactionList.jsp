@@ -182,7 +182,7 @@ function fn_egov_select_satisfactionList(pageNo) {
 	<!-- paging navigation -->
 		<div class="paging">
 			<ul>
-			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_commentList"/>
+			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_satisfactionList"/>
 			</ul>
 		</div>
 

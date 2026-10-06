@@ -87,7 +87,7 @@ function fn_egov_inqire_cert() {
 }
 
 function fn_egov_dn_info_setting(dn) {
-	var frm = document.userManageVO;
+	var frm = document.emplyrManageVO;
 
 	frm.subDn.value = dn;
 }
@@ -141,7 +141,7 @@ function fn_egov_dn_info_setting(dn) {
 		<tr>
 			<th><label for="emplyrNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="emplyrNm" title="${title} ${inputTxt}" size="50" maxlength="60" />
+				<form:input path="emplyrNm" title="${title} ${inputTxt}" size="50" maxlength="50" />
 				<div><form:errors path="emplyrNm" cssClass="error" /></div> 
 			</td>
 		</tr>
@@ -233,9 +233,9 @@ function fn_egov_dn_info_setting(dn) {
 		<tr>
 			<th><label for="areaNo">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <form:input path="areaNo" id="areaNo" title="${title} ${inputSelect}" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="homemiddleTelno" id="homemiddleTelno" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="homeendTelno" id="homeendTelno"  size="5" maxlength="5" style="width:40px;"/>
+                    <form:input path="areaNo" id="areaNo" title="${title} ${inputSelect}" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="homemiddleTelno" id="homemiddleTelno" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="homeendTelno" id="homeendTelno"  size="5" maxlength="4" style="width:40px;"/>
                     <div><form:errors path="areaNo" cssClass="error" /></div>
                     <div><form:errors path="homemiddleTelno" cssClass="error" /></div>
                     <div><form:errors path="homeendTelno" cssClass="error" /></div>
@@ -363,7 +363,7 @@ function fn_egov_dn_info_setting(dn) {
 		<span class="btn_s"><a href="<c:url value='/uss/umt/EgovEmplyrManage.do' />"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 		<button class="btn_s2" onClick="fnPasswordMove(); return false;" title="<spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /></button>
 		<button class="btn_s2" onClick="fnLockIncorrect(); return false;" title="<spring:message code="comUssUmt.common.lockAtBtn" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.common.lockAtBtn" /></button>
-		<button class="btn_s2" onClick="document.userManageVO.reset(); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
+		<button class="btn_s2" onClick="document.emplyrManageVO.reset(); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
 	</div><div style="clear:both;"></div>
 
 </div>

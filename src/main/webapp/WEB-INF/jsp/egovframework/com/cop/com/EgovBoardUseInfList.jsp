@@ -70,6 +70,7 @@
 <div id="border" style="width:730px">
 
 <form:form name="frm" modelAttribute="searchVO" method="post" action = "<c:url value='/cop/com/selectBBSUseInf.do'/>">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="bbsId" >
 <input type="hidden" name="trgetId" >

@@ -169,9 +169,6 @@
 	
 		<!-- 하단 버튼 -->
 		<div class="btn">
-			<c:if test="${result.authorCode = 'ROLE_SYM'}"><!-- 사용하지 않음 -->
-			  	<!-- <input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fnModify(); return false;"> --><!-- 수정 -->
-		  	</c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="comDamMgm.comDamManagementDetail.disposal"/>" onclick="fnModify(); return false;" /><!-- 폐기 -->
 		  	<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fnList(); return false;" /><!-- 목록 -->
 		</div>

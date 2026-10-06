@@ -62,9 +62,9 @@ public class TestCopyCollections {
 			log.debug("UnsupportedOperationException, 지원되지 않는 작업 예외");
 			log.debug("unmodifiableList, 수정 불가능한 목록");
 			log.debug(supplierNames.get(0));
-			log.debug("{}", supplierNames.hashCode());
+			log.debug(String.valueOf(supplierNames.hashCode()));
 			log.debug(copyNames.get(0));
-			log.debug("{}", copyNames.hashCode());
+			log.debug(String.valueOf(copyNames.hashCode()));
 		}
 
 		// 원본 리스트와 unmodifiableList는 같은 해시코드를 가짐

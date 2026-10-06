@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
+class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
@@ -24,10 +24,7 @@ public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
-//	@Commit
-	public void test() {
-		log.debug("test");
-
+	void selectBlogListManager() {
 		// given
 		BoardVO vo = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
 
@@ -36,7 +33,7 @@ public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 //		vo.setSearchWrd(vo.getSearchWrd());
 
 		// when
-		List<BoardMasterVO> blogNmList = (List<BoardMasterVO>) egovArticleDAO.selectBlogListManager(vo);
+		List<BoardMasterVO> blogNmList = egovArticleDAO.selectBlogListManager(vo);
 		log.debug("blogNmList={}", blogNmList);
 
 		// then
@@ -44,10 +41,7 @@ public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 	}
 
 	@Test
-//	@Commit
-	public void test2() throws Exception {
-		log.debug("test");
-
+	void selectBlogListManager2() {
 		// given
 		BoardVO vo = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
 

@@ -116,6 +116,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form:form name="adbk" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/adb/UpdateAddressBook.do"  method="post" onSubmit="fn_egov_update_adbkInf(document.forms[0]); return false;"> 
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <input type = "hidden" name = "userId" value = '<c:out value="${adbkUserVO.userId}" />'>
 <input type = "hidden" name = "userNm" value = '<c:out value="${adbkUserVO.userNm}" />'>

@@ -1,5 +1,7 @@
 package egovframework.com.sym.ccm.adc.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.sym.ccm.adc.service.AdministCode;
 import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 import egovframework.com.sym.ccm.adc.service.EgovCcmAdministCodeManageService;
@@ -63,6 +66,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeRemove.do")
+	@RequireAdmin
 	public String deleteAdministCode(@ModelAttribute("loginVO") LoginVO loginVO, AdministCode administCode,
 			ModelMap model) throws Exception {
 		administCodeManageService.deleteAdministCode(administCode);
@@ -79,6 +83,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeRegistView.do")
+	@RequireAdmin
 	public String insertAdministCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("administCode") AdministCode administCode, ModelMap model) throws Exception {
 
@@ -97,6 +102,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeRegist.do")
+	@RequireAdmin
 	public String insertAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -129,6 +135,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeDetail.do")
+	@RequireAdmin
 	public String selectAdministCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO, AdministCode administCode,
 			ModelMap model) throws Exception {
 		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
@@ -182,6 +189,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodePopup.do")
+	@RequireAdmin
 	public String callAdministCodePopup(ModelMap model) throws Exception {
 		return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodePopup";
 	}
@@ -196,6 +204,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCode.do")
+	@RequireAdmin
 	public String selectAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") AdministCodeVO searchVO, ModelMap model) throws Exception {
 		/** EgovPropertyService.sample */
@@ -232,6 +241,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeModifyView.do")
+	@RequireAdmin
 	public String updateAdministCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("administCode") AdministCode administCode, ModelMap model) throws Exception {
 		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
@@ -255,15 +265,17 @@ public class EgovCcmAdministCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeModify.do")
+	@RequireAdmin
 	public String updateAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+
+		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeModify";
 		}
 
-		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
 		if (vo != null) {
 			model.addAttribute("administCode", vo);
 
@@ -280,13 +292,11 @@ public class EgovCcmAdministCodeManageController {
 	 * @return
 	 */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap) {
-		String ret = "";
-		for (Object key : commandMap.keySet()) {
-			Object value = commandMap.get(key);
-
-			ret += "key:" + key.toString() + " value:" + value.toString();
+		StringBuilder ret = new StringBuilder();
+		for (Map.Entry<?, ?> entry : commandMap.entrySet()) {
+			ret.append("key:").append(entry.getKey()).append(" value:").append(entry.getValue());
 		}
-		return ret;
+		return ret.toString();
 	}
 
 }

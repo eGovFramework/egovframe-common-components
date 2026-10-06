@@ -1,18 +1,27 @@
 package egovframework.com.cop.bbs.service;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.Test;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
-public class BlogTest_JavaParser {
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+class BlogTest_JavaParser {
 
 	@Test
-	public void test() throws Exception {
-		CompilationUnit cu = StaticJavaParser.parse(Paths.get(
-				"C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\Blog.java"));
+	void test() {
+		CompilationUnit cu;
+		try {
+			cu = StaticJavaParser.parse(Paths.get("src/main/java/egovframework/com/cop/bbs/service/Blog.java"));
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
+		}
 
 		StringBuffer sb = new StringBuffer();
 
@@ -37,7 +46,7 @@ public class BlogTest_JavaParser {
 			});
 		});
 
-		System.out.println(sb);
+		log.debug(sb.toString());
 	}
 
 }

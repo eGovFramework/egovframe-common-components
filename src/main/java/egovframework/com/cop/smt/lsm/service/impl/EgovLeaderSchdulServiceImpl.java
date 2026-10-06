@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +67,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param emplyrVO
 	 */
 	@Override
-	public Map<String, Object> selectEmplyrList(EmplyrVO emplyrVO) throws Exception {
+	public Map<String, Object> selectEmplyrList(EmplyrVO emplyrVO) {
 		List<EmplyrVO> result = leaderSchdulDAO.selectEmplyrList(emplyrVO);
 		int cnt = leaderSchdulDAO.selectEmplyrListCnt(emplyrVO);
 
@@ -86,7 +88,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSchdulVo
 	 */
 	@Override
-	public List<LeaderSchdulVO> selectLeaderSchdulList(LeaderSchdulVO leaderSchdulVo) throws Exception {
+	public List<LeaderSchdulVO> selectLeaderSchdulList(LeaderSchdulVO leaderSchdulVo) {
 		return leaderSchdulDAO.selectLeaderSchdulList(leaderSchdulVo);
 	}
 
@@ -99,7 +101,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSchdulVO
 	 */
 	@Override
-	public LeaderSchdulVO selectLeaderSchdul(LeaderSchdulVO leaderSchdulVO) throws Exception {
+	public LeaderSchdulVO selectLeaderSchdul(LeaderSchdulVO leaderSchdulVO) {
 		return leaderSchdulDAO.selectLeaderSchdul(leaderSchdulVO);
 	}
 
@@ -111,7 +113,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSchdul
 	 */
 	@Override
-	public void updateLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception {
+	public void updateLeaderSchdul(LeaderSchdul leaderSchdul) {
 		leaderSchdulDAO.updateLeaderSchdul(leaderSchdul);
 		leaderSchdulDAO.deleteLeaderSchdulDe(leaderSchdul);
 
@@ -126,8 +128,13 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSchdul
 	 */
 	@Override
-	public void insertLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception {
-		String schdulID = idgenService.getNextStringId();
+	public void insertLeaderSchdul(LeaderSchdul leaderSchdul) {
+		String schdulID;
+		try {
+			schdulID = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		leaderSchdul.setSchdulId(schdulID);
 
 		leaderSchdulDAO.insertLeaderSchdul(leaderSchdul);
@@ -142,7 +149,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSchdul
 	 */
-	private void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) throws Exception {
+	private void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) {
 		leaderSchdul.setSchdulDe(leaderSchdul.getSchdulBgndeYYYMMDD().replaceAll("-", ""));
 		// SCHEDUL_DE 설정
 		if (leaderSchdul.getSchdulBgndeYYYMMDD().equals(leaderSchdul.getSchdulEnddeYYYMMDD())
@@ -249,7 +256,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSchdul
 	 */
 	@Override
-	public void deleteLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception {
+	public void deleteLeaderSchdul(LeaderSchdul leaderSchdul) {
 		leaderSchdulDAO.deleteLeaderSchdulDe(leaderSchdul);
 		leaderSchdulDAO.deleteLeaderSchdul(leaderSchdul);
 	}
@@ -263,7 +270,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSttusVO
 	 */
 	@Override
-	public Map<String, Object> selectLeaderSttusList(LeaderSttusVO leaderSttusVO) throws Exception {
+	public Map<String, Object> selectLeaderSttusList(LeaderSttusVO leaderSttusVO) {
 		List<LeaderSttusVO> result = leaderSchdulDAO.selectLeaderSttusList(leaderSttusVO);
 		int cnt = leaderSchdulDAO.selectLeaderSttusListCnt(leaderSttusVO);
 
@@ -284,7 +291,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSttusVO
 	 */
 	@Override
-	public LeaderSttusVO selectLeaderSttus(LeaderSttusVO leaderSttusVO) throws Exception {
+	public LeaderSttusVO selectLeaderSttus(LeaderSttusVO leaderSttusVO) {
 		return leaderSchdulDAO.selectLeaderSttus(leaderSttusVO);
 	}
 
@@ -296,7 +303,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSttus
 	 */
 	@Override
-	public void updateLeaderSttus(LeaderSttus leaderSttus) throws Exception {
+	public void updateLeaderSttus(LeaderSttus leaderSttus) {
 		leaderSchdulDAO.updateLeaderSttus(leaderSttus);
 	}
 
@@ -308,7 +315,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSttus
 	 */
 	@Override
-	public void insertLeaderSttus(LeaderSttus leaderSttus) throws Exception {
+	public void insertLeaderSttus(LeaderSttus leaderSttus) {
 		leaderSchdulDAO.insertLeaderSttus(leaderSttus);
 	}
 
@@ -321,7 +328,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSttus
 	 */
 	@Override
-	public int selectLeaderSttusCheck(LeaderSttus leaderSttus) throws Exception {
+	public int selectLeaderSttusCheck(LeaderSttus leaderSttus) {
 		return leaderSchdulDAO.selectLeaderSttusCheck(leaderSttus);
 	}
 
@@ -333,7 +340,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param leaderSttus
 	 */
 	@Override
-	public void deleteLeaderSttus(LeaderSttus leaderSttus) throws Exception {
+	public void deleteLeaderSttus(LeaderSttus leaderSttus) {
 		leaderSchdulDAO.deleteLeaderSttus(leaderSttus);
 	}
 

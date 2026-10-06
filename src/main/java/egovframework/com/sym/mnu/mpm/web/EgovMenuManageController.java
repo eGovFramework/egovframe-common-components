@@ -1,5 +1,7 @@
 package egovframework.com.sym.mnu.mpm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -93,6 +95,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuManageListDetailSelect.do")
+	@RequireAdmin
 	public String selectMenuManage(@RequestParam("req_menuNo") String searchKeyword,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -159,6 +162,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuManageListDelete.do")
+	@RequireAdmin
 	public String deleteMenuManageList(@RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel,
 			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -171,12 +175,18 @@ public class EgovMenuManageController {
 		String resultMsg = "";
 
 		String[] delMenuNo = checkedMenuNoForDel.split(",");
-		if (delMenuNo.length != 0) {
-			menuManageVO.setMenuNo(Integer.parseInt(delMenuNo[0]));
+		boolean upperMenuExist = false;
+		// 단건 삭제와 동일하게, 지울 메뉴마다 하위 메뉴 존재 여부를 확인한다.
+		for (String menuNo : delMenuNo) {
+			menuManageVO.setMenuNo(Integer.parseInt(menuNo));
+			if (menuManageService.selectUpperMenuNoByPk(menuManageVO) != 0) {
+				upperMenuExist = true;
+				break;
+			}
 		}
 
 		// 2022.11.11 시큐어코딩 처리
-		if (menuManageService.selectUpperMenuNoByPk(menuManageVO) != 0) {
+		if (upperMenuExist) {
 			resultMsg = egovMessageSource.getMessage("fail.common.delete.upperMenuExist");
 			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageSelect.do";
 		} else if (delMenuNo.length == 0) {
@@ -200,6 +210,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuRegistInsert.do")
+	@RequireAdmin
 	public String insertMenuManage(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -247,6 +258,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do")
+	@RequireAdmin
 	public String updateMenuManage(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -259,7 +271,10 @@ public class EgovMenuManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageListDetailSelect.do";
+			// 검증 실패 시 수정 폼을 다시 그린다. 입력값과 오류 메시지는 menuManageVO로 유지된다.
+			// 형제 핸들러(insertMenuManage)와 동일하게 뷰 이름을 직접 반환한다 —
+			// 재표시 forward 대상 selectMenuManage는 수정 폼이 보내지 않는 req_menuNo를 필수로 요구한다.
+			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuDetailSelectUpdt";
 			return sLocationUrl;
 		}
 		ComDefaultVO searchVO = new ComDefaultVO();
@@ -284,6 +299,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuManageDelete.do")
+	@RequireAdmin
 	public String deleteMenuManage(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -338,6 +354,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuListInsert.do")
+	@RequireAdmin
 	public String insertMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -381,6 +398,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuListUpdt.do")
+	@RequireAdmin
 	public String updateMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -418,6 +436,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuListDelete.do")
+	@RequireAdmin
 	public String deleteMenuList(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -444,6 +463,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListSelectMvmn.do")
+	@RequireAdmin
 	public String selectMenuListMvmn(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -466,6 +486,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListSelectMvmnNew.do")
+	@RequireAdmin
 	public String selectMenuListMvmnNew(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -490,6 +511,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuBndeAllDelete.do")
+	@RequireAdmin
 	public String menuBndeAllDelete(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -515,6 +537,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuBndeRegist.do")
+	@RequireAdmin
 	public String menuBndeRegist(@RequestParam Map<?, ?> commandMap, final HttpServletRequest request,
 			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model) throws Exception {
 		String sLocationUrl = null;

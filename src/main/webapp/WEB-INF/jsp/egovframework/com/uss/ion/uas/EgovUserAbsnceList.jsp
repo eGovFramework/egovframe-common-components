@@ -50,13 +50,17 @@ function fn_egov_search_userAbsnce(){
  ******************************************************** */
 function fn_egov_inquire_userAbsncedetail(userId, regYn) {
 	if(regYn == 'N') {
-        if(confirm('<spring:message code="ussIonUas.userAbsnceList.goToregisPage" />')) {/* 등록된 사용자부재 정보가 없습니다. 등록페이지로 이동하시겠습니까? */
-        	location.replace("<c:url value='/uss/ion/uas/addViewUserAbsnce.do'/>?userId="+userId);
-        } else {
+        if(!confirm('<spring:message code="ussIonUas.userAbsnceList.goToregisPage" />')) {/* 등록된 사용자부재 정보가 없습니다. 등록페이지로 이동하시겠습니까? */
             return false;
         }
+        document.userAbsnceForm.action = "<c:url value='/uss/ion/uas/addViewUserAbsnce.do'/>";
+	} else {
+        document.userAbsnceForm.action = "<c:url value='/uss/ion/uas/getUserAbsnce.do'/>";
 	}
-	return true;
+	// 대상 화면이 POST 전용이라 링크 이동(GET) 대신 폼으로 보낸다
+	document.userAbsnceForm.userId.value = userId;
+	document.userAbsnceForm.submit();
+	return false;
 }
 </script>
 </head>

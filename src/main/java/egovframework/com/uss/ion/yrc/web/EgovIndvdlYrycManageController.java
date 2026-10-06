@@ -2,15 +2,14 @@ package egovframework.com.uss.ion.yrc.web;
 
 import java.util.List;
 
-import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -86,6 +85,7 @@ public class EgovIndvdlYrycManageController {
      * @return String - 리턴 Url
      */
     @PostMapping("/uss/ion/yrc/EgovIndvdlYrycRegist.do")
+    @RequireAdmin
     public String insertIndvdlYrycManage(
 		@Valid @ModelAttribute IndvdlYrycManage indvdlYrycManage,
 		BindingResult bindingResult, ModelMap model) throws Exception {
@@ -133,6 +133,7 @@ public class EgovIndvdlYrycManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/yrc/deleteIndvdlYryc.do")
+	@RequireAdmin
 	public String deleteIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

@@ -1,5 +1,7 @@
 package egovframework.com.dam.mgm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -108,6 +110,7 @@ public class EgovKnoManagementController {
 	 * @throws Exception 식별자가 없거나 해당 지식정보가 존재하지 않거나 데이터 접근 오류가 발생한 경우
 	 */
 	@PostMapping("/dam/mgm/EgovComDamManagement.do")
+	@RequireAdmin
 	public String selectKnoManagement(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리
@@ -134,6 +137,7 @@ public class EgovKnoManagementController {
 	 * @throws Exception 조회 중 오류가 발생한 경우
 	 */
 	@GetMapping(value = "/dam/mgm/EgovComDamManagementModify.do")
+	@RequireAdmin
 	public String updateKnoManagementView(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리
@@ -148,7 +152,12 @@ public class EgovKnoManagementController {
         if (loginVO != null) {
             knoManagement.setEmplyrId(loginVO.getUniqId());
         }
-        updateKnoManagementViewInit(knoManagement, model);
+
+        KnoManagement stored = knoManagementService.selectKnoManagement(knoManagement);
+        if (stored == null) {
+            throw new IllegalStateException("대상 정보가 없습니다.");
+        }
+        model.addAttribute("resultKnoManagement", stored);
 
 		return "egovframework/com/dam/mgm/EgovComDamManagementModify";
 	}
@@ -175,6 +184,7 @@ public class EgovKnoManagementController {
     * @throws Exception 대상이 존재하지 않거나 권한 없음, 검증 실패 처리 또는 데이터 접근 오류가 발생한 경우
     */
     @PostMapping(value = "/dam/mgm/EgovComDamManagementModify.do")
+    @RequireAdmin
     public String updateKnoManagement(@Valid KnoManagement knoManagement, BindingResult bindingResult, ModelMap model) throws Exception {
 
         // Spring Security 사용자권한 처리
@@ -189,6 +199,11 @@ public class EgovKnoManagementController {
         if (loginVO != null) {
             knoManagement.setEmplyrId(loginVO.getUniqId());
             knoManagement.setLastUpdusrId(loginVO.getUniqId());
+        }
+
+        KnoManagement stored = knoManagementService.selectKnoManagement(knoManagement);
+        if (stored == null) {
+            throw new IllegalStateException("대상 정보가 없습니다.");
         }
 
         if (bindingResult.hasErrors()) {

@@ -1,5 +1,7 @@
 package egovframework.com.sym.ccm.ccc.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCode;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
@@ -103,6 +106,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do")
+	@RequireAdmin
 	public String selectCmmnClCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO, CmmnClCodeVO cmmnClCodeVO,
 			ModelMap model) throws Exception {
 
@@ -122,6 +126,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/ccc/RegistCcmCmmnClCodeView.do")
+	@RequireAdmin
 	public String insertCmmnClCodeView(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCodeVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("cmmnClCodeVO", new CmmnClCodeVO());
@@ -140,6 +145,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/ccc/RegistCcmCmmnClCode.do")
+	@RequireAdmin
 	public String insertCmmnClCode(@Valid @ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -174,6 +180,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/ccc/RemoveCcmCmmnClCode.do")
+	@RequireAdmin
 	public String deleteCmmnClCode(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCode,
 			@ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -181,6 +188,7 @@ public class EgovCcmCmmnClCodeManageController {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		cmmnClCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+
 		cmmnClCodeManageService.deleteCmmnClCode(cmmnClCodeVO);
 
 		return "forward:/sym/ccm/ccc/SelectCcmCmmnClCodeList.do";
@@ -195,6 +203,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/ccc/UpdateCcmCmmnClCodeView.do")
+	@RequireAdmin
 	public String updateCmmnClCodeView(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCodeVO, ModelMap model)
 			throws Exception {
 
@@ -215,11 +224,13 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/ccc/UpdateCcmCmmnClCode.do")
+	@RequireAdmin
 	public String updateCmmnClCode(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCode,
 			@Valid @ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		if (bindingResult.hasErrors()) {
 			CmmnClCode result = cmmnClCodeManageService.selectCmmnClCodeDetail(cmmnClCodeVO);

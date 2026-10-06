@@ -1,5 +1,7 @@
 package egovframework.com.web;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import jakarta.inject.Inject;
@@ -50,6 +52,7 @@ import org.springframework.web.context.WebApplicationContext;
 @WebAppConfiguration
 //@Profile("mysql")
 @ActiveProfiles({"mysql","session"})
+@Slf4j
 public class TestController {
 
 	@Inject
@@ -66,7 +69,7 @@ public class TestController {
 	void test() throws Exception {
 		//fail("Not yet implemented");
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
-		System.out.println("===> start test");
+		log.debug("===> start test");
 		mockMvc.perform(MockMvcRequestBuilders.post("/index.do").param("name","value"))
 			.andExpect(status().isOk());
 		
