@@ -1,4 +1,6 @@
 package egovframework.com.sym.sym.nwk.web;
+
+import egovframework.com.cmm.annotation.RequireAdmin;
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -19,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.nwk.service.EgovNtwrkService;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
@@ -75,9 +78,9 @@ public class EgovNtwrkController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/sym/sym/nwk/selectNtwrkListView.do")
+	@RequireAdmin
 	public String selectNtwrkListView(ModelMap model) throws Exception {
-		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM067"));
-		return "egovframework/com/sym/sym/nwk/EgovNtwrkList";
+		return "forward:/sym/sym/nwk/selectNtwrkList.do";
 	}
 
 	/**
@@ -128,6 +131,7 @@ public class EgovNtwrkController {
 	 * @param ntwrkVO
 	 */
 	@RequestMapping(value = "/sym/sym/nwk/getNtwrk.do")
+	@RequireAdmin
 	public String selectNtwrk(@RequestParam("ntwrkId") String ntwrkId, @ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO,
 			Model model) throws Exception {
 
@@ -145,6 +149,7 @@ public class EgovNtwrkController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/sym/nwk/addViewNtwrk.do")
+	@RequireAdmin
 	public String insertViewNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, ModelMap model) throws Exception {
 
 		model.addAttribute("ntwrk", ntwrkVO);
@@ -161,6 +166,7 @@ public class EgovNtwrkController {
 	 * @param ntwrk
 	 */
 	@PostMapping("/sym/sym/nwk/addNtwrk.do")
+	@RequireAdmin
 	public String insertNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -187,11 +193,13 @@ public class EgovNtwrkController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/sym/nwk/updtViewNtwrk.do")
+	@RequireAdmin
 	public String updateViewNtwrk(@RequestParam("ntwrkId") String ntwrkId, @ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO,
 			ModelMap model) throws Exception {
 
 		ntwrkVO.setNtwrkId(ntwrkId);
-		model.addAttribute("ntwrk", egovNtwrkService.selectNtwrk(ntwrkVO));
+		NtwrkVO stored = egovNtwrkService.selectNtwrk(ntwrkVO);
+		model.addAttribute("ntwrk", stored);
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM067"));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/sym/sym/nwk/EgovNtwrkUpdt";
@@ -206,8 +214,10 @@ public class EgovNtwrkController {
 	 * @param ntwrk
 	 */
 	@PostMapping("/sym/sym/nwk/updtNtwrk.do")
+	@RequireAdmin
 	public String updateNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM067"));
@@ -231,6 +241,7 @@ public class EgovNtwrkController {
 	 * @param ntwrk
 	 */
 	@PostMapping("/sym/sym/nwk/removeNtwrk.do")
+	@RequireAdmin
 	public String deleteNtwrk(@RequestParam("ntwrkId") String ntwrkId, @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			ModelMap model) throws Exception {
 		ntwrk.setNtwrkId(ntwrkId);

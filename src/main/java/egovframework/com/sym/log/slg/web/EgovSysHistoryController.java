@@ -1,6 +1,9 @@
 package egovframework.com.sym.log.slg.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -25,11 +28,14 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.slg.service.EgovSysHistoryService;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -82,6 +88,7 @@ public class EgovSysHistoryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/log/slg/InsertSysHistory.do")
+	@RequireAdmin
 	public String insertSysHistory(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("history") SysHistory history, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
@@ -121,6 +128,7 @@ public class EgovSysHistoryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/log/slg/AddSysHistory.do")
+	@RequireAdmin
 	public String addSysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO, ModelMap model) throws Exception {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -139,10 +147,15 @@ public class EgovSysHistoryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/log/slg/UpdateSysHistory.do")
+	@RequireAdmin
 	public String updateSysHistory(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") SysHistoryVO historyVO, @Valid @ModelAttribute("history") SysHistory history,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
-		
+
+		SysHistoryVO stored = EgovAuthorizationHelper.requireTarget(sysHistoryService.selectSysHistory(historyVO));
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		history.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
+
 		if (bindingResult.hasErrors()) {
 
 			model.addAttribute("history", history);
@@ -190,10 +203,12 @@ public class EgovSysHistoryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/log/slg/ModifySysHistory.do")
-	public String modifySysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO, ModelMap model)
+	@RequireAdmin
+	public String modifySysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO, ModelMap model, HttpServletRequest request)
 			throws Exception {
 
-		SysHistoryVO history = sysHistoryService.selectSysHistory(historyVO);
+		SysHistoryVO history = EgovAuthorizationHelper.requireTarget(sysHistoryService.selectSysHistory(historyVO));
+		EgovAttachmentGrants.allowDelete(request, history.getAtchFileId());
 		model.addAttribute("history", history);
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM002");
@@ -211,6 +226,7 @@ public class EgovSysHistoryController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/log/slg/DeleteSysHistory.do")
+	@RequireAdmin
 	public String deleteSysHistory(@ModelAttribute("history") SysHistory history, SessionStatus status, ModelMap model)
 			throws Exception {
 
@@ -220,7 +236,7 @@ public class EgovSysHistoryController {
 			// 첨부파일 ID는 삭제 폼에 실려오지 않으므로 저장본에서 가져온다.
 			SysHistoryVO searchVO = new SysHistoryVO();
 			searchVO.setHistId(history.getHistId());
-			SysHistoryVO storedHistory = sysHistoryService.selectSysHistory(searchVO);
+			SysHistoryVO storedHistory = EgovAuthorizationHelper.requireTarget(sysHistoryService.selectSysHistory(searchVO));
 			String atchFileId = storedHistory == null ? "" : storedHistory.getAtchFileId();
 
 			sysHistoryService.deleteSysHistory(history);
@@ -279,6 +295,7 @@ public class EgovSysHistoryController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/log/slg/InqireSysHistory.do")
+	@RequireAdmin
 	public String selectSysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO,
 			@RequestParam("histId") String histId, ModelMap model) throws Exception {
 		// 2026.03.23 kisa 보안점검 대응 조치

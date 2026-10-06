@@ -6,6 +6,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.uss.ion.evt.service.EgovEventManageService;
 import egovframework.com.uss.ion.evt.service.EventAtdrn;
 import egovframework.com.uss.ion.evt.service.EventManage;
@@ -262,8 +263,19 @@ public class EgovEventManageServiceImpl extends EgovAbstractServiceImpl implemen
 			sTempEventRcept = sTemp.split(",");
 			eventAtdrn.setEventId(sTempEventRcept[0]);
 			eventAtdrn.setApplcntId(sTempEventRcept[1]);
-			eventAtdrn.setInfrmlSanctnId(sTempEventRcept[2]);
 			eventAtdrn.setReqstDe(sTempEventRcept[3]);
+
+			// 2026.09.21 인가 - 건별 지정 결재자만 승인·반려할 수 있다.
+			// 승인 대상이 checkedEventRceptForConfm 문자열 안에 있고 그 파싱이 이 루프에 있어
+			// 컨트롤러에서는 대상을 특정할 수 없다. 그래서 서비스 계층에서 검사한다.
+			EventManageVO lookupAtdrn = new EventManageVO();
+			lookupAtdrn.setEventId(eventAtdrn.getEventId());
+			lookupAtdrn.setApplcntId(eventAtdrn.getApplcntId());
+			EventManageVO storedAtdrn = eventManageDAO.selectEventAtdrn(lookupAtdrn);
+			EgovAuthorizationHelper.assertOwner(storedAtdrn == null ? null : storedAtdrn.getSanctnerId());
+
+			// 결재 갱신 대상을 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+			eventAtdrn.setInfrmlSanctnId(storedAtdrn.getInfrmlSanctnId());
  		    InfrmlSanctn infrmlSanctn = new InfrmlSanctn();
 
 			if(eventAtdrn.getConfmAt().equals("C")){

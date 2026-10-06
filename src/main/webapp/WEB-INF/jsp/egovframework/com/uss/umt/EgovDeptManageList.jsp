@@ -99,9 +99,9 @@ function press() {
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 25%;">
 		<col style="width: 30%;">
-		<col style="width: ;">
+		<col style="width: 30%;">
+		<col style="width: 40%;">
 	</colgroup>
 	<thead>
 	<tr>
@@ -119,8 +119,8 @@ function press() {
 	<c:forEach var="deptManage" items="${deptManageList}" varStatus="status">
 	<tr>
 		<td><a href="javascript:void(0);" onClick="fncSelectDeptManage('<c:out value="${deptManage.orgnztId}"/>'); return false;"><c:out value="${deptManage.orgnztId}"/></a></td>
-		<td class="left"><a href="javascript:void(0);" onClick="fncSelectDeptManage('<c:out value="${deptManage.orgnztId}"/>'); return false;"><c:out value="${deptManage.orgnztNm}"/></a></td>
-		<td class="left"><c:out value="${deptManage.orgnztDc}"/></td>
+		<td><c:out value="${deptManage.orgnztNm}"/></td>
+		<td><c:out value="${deptManage.orgnztDc}"/></td>
 	</tr>
 	</c:forEach>
 	</tbody>

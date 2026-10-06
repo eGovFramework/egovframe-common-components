@@ -24,6 +24,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.bat.service.BatchSchdul;
 import egovframework.com.sym.bat.service.BatchScheduler;
@@ -98,6 +99,7 @@ public class EgovBatchSchdulController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+
 		// 배치스케줄러에 스케줄정보반영
 		batchScheduler.deleteBatchSchdul(batchSchdul);
 
@@ -164,9 +166,10 @@ public class EgovBatchSchdulController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchSchdul.do")
+	@RequireAdmin
 	public String selectBatchSchdul(@ModelAttribute("searchVO") BatchSchdul batchSchdul, ModelMap model) throws Exception {
 		LOGGER.debug(" 조회조건 : {}", batchSchdul);
-		BatchSchdul result = egovBatchSchdulService.selectBatchSchdul(batchSchdul);
+		BatchSchdul result = EgovAuthorizationHelper.requireTarget(egovBatchSchdulService.selectBatchSchdul(batchSchdul));
 		model.addAttribute("resultInfo", result);
 		LOGGER.debug(" 결과값 : {}", result);
 
@@ -205,7 +208,7 @@ public class EgovBatchSchdulController {
 		referenceData(model);
 
 		LOGGER.debug(" 조회조건 : {}", batchSchdul);
-		BatchSchdul result = egovBatchSchdulService.selectBatchSchdul(batchSchdul);
+		BatchSchdul result = EgovAuthorizationHelper.requireTarget(egovBatchSchdulService.selectBatchSchdul(batchSchdul));
 		model.addAttribute("batchSchdul", result);
 		LOGGER.debug(" 결과값 : {}", result);
 
@@ -317,6 +320,7 @@ public class EgovBatchSchdulController {
 		}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		if (bindingResult.hasErrors()) {
 			referenceData(model);

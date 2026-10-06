@@ -64,6 +64,12 @@ class EgovCntcInsttControllerDeleteAuditTest {
 					if (method.getName().startsWith("delete")) {
 						deleted.set(args[0]);
 					}
+					if (method.getName().endsWith("Detail")) {
+						// 삭제 전 소유자 조회: 로그인 사용자가 등록한 레코드로 응답한다.
+						Object stored = method.getReturnType().getDeclaredConstructor().newInstance();
+						method.getReturnType().getMethod("setFrstRegisterId", String.class).invoke(stored, SESSION_UNIQ_ID);
+						return stored;
+					}
 					return null;
 				});
 

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -127,7 +128,7 @@ class EgovRwardManageControllerRwardCodeListTest {
 
 		ModelMap model = new ModelMap();
 		String view = controller.selectRwardManage(new RwardManage(), new RwardManageVO(), Map.of("cmd", "updt"),
-				model);
+				model, new MockHttpServletRequest());
 
 		assertEquals(UPDT_VIEW, view);
 		assertNotNull(model.get("rwardCodeList"), "수정화면 진입은 포상구분 목록을 담아야 한다.");

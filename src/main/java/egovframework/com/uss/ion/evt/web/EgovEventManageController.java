@@ -1,5 +1,7 @@
 package egovframework.com.uss.ion.evt.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.evt.service.EgovEventManageService;
 import egovframework.com.uss.ion.evt.service.EventAtdrn;
@@ -36,6 +39,8 @@ import jakarta.validation.Valid;
  * 상세내용
  * - 행사관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 행사관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 소유권(관리자 예외 없음): 행사 수정·삭제 = 등록자(frstRegisterId), 참가 신청 취소 = 신청자(applcntId),
+ *   참가 승인·반려 = 지정 결재자(sanctnerId, 일괄 처리라 EgovEventManageServiceImpl.updtEventAtdrn 에서 건별 검사)
  * </pre>
  * 
  * @author 이용
@@ -73,9 +78,9 @@ public class EgovEventManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/uss/ion/evt/EgovEventReqstManageListView.do")
+	@RequireAdmin
 	public String selectEventManageListView() throws Exception {
-
-		return "egovframework/com/uss/ion/evt/EgovEventReqstManageList";
+		return "forward:/uss/ion/evt/EgovEventReqstManageList.do";
 	}
 
 	/**
@@ -131,12 +136,16 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/EgovEventReqstDetail.do")
+	@RequireAdmin
 	public String selectEventManage(@ModelAttribute("eventManage") EventManageVO eventManage,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 		EventManageVO eventManageVO1 = egovEventManageService.selectEventManage(eventManageVO);
+		if (sCmd.equals("updt")) {
+			EgovAuthorizationHelper.requireTarget(eventManageVO1);
+		}
 		eventManageVO1.setEventBeginDe(EgovDateUtil.formatDate(eventManageVO1.getEventBeginDe(), "-"));
 		eventManageVO1.setEventEndDe(EgovDateUtil.formatDate(eventManageVO1.getEventEndDe(), "-"));
 		eventManageVO1.setRceptBeginDe(EgovDateUtil.formatDate(eventManageVO1.getRceptBeginDe(), "-"));
@@ -178,6 +187,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/EgovEventReqstRegist.do")
+	@RequireAdmin
 	public String insertViewEventManage(@ModelAttribute("eventManage") EventManageVO eventManage,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, ModelMap model) throws Exception {
 
@@ -196,6 +206,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/insertEventManage.do")
+	@RequireAdmin
 	public String insertEventManage(@Valid @ModelAttribute("eventManage") EventManage eventManage, BindingResult bindingResult,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -224,6 +235,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/EgovEventReqstSave.do")
+	@RequireAdmin
 	public String updtEventManage(@Valid @ModelAttribute("eventManage") EventManage eventManage, BindingResult bindingResult,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -252,13 +264,14 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/EgovEventReqstDelete.do")
+	@RequireAdmin
 	public String deleteEventManage(@ModelAttribute("eventManage") EventManage eventManage, SessionStatus status,
 			ModelMap model) throws Exception {
 
 		// 참가신청이 있는 행사는 삭제하지 않는다.(EgovEventReqstDetail.jsp 의 삭제버튼 노출조건과 같은 값을 서버에서도 확인)
 		EventManageVO eventManageVO = new EventManageVO();
 		eventManageVO.setEventId(eventManage.getEventId());
-		EventManageVO eventManageVO1 = egovEventManageService.selectEventManage(eventManageVO);
+		EventManageVO eventManageVO1 = EgovAuthorizationHelper.requireTarget(egovEventManageService.selectEventManage(eventManageVO));
 		if (eventManageVO1 != null && eventManageVO1.getEventAtdrnCount() > 0) {
 			model.addAttribute("eventAtdrnExist", "true");
 			return "forward:/uss/ion/evt/EgovEventReqstManageList.do";
@@ -330,6 +343,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/EgovEventRcrptDetail.do")
+	@RequireAdmin
 	public String selectEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, ModelMap model) throws Exception {
 		EventManageVO eventManageVO1 = egovEventManageService.selectEventAtdrn(eventManageVO);
@@ -354,6 +368,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/EgovEventRceptRegist.do")
+	@RequireAdmin
 	public String insertViewEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model)
 			throws Exception {
@@ -383,6 +398,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/insertEventAtdrn.do")
+	@RequireAdmin
 	public String insertEventAtdrn(@Valid @ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn, BindingResult bindingResult,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -414,6 +430,8 @@ public class EgovEventManageController {
 
 				LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 				eventAtdrn.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+				// 신청자는 요청값이 아니라 로그인 사용자다(타인 명의 신청·약식결재 생성 차단)
+				eventAtdrn.setApplcntId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 				status.setComplete();
 				egovEventManageService.insertEventAtdrn(eventAtdrn);
 				model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
@@ -448,9 +466,18 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/deleteEventAtdrn.do")
+	@RequireAdmin
 	public String deleteEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn, SessionStatus status,
 			ModelMap model) throws Exception {
 
+		// 행사접수는 신청자(APPLCNT_ID) 본인만 취소할 수 있다.
+		EventManageVO atdrnVO = new EventManageVO();
+		atdrnVO.setEventId(eventAtdrn.getEventId());
+		atdrnVO.setApplcntId(eventAtdrn.getApplcntId());
+		EventManageVO stored = egovEventManageService.selectEventAtdrn(atdrnVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getApplcntId());
+		// 약식결재 삭제 대상은 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+		eventAtdrn.setInfrmlSanctnId(stored.getInfrmlSanctnId());
 		egovEventManageService.deleteEventAtdrn(eventAtdrn);
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -518,6 +545,7 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/evt/updtEventAtdrn.do")
+	@RequireAdmin
 	public String updtEventAtdrn(@RequestParam("checkedEventRceptForConfm") String checkedEventRceptForConfm,
 			@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,BindingResult bindingResult, @RequestParam Map<?, ?> commandMap,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -527,6 +555,7 @@ public class EgovEventManageController {
 //			return "forward:/uss/ion/evt/selectEventRceptConfmList.do";
 //		}
 		
+		// 지정 결재자 검사는 일괄 대상이 서비스 루프에서 정해져 EgovEventManageServiceImpl.updtEventAtdrn 이 건별로 한다
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		eventAtdrn.setConfmAt(sCmd);

@@ -102,10 +102,10 @@ function fn_egov_search_NoteTrnsmit(){
 /* ********************************************************
 * 수신자 목록 팝업
 ******************************************************** */
-function fn_egov_cnfirm_NoteTrnsmit(noteId){
+function fn_egov_cnfirm_NoteTrnsmit(noteId,noteTrnsmitId){
 	var left = (screen.width-800)/2;
 	var top = (screen.height-700)/3;
-	var url = "<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=" + noteId;
+	var url = "<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=" + encodeURIComponent(noteId) + "&noteTrnsmitId=" + encodeURIComponent(noteTrnsmitId);
 	var name = "";
 	var width = 800;
 	var height = 700;
@@ -292,7 +292,7 @@ function fn_egov_search_NoteRecptn(){
 			<c:if test="${resultInfo.rcverCnt > 0}">&nbsp;외&nbsp; ${resultInfo.rcverCnt}명</c:if>
 		</td>
 		<td>
-			<span class="btn_s"><a href="javascript:void(0);" onClick="fn_egov_cnfirm_NoteTrnsmit('${egovc:encryptId(resultInfo.noteId)}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onClick="fn_egov_cnfirm_NoteTrnsmit('${egovc:encryptId(resultInfo.noteId)}','${egovc:encryptId(resultInfo.noteTrnsmitId)}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
 		</td>
 		<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
 	</tr>

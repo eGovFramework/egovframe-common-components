@@ -19,6 +19,7 @@ import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.prm.service.EgovProcessMonService;
@@ -69,7 +70,6 @@ public class EgovProcessMonController {
 	 * @param processMonVO
 	 */
 	@IncludedInfo(name = "프로세스모니터링", order = 2110, gid = 90)
-	@RequireAdmin
 	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMonList.do")
 	public String selectProcessMonList(@ModelAttribute("searchVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
@@ -222,6 +222,7 @@ public class EgovProcessMonController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("processMonVO", processMonVO);
 			return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonModify";
@@ -254,6 +255,7 @@ public class EgovProcessMonController {
 			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
 
 		processMonService.deleteProcessMon(processMonVO);
 		return "forward:/utl/sys/prm/EgovComUtlProcessMonList.do";

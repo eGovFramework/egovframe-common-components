@@ -63,6 +63,7 @@ class EgovMeetingManageModifyTest {
 		stored = new EgovMap();
 		validInput().forEach((key, values) -> stored.put(key, values.get(0)));
 		stored.put("mtgNm", "저장된 회의명");
+		stored.put("frstRegisterId", "TEST_USER");
 		stored.put("mtgSn", 1);
 		stored.put("mtgCo", 2);
 		stored.put("mtgBeginTime", "09:00");
@@ -166,7 +167,7 @@ class EgovMeetingManageModifyTest {
 		assertEquals(1, errors.getErrorCount());
 		assertEquals("abc", errors.getFieldError("mtgSn").getRejectedValue());
 		assertFalse(model.containsKey("resultList"));
-		assertEquals(0, reads);
+		assertEquals(1, reads); // 검증 실패 재표시 전에 저장된 작성자로 인가한다. 조회값으로 폼을 덮지는 않는다.
 		assertEquals(0, writes);
 	}
 
@@ -175,7 +176,7 @@ class EgovMeetingManageModifyTest {
 		MultiValueMap<String, String> params = validInput();
 		mvc.perform(post(PREFIX + "EgovMeetingManageModify.do").params(params))
 				.andExpect(redirectedUrl(PREFIX + "EgovMeetingManageList.do"));
-		assertEquals(0, reads);
+		assertEquals(1, reads); // 저장된 작성자로 인가한 뒤 갱신한다.
 		assertEquals(1, writes);
 		assertEquals("TEST_USER", updated.getLastUpdusrId());
 		assertEquals("", updated.getClsdrMtgAt());

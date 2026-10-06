@@ -526,4 +526,14 @@
 		</example>
 	</function>
 
+	<function>
+		<description>JS 문자열 리터럴 컨텍스트 삽입을 위한 이스케이프</description>
+		<name>escapeJavaScript</name>
+		<function-class>egovframework.com.cmm.EgovWebUtil</function-class>
+		<function-signature>java.lang.String escapeJavaScript(java.lang.String)</function-signature>
+		<example>
+			${egovc:escapeJavaScript(value)}
+		</example>
+	</function>
+
 </taglib>

@@ -105,6 +105,9 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) {
 		MemoReprtVO resultVO = memoReprtDAO.selectMemoReprt(memoReprtVO);
+		if (resultVO == null) {
+			return null;
+		}
 		if(resultVO.getReportrInqireDt() == null || resultVO.getReportrInqireDt().equals("")){
 			resultVO.setReprtSttus("미확인");
 		}else{

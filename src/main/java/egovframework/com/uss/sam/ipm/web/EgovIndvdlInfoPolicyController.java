@@ -20,6 +20,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.ipm.service.EgovIndvdlInfoPolicyService;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
@@ -119,10 +120,11 @@ public class EgovIndvdlInfoPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/ipm/detailIndvdlInfoPolicy.do")
+	@RequireAdmin
 	public String egovIndvdlInfoPolicyDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			IndvdlInfoPolicy indvdlInfoPolicy, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		String sLocationUrl = "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyDetail";
@@ -130,11 +132,6 @@ public class EgovIndvdlInfoPolicyController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
-			// 2026.08.09 KISA 보안취약점 조치 - 관리자만 삭제 가능
-			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-				throw new IllegalStateException("권한이 없습니다.");
-			}
 			egovIndvdlInfoPolicyService.deleteIndvdlInfoPolicy(indvdlInfoPolicy);
 			sLocationUrl = "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 		} else {
@@ -156,6 +153,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/ipm/updtIndvdlInfoPolicyView.do")
+	@RequireAdmin
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, 
 			RedirectAttributes redirectAttributes,
@@ -199,6 +197,7 @@ public class EgovIndvdlInfoPolicyController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
 		}
@@ -226,6 +225,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/ipm/registIndvdlInfoPolicyView.do")
+	@RequireAdmin
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			RedirectAttributes redirectAttributes,
@@ -283,31 +283,5 @@ public class EgovIndvdlInfoPolicyController {
 		return "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

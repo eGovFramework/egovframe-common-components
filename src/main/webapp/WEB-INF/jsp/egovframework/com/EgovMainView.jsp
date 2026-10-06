@@ -116,7 +116,7 @@ $(document).ready(function() {
 		timeout:(1000*30),
 		success: function(returnData, status){
 	        for(var i = 0 ; i < returnData.resultList.length ; i++) {
-            	fn_egov_popupOpen_PopupManage(returnData.resultList[i].popupId, returnData.resultList[i].fileUrl, returnData.resultList[i].popupWidthSize, returnData.resultList[i].popupVrticlSize, returnData.resultList[i].popupWidthLc, returnData.resultList[i].popupVrticlLc, returnData.resultList[i].stopvewSetupAt);
+            	fn_egov_popupOpen_PopupManage(returnData.resultList[i].popupId, returnData.resultList[i].fileUrl, returnData.resultList[i].popupWidthSize, returnData.resultList[i].popupVrticlSize, returnData.resultList[i].popupVrticlLc, returnData.resultList[i].popupWidthLc, returnData.resultList[i].stopvewSetupAt);
             }
 		} ,
 		error: function(err) {

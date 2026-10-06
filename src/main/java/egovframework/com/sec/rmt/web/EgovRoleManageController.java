@@ -78,6 +78,7 @@ public class EgovRoleManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/rmt/EgovRoleListView.do")
+    @RequireAdmin
     public String selectRoleListView()
             throws Exception {
         return "egovframework/com/sec/rmt/EgovRoleManage";

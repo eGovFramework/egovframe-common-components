@@ -64,6 +64,7 @@
                  ,  USE_AT           useAt
                  ,  VALID_BGNDE   validBeginDe
                  ,  VALID_ENDDE     validEndDe
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTNSYSTEMCNTC
              WHERE  CNTC_ID = #{cntcId}
         

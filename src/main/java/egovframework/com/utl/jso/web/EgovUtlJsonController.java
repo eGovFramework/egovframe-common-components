@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import jakarta.annotation.Resource;
@@ -57,11 +58,13 @@ public class EgovUtlJsonController {
 	 * @exception Exception
 	 */
     @RequestMapping(value = "/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.GET)
+    @RequireAdmin
     public String selectUtlJsonInquire()  throws Exception {
         return "egovframework/com/utl/jso/EgovUtlJsonInquire";
     }
 
     @RequestMapping(value = "/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.POST)
+    @RequireAdmin
     public ModelAndView selectUtlJsonInquirePost(@RequestParam Map<?, ?> commandMap)  throws Exception {
     	ModelAndView modelAndView = new ModelAndView();
     	modelAndView.setViewName("jsonView");
@@ -85,10 +88,12 @@ public class EgovUtlJsonController {
 	 * @exception Exception
 	 */
     @RequestMapping(value = "/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.GET)
+    @RequireAdmin
     public String selectUtlJsonMultiInquire(@RequestParam Map<?, ?> commandMap)  throws Exception {
         return "egovframework/com/utl/jso/EgovUtlJsonMultiInquire";
     }
     @RequestMapping(value = "/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.POST)
+    @RequireAdmin
     public ModelAndView selectUtlJsonMultiInquirePost(@RequestParam Map<?, ?> commandMap)  throws Exception {
     	ModelAndView modelAndView = new ModelAndView();
     	modelAndView.setViewName("jsonView");

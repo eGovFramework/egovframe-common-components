@@ -88,7 +88,8 @@ function fncgetLoginSessionView(url) {
 		<tr>
 			<th><spring:message code="utlSysRsc.loginSessionCheck.sessionURL"/> <span class="pilsu">*</span></th><!-- 세션 URL -->
 			<td class="left">
-			    <label for="sessionUrl"><input name="sessionUrl" id="sessionUrl" value="<%=(user == null || user.getUrl() == null) ? "" : user.getUrl() %>" type="text" maxLength="1000" size="80" readonly="readonly" class="readOnlyClass"></label>
+			    <%-- 2026.07.30 보안 조치 - 속성값 이스케이프 --%>
+			    <label for="sessionUrl"><input name="sessionUrl" id="sessionUrl" value="<%=egovframework.com.cmm.EgovWebUtil.escapeXml((user == null || user.getUrl() == null) ? "" : user.getUrl()) %>" type="text" maxLength="1000" size="80" readonly="readonly" class="readOnlyClass"></label>
 			</td>
 		</tr>
 	</table>
@@ -97,7 +98,8 @@ function fncgetLoginSessionView(url) {
 	<div class="btn">
 		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectLoginSession(); return false;"><spring:message code="button.inquire" /></a></span>
 		<input class="s_submit" type="submit" value="<spring:message code="utlSysRsc.loginSessionCheck.set"/>" onclick="fncSetLoginSession(); return false;" /><!-- 설정 -->
-		<span class="btn_s"><a href="<%=user.getUrl() %>" onclick="" target=“_blank” title="새창" onclick="fncgetLoginSessionView('<%=(user == null || user.getUrl() == null) ? "" : user.getUrl() %>'); return false;"><spring:message code="utlSysRsc.loginSessionCheck.sessionView"/></a></span><!-- 이동 -->
+		<%-- 2026.07.30 보안 조치 - href 속성 및 JS 문자열 컨텍스트 이스케이프 --%>
+		<span class="btn_s"><a href="<%=egovframework.com.cmm.EgovWebUtil.escapeXml((user == null || user.getUrl() == null) ? "" : user.getUrl()) %>" target=“_blank” title="새창" onclick="fncgetLoginSessionView('<%=egovframework.com.cmm.EgovWebUtil.escapeXml(egovframework.com.cmm.EgovWebUtil.escapeJavaScript((user == null || user.getUrl() == null) ? "" : user.getUrl())) %>'); return false;"><spring:message code="utlSysRsc.loginSessionCheck.sessionView"/></a></span><!-- 이동 -->
 	</div>
 	<div style="clear:both;"></div>
 </form:form>

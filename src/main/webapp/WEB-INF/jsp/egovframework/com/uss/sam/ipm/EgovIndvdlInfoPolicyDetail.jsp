@@ -74,6 +74,7 @@ function fn_egov_delete_IndvdlInfoPolicy(){
 
 <div class="wTableFrm">
 <form name="IndvdlInfoPolicyForm" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 타이틀 -->
 	<h2><spring:message code="ussSamIpm.indvdlInfoPolicyDetail.indvdlInfoPolicyDetail"/></h2><!-- 개인정보보호정책 상세보기 -->
 
@@ -107,17 +108,20 @@ function fn_egov_delete_IndvdlInfoPolicy(){
 	<!-- 하단 버튼 -->
 	<div class="btn">		
 		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/sam/ipm/updtIndvdlInfoPolicy.do" method="post" style="display:inline"> 
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_IndvdlInfoPolicy(); return false;" />
 		<input name="indvdlInfoId" type="hidden" value="${indvdlInfoPolicy.indvdlInfoId}">
 		</form>
 	
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/sam/ipm/detailIndvdlInfoPolicy.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_IndvdlInfoPolicy(); return false;" />
 		<input name="indvdlInfoId" type="hidden" value="${indvdlInfoPolicy.indvdlInfoId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 	
 		<form name="formList" action="${pageContext.request.contextPath}/uss/sam/ipm/listIndvdlInfoPolicy.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_IndvdlInfoPolicy(); return false;" />
 		</form>
 	</div>

@@ -71,6 +71,7 @@ function fn_egov_delete_RecentSrchwrd(){
 
 	<!-- 등록폼 -->
 	<form name="RecentSrchwrdForm" action="" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	
 	<table class="wTable">
 		<colgroup>
@@ -110,17 +111,20 @@ function fn_egov_delete_RecentSrchwrd(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/rsm/updtRecentSrchwrdView.do" method="post" style="display:inline-block">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_RecentSrchwrd(); return false;" />
 		<input name="srchwrdManageId" type="hidden" value="${recentSrchwrd.srchwrdManageId}">
 		</form>
 		
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/rsm/detailRecentSrchwrd.do" method="post" style="display:inline-block">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_RecentSrchwrd(); return false;" />
 		<input name="srchwrdManageId" type="hidden" value="${recentSrchwrd.srchwrdManageId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		
 		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/rsm/listRecentSrchwrd.do" method="post" style="display:inline-block">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_RecentSrchwrd(); return false;" />
 		</form>
 	</div>

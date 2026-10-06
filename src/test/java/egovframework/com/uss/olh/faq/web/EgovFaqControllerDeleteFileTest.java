@@ -7,11 +7,16 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovUserDetailsService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 
@@ -22,6 +27,37 @@ import egovframework.com.uss.olh.faq.service.FaqVO;
  * 서버에 저장된 값을 다시 조회해서 써야 한다.</p>
  */
 class EgovFaqControllerDeleteFileTest {
+
+	private static final String LOGIN_UNIQ_ID = "USRCNFRM_00000000001";
+
+	private EgovUserDetailsService previousUserDetailsService;
+
+	/** 삭제는 등록자 본인만 가능하므로 로그인 사용자를 묶고, 저장본의 등록자를 같은 사용자로 둔다. */
+	@BeforeEach
+	void bindLoginUser() {
+		previousUserDetailsService = new EgovUserDetailsHelper().getEgovUserDetailsService();
+		LoginVO loginVO = new LoginVO();
+		loginVO.setUniqId(LOGIN_UNIQ_ID);
+		new EgovUserDetailsHelper().setEgovUserDetailsService((EgovUserDetailsService) Proxy.newProxyInstance(
+				EgovUserDetailsService.class.getClassLoader(), new Class<?>[] { EgovUserDetailsService.class },
+				(proxy, method, args) -> {
+					if ("getAuthenticatedUser".equals(method.getName())) {
+						return loginVO;
+					}
+					if ("isAuthenticated".equals(method.getName())) {
+						return Boolean.TRUE;
+					}
+					if ("getAuthorities".equals(method.getName())) {
+						return java.util.Collections.emptyList();
+					}
+					return null;
+				}));
+	}
+
+	@AfterEach
+	void restoreLoginUser() {
+		new EgovUserDetailsHelper().setEgovUserDetailsService(previousUserDetailsService);
+	}
 
 	private static final String STORED_ATCH_FILE_ID = "FILE_000000000000123";
 
@@ -44,14 +80,17 @@ class EgovFaqControllerDeleteFileTest {
 		FaqVO stored = new FaqVO();
 		stored.setFaqId("FAQ_00000000000001");
 		stored.setAtchFileId(storedAtchFileId);
+		stored.setFrstRegisterId(LOGIN_UNIQ_ID);
 
 		return (EgovFaqService) Proxy.newProxyInstance(
 				EgovFaqService.class.getClassLoader(),
 				new Class<?>[] { EgovFaqService.class },
 				(proxy, method, args) -> {
 					switch (method.getName()) {
-					case "selectFaqDetail":
+					case "selectFaqDetailNoCount":
 						return stored;
+					case "selectFaqDetail":
+						throw new AssertionError("삭제 경로가 조회수를 올리는 selectFaqDetail 을 불렀다");
 					case "deleteFaq":
 						deletedFaqIds.add(((FaqVO) args[0]).getFaqId());
 						return null;

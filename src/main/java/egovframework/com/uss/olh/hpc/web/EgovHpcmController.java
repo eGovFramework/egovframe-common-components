@@ -1,5 +1,7 @@
 package egovframework.com.uss.olh.hpc.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -19,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.hpc.service.EgovHpcmService;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
@@ -110,6 +113,7 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/selectHpcmDetail.do")
+	@RequireAdmin
 	public String selectHpcmDetail(HpcmVO hpcmManageVO, @ModelAttribute("searchVO") HpcmVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -129,6 +133,7 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/insertHpcmView.do")
+	@RequireAdmin
 	public String insertHpcmView(@ModelAttribute("searchVO") HpcmVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("hpcmSeCode", selectHpcmSeCodeList());
@@ -162,6 +167,7 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/insertHpcm.do")
+	@RequireAdmin
 	public String insertHpcmCn(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
 			BindingResult bindingResult, Model model) throws Exception {
 
@@ -193,6 +199,7 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/updateHpcmView.do")
+	@RequireAdmin
 	public String updateHpcmView(@RequestParam("hpcmId") String hpcmId, @ModelAttribute("searchVO") HpcmVO searchVO,
 			ModelMap model) throws Exception {
 
@@ -201,7 +208,8 @@ public class EgovHpcmController {
 		HpcmVO hpcmVO = new HpcmVO();
 		hpcmVO.setHpcmId(hpcmId);
 
-		model.addAttribute("hpcmVO", egovHpcmService.selectHpcmDetail(hpcmVO));
+		HpcmVO stored = EgovAuthorizationHelper.requireTarget(egovHpcmService.selectHpcmDetail(hpcmVO));
+		model.addAttribute("hpcmVO", stored);
 
 		return "egovframework/com/uss/olh/hpc/EgovHpcmUpdt";
 	}
@@ -216,8 +224,10 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/updateHpcm.do")
+	@RequireAdmin
 	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
 			BindingResult bindingResult, Model model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("hpcmSeCode", selectHpcmSeCodeList());
@@ -243,7 +253,9 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/hpc/deleteHpcm.do")
+	@RequireAdmin
 	public String deleteHpcmCn(HpcmVO hpcmVO, @ModelAttribute("searchVO") HpcmVO searchVO) throws Exception {
+
 
 		egovHpcmService.deleteHpcmCn(hpcmVO);
 

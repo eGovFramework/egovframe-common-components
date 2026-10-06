@@ -7,14 +7,19 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovUserDetailsService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.mtg.service.EgovMtgPlaceManageService;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
 
@@ -25,6 +30,37 @@ import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
  * 서버에 저장된 값을 다시 조회해서 써야 한다.</p>
  */
 class EgovMtgPlaceManageControllerDeleteFileTest {
+
+	private static final String LOGIN_UNIQ_ID = "USRCNFRM_00000000001";
+
+	private EgovUserDetailsService previousUserDetailsService;
+
+	/** 삭제는 등록자 본인만 가능하므로 로그인 사용자를 묶고, 저장본의 등록자를 같은 사용자로 둔다. */
+	@BeforeEach
+	void bindLoginUser() {
+		previousUserDetailsService = new EgovUserDetailsHelper().getEgovUserDetailsService();
+		LoginVO loginVO = new LoginVO();
+		loginVO.setUniqId(LOGIN_UNIQ_ID);
+		new EgovUserDetailsHelper().setEgovUserDetailsService((EgovUserDetailsService) Proxy.newProxyInstance(
+				EgovUserDetailsService.class.getClassLoader(), new Class<?>[] { EgovUserDetailsService.class },
+				(proxy, method, args) -> {
+					if ("getAuthenticatedUser".equals(method.getName())) {
+						return loginVO;
+					}
+					if ("isAuthenticated".equals(method.getName())) {
+						return Boolean.TRUE;
+					}
+					if ("getAuthorities".equals(method.getName())) {
+						return java.util.Collections.emptyList();
+					}
+					return null;
+				}));
+	}
+
+	@AfterEach
+	void restoreLoginUser() {
+		new EgovUserDetailsHelper().setEgovUserDetailsService(previousUserDetailsService);
+	}
 
 	private static final String STORED_ATCH_FILE_ID = "FILE_000000000000123";
 
@@ -48,6 +84,7 @@ class EgovMtgPlaceManageControllerDeleteFileTest {
 		MtgPlaceManageVO stored = new MtgPlaceManageVO();
 		stored.setMtgPlaceId("MTG_00000000000001");
 		stored.setAtchFileId(storedAtchFileId);
+		stored.setFrstRegisterId(LOGIN_UNIQ_ID);
 
 		return (EgovMtgPlaceManageService) Proxy.newProxyInstance(
 				EgovMtgPlaceManageService.class.getClassLoader(),

@@ -1,7 +1,11 @@
 package egovframework.com.cop.smt.mrm.web;
 
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -29,6 +33,7 @@ import egovframework.com.cop.smt.mrm.service.MemoReprtVO;
 import egovframework.com.cop.smt.mrm.service.ReportrVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -39,6 +44,7 @@ import jakarta.validation.Valid;
  * 상세내용
  * - 메모보고에 대한 등록, 수정, 삭제, 조회기능을 제공한다.
  * - 메모보고의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 소유권(관리자 예외 없음): 메모보고 수정·삭제 = 작성자(frstRegisterId), 지시사항 작성 = 보고받는 사람(reportrId)
  * </pre>
  * 
  * @author 장철호
@@ -199,7 +205,7 @@ public class EgovMemoReprtController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
+		MemoReprt memoReprt = EgovAuthorizationHelper.requireTarget(memoReprtService.selectMemoReprt(memoReprtVO));
 		model.addAttribute("memoReprt", memoReprt);
 
 		model.addAttribute("uniqId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
@@ -263,7 +269,7 @@ public class EgovMemoReprtController {
 	 */
 	@PostMapping("/cop/smt/mrm/modifyMemoReprt.do")
 	public String modifyMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
-			ModelMap model) {
+			ModelMap model, HttpServletRequest request) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -277,6 +283,8 @@ public class EgovMemoReprtController {
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		MemoReprtVO resultVO = memoReprtService.selectMemoReprt(memoReprtVO);
+		EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, resultVO.getAtchFileId());
 		resultVO.setSearchCnd(memoReprtVO.getSearchCnd());
 		resultVO.setSearchWrd(memoReprtVO.getSearchWrd());
 		resultVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe());
@@ -303,6 +311,16 @@ public class EgovMemoReprtController {
 			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		memoReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		MemoReprtVO stored = memoReprtService.selectMemoReprt(memoReprtVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		// 수정·삭제 SQL 은 등록자 조건(FRST_REGISTER_ID)으로 한 번 더 거르므로 원본 등록자를 채운다
+		memoReprtVO.setFrstRegisterId(stored.getFrstRegisterId());
+		// 첨부 그룹은 요청값이 아니라 소유권을 확인한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		memoReprtVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
+		// 작성자도 원본 값을 쓴다(요청값으로 타인 명의 변경 차단)
+		memoReprtVO.setWrterId(stored.getWrterId());
 
 		if (bindingResult.hasErrors()) {
 			MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
@@ -356,6 +374,14 @@ public class EgovMemoReprtController {
 	 */
 	@PostMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
 	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
+		LoginVO user = EgovAuthorizationHelper.assertLoginUser();
+		MemoReprtVO ownerCheckVO = new MemoReprtVO();
+		ownerCheckVO.setReprtId(memoReprtVO.getReprtId());
+		ownerCheckVO.setSearchId(user.getUniqId());
+		// 지시사항은 보고받는 사람(REPORTR_ID)만 작성한다
+		MemoReprtVO stored = memoReprtService.selectMemoReprt(ownerCheckVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getReportrId());
+
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
@@ -419,6 +445,7 @@ public class EgovMemoReprtController {
 		// 아이디 설정
 		memoReprtVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		memoReprtVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		memoReprtVO.setWrterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		memoReprtService.insertMemoReprt(memoReprtVO);
 		sLocationUrl = "forward:/cop/smt/mrm/selectMemoReprtList.do";
@@ -452,6 +479,9 @@ public class EgovMemoReprtController {
 		// 첨부파일 삭제를 위한 ID 생성 start....
 		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
 		MemoReprtVO stored = memoReprtService.selectMemoReprt(memoReprtVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		// 수정·삭제 SQL 은 등록자 조건(FRST_REGISTER_ID)으로 한 번 더 거르므로 원본 등록자를 채운다
+		memoReprtVO.setFrstRegisterId(stored.getFrstRegisterId());
 		String atchFileId = stored == null ? null : stored.getAtchFileId();
 
 		if (atchFileId != null && !atchFileId.isEmpty()) {

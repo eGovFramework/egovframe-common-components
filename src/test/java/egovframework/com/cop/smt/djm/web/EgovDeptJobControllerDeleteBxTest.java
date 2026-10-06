@@ -34,6 +34,7 @@ class EgovDeptJobControllerDeleteBxTest {
 	private EgovDeptJobController controller;
 	private final AtomicBoolean deleted = new AtomicBoolean(false);
 	private String childCount = "1";
+	private egovframework.com.cop.smt.djm.service.DeptJobVO childRequest;
 
 	@BeforeEach
 	void setUp() {
@@ -44,7 +45,10 @@ class EgovDeptJobControllerDeleteBxTest {
 						return Boolean.TRUE;
 					}
 					if ("getAuthenticatedUser".equals(method.getName())) {
-						return new LoginVO();
+						LoginVO user = new LoginVO();
+						user.setUniqId("USER_A");
+						user.setOrgnztId("DEPT_A");
+						return user;
 					}
 					return null;
 				});
@@ -54,7 +58,12 @@ class EgovDeptJobControllerDeleteBxTest {
 				getClass().getClassLoader(), new Class<?>[] { EgovDeptJobService.class },
 				(proxy, method, args) -> {
 					switch (method.getName()) {
+					case "selectDeptJobBx":
+						egovframework.com.cop.smt.djm.service.DeptJobBxVO stored = new egovframework.com.cop.smt.djm.service.DeptJobBxVO();
+						stored.setDeptId("DEPT_A"); // 삭제는 같은 부서원만 가능하므로 로그인 사용자와 같은 부서로 둔다
+						return stored;
 					case "selectDeptJobList":
+						childRequest = (egovframework.com.cop.smt.djm.service.DeptJobVO) args[0];
 						Map<String, Object> map = new HashMap<>();
 						map.put("resultList", new ArrayList<>());
 						map.put("resultCnt", childCount);
@@ -95,6 +104,15 @@ class EgovDeptJobControllerDeleteBxTest {
 		controller.deleteDeptJobBx(bx(), model);
 
 		assertTrue(deleted.get(), "비어 있는 부서업무함은 지울 수 있어야 한다");
+	}
+
+	@Test
+	void childCountIsLimitedToTheStoredBoxAndItsDept() throws Exception {
+		childCount = "0";
+		controller.deleteDeptJobBx(bx(), new ModelMap());
+
+		assertEquals("DEPT_A", childRequest.getSearchDeptId(), "목록 조회는 부서 조건이 필수라 원본 업무함의 부서를 넘겨야 한다.");
+		assertEquals("DJBTEST01", childRequest.getSearchDeptJobBxId());
 	}
 
 	private DeptJobBx bx() {

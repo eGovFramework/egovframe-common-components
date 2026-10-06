@@ -330,8 +330,16 @@
 
     // ===== API 호출 및 응답 판별 =====
     // 공통 fetch 호출로 상태값/본문(JSON 또는 문자열)을 반환한다.
+    var csrfHeaderName = "${_csrf.headerName}";
+    var csrfToken = "${_csrf.token}";
     async function callApi(url, options) {
-        var response = await fetch(url, options || {});
+        options = options || {};
+        // GET 이 아닌 요청(트윗 등록·삭제)은 CSRF 토큰을 헤더로 보낸다
+        if (options.method && options.method !== "GET" && csrfHeaderName && csrfToken) {
+            options.headers = Object.assign({}, options.headers);
+            options.headers[csrfHeaderName] = csrfToken;
+        }
+        var response = await fetch(url, options);
         var text = await response.text();
         try {
             return { ok: response.ok, status: response.status, body: JSON.parse(text), raw: text };

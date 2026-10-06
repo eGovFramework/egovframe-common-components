@@ -20,12 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovEmplyrManageService;
@@ -266,7 +265,7 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
-		if (!EgovUmtAuthorizationHelper.canModifyUser(uniqId)) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(uniqId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -324,7 +323,7 @@ public class EgovEmplyrManageController {
 	@RequireAdmin
 	public String updateLockIncorrect(EmplyrManageVO emplyrManageVO, Model model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치 - 계정 잠금해제는 관리자만
-		egovAssertAdminOrOwner(null);
+		EgovAuthorizationHelper.assertAdmin();
 
 
 		// 미인증 사용자에 대한 보안처리
@@ -364,7 +363,7 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
-		if (!EgovUmtAuthorizationHelper.canModifyUser(currentEmplyr.getUniqId())) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(currentEmplyr.getUniqId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -511,6 +510,7 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrPasswordUpdt.do")
+	@RequireAdmin
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("emplyrPasswordManageVO") EmplyrPasswordManageVO emplyrPasswordManageVO,
@@ -570,6 +570,7 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrPasswordUpdtView.do")
+	@RequireAdmin
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("emplyrPasswordManageVO") EmplyrPasswordManageVO emplyrPasswordManageVO) throws Exception {
@@ -641,31 +642,5 @@ public class EgovEmplyrManageController {
 		vo.setPassword2("");
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

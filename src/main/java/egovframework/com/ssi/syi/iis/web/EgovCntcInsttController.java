@@ -1,5 +1,7 @@
 package egovframework.com.ssi.syi.iis.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.ssi.syi.iis.service.CntcInstt;
 import egovframework.com.ssi.syi.iis.service.CntcInsttVO;
@@ -104,11 +107,13 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/iis/removeCntcInstt.do")
+	@RequireAdmin
 	public String deleteCntcInstt(CntcInstt cntcInstt, ModelMap model) throws Exception {
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+
 
 		cntcInstt.setLastUpdusrId(uniqId);
 		cntcInsttService.deleteCntcInstt(cntcInstt);
@@ -125,11 +130,13 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/iis/removeCntcSystem.do")
+	@RequireAdmin
 	public String deleteCntcSystem(CntcSystem cntcSystem, ModelMap model) throws Exception {
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+
 
 		cntcSystem.setLastUpdusrId(uniqId);
 		cntcInsttService.deleteCntcSystem(cntcSystem);
@@ -146,11 +153,13 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/iis/removeCntcService.do")
+	@RequireAdmin
 	public String deleteCntcService(CntcService cntcService, ModelMap model) throws Exception {
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+
 
 		cntcService.setLastUpdusrId(uniqId);
 		cntcInsttService.deleteCntcService(cntcService);
@@ -167,6 +176,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/addCntcInstt.do", params = "!cmd")
+	@RequireAdmin
 	public String insertCntcInsttView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			ModelMap model) throws Exception {
@@ -184,6 +194,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/addCntcInstt.do", params = "cmd=Regist")
+	@RequireAdmin
 	public String insertCntcInstt(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -216,6 +227,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/addCntcSystem.do", params = "!cmd")
+	@RequireAdmin
 	public String insertCntcSystemView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			ModelMap model) throws Exception {
@@ -242,6 +254,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/addCntcSystem.do", params = "cmd=Regist")
+	@RequireAdmin
 	public String insertCntcSystem(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -281,6 +294,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/addCntcService.do", params = "!cmd")
+	@RequireAdmin
 	public String insertCntcServiceView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcService") CntcService cntcService,
 			ModelMap model) throws Exception {
@@ -332,6 +346,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/addCntcService.do", params = "cmd=Regist")
+	@RequireAdmin
 	public String insertCntcService(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcService") CntcService cntcService,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -397,6 +412,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/iis/getCntcInsttDetail.do")
+	@RequireAdmin
 	public String selectCntcInsttDetail(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			@ModelAttribute("cntcSystemVO") CntcSystemVO cntcSystemVO,
@@ -479,11 +495,12 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/updateCntcInstt.do", params = "!cmd")
+	@RequireAdmin
 	public String updateCntcInsttView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		CntcInstt vo = cntcInsttService.selectCntcInsttDetail(cntcInstt);
 		model.addAttribute("cntcInstt", vo);
@@ -502,9 +519,11 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/updateCntcInstt.do", params = "cmd=Modify")
+	@RequireAdmin
 	public String updateCntcInstt(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/ssi/syi/iis/EgovCntcInsttUpdt";
@@ -529,6 +548,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/updateCntcSystem.do", params = "!cmd")
+	@RequireAdmin
 	public String updateCntcSystemView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			ModelMap model) throws Exception {
@@ -559,9 +579,11 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/updateCntcSystem.do", params = "cmd=Modify")
+	@RequireAdmin
 	public String updateCntcSystem(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			// 연계기관 리스트박스 데이터
@@ -595,6 +617,7 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/updateCntcService.do", params = "!cmd")
+	@RequireAdmin
 	public String updateCntcServiceView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcService") CntcService cntcService,
 			ModelMap model) throws Exception {
@@ -649,9 +672,11 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/iis/updateCntcService.do", params = "cmd=Modify")
+	@RequireAdmin
 	public String updateCntcService(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcService") CntcService cntcService,
 			BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			// 연계기관 리스트박스 데이터
@@ -714,31 +739,5 @@ public class EgovCntcInsttController {
 		return ret.toString();
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

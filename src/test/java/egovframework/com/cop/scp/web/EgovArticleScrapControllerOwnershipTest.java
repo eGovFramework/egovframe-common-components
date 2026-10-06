@@ -144,7 +144,7 @@ class EgovArticleScrapControllerOwnershipTest {
 	}
 
 	@Test
-	void deleteByAdminSucceedsEvenWhenNotOwner() throws Exception {
+	void deleteByAdminIsRejectedWhenNotOwner() {
 		StubService service = new StubService(OWNER);
 		EgovArticleScrapController controller = controllerWith(service);
 		bindLoginUser(OUTSIDER, List.of("ROLE_ADMIN"));
@@ -153,8 +153,10 @@ class EgovArticleScrapControllerOwnershipTest {
 		Scrap scrap = new Scrap();
 		ModelMap model = new ModelMap();
 
-		assertDoesNotThrow(() -> controller.deleteArticleScrap(vo, scrap, model));
-		assertTrue(service.deleteCalled);
+		assertThrows(IllegalStateException.class,
+				() -> controller.deleteArticleScrap(vo, scrap, model),
+				"관리자라도 본인 소유가 아닌 스크랩은 삭제할 수 없어야 한다.");
+		assertFalse(service.deleteCalled, "거부되면 실제 삭제가 실행되지 않아야 한다.");
 	}
 
 	@Test

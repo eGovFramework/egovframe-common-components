@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,6 +18,10 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.service.EgovUserDetailsService;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 
 /**
@@ -40,6 +47,19 @@ class EgovFaqControllerFileUploadRestoreTest {
 
 	private ModelMap invokeWithValidationError(String methodName) throws Throwable {
 		EgovFaqController controller = new EgovFaqController();
+		// 수정은 소유권 검증을 먼저 통과해야 하므로 로그인 사용자 본인 글로 둔다
+		LoginVO login = new LoginVO();
+		login.setUniqId("OWNER");
+		new EgovUserDetailsHelper().setEgovUserDetailsService((EgovUserDetailsService) Proxy.newProxyInstance(
+				getClass().getClassLoader(), new Class<?>[] { EgovUserDetailsService.class },
+				(proxy, m, a) -> "getAuthenticatedUser".equals(m.getName()) ? login
+						: "isAuthenticated".equals(m.getName()) ? Boolean.TRUE : List.of()));
+		ReflectionTestUtils.setField(controller, "egovFaqService", Proxy.newProxyInstance(
+				getClass().getClassLoader(), new Class<?>[] { EgovFaqService.class }, (proxy, m, a) -> {
+					FaqVO stored = new FaqVO();
+					stored.setFrstRegisterId("OWNER");
+					return stored;
+				}));
 		Method method = findMethod(methodName);
 		ExtendedModelMap model = new ExtendedModelMap();
 		boolean hasModelParam = false;

@@ -18,6 +18,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQqm.title"/></c:set>
@@ -188,8 +189,8 @@ function selectQustnrQestn(data) {
 			onClick="selectQustnrQestn({
 					qestnrQesitmId: '${resultInfo.qestnrQesitmId}', 
 					qestnTyCode: '${resultInfo.qestnTyCode}',
-					qestnrQesitmCn: '${fn:escapeXml(resultInfo.qestnCn)}'}); return false">
-    			${resultInfo.qestnCn}</a>
+					qestnrQesitmCn: '<c:out value="${egovc:escapeJavaScript(resultInfo.qestnCn)}"/>'}); return false">
+                <c:out value="${resultInfo.qestnCn}"/></a>
     		</div>
 		</td>
 		<!-- 질문유형 -->
@@ -198,7 +199,7 @@ function selectQustnrQestn(data) {
     		<c:if test="${resultInfo.qestnTyCode == '2'}"><spring:message code="comUssOlpQqm.regist.subjectiveQuest" /></c:if><!-- 주관식 -->
 		</td>	
 	  	<!-- 등록자  -->
-	  	<td class="lt_text3">${resultInfo.frstRegisterNm}</td>
+          <td class="lt_text3"><c:out value="${resultInfo.frstRegisterNm}"/></td>
 	  	<!-- 등록일자  -->
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
@@ -207,8 +208,8 @@ function selectQustnrQestn(data) {
 			onClick="selectQustnrQestn({
 					qestnrQesitmId: '${resultInfo.qestnrQesitmId}', 
 					qestnTyCode: '${resultInfo.qestnTyCode}',
-					qestnrQesitmCn: '${fn:escapeXml(resultInfo.qestnCn)}'}); return false"><spring:message code="input.cSelect" /></a><!-- 선택 -->
-    		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.qestnCn}">
+					qestnrQesitmCn: '<c:out value="${egovc:escapeJavaScript(resultInfo.qestnCn)}"/>'}); return false"><spring:message code="input.cSelect" /></a><!-- 선택 -->
+            <input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="<c:out value='${resultInfo.qestnCn}'/>">
 		</td>
 	  </tr>	  
 	</c:forEach>	

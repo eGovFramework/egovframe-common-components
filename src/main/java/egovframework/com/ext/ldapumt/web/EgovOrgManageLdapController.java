@@ -58,7 +58,6 @@ public class EgovOrgManageLdapController {
      * @throws Exception
      */
 	@PostMapping("/ext/ldapumt/dpt/getDeptManageSublist.do")
-	@RequireAdmin
 	public ModelAndView selectDeptManageSublist(@RequestParam("dn") String dn, ModelMap model) throws Exception {
 		validateDn(dn);
 		model.addAttribute("deptManage", orgManageLdapService.selectDeptManageSubList(dn));

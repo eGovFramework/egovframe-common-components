@@ -191,7 +191,8 @@
 		<tr>
 			<th><spring:message code="comUssIonRmm.roughMapList.roughMapAddress" /> <span class="pilsu">*</span></th><!-- 약도 주소 -->
 			<td class="left">
-			    <input name="roughMapAddress" id="roughMapAddress" type="text" value="" maxlength="100" title="<spring:message code="comUssIonRmm.roughMapList.roughMapAddress" />" style="width:547px" />
+			    <spring:message code="comUssIonRmm.roughMapList.roughMapAddress" var="roughMapAddressTitle" />
+			    <form:input path="roughMapAddress" id="roughMapAddress" maxlength="100" title="${roughMapAddressTitle}" cssStyle="width:547px" />
 				<span class="btn_s"><input type="submit" value="<spring:message code="button.search" />" onclick="fn_Address_Search(); return false;" style="padding:6px 12px 6px 12px; background-color:#4688d2; color:#fff; font-size:11px;"></span>
 			</td>
 		</tr>
@@ -219,11 +220,11 @@
 	<div style="clear:both;"></div>
 </div>
 
-	<input name="la" id="la" type="hidden" />
-	<input name="lo" id="lo" type="hidden" />
-	<input name="markerLa" id="markerLa" type="hidden" />
-	<input name="markerLo" id="markerLo" type="hidden" />
-	<input name="zoomLevel" id="zoomLevel" type="hidden" />
+	<form:hidden path="la" />
+	<form:hidden path="lo" />
+	<form:hidden path="markerLa" />
+	<form:hidden path="markerLo" />
+	<form:hidden path="zoomLevel" />
 	
 </form:form>	
 </body>

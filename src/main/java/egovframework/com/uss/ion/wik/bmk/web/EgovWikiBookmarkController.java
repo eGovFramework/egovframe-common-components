@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
@@ -88,22 +91,26 @@ public class EgovWikiBookmarkController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
 			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
 			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
 
-        	for(String checkData : checkList) {
-        		LOGGER.debug("===>>> checkData = "+checkData);
-
-				// 작성자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
-				String loginUniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+			// 일괄 삭제: 모든 건이 작성자 본인 것인지 먼저 확인한 뒤 삭제한다.
+			String loginUniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+			for(String checkData : checkList) {
 				WikiBookmark ownershipCheck = new WikiBookmark();
 				ownershipCheck.setWikiBkmkId(checkData);
 				ownershipCheck.setFrstRegisterId(loginUniqId);
 				boolean owns = egovWikiBookmarkService.selectWikiBookmarkListCnt(ownershipCheck) > 0;
-				egovAssertAdminOrOwner(owns ? loginUniqId : null);
+				EgovAuthorizationHelper.assertOwner(owns ? loginUniqId : null);
+			}
+
+        	for(String checkData : checkList) {
+        		LOGGER.debug("===>>> checkData = "+checkData);
 
                 wikiBookmark.setWikiBkmkId(checkData);
 	            egovWikiBookmarkService.deleteWikiBookmark(wikiBookmark);
@@ -153,6 +160,7 @@ public class EgovWikiBookmarkController {
      * @throws Exception
      */
     @PostMapping("/uss/ion/wik/bmk/registWikiBookmark.do")
+    @RequireAdmin
     public String EgovWikiBookmarkRegist(
     		WikiBookmark wikiBookmark,
             ModelMap model) throws Exception {
@@ -161,7 +169,7 @@ public class EgovWikiBookmarkController {
 
     	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
     	if (loginVO == null || loginVO.getUniqId() == null) {
-    		throw new IllegalStateException("인증 정보가 없습니다.");
+    		throw new EgovAccessDeniedException("인증 정보가 없습니다.");
     	}
     	// 2026.07.13 KISA 보안취약점 조치 - usid는 로그인 사용자로 고정
     	wikiBookmark.setUsid(loginVO.getUniqId());
@@ -180,31 +188,5 @@ public class EgovWikiBookmarkController {
     	return "egovframework/com/uss/ion/wik/bmk/EgovWikiBookmarkRegist";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

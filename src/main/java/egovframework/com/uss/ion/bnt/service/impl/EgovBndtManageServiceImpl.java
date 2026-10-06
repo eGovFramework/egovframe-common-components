@@ -169,6 +169,21 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		return bndtManageDAO.selectBndtDiaryTotCnt(bndtManageVO);
 	}
 
+	/**
+	 * 당직일지 등록자를 조회한다.
+	 *
+	 * @param bndtDiaryVO - bndtId(당직자), bndtDe(당직일자)
+	 * @return String - 등록자 고유ID, 일지가 없으면 null
+	 * @exception Exception
+	 */
+	@Override
+	public String selectBndtDiaryRegisterId(BndtDiaryVO bndtDiaryVO) throws Exception {
+		BndtDiaryVO lookup = new BndtDiaryVO();
+		lookup.setBndtId(bndtDiaryVO.getBndtId());
+		lookup.setBndtDe(EgovStringUtil.removeMinusChar(bndtDiaryVO.getBndtDe()));
+		return bndtManageDAO.selectBndtDiaryRegisterId(lookup);
+	}
+
 	/***** 당직 체크관리 *****/
 
 	/**

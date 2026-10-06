@@ -89,7 +89,8 @@ class EgovWikiBookmarkControllerOwnershipTest {
 
 			@Override
 			public List<String> getAuthorities() {
-				return List.of();
+				// 진입점 목록의 cmd=del 삭제는 관리자 전용이므로 삭제 시나리오의 사용자는 관리자로 둔다
+				return List.of("ROLE_ADMIN");
 			}
 
 			@Override
@@ -172,7 +173,7 @@ class EgovWikiBookmarkControllerOwnershipTest {
 	}
 
 	@Test
-	void deleteByAdminSucceedsEvenWhenNotOwner() throws Exception {
+	void deleteByAdminIsRejectedWhenNotOwner() {
 		StubService service = new StubService(OTHERS_ID, OWNER);
 		bindLoginUser(ATTACKER);
 		EgovUserDetailsService adminStub = new EgovUserDetailsService() {
@@ -203,7 +204,9 @@ class EgovWikiBookmarkControllerOwnershipTest {
 		commandMap.put("cmd", "del");
 		ModelMap model = new ModelMap();
 
-		controller.EgovWikiBookmarkList(searchVO, wikiBookmark, commandMap, List.of(OTHERS_ID), model);
-		assertTrue(service.deleteCalled, "An admin must be able to delete any member's wiki bookmark.");
+		assertThrows(IllegalStateException.class,
+				() -> controller.EgovWikiBookmarkList(searchVO, wikiBookmark, commandMap, List.of(OTHERS_ID), model),
+				"An admin who is not the owner must not be able to delete another member's wiki bookmark.");
+		assertFalse(service.deleteCalled, "deleteWikiBookmark must not be reached by a non-owner admin.");
 	}
 }

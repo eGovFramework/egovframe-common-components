@@ -129,6 +129,7 @@
 	                    mge.REFRN_URL            AS refrnUrl         ,
 	                    mge.RCEPT_BGNDE       AS rceptBeginDe     ,
 	                    mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                    mge.FRST_REGISTER_ID     AS frstRegisterId   ,
 	                    DATE_PART('day', TO_TIMESTAMP(mge.EVENT_ENDDE,'YYYYmmdd')-TO_TIMESTAMP(mge.EVENT_BGNDE,'YYYYmmdd'))+1 as eventTemp1 ,
 	                   (select count(*) from COMTNEVENTATDRN  where  EVENT_ID = mge.EVENT_ID) as eventAtdrnCount,
 	                    DATE_PART('day', TO_TIMESTAMP(mge.RCEPT_BGNDE,'YYYYmmdd')-NOW()) AS eventDayCount,

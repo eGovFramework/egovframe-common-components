@@ -15,8 +15,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.ncm.service.EgovNcrdManageService;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
@@ -124,7 +124,7 @@ public class EgovNcrdManageController {
     }
 
 	NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
-	EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
+	EgovAuthorizationHelper.assertOwner(vo == null ? null : vo.getFrstRegisterId());
 
 	ncrdVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -204,7 +204,7 @@ public class EgovNcrdManageController {
 		ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
-		EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
+		EgovAuthorizationHelper.assertOwner(vo == null ? null : vo.getFrstRegisterId());
 
 		model.addAttribute("ncrdVO", vo);
 
@@ -231,7 +231,7 @@ public class EgovNcrdManageController {
 	    }
 
 		NameCardVO owner = ncrdService.selectNcrdItem(ncrdVO);
-		EgovXssChecker.checkerUserXss(request, owner == null ? null : owner.getFrstRegisterId());
+		EgovAuthorizationHelper.assertOwner(owner == null ? null : owner.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 		    ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -276,6 +276,12 @@ public class EgovNcrdManageController {
 
 		ncrdUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		ncrdUser.setUseAt("Y");
+
+		// 비공개 명함은 등록자 본인만 내 명함첩에 담는다
+		NameCardVO cardKey = new NameCardVO();
+		cardKey.setNcrdId(ncrdUser.getNcrdId());
+		NameCardVO card = ncrdService.selectNcrdItem(cardKey);
+		EgovAuthorizationHelper.assertNcrdReadable(card == null ? null : card.getOthbcAt(), card == null ? null : card.getFrstRegisterId());
 
 		// 2022.11.11 시큐어코딩 처리
 		ncrdService.insertNcrdUseInf(ncrdUser);
@@ -377,6 +383,10 @@ public class EgovNcrdManageController {
 		ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
+		// 비공개 명함은 등록자 본인만 본다
+		if (vo != null) {
+			EgovAuthorizationHelper.assertNcrdReadable(vo.getOthbcAt(), vo.getFrstRegisterId());
+		}
 
 		model.addAttribute("ncrdVO", vo);
 

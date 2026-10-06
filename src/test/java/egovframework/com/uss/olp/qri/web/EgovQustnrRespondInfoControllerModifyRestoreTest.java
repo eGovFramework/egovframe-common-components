@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,8 +52,15 @@ class EgovQustnrRespondInfoControllerModifyRestoreTest {
 		}
 	};
 
-	private final InvocationHandler emptyStub = (proxy, method, args) ->
-			List.class.isAssignableFrom(method.getReturnType()) ? Collections.emptyList() : null;
+	/** 조회 결과는 로그인 사용자(USRCNFRM_TEST)가 등록한 응답 한 건 — 수정은 응답자 본인만 허용된다. */
+	private final InvocationHandler emptyStub = (proxy, method, args) -> {
+		if (!List.class.isAssignableFrom(method.getReturnType())) {
+			return null;
+		}
+		EgovMap row = new EgovMap();
+		row.put("frstRegisterId", "USRCNFRM_TEST");
+		return List.of(row);
+	};
 
 	@BeforeEach
 	void setUpStaticAuth() {
@@ -89,5 +96,31 @@ class EgovQustnrRespondInfoControllerModifyRestoreTest {
 		assertEquals("egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify", view);
 		assertTrue(model.containsAttribute("resultList"),
 				"검증 실패 재표시 시 resultList가 model에 있어야 재제출 대상 식별자가 보존된다");
+	}
+
+	@Test
+	@DisplayName("응답자가 아닌 관리자는 응답 수정 화면·저장을 쓸 수 없다")
+	void modifyRejectsAdministratorWhoIsNotTheRespondent() {
+		EgovQustnrRespondInfoController controller = new EgovQustnrRespondInfoController();
+		InvocationHandler otherRespondent = (proxy, method, args) -> {
+			if (!List.class.isAssignableFrom(method.getReturnType())) {
+				return null;
+			}
+			EgovMap row = new EgovMap();
+			row.put("frstRegisterId", "USRCNFRM_OTHER");
+			return List.of(row);
+		};
+		ReflectionTestUtils.setField(controller, "egovQustnrRespondInfoService",
+				Proxy.newProxyInstance(getClass().getClassLoader(),
+						new Class[] { EgovQustnrRespondInfoService.class }, otherRespondent));
+
+		QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
+		Map<String, Object> commandMap = new HashMap<>();
+		commandMap.put("cmd", "save");
+
+		org.junit.jupiter.api.Assertions.assertThrows(egovframework.com.cmm.exception.EgovAccessDeniedException.class,
+				() -> controller.qustnrRespondInfoModify(new ComDefaultVO(), commandMap, null, qustnrRespondInfoVO,
+						new BeanPropertyBindingResult(qustnrRespondInfoVO, "qustnrRespondInfoVO"),
+						new RedirectAttributesModelMap(), new ModelMap()));
 	}
 }

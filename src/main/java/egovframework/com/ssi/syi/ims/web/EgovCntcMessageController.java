@@ -1,5 +1,7 @@
 package egovframework.com.ssi.syi.ims.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.ssi.syi.ims.service.CntcMessage;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItem;
@@ -91,12 +94,14 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/ims/removeCntcMessage.do")
+	@RequireAdmin
 	public String deleteCntcMessage(CntcMessage cntcMessage, ModelMap model) throws Exception {
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		cntcMessage.setLastUpdusrId(uniqId);
+
 
 		cntcMessageService.deleteCntcMessage(cntcMessage);
 		return "forward:/ssi/syi/ims/getCntcMessageList.do";
@@ -112,12 +117,14 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/ims/removeCntcMessageItem.do")
+	@RequireAdmin
 	public String deleteCntcMessageItem(CntcMessageItem cntcMessageItem, ModelMap model) throws Exception {
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		cntcMessageItem.setLastUpdusrId(uniqId);
+
 
 		cntcMessageService.deleteCntcMessageItem(cntcMessageItem);
 		return "forward:/ssi/syi/ims/getCntcMessageList.do";
@@ -133,6 +140,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/addCntcMessage.do", params = "!cmd")
+	@RequireAdmin
 	public String insertCntcMessageView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			ModelMap model) throws Exception {
@@ -158,6 +166,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/addCntcMessage.do", params = "cmd=Regist")
+	@RequireAdmin
 	public String insertCntcMessage(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -197,6 +206,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/addCntcMessageItem.do", params = "!cmd")
+	@RequireAdmin
 	public String insertCntcMessageItemView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			ModelMap model) throws Exception {
@@ -222,6 +232,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/addCntcMessageItem.do", params = "cmd=Regist")
+	@RequireAdmin
 	public String insertCntcMessageItem(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -261,6 +272,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/ssi/syi/ims/getCntcMessageDetail.do")
+	@RequireAdmin
 	public String selectCntcMessageDetail(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			@ModelAttribute("cntcMessageItemVO") CntcMessageItemVO cntcMessageItemVO, ModelMap model) throws Exception {
@@ -326,6 +338,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/updateCntcMessage.do", params = "!cmd")
+	@RequireAdmin
 	public String updateCntcMessageView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			ModelMap model) throws Exception {
@@ -354,9 +367,11 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/updateCntcMessage.do", params = "cmd=Modify")
+	@RequireAdmin
 	public String updateCntcMessage(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			// 연계메시지 리스트박스 데이터
@@ -389,6 +404,7 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/updateCntcMessageItem.do", params = "!cmd")
+	@RequireAdmin
 	public String updateCntcMessageItemView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			ModelMap model) throws Exception {
@@ -417,9 +433,11 @@ public class EgovCntcMessageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/ssi/syi/ims/updateCntcMessageItem.do", params = "cmd=Modify")
+	@RequireAdmin
 	public String updateCntcMessageItem(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			// 연계메시지 리스트박스 데이터

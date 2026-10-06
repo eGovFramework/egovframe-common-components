@@ -1,6 +1,7 @@
 package egovframework.com.uss.ion.rwd.web;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
@@ -193,7 +195,7 @@ class EgovRwardManageControllerOwnershipTest {
 
 	/**
 	 * MockMultipartHttpServletRequest는 이 로컬 환경에서 NoClassDefFoundError로 깨진다
-	 * ([[shell-and-egov-test-env-traps]]). 컨트롤러가 실제로 쓰는 getFiles(String)만
+	 *. 컨트롤러가 실제로 쓰는 getFiles(String)만
 	 * 최소 구현한 프록시로 대체한다.
 	 */
 	private static MultipartHttpServletRequest emptyMultipartRequest() {
@@ -296,14 +298,16 @@ class EgovRwardManageControllerOwnershipTest {
 	}
 
 	@Test
-	void deleteByAdminSucceedsEvenWhenNotApplicant() throws Exception {
+	void deleteByAdminIsRejectedWhenNotApplicant() {
 		StubService service = new StubService(OWNER, SANCTNER);
 		EgovRwardManageController controller = controllerWith(service);
 		bindLoginUser(OUTSIDER, List.of("ROLE_ADMIN"));
 
 		ModelMap model = new ModelMap();
-		controller.deleteRwardManage(requestFor("1"), new SimpleSessionStatus(), model);
-		assertTrue(service.deleteCalled, "An admin must be able to delete any reward nomination.");
+		assertThrows(IllegalStateException.class,
+				() -> controller.deleteRwardManage(requestFor("1"), new SimpleSessionStatus(), model),
+				"An admin who is not the applicant must not be able to delete another member's reward nomination.");
+		assertTrue(!service.deleteCalled, "deleteRwardManage service must not be reached by a non-applicant admin.");
 	}
 
 	// ---- updtRwardManageConfm (승인/반려) ----
@@ -339,7 +343,8 @@ class EgovRwardManageControllerOwnershipTest {
 	}
 
 	@Test
-	void confirmByAdminSucceedsEvenWhenNotSanctner() throws Exception {
+	void confirmByAdminIsDeniedWhenNotSanctner() {
+		// 승인·반려는 지정된 승인권자(SANCTNER_ID)만 한다. 관리자라도 예외가 없다.
 		StubService service = new StubService(OWNER, SANCTNER);
 		EgovRwardManageController controller = controllerWith(service);
 		bindLoginUser(OUTSIDER, List.of("ROLE_ADMIN"));
@@ -348,8 +353,9 @@ class EgovRwardManageControllerOwnershipTest {
 		BindingResult bindingResult = new BeanPropertyBindingResult(rm, "rwardManage");
 		ModelMap model = new ModelMap();
 
-		controller.updtRwardManageConfm(rm, bindingResult, new SimpleSessionStatus(), model);
-		assertTrue(service.confmCalled, "An admin must be able to confirm/reject any reward nomination.");
+		assertThrows(IllegalStateException.class,
+				() -> controller.updtRwardManageConfm(rm, bindingResult, new SimpleSessionStatus(), model));
+		assertFalse(service.confmCalled, "An admin who is not the designated sanctner must not confirm/reject.");
 	}
 
 	// ---- selectRwardConfm (승인상세 열람) ----
@@ -398,7 +404,7 @@ class EgovRwardManageControllerOwnershipTest {
 		ModelMap model = new ModelMap();
 
 		assertThrows(IllegalStateException.class,
-				() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model),
+				() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model, new MockHttpServletRequest()),
 				"A logged-in non-applicant must not be able to view another member's reward nomination detail.");
 	}
 
@@ -413,7 +419,7 @@ class EgovRwardManageControllerOwnershipTest {
 		vo.setRwardId("1");
 		ModelMap model = new ModelMap();
 
-		String view = assertDoesNotThrow(() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model));
+		String view = assertDoesNotThrow(() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model, new MockHttpServletRequest()));
 		assertTrue(view.contains("EgovRwardDetail"));
 	}
 
@@ -428,7 +434,7 @@ class EgovRwardManageControllerOwnershipTest {
 		vo.setRwardId("1");
 		ModelMap model = new ModelMap();
 
-		String view = assertDoesNotThrow(() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model));
+		String view = assertDoesNotThrow(() -> controller.selectRwardManage(rm, vo, Collections.emptyMap(), model, new MockHttpServletRequest()));
 		assertTrue(view.contains("EgovRwardDetail"));
 	}
 }

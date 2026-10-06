@@ -36,8 +36,16 @@ import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
  */
 class EgovIndvdlInfoPolicyControllerAdminCheckTest {
 
+	private static final String LOGIN_USER = "USRCNFRM_00000000001";
+	private static final String OTHER_USER = "USRCNFRM_00000000009";
+
 	private static final class StubService implements EgovIndvdlInfoPolicyService {
+		private final String ownerUniqId;
 		private boolean deleteCalled = false;
+
+		StubService(String ownerUniqId) {
+			this.ownerUniqId = ownerUniqId;
+		}
 
 		@Override
 		public List<EgovMap> selectIndvdlInfoPolicyList(ComDefaultVO searchVO) {
@@ -51,7 +59,9 @@ class EgovIndvdlInfoPolicyControllerAdminCheckTest {
 
 		@Override
 		public IndvdlInfoPolicy selectIndvdlInfoPolicyDetail(IndvdlInfoPolicy indvdlInfoPolicy) {
-			throw new UnsupportedOperationException();
+			IndvdlInfoPolicy stored = new IndvdlInfoPolicy();
+			stored.setFrstRegisterId(ownerUniqId);
+			return stored;
 		}
 
 		@Override
@@ -72,7 +82,7 @@ class EgovIndvdlInfoPolicyControllerAdminCheckTest {
 
 	private static void bindLoginUser(List<String> authorities) {
 		LoginVO login = new LoginVO();
-		login.setUniqId("USRCNFRM_00000000001");
+		login.setUniqId(LOGIN_USER);
 		EgovUserDetailsService stub = new EgovUserDetailsService() {
 			@Override
 			public Object getAuthenticatedUser() {
@@ -123,25 +133,20 @@ class EgovIndvdlInfoPolicyControllerAdminCheckTest {
 	// ---- 삭제: 실제 동작 테스트(인라인 체크) ----
 
 	@Test
-	void deleteByNonAdminIsRejected() throws Exception {
-		StubService service = new StubService();
-		EgovIndvdlInfoPolicyController controller = controllerWith(service);
-		bindLoginUser(List.of());
-
-		IndvdlInfoPolicy indvdlInfoPolicy = new IndvdlInfoPolicy();
-		Map<String, String> commandMap = new HashMap<>();
-		commandMap.put("cmd", "del");
-		ModelMap model = new ModelMap();
-
-		assertThrows(IllegalStateException.class,
-				() -> controller.egovIndvdlInfoPolicyDetail(new ComDefaultVO(), indvdlInfoPolicy, commandMap, model),
-				"관리자가 아니면 개인정보처리방침을 삭제할 수 없어야 한다.");
-		assertTrue(!service.deleteCalled, "deleteIndvdlInfoPolicy 서비스가 호출되면 안 된다.");
+	void deleteRequiresAdmin() throws Exception {
+		// 삭제(cmd=del)는 상세 핸들러가 처리한다. 비관리자 차단은 @RequireAdmin(AOP)이 한다 — 단위 테스트는 AOP 를 거치지 않으므로 부착만 고정한다
+		Method m = null;
+		for (Method candidate : EgovIndvdlInfoPolicyController.class.getDeclaredMethods()) {
+			if (candidate.getName().equals("egovIndvdlInfoPolicyDetail")) {
+				m = candidate;
+			}
+		}
+		assertTrue(m != null && m.isAnnotationPresent(RequireAdmin.class), "개인정보처리방침 삭제는 관리자만 가능해야 한다.");
 	}
 
 	@Test
-	void deleteByAdminSucceeds() throws Exception {
-		StubService service = new StubService();
+	void deleteByAdminSucceedsEvenWhenNotOwner() throws Exception {
+		StubService service = new StubService(OTHER_USER);
 		EgovIndvdlInfoPolicyController controller = controllerWith(service);
 		bindLoginUser(List.of("ROLE_ADMIN"));
 
@@ -150,7 +155,23 @@ class EgovIndvdlInfoPolicyControllerAdminCheckTest {
 		commandMap.put("cmd", "del");
 		ModelMap model = new ModelMap();
 
+		// 시스템·관리 설정은 관리자 누구나 다룬다
 		controller.egovIndvdlInfoPolicyDetail(new ComDefaultVO(), indvdlInfoPolicy, commandMap, model);
-		assertTrue(service.deleteCalled, "관리자는 개인정보처리방침을 삭제할 수 있어야 한다.");
+		assertTrue(service.deleteCalled, "관리자는 등록자가 아니어도 개인정보처리방침을 삭제할 수 있어야 한다.");
+	}
+
+	@Test
+	void deleteByOwnerSucceeds() throws Exception {
+		StubService service = new StubService(LOGIN_USER);
+		EgovIndvdlInfoPolicyController controller = controllerWith(service);
+		bindLoginUser(List.of());
+
+		IndvdlInfoPolicy indvdlInfoPolicy = new IndvdlInfoPolicy();
+		Map<String, String> commandMap = new HashMap<>();
+		commandMap.put("cmd", "del");
+		ModelMap model = new ModelMap();
+
+		controller.egovIndvdlInfoPolicyDetail(new ComDefaultVO(), indvdlInfoPolicy, commandMap, model);
+		assertTrue(service.deleteCalled, "등록자 본인은 개인정보처리방침을 삭제할 수 있어야 한다.");
 	}
 }

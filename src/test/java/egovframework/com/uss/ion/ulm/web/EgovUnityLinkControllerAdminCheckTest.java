@@ -35,8 +35,16 @@ import egovframework.com.uss.ion.ulm.service.UnityLink;
  */
 class EgovUnityLinkControllerAdminCheckTest {
 
+	private static final String LOGIN_USER = "USRCNFRM_00000000001";
+	private static final String OTHER_USER = "USRCNFRM_00000000009";
+
 	private static final class StubService implements EgovUnityLinkService {
+		private final String ownerUniqId;
 		private boolean deleteCalled = false;
+
+		StubService(String ownerUniqId) {
+			this.ownerUniqId = ownerUniqId;
+		}
 
 		@Override
 		public List<?> selectUnityLinkSample(UnityLink unityLink) {
@@ -55,7 +63,9 @@ class EgovUnityLinkControllerAdminCheckTest {
 
 		@Override
 		public UnityLink selectUnityLinkDetail(UnityLink unityLink) {
-			throw new UnsupportedOperationException();
+			UnityLink stored = new UnityLink();
+			stored.setFrstRegisterId(ownerUniqId);
+			return stored;
 		}
 
 		@Override
@@ -76,7 +86,7 @@ class EgovUnityLinkControllerAdminCheckTest {
 
 	private static void bindLoginUser(List<String> authorities) {
 		LoginVO login = new LoginVO();
-		login.setUniqId("USRCNFRM_00000000001");
+		login.setUniqId(LOGIN_USER);
 		EgovUserDetailsService stub = new EgovUserDetailsService() {
 			@Override
 			public Object getAuthenticatedUser() {
@@ -123,8 +133,29 @@ class EgovUnityLinkControllerAdminCheckTest {
 	// ---- 삭제: 실제 동작 테스트(인라인 체크) ----
 
 	@Test
-	void deleteByNonAdminIsRejected() throws Exception {
-		StubService service = new StubService();
+	void deleteRequiresAdmin() throws Exception {
+		// 관리자 전용 경로는 @RequireAdmin(AOP)이 일반 사용자를 막는다. 단위 테스트는 AOP 를 거치지 않으므로 애노테이션을 확인한다
+		java.lang.reflect.Method m = java.util.Arrays.stream(EgovUnityLinkController.class.getDeclaredMethods())
+				.filter(x -> x.getName().equals("egovUnityLinkDetail")).findFirst().orElseThrow();
+		org.junit.jupiter.api.Assertions.assertTrue(m.isAnnotationPresent(egovframework.com.cmm.annotation.RequireAdmin.class), "통합링크 삭제는 관리자만 가능해야 한다.");
+	}
+
+	@Test
+	void deleteByAdminReachesServiceWhenNotOwner() throws Exception {
+		StubService service = new StubService(OTHER_USER);
+		EgovUnityLinkController controller = controllerWith(service);
+		bindLoginUser(List.of("ROLE_ADMIN"));
+
+		UnityLink unityLink = new UnityLink();
+		Map<String, String> commandMap = new HashMap<>();
+		commandMap.put("cmd", "del");
+		controller.egovUnityLinkDetail(unityLink, commandMap, new ModelMap());
+		assertTrue(service.deleteCalled, "관리자 전용 경로는 관리자끼리 신뢰하므로 등록자가 아니어도 삭제할 수 있다.");
+	}
+
+	@Test
+	void deleteByOwnerSucceeds() throws Exception {
+		StubService service = new StubService(LOGIN_USER);
 		EgovUnityLinkController controller = controllerWith(service);
 		bindLoginUser(List.of());
 
@@ -133,24 +164,7 @@ class EgovUnityLinkControllerAdminCheckTest {
 		commandMap.put("cmd", "del");
 		ModelMap model = new ModelMap();
 
-		assertThrows(IllegalStateException.class,
-				() -> controller.egovUnityLinkDetail(unityLink, commandMap, model),
-				"관리자가 아니면 통합링크를 삭제할 수 없어야 한다.");
-		assertTrue(!service.deleteCalled, "deleteUnityLink 서비스가 호출되면 안 된다.");
-	}
-
-	@Test
-	void deleteByAdminSucceeds() throws Exception {
-		StubService service = new StubService();
-		EgovUnityLinkController controller = controllerWith(service);
-		bindLoginUser(List.of("ROLE_ADMIN"));
-
-		UnityLink unityLink = new UnityLink();
-		Map<String, String> commandMap = new HashMap<>();
-		commandMap.put("cmd", "del");
-		ModelMap model = new ModelMap();
-
 		controller.egovUnityLinkDetail(unityLink, commandMap, model);
-		assertTrue(service.deleteCalled, "관리자는 통합링크를 삭제할 수 있어야 한다.");
+		assertTrue(service.deleteCalled, "등록자 본인은 통합링크를 삭제할 수 있어야 한다.");
 	}
 }

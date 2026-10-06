@@ -122,6 +122,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form:form name="adbk" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/adb/RegistAdbkInf.do"  method="post" onSubmit="fn_egov_regist_adbkInf(document.forms[0]); return false;"> 
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <input type="hidden" name="checkWord" value="">
 <input type="hidden" name="checkCnd" value="">

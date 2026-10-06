@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
 import jakarta.annotation.Resource;
@@ -45,6 +46,7 @@ public class EgovOnlinePollResultController {
      * @throws Exception
      */
     @PostMapping("/uss/olp/opr/listOnlinePollResult.do")
+    @RequireAdmin
     public String egovOnlinePollResultList(
             OnlinePollResult onlinePollResult,
             ModelMap model
@@ -67,6 +69,7 @@ public class EgovOnlinePollResultController {
      * @throws Exception
      */
     @PostMapping("/uss/olp/opr/delOnlinePollResult.do")
+    @RequireAdmin
     public String egovOnlinePollResultDetail(
             OnlinePollResult onlinePollResult,
             ModelMap model) throws Exception {

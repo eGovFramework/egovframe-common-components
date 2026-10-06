@@ -255,7 +255,10 @@
 			A.LAST_UPDUSR_ID,
 			A.REPTIT_SE_CODE 
 		FROM COMTNSCHDULINFO A
-		WHERE 1=1 
+		WHERE 1=1
+	 <if test='frstRegisterId != null and frstRegisterId != ""'>
+	 	AND FRST_REGISTER_ID = #{frstRegisterId}
+	 </if> 
 	 
 	 <if test='searchKeyword != null and searchKeyword != ""'>
 	 	
@@ -278,7 +281,10 @@
 		SELECT 
 		COUNT(*) totcnt
 		FROM COMTNSCHDULINFO
-		WHERE 1=1 
+		WHERE 1=1
+	 <if test='frstRegisterId != null and frstRegisterId != ""'>
+	 	AND FRST_REGISTER_ID = #{frstRegisterId}
+	 </if> 
 	 <if test='searchKeyword != null and searchKeyword != ""'>
 	 	
  				AND SCHDUL_NM LIKE '%' || #{searchKeyword} || '%'

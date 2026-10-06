@@ -68,23 +68,26 @@ public class MtgPlaceResveVO extends ComDefaultVO {
 	@AssertTrue(message = "{comUssIonMtg.mtgPlaceResveTimeStartBeforeEnd}")
 	public boolean isResveTimeRangeValid() {
 		if (resveBeginTm == null || resveEndTm == null) return true;
-		int begin = toMinutes(resveBeginTm);
-		int end = toMinutes(resveEndTm);
-		return begin < end;
+		try {
+			return toMinutes(resveBeginTm) < toMinutes(resveEndTm);
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
 
 	private static int toMinutes(String s) {
-		if (s == null) return 0;
 		s = s.trim();
-		if (s.length() >= 4) {
-			int h = Integer.parseInt(s.substring(0, 2), 10);
-			int m = Integer.parseInt(s.substring(2, 4), 10);
+		if (s.contains(":")) {
+			String[] p = s.split(":");
+			int h = Integer.parseInt(p[0].trim(), 10);
+			int m = p.length > 1 ? Integer.parseInt(p[1].trim(), 10) : 0;
 			return h * 60 + m;
 		}
+		if (s.length() >= 4) {
+			return Integer.parseInt(s.substring(0, 2), 10) * 60 + Integer.parseInt(s.substring(2, 4), 10);
+		}
 		if (s.length() == 3) {
-			int h = Integer.parseInt(s.substring(0, 1), 10);
-			int m = Integer.parseInt(s.substring(1, 3), 10);
-			return h * 60 + m;
+			return Integer.parseInt(s.substring(0, 1), 10) * 60 + Integer.parseInt(s.substring(1, 3), 10);
 		}
 		return 0;
 	}

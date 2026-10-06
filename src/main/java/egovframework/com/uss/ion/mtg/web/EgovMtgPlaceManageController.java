@@ -1,8 +1,11 @@
 package egovframework.com.uss.ion.mtg.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,8 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.mtg.service.EgovMtgPlaceManageService;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
@@ -33,6 +38,7 @@ import egovframework.com.uss.ion.mtg.service.MtgPlaceResveVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -43,6 +49,7 @@ import jakarta.validation.Valid;
  * 상세내용
  * - 회의실관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 회의실관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 소유권(관리자 예외 없음): 회의실 수정·삭제 = 등록자(frstRegisterId), 예약 수정·취소 = 예약자(resveManId)
  * </pre>
  * 
  * @author 이용
@@ -87,9 +94,9 @@ public class EgovMtgPlaceManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/uss/ion/mtg/selectMtgPlaceManageListView.do")
+	@RequireAdmin
 	public String selectMtgPlaceManageListView() throws Exception {
-
-		return "egovframework/com/uss/ion/mtg/EgovMtgPlaceManageList";
+		return "forward:/uss/ion/mtg/selectMtgPlaceManageList.do";
 	}
 
 	/**
@@ -133,8 +140,9 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/selectMtgPlaceManage.do")
+	@RequireAdmin
 	public String selectMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model, HttpServletRequest request) throws Exception {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -142,10 +150,16 @@ public class EgovMtgPlaceManageController {
 		List<CmmnDetailCode> lcSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 
 		model.addAttribute("lcSeCode", lcSeCodeList);
-		model.addAttribute("mtgPlaceManageVO", egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO));
+		MtgPlaceManageVO stored = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
+		model.addAttribute("mtgPlaceManageVO", stored);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("update")) {
+			// 운영 콘텐츠라 관리자 누구나 다룬다. 대상이 없으면 거부
+			if (stored == null) {
+				throw new IllegalStateException("대상 정보가 없습니다.");
+			}
+			EgovAttachmentGrants.allowDelete(request, stored.getAtchFileId());
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceUpdt";
 		} else {
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceDetail";
@@ -158,6 +172,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/insertViewMtgPlace.do")
+	@RequireAdmin
 	public String insertViewMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			ModelMap model) throws Exception {
 
@@ -177,6 +192,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/insertMtgPlace.do")
+	@RequireAdmin
 	public String insertMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -211,10 +227,19 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/updtMtgPlace.do")
+	@RequireAdmin
 	public String updateMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@RequestParam("atchFileAt") String atchFileAt,
 			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
+
+		MtgPlaceManageVO stored = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
+		// 운영 콘텐츠라 관리자 누구나 다룬다. 대상이 없으면 거부
+		if (stored == null) {
+			throw new IllegalStateException("대상 정보가 없습니다.");
+		}
+		// 첨부 그룹은 요청값이 아니라 조회한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		mtgPlaceManageVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("mtgPlaceManageVO", mtgPlaceManageVO);
@@ -254,8 +279,16 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/deleteMtgPlaceManage.do")
+	@RequireAdmin
 	public String deleteMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			SessionStatus status, ModelMap model) throws Exception {
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		MtgPlaceManageVO stored = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
+		// 운영 콘텐츠라 관리자 누구나 다룬다. 대상이 없으면 거부
+		if (stored == null) {
+			throw new IllegalStateException("대상 정보가 없습니다.");
+		}
+
 		// 예약이 남아 있으면 회의실을 삭제하지 않는다.
 		// 예약 조회는 회의실을 기준 테이블로 삼으므로 회의실이 없어지면 그 예약은 목록에도 상세에도 나오지 않는다.
 		if (egovMtgPlaceManageService.selectMtgPlaceResveCnt(mtgPlaceManageVO) > 0) {
@@ -263,8 +296,6 @@ public class EgovMtgPlaceManageController {
 			return "forward:/uss/ion/mtg/selectMtgPlaceManageList.do";
 		}
 
-		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
-		MtgPlaceManageVO stored = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
 		String atchFileId = stored == null ? null : stored.getAtchFileId();
 
 		egovMtgPlaceManageService.deleteMtgPlaceManage(mtgPlaceManageVO);
@@ -287,6 +318,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@GetMapping("/uss/ion/mtg/selectMtgPlaceImage.do")
+	@RequireAdmin
 	public String selectMtgPlaceImage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@RequestParam("sTmMtgPlaceId") String sTmMtgPlaceId, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -363,6 +395,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/selectMtgPlaceResveManage.do")
+	@RequireAdmin
 	public String selectMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -397,6 +430,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/selectMtgPlaceResveManageDetail.do")
+	@RequireAdmin
 	public String selectMtgPlaceResveManageDetail(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
@@ -431,6 +465,8 @@ public class EgovMtgPlaceManageController {
 			model.addAttribute("mtgPlaceResveVO", mtgPlaceResveVO);
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveDetail";
 		} else {
+			// 예약 수정 화면은 예약자 본인만 (저장·삭제와 같은 기준)
+			EgovAuthorizationHelper.assertOwner(resultVO.getResveManId());
 			MtgPlaceResveVO mtgPlaceResveVO = new MtgPlaceResveVO();
 			mtgPlaceResveVO.setResveId(resultVO.getResveId());
 			mtgPlaceResveVO.setMtgPlaceId(resultVO.getMtgPlaceId());
@@ -454,6 +490,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/insertMtgPlaceResve.do")
+	@RequireAdmin
 	public String insertMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@Valid @ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO, BindingResult bindingResult,
 			@RequestParam(value = "dplactCeck", required = false) String dplactCeck,
@@ -517,10 +554,20 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/updtMtgPlaceResve.do")
+	@RequireAdmin
 	public String updtMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@Valid @ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO, BindingResult bindingResult,
 			@RequestParam(value = "dplactCeck", required = false) String dplactCeck,
 			SessionStatus status, ModelMap model) throws Exception {
+
+		// 2026.09.21 IDOR 조치 - updtMtgPlaceResve 의 WHERE 절에 예약자 조건이 없으므로 예약자 본인인지 직접 확인한다(삭제와 같은 기준).
+		MtgPlaceManageVO ownerCheckVO = new MtgPlaceManageVO();
+		ownerCheckVO.setMtgPlaceId(mtgPlaceResveVO.getMtgPlaceId());
+		ownerCheckVO.setResveId(mtgPlaceResveVO.getResveId());
+		MtgPlaceManageVO storedResve = egovMtgPlaceManageService.selectMtgPlaceResveDetail(ownerCheckVO);
+		EgovAuthorizationHelper.assertOwner(storedResve == null ? null : storedResve.getResveManId());
+		// 예약자는 요청값이 아니라 원본 값을 쓴다(UPDATE 가 RSVCTM_ID 를 SET — 타인 명의 전환 차단)
+		mtgPlaceResveVO.setResveManId(storedResve.getResveManId());
 
 		if (!"Y".equals(dplactCeck)) {
 			bindingResult.rejectValue("resveBeginTm", "comUssIonMtg.mtgPlaceResveRegist.dplactCeck",
@@ -556,8 +603,6 @@ public class EgovMtgPlaceManageController {
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveUpdt";
 		}
 
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
 		status.setComplete();
 		egovMtgPlaceManageService.updtMtgPlaceResve(mtgPlaceResveVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
@@ -572,8 +617,16 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/mtg/deleteMtgPlaceResve.do")
+	@RequireAdmin
 	public String deleteMtgPlaceResveManage(@ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO,
 			SessionStatus status, ModelMap model) throws Exception {
+
+		// 예약은 예약자(RSVCTM_ID) 본인만 삭제할 수 있다.
+		MtgPlaceManageVO ownerCheckVO = new MtgPlaceManageVO();
+		ownerCheckVO.setMtgPlaceId(mtgPlaceResveVO.getMtgPlaceId());
+		ownerCheckVO.setResveId(mtgPlaceResveVO.getResveId());
+		MtgPlaceManageVO storedResve = egovMtgPlaceManageService.selectMtgPlaceResveDetail(ownerCheckVO);
+		EgovAuthorizationHelper.assertOwner(storedResve == null ? null : storedResve.getResveManId());
 
 		egovMtgPlaceManageService.deleteMtgPlaceResve(mtgPlaceResveVO);
 		status.setComplete();
@@ -588,6 +641,7 @@ public class EgovMtgPlaceManageController {
 	 * @return int - 중복건수
 	 */
 	@GetMapping("/uss/ion/mtg/mtgPlaceResveDplactCeck.do")
+	@RequireAdmin
 	public String mtgPlaceResveDplactCeck(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@RequestParam("sTmResveDe") String sTempResveDe, @RequestParam("sTmResveBeginTm") String sTempResveBeginTm,
 			@RequestParam("sTmResveEndTm") String sTempResveEndTm,

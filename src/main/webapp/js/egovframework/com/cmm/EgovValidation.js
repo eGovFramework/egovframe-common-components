@@ -5158,13 +5158,6 @@ function validateZip(form) {
 // 부서관리 validation (사용자관리 - 부서관리 등록/수정)
 function validateDeptManage(form) {
     const rules = {
-        orgnztId: {
-            label: '부서ID',
-            rules: {
-                required: true,
-                maxlength: 50
-            }
-        },
         orgnztNm: {
             label: '부서명',
             rules: {

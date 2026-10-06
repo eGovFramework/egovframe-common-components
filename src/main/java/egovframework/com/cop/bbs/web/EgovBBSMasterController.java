@@ -22,14 +22,17 @@ import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
+import egovframework.com.cop.bbs.service.BoardVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.cop.bbs.service.EgovBBSMasterService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
@@ -64,6 +67,9 @@ public class EgovBBSMasterController {
     @Resource(name = "EgovBBSMasterService")
     private EgovBBSMasterService egovBBSMasterService;
 
+    @Resource(name = "EgovArticleService")
+    private EgovArticleService egovArticleService;
+
     @Resource(name = "EgovCmmUseService")
     private EgovCmmUseService cmmUseService;
 
@@ -81,24 +87,6 @@ public class EgovBBSMasterController {
 	EgovMessageSource egovMessageSource;
 
     //Logger log = Logger.getLogger(this.getClass());
-
-    /**
-     * 게시판 개설자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
-     *
-     * @param user 현재 로그인한 사용자
-     * @param frstRegisterId 게시판 개설자 ID(frstRegisterId)
-     * @return 소유자이거나 관리자이면 true
-     */
-    private boolean isOwner(LoginVO user, String frstRegisterId) {
-        if (user == null || user.getUniqId() == null) {
-            return false;
-        }
-        if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
-            return true;
-        }
-        List<String> authorities = EgovUserDetailsHelper.getAuthorities();
-        return authorities != null && authorities.contains("ROLE_ADMIN");
-    }
 
     /**
      * 추가 선택사항(댓글, 만족도조사) 컴포넌트의 설치 여부를 모델에 담는다.
@@ -146,7 +134,6 @@ public class EgovBBSMasterController {
      * @param status
      * @return
      */
-    @RequireAdmin
     @PostMapping("/cop/bbs/insertBBSMaster.do")
     public String insertBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) {
@@ -169,6 +156,13 @@ public class EgovBBSMasterController {
 		if (isAuthenticated) {
 		    boardMaster.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    if((boardMasterVO == null ? "" : EgovStringUtil.isNullToString(boardMasterVO.getBlogAt())).equals("Y")){
+		    	// 블로그 카테고리는 그 블로그 개설자만 만든다
+		    	BoardVO blogOwner = new BoardVO();
+		    	blogOwner.setBlogId(boardMaster.getBlogId());
+		    	blogOwner.setFrstRegisterId(boardMaster.getFrstRegisterId());
+		    	if (egovArticleService.selectLoginUser(blogOwner) == 0) {
+		    		throw new EgovAccessDeniedException("블로그 개설자만 카테고리를 만들 수 있습니다.");
+		    	}
 		    	boardMaster.setBlogAt("Y");
 		    }else{
 		    	boardMaster.setBlogAt("N");
@@ -380,18 +374,16 @@ public class EgovBBSMasterController {
     public String updateBBSMasterView(@RequestParam("bbsId") String bbsId ,
             @ModelAttribute("searchVO") BoardMaster searchVO, ModelMap model) {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
         BoardMasterVO boardMasterVO = new BoardMasterVO();
 
         // Primary Key 값 세팅
         boardMasterVO.setBbsId(bbsId);
 
-        // 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 수정폼을 조회할 수 있다.
+        // 소유권(개설자) 검증 - 개설자 본인만 수정폼을 조회할 수 있다.
         BoardMasterVO existingBoard = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
-        if (existingBoard == null || !isOwner(_loginVO, existingBoard.getFrstRegisterId())) {
-            return "egovframework/com/cmm/error/accessDenied";
-        }
+        EgovAuthorizationHelper.assertOwner(existingBoard == null ? null : existingBoard.getFrstRegisterId());
 
         //게시판유형코드
         ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -415,7 +407,6 @@ public class EgovBBSMasterController {
      * @param model
      * @return
      */
-    @RequireAdmin
     @PostMapping("/cop/bbs/updateBBSMaster.do")
     public String updateBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) {
@@ -423,11 +414,9 @@ public class EgovBBSMasterController {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 게시판 설정을 수정할 수 있다.
+		// 소유권(개설자) 검증 - 개설자 본인만 게시판 설정을 수정할 수 있다.
 		BoardMasterVO existingBoard = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
-		if (existingBoard == null || !isOwner(user, existingBoard.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		EgovAuthorizationHelper.assertOwner(existingBoard == null ? null : existingBoard.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 		    model.addAttribute("result", existingBoard);
@@ -457,7 +446,6 @@ public class EgovBBSMasterController {
      * @param status
      * @return
      */
-    @RequireAdmin
     @PostMapping("/cop/bbs/deleteBBSMaster.do")
     public String deleteBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @ModelAttribute("boardMaster") BoardMaster boardMaster
 	    ) {
@@ -465,11 +453,9 @@ public class EgovBBSMasterController {
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-	// 소유권(개설자) 검증 - 개설자 본인 또는 관리자만 게시판을 삭제할 수 있다.
+	// 소유권(개설자) 검증 - 개설자 본인만 게시판을 삭제할 수 있다.
 	BoardMasterVO existingBoard = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
-	if (existingBoard == null || !isOwner(user, existingBoard.getFrstRegisterId())) {
-		return "egovframework/com/cmm/error/accessDenied";
-	}
+	EgovAuthorizationHelper.assertOwner(existingBoard == null ? null : existingBoard.getFrstRegisterId());
 
 	if (isAuthenticated) {
 	    boardMaster.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -512,31 +498,5 @@ public class EgovBBSMasterController {
     }
 
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

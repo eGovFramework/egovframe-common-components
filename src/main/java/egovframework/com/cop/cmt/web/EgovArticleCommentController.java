@@ -1,5 +1,7 @@
 package egovframework.com.cop.cmt.web;
 
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
+import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
@@ -47,6 +50,9 @@ public class EgovArticleCommentController {
 
 	@Resource(name = "EgovArticleCommentService")
     protected EgovArticleCommentService egovArticleCommentService;
+
+	@Resource(name = "EgovArticleService")
+	private EgovArticleService egovArticleService;
 
     @Resource(name="propertiesService")
     protected EgovPropertyService propertyService;
@@ -86,6 +92,15 @@ public class EgovArticleCommentController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
+
+		// 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 검사. 조회수는 올리지 않는다
+		BoardVO parent = new BoardVO();
+		parent.setBbsId(commentVO.getBbsId());
+		parent.setNttId(commentVO.getNttId());
+		parent = egovArticleService.selectArticleDetailNoCount(parent);
+		if (parent != null) {
+			EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+		}
 
 		model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -144,6 +159,14 @@ public class EgovArticleCommentController {
 		}
 
 		if (isAuthenticated) {
+		    // 부모 글이 비밀글이면 작성자만 — 게시글 상세와 같은 검사. 조회수는 올리지 않는다
+		    BoardVO parent = new BoardVO();
+		    parent.setBbsId(comment.getBbsId());
+		    parent.setNttId(comment.getNttId());
+		    parent = egovArticleService.selectArticleDetailNoCount(parent);
+		    if (parent != null) {
+		    	EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+		    }
 		    comment.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    comment.setWrterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    comment.setWrterNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
@@ -242,6 +265,9 @@ public class EgovArticleCommentController {
 	model.addAttribute("type", "body");	// body import
 
 	articleCommentVO = egovArticleCommentService.selectArticleCommentDetail(commentVO);
+	// 2026.07.30 보안 조치 - 소유자 검증
+	// 2026.09.21 식별자 교정 - 댓글 WRTER_ID 는 등록 시 uniqId 로 저장하므로 uniqId 기준으로 비교한다.
+	EgovAuthorizationHelper.assertOwner(articleCommentVO == null ? null : articleCommentVO.getWrterId());
 
 	model.addAttribute("articleCommentVO", articleCommentVO);
 
@@ -290,7 +316,7 @@ public class EgovArticleCommentController {
 		ownerVO.setCommentNo(commentNo);
 
 		CommentVO data = egovArticleCommentService.selectArticleCommentDetail(ownerVO);
-		EgovXssChecker.checkerUserXss(request, data == null ? null : data.getWrterId());
+		EgovAuthorizationHelper.assertOwner(data == null ? null : data.getWrterId());
     }
 
 

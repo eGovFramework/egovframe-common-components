@@ -1,5 +1,7 @@
 package egovframework.com.sym.ccm.cde.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -10,11 +12,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
 import egovframework.com.sym.ccm.cca.service.EgovCcmCmmnCodeManageService;
@@ -116,6 +120,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cde/SelectCcmCmmnDetailCodeDetail.do")
+	@RequireAdmin
 	public String selectCmmnDetailCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO,
 			CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 		CmmnDetailCode vo = cmmnDetailCodeManageService.selectCmmnDetailCodeDetail(cmmnDetailCodeVO);
@@ -134,13 +139,14 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cde/RemoveCcmCmmnDetailCode.do")
+	@RequireAdmin
 	public String deleteCmmnDetailCode(@ModelAttribute("loginVO") LoginVO loginVO, CmmnDetailCodeVO cmmnDetailCodeVO,
-			ModelMap model) throws Exception {
+			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		cmmnDetailCodeManageService.deleteCmmnDetailCode(cmmnDetailCodeVO);
 
-		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
-		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
-		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+		redirectAttributes.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
 
 		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
@@ -154,6 +160,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do")
+	@RequireAdmin
 	public String insertCmmnDetailCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO,
 			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
@@ -193,8 +200,9 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cde/RegistCcmCmmnDetailCode.do")
+	@RequireAdmin
 	public String insertCmmnDetailCode(@Valid @ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -220,9 +228,9 @@ public class EgovCcmCmmnDetailCodeManageController {
 		cmmnDetailCodeVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		cmmnDetailCodeManageService.insertCmmnDetailCode(cmmnDetailCodeVO);
 
-		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
-		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
-		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+		redirectAttributes.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
 
 		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
@@ -236,6 +244,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do")
+	@RequireAdmin
 	public String updateCmmnDetailCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 
@@ -255,10 +264,12 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCode.do")
+	@RequireAdmin
 	public String updateCmmnDetailCode(@Valid @ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO,
-			ModelMap model, BindingResult bindingResult) throws Exception {
+			ModelMap model, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		if (bindingResult.hasErrors()) {
 			CmmnDetailCode result = cmmnDetailCodeManageService.selectCmmnDetailCodeDetail(cmmnDetailCodeVO);
@@ -270,9 +281,9 @@ public class EgovCcmCmmnDetailCodeManageController {
 		cmmnDetailCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		cmmnDetailCodeManageService.updateCmmnDetailCode(cmmnDetailCodeVO);
 
-		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
-		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
-		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+		redirectAttributes.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
 
 		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}

@@ -92,6 +92,12 @@
         
     </delete>  
 
+    <select id="selectBndtDiaryRegisterId" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiaryVO" resultType="String">
+    	SELECT MIN(FRST_REGISTER_ID) FROM COMTNBNDTDIARY
+    	WHERE  BNDT_ID = #{bndtId}
+    	AND    BNDT_DE = #{bndtDe}
+    </select>
+
     <select id="selectBndtDiaryTotCnt" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO" resultType="int">
         
              SELECT count(*) FROM COMTNBNDTDIARY

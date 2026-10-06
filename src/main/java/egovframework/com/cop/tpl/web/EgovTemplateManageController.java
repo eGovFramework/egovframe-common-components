@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInf;
@@ -109,6 +109,9 @@ public class EgovTemplateManageController {
 		List<CmmnDetailCode> result = cmmUseService.selectCmmCodeDetail(codeVO);
 
 		TemplateInfVO vo = tmplatService.selectTemplateInf(tmplatInfVO);
+		if (!isAdminManagedDefault(vo)) {
+			EgovAuthorizationHelper.assertOwner(vo == null ? null : vo.getFrstRegisterId());
+		}
 
 		model.addAttribute("TemplateInfVO", vo);
 		model.addAttribute("resultList", result);
@@ -124,7 +127,6 @@ public class EgovTemplateManageController {
 	 * @param model
 	 * @return
 	 */
-	@RequireAdmin
 	@PostMapping("/cop/tpl/insertTemplateInf.do")
 	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
@@ -181,7 +183,6 @@ public class EgovTemplateManageController {
 	 * @param model
 	 * @return
 	 */
-	@RequireAdmin
 	@PostMapping("/cop/tpl/updateTemplateInf.do")
 	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
@@ -189,6 +190,13 @@ public class EgovTemplateManageController {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		TemplateInfVO lookup = new TemplateInfVO();
+		lookup.setTmplatId(templateInf.getTmplatId());
+		TemplateInfVO stored = tmplatService.selectTemplateInf(lookup);
+		if (!isAdminManagedDefault(stored)) {
+			EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		}
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
@@ -221,7 +229,6 @@ public class EgovTemplateManageController {
 	 * @param model
 	 * @return
 	 */
-	@RequireAdmin
 	@PostMapping("/cop/bbs/deleteTemplateInf.do")
 	public String deleteTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("tmplatInf") TemplateInf tmplatInf, SessionStatus status, ModelMap model) {
 
@@ -229,6 +236,13 @@ public class EgovTemplateManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+			TemplateInfVO lookup = new TemplateInfVO();
+			lookup.setTmplatId(tmplatInf.getTmplatId());
+			TemplateInfVO stored = tmplatService.selectTemplateInf(lookup);
+			if (!isAdminManagedDefault(stored)) {
+				EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+			}
+
 			tmplatInf.setLastUpdusrId(user.getUniqId());
 			tmplatService.deleteTemplateInf(tmplatInf);
 		}
@@ -284,5 +298,12 @@ public class EgovTemplateManageController {
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/cop/tpl/EgovTemplateInqirePopup";
+	}
+
+	/**
+	 * 등록자가 SYSTEM 인 기본 템플릿(초기 데이터)을 관리자가 다루는 경우. 그 외 템플릿은 작성자 본인만 상세·수정·삭제한다.
+	 */
+	private static boolean isAdminManagedDefault(TemplateInfVO stored) {
+		return stored != null && "SYSTEM".equals(stored.getFrstRegisterId()) && EgovAuthorizationHelper.isAdmin();
 	}
 }

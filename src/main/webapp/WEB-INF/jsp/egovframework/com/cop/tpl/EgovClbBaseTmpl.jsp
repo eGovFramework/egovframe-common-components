@@ -145,7 +145,7 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
       			});
         		innerReply += "<dl>";
         		innerReply += "<dd>";
-        		innerReply += "<form id='formComment' name='formComment' method='post'><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>";
+        		innerReply += "<form id='formComment' name='formComment' method='post'><c:if test="${not empty _csrf}"><input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'/></c:if>";
         		innerReply += "<textarea name='commentCn' placeholder='<spring:message code="comCopBlog.articleBlogList.validate.limitSize" />'/>";//댓글은 500byte 까지 작성할 수 있습니다.
         		innerReply += "<button type='button' onclick='fn_egov_insert_commentList(\""+bbsId+"\", \""+nttId+"\", \""+blogId+"\");'><spring:message code="title.create"/></button>";//등록
         		innerReply += "<input name='bbsId' type='hidden' value=''>";

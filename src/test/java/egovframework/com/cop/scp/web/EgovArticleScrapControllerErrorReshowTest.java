@@ -89,6 +89,16 @@ class EgovArticleScrapControllerErrorReshowTest {
 		}
 
 		@Override
+		public BoardVO selectArticleDetailNoCount(BoardVO boardVO) {
+			return article;
+		}
+
+		@Override
+		public void increaseInqireCo(BoardVO boardVO) {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
 		public void insertArticleAndFiles(Board board, List<MultipartFile> files) {
 			throw new UnsupportedOperationException();
 		}

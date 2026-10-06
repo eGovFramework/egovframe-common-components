@@ -170,20 +170,11 @@ class EgovCnsltManageControllerOwnershipTest {
 	}
 
 	@Test
-	void updateByNonOwnerDoesNotReachTheUpdateService() throws Exception {
-		StubService service = new StubService(OWNER);
-		EgovCnsltManageController controller = controllerWith(service);
-		bindLoginUser(ATTACKER, List.of());
-
-		CnsltManageVO vo = requestFor("1");
-		BindingResult bindingResult = new BeanPropertyBindingResult(vo, "cnsltManageVO");
-		ModelMap model = new ModelMap();
-
-		assertThrows(IllegalStateException.class,
-				() -> controller.updateCnsltDtls("N", emptyMultiRequest(), new CnsltManageDefaultVO(), vo,
-						bindingResult, model),
-				"A logged-in non-owner must not be able to update another member's consultation record.");
-		assertTrue(!service.updateCalled, "updateCnsltDtls service must not be reached by a non-owner.");
+	void updateRequiresAdmin() throws Exception {
+		// 관리자 전용 경로는 @RequireAdmin(AOP)이 일반 사용자를 막는다. 단위 테스트는 AOP 를 거치지 않으므로 애노테이션을 확인한다
+		java.lang.reflect.Method m = java.util.Arrays.stream(EgovCnsltManageController.class.getDeclaredMethods())
+				.filter(x -> x.getName().equals("updateCnsltDtls")).findFirst().orElseThrow();
+		org.junit.jupiter.api.Assertions.assertTrue(m.isAnnotationPresent(egovframework.com.cmm.annotation.RequireAdmin.class), "상담 수정은 관리자만 가능해야 한다.");
 	}
 
 	@Test
@@ -225,16 +216,14 @@ class EgovCnsltManageControllerOwnershipTest {
 	}
 
 	@Test
-	void updateByAdminReachesTheUpdateServiceEvenWhenNotOwner() throws Exception {
+	void updateByAdminReachesServiceWhenNotOwner() throws Exception {
 		StubService service = new StubService(OWNER);
 		EgovCnsltManageController controller = controllerWith(service);
 		bindLoginUser(ATTACKER, List.of("ROLE_ADMIN"));
 
 		CnsltManageVO vo = requestFor("1");
 		BindingResult bindingResult = new BeanPropertyBindingResult(vo, "cnsltManageVO");
-		ModelMap model = new ModelMap();
-
-		controller.updateCnsltDtls("N", emptyMultiRequest(), new CnsltManageDefaultVO(), vo, bindingResult, model);
-		assertTrue(service.updateCalled, "An admin must be able to update any member's consultation record.");
+		controller.updateCnsltDtls("N", emptyMultiRequest(), new CnsltManageDefaultVO(), vo, bindingResult, new ModelMap());
+		assertTrue(service.updateCalled, "관리자 전용 경로는 관리자끼리 신뢰하므로 작성자가 아니어도 수정할 수 있다.");
 	}
 }

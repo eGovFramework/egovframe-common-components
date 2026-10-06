@@ -15,6 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -23,6 +24,8 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.web.EgovComAbstractController;
 import egovframework.com.uss.ion.rwd.service.EgovRwardManageService;
@@ -30,6 +33,7 @@ import egovframework.com.uss.ion.rwd.service.RwardManage;
 import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +45,7 @@ import lombok.extern.slf4j.Slf4j;
  * 상세내용
  * - 포상관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 포상관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 소유권(관리자 예외 없음): 포상 신청 수정·삭제 = 등록자(frstRegisterId), 승인·반려 = 지정 결재자(sanctnerId)
  * </pre>
  * 
  * @author 이용
@@ -87,16 +92,11 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/uss/ion/rwd/EgovRwardManageListView.do")
+	@RequireAdmin
 	public String selectRwardManageListView(/* @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, */ // 2011.8.16
 																												// 수정분
 			ModelMap model) throws Exception {
-		List<?> rwardCdCodeList = null;
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM055");
-		rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("rwardCodeList", rwardCdCodeList);
-
-		return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
+		return "forward:/uss/ion/rwd/selectRwardManageList.do";
 	}
 
 	/**
@@ -146,9 +146,10 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/EgovRwardManageDetail.do")
+	@RequireAdmin
 	public String selectRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, @RequestParam Map<?, ?> commandMap,
-			ModelMap model) throws Exception {
+			ModelMap model, HttpServletRequest request) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 		rwardManageVO.setRwardDe(EgovStringUtil.removeMinusChar(rwardManageVO.getRwardDe()));
 
@@ -158,12 +159,14 @@ public class EgovRwardManageController extends EgovComAbstractController {
 			throw new IllegalStateException("포상 정보가 없습니다.");
 		}
 		// 신청자 본인 또는 관리자만 조회 가능하도록 소유권 검증 (수정·삭제와 동일)
-		egovAssertAdminOrOwner(rwardManageVOTemp.getFrstRegisterId());
+		EgovAuthorizationHelper.assertAdminOrOwner(rwardManageVOTemp.getFrstRegisterId());
 
 		model.addAttribute("rwardManageVO", rwardManageVOTemp);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("updt")) {
+			EgovAuthorizationHelper.assertOwner(rwardManageVOTemp.getFrstRegisterId());
+			EgovAttachmentGrants.allowDelete(request, rwardManageVOTemp.getAtchFileId());
 			RwardManage rwardManage1 = new RwardManage();
 
 			rwardManage1.setRwardId(rwardManageVOTemp.getRwardId());
@@ -194,6 +197,7 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/EgovRwardRegist.do")
+	@RequireAdmin
 	public String insertViewRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, ModelMap model) throws Exception {
 		List<?> rwardCdCodeList = null;
@@ -211,6 +215,7 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/insertRwardManage.do")
+	@RequireAdmin
 	public String insertRwardManage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
@@ -255,16 +260,17 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/updtRwardManage.do")
+	@RequireAdmin
 	public String updtRwardManage(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
 
-		// 신청자 본인 또는 관리자만 수정 가능하도록 소유권 검증
+		// 신청자 본인만 수정 가능하도록 소유권 검증 (관리자 예외 없음)
 		RwardManageVO stored = egovRwardManageService.selectRwardManage(rwardManageVO);
 		if (stored == null) {
 			throw new IllegalStateException("포상 정보가 없습니다.");
 		}
-		egovAssertAdminOrOwner(stored.getFrstRegisterId());
+		EgovAuthorizationHelper.assertOwner(stored.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 			// 수정화면 진입(EgovRwardManageDetail.do?cmd=updt)과 동일하게 포상구분 코드목록을 다시 담는다.
@@ -316,20 +322,21 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/deleteRwardManage.do")
+	@RequireAdmin
 	public String deleteRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage, SessionStatus status,
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 		log.debug("getUserSe={}", _loginVO.getUserSe());
 
-		// 신청자 본인 또는 관리자만 삭제 가능하도록 소유권 검증
+		// 등록자 본인만 삭제 가능하도록 소유권 검증
 		RwardManageVO storedForDelete = new RwardManageVO();
 		storedForDelete.setRwardId(rwardManage.getRwardId());
 		RwardManageVO stored = egovRwardManageService.selectRwardManage(storedForDelete);
 		if (stored == null) {
 			throw new IllegalStateException("포상 정보가 없습니다.");
 		}
-		egovAssertAdminOrOwner(stored.getFrstRegisterId());
+		EgovAuthorizationHelper.assertOwner(stored.getFrstRegisterId());
 		// 약식결재 삭제 대상도 권한 확인에 사용한 레코드로 고정한다.
 		rwardManage.setInfrmlSanctnId(stored.getInfrmlSanctnId());
 
@@ -408,6 +415,7 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/EgovRwardConfm.do")
+	@RequireAdmin
 	public String selectRwardConfm(@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO,
 			@ModelAttribute("rwardManage") RwardManage rwardManage, ModelMap model) throws Exception {
 		rwardManageVO.setRwardDe(EgovStringUtil.removeMinusChar(rwardManageVO.getRwardDe()));
@@ -415,9 +423,9 @@ public class EgovRwardManageController extends EgovComAbstractController {
 		// 등록 상세정보
 		RwardManageVO rwardManageVOTemp = egovRwardManageService.selectRwardManage(rwardManageVO);
 
-		// 지정된 승인권자 또는 관리자만 승인상세를 열람 가능하도록 소유권 검증
+		// 지정된 승인권자만 승인상세를 열람 가능하도록 검증
 		// (EgovRwardConfmList.do가 SANCTNER_ID=로그인 uniqId로만 목록을 필터링하는 것과 동일한 경계)
-		egovAssertAdminOrOwner(rwardManageVOTemp == null ? null : rwardManageVOTemp.getSanctnerId());
+		EgovAuthorizationHelper.assertOwner(rwardManageVOTemp == null ? null : rwardManageVOTemp.getSanctnerId());
 
 		RwardManage rwardManageTemp = new RwardManage();
 
@@ -444,6 +452,7 @@ public class EgovRwardManageController extends EgovComAbstractController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/rwd/updtRwardConfm.do")
+	@RequireAdmin
 	public String updtRwardManageConfm(@Valid @ModelAttribute("rwardManage") RwardManage rwardManage,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
@@ -455,14 +464,14 @@ public class EgovRwardManageController extends EgovComAbstractController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 지정된 승인권자(SANCTNER_ID) 또는 관리자만 승인·반려 처리 가능하도록 검증
+		// 지정된 승인권자(SANCTNER_ID)만 승인·반려 처리 가능하도록 검증
 		RwardManageVO storedForConfm = new RwardManageVO();
 		storedForConfm.setRwardId(rwardManage.getRwardId());
 		RwardManageVO storedConfm = egovRwardManageService.selectRwardManage(storedForConfm);
 		if (storedConfm == null) {
 			throw new IllegalStateException("포상 정보가 없습니다.");
 		}
-		egovAssertAdminOrOwner(storedConfm.getSanctnerId());
+		EgovAuthorizationHelper.assertOwner(storedConfm.getSanctnerId());
 		// 결재 갱신 대상을 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
 		rwardManage.setInfrmlSanctnId(storedConfm.getInfrmlSanctnId());
 
@@ -479,35 +488,4 @@ public class EgovRwardManageController extends EgovComAbstractController {
 			return "forward:/uss/ion/rwd/EgovRwardConfmList.do";
 		}
 	}
-
-//	/**
-//	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-//	 * 하위 Controller에서 필요에 따라 오버라이드하여 사용할 수 있습니다.
-//	 */
-//	@Override
-//	protected LoginVO egovAssertLoginUser() {
-//		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-//		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-//			throw new IllegalStateException("인증 정보가 없습니다.");
-//		}
-//		return loginVO;
-//	}
-//
-//	/**
-//	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-//	 * 하위 Controller에서 필요에 따라 오버라이드하여 사용할 수 있습니다.
-//	 */
-//	@Override
-//	protected void egovAssertAdminOrOwner(String ownerUniqId) {
-//		LoginVO loginVO = egovAssertLoginUser();
-//		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-//			return;
-//		}
-//		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-//		if (auth != null && auth.contains("ROLE_ADMIN")) {
-//			return;
-//		}
-//		throw new IllegalStateException("권한이 없습니다.");
-//	}
-
 }

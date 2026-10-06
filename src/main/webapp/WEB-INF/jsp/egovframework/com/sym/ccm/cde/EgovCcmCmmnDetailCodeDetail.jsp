@@ -50,6 +50,7 @@
 <body>
 
 <form name="CcmDeCodeForm" action="${pageContext.request.contextPath}/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>

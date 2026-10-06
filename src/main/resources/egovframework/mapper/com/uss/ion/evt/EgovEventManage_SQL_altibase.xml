@@ -136,6 +136,7 @@
 	                     mge.REFRN_URL            AS refrnUrl         ,
 	                     mge.RCEPT_BGNDE       AS rceptBeginDe     ,
 	                     mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                     mge.FRST_REGISTER_ID     AS frstRegisterId   ,
 	                     DATEDIFF(to_date(mge.EVENT_BGNDE, 'YYYYMMDD')-1,to_date(mge.EVENT_ENDDE,'YYYYMMDD'),'DAY') AS eventTemp1 ,
 	                    (select count(*) from COMTNEVENTATDRN a where  a.EVENT_ID = mge.EVENT_ID)               AS eventAtdrnCount,
 	                     DATEDIFF(to_date(mge.RCEPT_BGNDE, 'YYYYMMDD'),SYSDATE,'DAY')                            AS eventDayCount,

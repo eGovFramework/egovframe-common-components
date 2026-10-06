@@ -25,7 +25,7 @@ import egovframework.com.cop.smt.mtm.service.MemoTodoVO;
  * 로그인 사용자가 자신이 등록하지 않은 메모할일을 열람(수정폼 진입)·수정·삭제하려 하면
  * egovAssertAdminOrOwner가 IllegalStateException을 던져 차단해야 한다(IDOR 방지).
  * 수정 전 코드는 인증 여부만 확인하고 소유자를 대조하지 않아, 아래 attacker 테스트가 실패한다.
- * ROLE_ADMIN 보유자는 소유자가 아니어도 통과해야 한다(selectMemoTodo의 기존 KISA 조치와 동일 관례).
+ * 수정폼 진입·수정은 삭제와 같이 작성자 본인만 허용하며, ROLE_ADMIN 보유자도 소유자가 아니면 차단된다.
  */
 class EgovMemoTodoControllerOwnershipTest {
 
@@ -147,7 +147,7 @@ class EgovMemoTodoControllerOwnershipTest {
 	}
 
 	@Test
-	void modifyByAdminSucceedsEvenWhenNotOwner() throws Exception {
+	void modifyByAdminIsDeniedWhenNotOwner() {
 		StubService service = new StubService(OWNER);
 		EgovMemoTodoController controller = controllerWith(service);
 		bindLoginUser(ATTACKER, List.of("ROLE_ADMIN"));
@@ -156,8 +156,9 @@ class EgovMemoTodoControllerOwnershipTest {
 		BindingResult bindingResult = new BeanPropertyBindingResult(memoTodoVO, "memoTodoVO");
 		ModelMap model = new ModelMap();
 
-		String view = controller.modifyMemoTodo(memoTodoVO, bindingResult, model);
-		assertTrue(view.contains("EgovMemoTodoUpdt"));
+		assertThrows(IllegalStateException.class,
+				() -> controller.modifyMemoTodo(memoTodoVO, bindingResult, model),
+				"An admin who is not the owner must not be able to open another member's memo/todo edit form.");
 	}
 
 	// ---- updateMemoTodo ----
@@ -193,7 +194,7 @@ class EgovMemoTodoControllerOwnershipTest {
 	}
 
 	@Test
-	void updateByAdminReachesTheUpdateServiceEvenWhenNotOwner() throws Exception {
+	void updateByAdminDoesNotReachTheUpdateServiceWhenNotOwner() {
 		StubService service = new StubService(OWNER);
 		EgovMemoTodoController controller = controllerWith(service);
 		bindLoginUser(ATTACKER, List.of("ROLE_ADMIN"));
@@ -202,8 +203,10 @@ class EgovMemoTodoControllerOwnershipTest {
 		BindingResult bindingResult = new BeanPropertyBindingResult(memoTodoVO, "memoTodoVO");
 		ModelMap model = new ModelMap();
 
-		controller.updateMemoTodo(memoTodoVO, bindingResult, model);
-		assertTrue(service.updateCalled, "An admin must be able to update any member's memo/todo.");
+		assertThrows(IllegalStateException.class,
+				() -> controller.updateMemoTodo(memoTodoVO, bindingResult, model),
+				"An admin who is not the owner must not be able to update another member's memo/todo.");
+		assertTrue(!service.updateCalled, "updateMemoTodo service must not be reached by a non-owner admin.");
 	}
 
 	// ---- deleteMemoTodo ----

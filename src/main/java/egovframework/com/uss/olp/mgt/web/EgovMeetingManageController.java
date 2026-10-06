@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.mgt.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.mgt.service.EgovMeetingManageService;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
@@ -60,11 +63,13 @@ public class EgovMeetingManageController {
     protected EgovPropertyService propertiesService;
 
     @RequestMapping("/uss/olp/mgt/EgovMeetingManageMain.do")
+    @RequireAdmin
     public String egovMeetingManageMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageMain";
     }
 
     @RequestMapping("/uss/olp/mgt/EgovMeetingManageLeft.do")
+    @RequireAdmin
     public String egovMeetingManageLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLeft";
     }
@@ -81,6 +86,7 @@ public class EgovMeetingManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/olp/mgt/EgovMain.do")
+    @RequireAdmin
     public String egovMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMain";
     }
@@ -92,6 +98,7 @@ public class EgovMeetingManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/olp/mgt/EgovLeft.do")
+    @RequireAdmin
     public String egovLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovLeft";
     }
@@ -194,6 +201,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageDetail.do")
+	@RequireAdmin
 	public String egovMeetingManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -223,6 +231,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageModifyView.do")
+	@RequireAdmin
 	public String meetingManageModifyView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
@@ -298,6 +307,7 @@ public class EgovMeetingManageController {
 	 */
 	
 	@PostMapping("/uss/olp/mgt/EgovMeetingManageModify.do")
+	@RequireAdmin
 	public String meetingManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,BindingResult bindingResult,
@@ -313,15 +323,18 @@ public class EgovMeetingManageController {
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+        List<EgovMap> storedList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+		Object owner = EgovAuthorizationHelper.requireTarget(storedList == null || storedList.isEmpty() ? null : storedList.get(0).get("frstRegisterId"));
         
     	if(bindingResult.hasErrors()){
              bindingResult.getAllErrors().forEach(e -> LOGGER.error(e.toString()));
              return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
     	}
     	
-    	//아이디 설정
+		//아이디 설정
 	
-        meetingManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        meetingManageVO.setFrstRegisterId(owner.toString());
         meetingManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
         egovMeetingManageService.updateMeetingManage(meetingManageVO);
@@ -338,6 +351,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "!cmd")
+	@RequireAdmin
 	public String meetingManageRegistView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
@@ -356,6 +370,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "cmd=save")
+	@RequireAdmin
 	public String meetingManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.wlg.service.EgovWebLogService;
 import egovframework.com.sym.log.wlg.service.WebLog;
@@ -88,6 +89,7 @@ public class EgovWebLogController {
 	 * @throws Exception
 	 */
 	@GetMapping("/sym/log/wlg/SelectWebLogDetail.do")
+	@RequireAdmin
 	public String selectWebLog(@ModelAttribute("searchVO") WebLog webLog,
 			@RequestParam("requstId") String requstId,
 			ModelMap model) throws Exception{

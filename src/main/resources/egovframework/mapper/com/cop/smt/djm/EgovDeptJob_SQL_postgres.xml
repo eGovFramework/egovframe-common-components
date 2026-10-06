@@ -50,6 +50,7 @@
 		<result property="deptJobBxId" column="DEPT_JOBBX_ID"/>
 		<result property="deptJobBxNm" column="DEPT_JOBBX_NM"/>	
 		<result property="indictOrdr" column="INDICT_ORDR"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
 		<result property="lastUpdusrNm" column="LAST_UPDUSR_NM"/>			
 	</resultMap>
@@ -244,6 +245,7 @@
 			A.DEPT_JOBBX_ID,
 			A.DEPT_JOBBX_NM,
 			A.INDICT_ORDR,
+			A.FRST_REGISTER_ID,
 			A.LAST_UPDT_PNTTM,
 			C.USER_NM LAST_UPDUSR_NM 
 		FROM COMTNDEPTJOBBX A
@@ -400,12 +402,8 @@
 		LEFT OUTER JOIN COMTNEMPLYRINFO C
 			ON A.CHARGER_ID = C.ESNTL_ID 
 	
-	 <if test="searchDeptJobBxId != null and searchDeptJobBxId != ''">
-		WHERE A.DEPT_JOBBX_ID = #{searchDeptJobBxId}
-	 </if>
-	 <if test="searchDeptJobBxId == null or searchDeptJobBxId == ''">
-		WHERE B.DEPT_ID = #{searchDeptId}
-	 </if>
+	 WHERE B.DEPT_ID = #{searchDeptId}
+	 <if test="searchDeptJobBxId != null and searchDeptJobBxId != ''">AND A.DEPT_JOBBX_ID = #{searchDeptJobBxId}</if>
 	 <if test='searchCnd == "0"'>AND
 		 	A.DEPT_JOB_NM LIKE CONCAT('%', #{searchWrd}, '%') 		
 	 </if>
@@ -433,12 +431,8 @@
 			LEFT OUTER JOIN COMTNEMPLYRINFO C
 				ON A.CHARGER_ID = C.ESNTL_ID 
 		
-		<if test="searchDeptJobBxId != null and searchDeptJobBxId != ''">
-			WHERE A.DEPT_JOBBX_ID = #{searchDeptJobBxId}
-		</if>
-		<if test="searchDeptJobBxId == null or searchDeptJobBxId == ''">
-			WHERE B.DEPT_ID = #{searchDeptId}
-		</if>
+		WHERE B.DEPT_ID = #{searchDeptId}
+		<if test="searchDeptJobBxId != null and searchDeptJobBxId != ''">AND A.DEPT_JOBBX_ID = #{searchDeptJobBxId}</if>
 		<if test='searchCnd == "0"'>AND
 		 		A.DEPT_JOB_NM LIKE CONCAT('%', #{searchWrd}, '%') 		
 		</if>

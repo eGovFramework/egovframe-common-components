@@ -17,6 +17,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.stp.service.EgovStplatManageService;
 import egovframework.com.uss.sam.stp.service.StplatManageDefaultVO;
@@ -67,6 +68,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/sam/stp/EgovMain.do")
+	@RequireAdmin
 	public String egovMain(ModelMap model) throws Exception {
 		return "egovframework/com/uss/sam/stp/EgovMain";
 	}
@@ -79,6 +81,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/sam/stp/EgovLeft.do")
+	@RequireAdmin
 	public String egovLeft(ModelMap model) throws Exception {
 		return "egovframework/com/uss/sam/stp/EgovLeft";
 	}
@@ -130,6 +133,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/stp/StplatDetailInqire.do")
+	@RequireAdmin
 	public String selectStplatDetail(StplatManageVO stplatManageVO,
 			@ModelAttribute("searchVO") StplatManageDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -149,6 +153,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/stp/StplatCnRegistView.do")
+	@RequireAdmin
 	public String insertStplatCnView(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO, Model model)
 			throws Exception {
 		model.addAttribute("stplatManageVO", new StplatManageVO());
@@ -203,6 +208,7 @@ public class EgovStplatManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/stp/StplatCnUpdtView.do")
+	@RequireAdmin
 	public String updateStplatCnView(@RequestParam("useStplatId") String useStplatId,
 			@ModelAttribute("searchVO") StplatManageDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -211,11 +217,13 @@ public class EgovStplatManageController {
 		// Primary Key 값 세팅
 		stplatManageVO.setUseStplatId(useStplatId);
 
+		StplatManageVO stored = stplatManageService.selectStplatDetail(stplatManageVO);
+
 		// 변수명은 CoC 에 따라
 		model.addAttribute(selectStplatDetail(stplatManageVO, searchVO, model));
 
 		// 변수명은 CoC 에 따라 JSTL사용을 위해
-		model.addAttribute("stplatManageVO", stplatManageService.selectStplatDetail(stplatManageVO));
+		model.addAttribute("stplatManageVO", stored);
 
 		return "egovframework/com/uss/sam/stp/EgovStplatCnUpdt";
 	}
@@ -234,6 +242,7 @@ public class EgovStplatManageController {
 	public String updateStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
 			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult)
 			throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/sam/stp/EgovStplatCnUpdt";
@@ -268,36 +277,11 @@ public class EgovStplatManageController {
 	public String deleteStplatCn(StplatManageVO stplatManageVO,
 			@ModelAttribute("searchVO") StplatManageDefaultVO searchVO) throws Exception {
 
+
 		stplatManageService.deleteStplatCn(stplatManageVO);
 
 		return "forward:/uss/sam/stp/StplatListInqire.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

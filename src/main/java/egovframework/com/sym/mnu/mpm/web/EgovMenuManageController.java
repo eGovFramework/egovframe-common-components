@@ -1,5 +1,7 @@
 package egovframework.com.sym.mnu.mpm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -93,6 +95,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuManageListDetailSelect.do")
+	@RequireAdmin
 	public String selectMenuManage(@RequestParam("req_menuNo") String searchKeyword,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -159,6 +162,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuManageListDelete.do")
+	@RequireAdmin
 	public String deleteMenuManageList(@RequestParam("checkedMenuNoForDel") String checkedMenuNoForDel,
 			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -206,6 +210,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuRegistInsert.do")
+	@RequireAdmin
 	public String insertMenuManage(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -253,6 +258,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do")
+	@RequireAdmin
 	public String updateMenuManage(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -293,6 +299,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuManageDelete.do")
+	@RequireAdmin
 	public String deleteMenuManage(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -347,6 +354,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuListInsert.do")
+	@RequireAdmin
 	public String insertMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -390,6 +398,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuListUpdt.do")
+	@RequireAdmin
 	public String updateMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -427,6 +436,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuListDelete.do")
+	@RequireAdmin
 	public String deleteMenuList(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -453,6 +463,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListSelectMvmn.do")
+	@RequireAdmin
 	public String selectMenuListMvmn(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -475,6 +486,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListSelectMvmnNew.do")
+	@RequireAdmin
 	public String selectMenuListMvmnNew(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -499,6 +511,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuBndeAllDelete.do")
+	@RequireAdmin
 	public String menuBndeAllDelete(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -524,6 +537,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mpm/EgovMenuBndeRegist.do")
+	@RequireAdmin
 	public String menuBndeRegist(@RequestParam Map<?, ?> commandMap, final HttpServletRequest request,
 			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, ModelMap model) throws Exception {
 		String sLocationUrl = null;

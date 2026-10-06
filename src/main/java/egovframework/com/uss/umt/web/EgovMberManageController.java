@@ -22,8 +22,8 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
 import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
@@ -236,6 +236,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberSelectUpdtView.do")
+	@RequireAdmin
 	public String updateMberView(@RequestParam("selectedId") String mberId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -245,7 +246,7 @@ public class EgovMberManageController {
 			return "forward:/uss/umt/EgovMberManage.do";
 		}
 
-		if (!EgovUmtAuthorizationHelper.canModifyUser(mberId)) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(mberId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -310,7 +311,7 @@ public class EgovMberManageController {
 	@RequireAdmin
 	public String updateLockIncorrect(MberManageVO mberManageVO, Model model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치 - 계정 잠금해제는 관리자만
-		egovAssertAdminOrOwner(null);
+		EgovAuthorizationHelper.assertAdmin();
 
 
 		// 미인증 사용자에 대한 보안처리
@@ -334,6 +335,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberSelectUpdt.do")
+	@RequireAdmin
 	public String updateMber(@Valid @ModelAttribute("mberManageVO") MberManageVO mberManageVO, BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -349,7 +351,7 @@ public class EgovMberManageController {
 			return "forward:/uss/umt/EgovMberManage.do";
 		}
 
-		if (!EgovUmtAuthorizationHelper.canModifyUser(currentMber.getUniqId())) {
+		if (!EgovAuthorizationHelper.isAdminOrOwner(currentMber.getUniqId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -404,9 +406,15 @@ public class EgovMberManageController {
 		return "forward:/uss/umt/EgovMberManage.do";
 	}
 
-	// 탈퇴 처리 기능에 대한 예시
+	/**
+	 * 탈퇴 처리 기능에 대한 예시.
+	 *
+	 * @deprecated 이 경로를 부르는 화면이 없고, 삭제 함수가 요구하는 회원 구분(예: {@code USR01:})을 붙이지 않아 아무것도 지우지 않은 채 성공 메시지를 낸다. 회원 삭제는 관리자 회원관리의 삭제 기능을 쓴다. 삭제 예정.
+	 */
+	@Deprecated(forRemoval = true)
 	// 221114 김혜준 2022 시큐어코딩 조치
 	@RequestMapping(value = "/uss/umt/EgovMberWithdraw.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String withdrawMber(Model model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -523,6 +531,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberPasswordUpdt.do")
+	@RequireAdmin
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO,
@@ -582,6 +591,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberPasswordUpdtView.do")
+	@RequireAdmin
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO) throws Exception {
@@ -616,32 +626,6 @@ public class EgovMberManageController {
 		vo.setOldPassword("");
 		vo.setPassword("");
 		vo.setPassword2("");
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 	/**

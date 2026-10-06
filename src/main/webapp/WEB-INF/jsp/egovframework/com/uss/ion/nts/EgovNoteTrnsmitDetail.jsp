@@ -66,6 +66,7 @@ function fn_egov_delete_NoteTrnsmit(){
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
 	<form name="NoteRecptnForm" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 상세조회 -->
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.detail" /></caption>
@@ -131,6 +132,7 @@ function fn_egov_delete_NoteTrnsmit(){
 	<div class="btn">
 	
 		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/nts/detailNoteTrnsmit.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteTrnsmit(); return false;">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteId)}">
 			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteTrnsmitId)}">
@@ -139,6 +141,7 @@ function fn_egov_delete_NoteTrnsmit(){
 		</form>
 	
 		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/nts/listNoteTrnsmit.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

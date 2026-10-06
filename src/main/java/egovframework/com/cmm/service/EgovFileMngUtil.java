@@ -1,5 +1,15 @@
 package egovframework.com.cmm.service;
 
+import javax.imageio.ImageIO;
+
+import java.util.Set;
+
+import java.util.HashSet;
+
+import java.io.ByteArrayInputStream;
+
+import java.awt.image.BufferedImage;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -75,9 +85,148 @@ public class EgovFileMngUtil {
 	 *
 	 * @param files
 	 * @return
+	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String keyStr, int fileKeyParam,
 			String atchFileId, String storePath) {
+		return parseFileInf(files, keyStr, fileKeyParam, atchFileId, storePath, false);
+	}
+
+	/**
+	 * 이미지 업로드 확장자 allowlist
+	 * 2026.07.30 보안 조치 - globals.properties의 Globals.fileUpload.Extensions.Image 값을 사용한다.
+	 */
+	private static final Set<String> IMAGE_EXTENSIONS = parseExtensions(
+			EgovProperties.getProperty("Globals.fileUpload.Extensions.Image"));
+
+	/**
+	 * globals.properties에 정의된 콤마(,) 구분 확장자 문자열(예: ".gif,.jpg,.jpeg,.png,.bmp")을
+	 * 선행 점(.)이 제거된 대문자 확장자 Set으로 변환한다.
+	 *
+	 * @param extensionsCsv 콤마로 구분된 확장자 화이트리스트 문자열
+	 * @return 대문자·점(.) 없는 확장자로 구성된 Set
+	 */
+	private static Set<String> parseExtensions(String extensionsCsv) {
+		Set<String> extensions = new HashSet<>();
+		if (StringUtils.isEmpty(extensionsCsv)) {
+			return extensions;
+		}
+		for (String ext : extensionsCsv.split(",")) {
+			String trimmed = ext.trim();
+			if (trimmed.startsWith(".")) {
+				trimmed = trimmed.substring(1);
+			}
+			if (!trimmed.isEmpty()) {
+				extensions.add(trimmed.toUpperCase(Locale.ROOT));
+			}
+		}
+		return extensions;
+	}
+
+	/**
+	 * 2026.07.30 보안 조치 - 화면(JSP) 클라이언트측 검증 등에 전달할 이미지 전용 확장자 화이트리스트 CSV를 반환한다.
+	 *
+	 * @return Globals.fileUpload.Extensions.Image 값 (예: ".gif,.jpg,.jpeg,.png,.bmp")
+	 */
+	public static String getImageUploadExtensions() {
+		return EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+	}
+
+	/** 이미지 전용 업로드 최대 크기 기본값(16MB) — 설정이 없거나 숫자가 아니면 쓴다 */
+	private static final long DEFAULT_IMAGE_MAX_SIZE = 16L * 1024L * 1024L;
+
+	/**
+	 * 이미지 전용 업로드 최대 크기(바이트). globals.properties 의 Globals.fileUpload.maxSize.Image 값을 쓴다.
+	 * DB 에 바이너리로 저장하는 이미지(설문 템플릿)는 DB 패킷 한도(MySQL·Maria max_allowed_packet)보다 작아야 한다.
+	 *
+	 * @return 최대 크기(바이트)
+	 */
+	public static long getImageUploadMaxSize() {
+		String raw = EgovProperties.getProperty("Globals.fileUpload.maxSize.Image");
+		if (StringUtils.isEmpty(raw)) {
+			return DEFAULT_IMAGE_MAX_SIZE;
+		}
+		try {
+			return Long.parseLong(raw.trim());
+		} catch (NumberFormatException e) {
+			return DEFAULT_IMAGE_MAX_SIZE;
+		}
+	}
+
+	/**
+	 * 2026.07.30 보안 조치 - 업로드 파일명의 확장자가 이미지 allowlist에 포함되는지 확인한다.
+	 *
+	 * @param orignlFileNm 업로드된 파일의 원본 파일명
+	 * @return 허용된 이미지 확장자이면 true
+	 */
+	public static boolean isAllowedImageExtension(String orignlFileNm) {
+		if (StringUtils.isEmpty(orignlFileNm)) {
+			return false;
+		}
+		String fileExt = FilenameUtils.getExtension(orignlFileNm).toUpperCase(Locale.ROOT);
+		return IMAGE_EXTENSIONS.contains(fileExt);
+	}
+
+	/**
+	 * 2026.07.30 보안 조치 - MultipartFile이 ImageIO로 디코딩 가능한 실제 이미지인지 검증한다.
+	 * 확장자만 이미지로 위장한 HTML/JS 등 임의 바이트의 업로드를 차단한다.
+	 *
+	 * @param file 업로드된 MultipartFile
+	 * @return 유효한 이미지이면 true
+	 */
+	public static boolean isValidImageFile(MultipartFile file) {
+		if (file == null || file.isEmpty()) {
+			return false;
+		}
+		try (InputStream imgIn = file.getInputStream()) {
+			BufferedImage decoded = ImageIO.read(imgIn);
+			return decoded != null;
+		} catch (Exception e) {
+			LOGGER.debug("이미지 디코딩 실패: {}", e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * 2026.07.30 보안 조치 - 바이트 배열이 ImageIO로 디코딩 가능한 실제 이미지인지 검증한다.
+	 *
+	 * @param bytes 업로드된 파일의 원본 바이트
+	 * @return 유효한 이미지이면 true
+	 */
+	public static boolean isValidImageBytes(byte[] bytes) {
+		if (bytes == null || bytes.length == 0) {
+			return false;
+		}
+		try (InputStream imgIn = new ByteArrayInputStream(bytes)) {
+			BufferedImage decoded = ImageIO.read(imgIn);
+			return decoded != null;
+		} catch (Exception e) {
+			LOGGER.debug("이미지 디코딩 실패: {}", e.getMessage());
+			return false;
+		}
+	}
+
+	/**
+	 * 2026.07.30 보안 조치 - 첨부파일에 대한 목록 정보를 취득한다.
+	 * imageOnly가 true인 경우, 확장자가 이미지 allowlist에 속하고
+	 * 실제 바이트가 ImageIO로 디코딩 가능한 이미지인 경우에만 업로드를 허용한다(evil.svg/HTML 등 위장 업로드 차단).
+	 *
+	 * @param files
+	 * @param imageOnly 이미지 파일만 허용할지 여부
+	 * @return
+	 * @throws Exception
+	 */
+	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String keyStr, int fileKeyParam,
+			String atchFileId, String storePath, boolean imageOnly) {
+		// 모든 파일을 검사한 후 저장해 유효하지 않은 묶음의 부분 저장을 방지한다.
+		if (imageOnly) {
+			for (MultipartFile image : files.values()) {
+				if (image.isEmpty() && StringUtils.isEmpty(image.getOriginalFilename())) continue;
+				if (!isAllowedImageExtension(image.getOriginalFilename()) || !isValidImageFile(image)) {
+					throw new IllegalArgumentException("허용되지 않거나 유효하지 않은 이미지 파일입니다.");
+				}
+			}
+		}
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";

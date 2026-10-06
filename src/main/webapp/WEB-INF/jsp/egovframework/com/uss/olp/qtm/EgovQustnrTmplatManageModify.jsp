@@ -58,7 +58,7 @@ function fn_egov_save_QustnrTmplatManage(form){
 
 	var resultExtension = EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", "<c:out value='${fileUploadExtensions}'/>"); // 결과가 false인경우 허용되지 않음
 	if (!resultExtension) return true;
-	var resultSize = EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", 65535); // 파일당 1M까지 허용 (1K=1024), 결과가 false인경우 허용되지 않음
+	var resultSize = EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", <c:out value='${fileUploadMaxSize}'/>); // 서버가 넘긴 이미지 한도(바이트), 결과가 false인경우 허용되지 않음
 	if (!resultSize) return true;
 	
 	if(confirm("<spring:message code="common.save.msg" />")){
@@ -170,6 +170,7 @@ function fnImgChange(obj){
 			<input type="file" name="qestnrTmplatImage" id="qestnrTmplatImage" onChange="fnImgChange(this)" title="<spring:message code='comUssOlpQtm.regist.egovfile'/><spring:message code='input.input'/>"><!-- title="템플릿유형이미지 첨부" -->
 			<input type="text" id="uploadFileName" value="" readonly style="width:150px;"/><!-- 파일명 보이게 하는 기능 -->
 			</div>
+			<div><form:errors path="qestnrTmplatImagepathnm" cssClass="error" /></div>
 			
 			<div id="DIV_IMG_VIEW" style="display:none;">
 		     	<img src="" name="IMG_VIEW" id="IMG_VIEW" align="middle" alt="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>" title="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>"><!-- alt="이미지미리보기" title="이미지미리보기" -->

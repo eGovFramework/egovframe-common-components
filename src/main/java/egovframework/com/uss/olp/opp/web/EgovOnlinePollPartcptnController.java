@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -85,6 +86,7 @@ public class EgovOnlinePollPartcptnController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/opp/listEgovOnlinePollPartcptnMain.do")
+	@RequireAdmin
 	public String egovOnlinePollPartcptnMainList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, OnlinePollPartcptn onlinePollPartcptn, ModelMap model)
 			throws Exception {
@@ -171,6 +173,7 @@ public class EgovOnlinePollPartcptnController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/opp/registOnlinePollPartcptn.do")
+	@RequireAdmin
 	public String egovOnlinePollPartcptnRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("onlinePollPartcptn") OnlinePollPartcptn onlinePollPartcptn, BindingResult bindingResult,
@@ -253,6 +256,7 @@ public class EgovOnlinePollPartcptnController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/opp/statisticsOnlinePollPartcptn.do")
+	@RequireAdmin
 	public String egovOnlinePollManageStatistics(@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("onlinePollPartcptn") OnlinePollPartcptn onlinePollPartcptn, HttpServletRequest request,
 			ModelMap model) throws Exception {

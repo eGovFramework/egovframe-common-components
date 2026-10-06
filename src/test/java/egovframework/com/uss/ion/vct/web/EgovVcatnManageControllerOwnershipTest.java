@@ -1,6 +1,8 @@
 package egovframework.com.uss.ion.vct.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -25,6 +27,8 @@ import egovframework.com.uss.ion.vct.service.VcatnManageVO;
  * 재등록한다. 신규 등록(insertVcatnManage)은 이미 applcntId를 로그인 사용자로 강제하는데, 수정 경로만
  * 그 정규화가 빠져 있었다 — 자기 신청 건을 수정하면서 폼의 applcntId 히든필드만 타인 uniqId로 조작하면
  * 그 사람 명의로 레코드가 재등록되고 연차 잔여일수 갱신도 그 사람 앞으로 걸렸다.
+ *
+ * 수정은 삭제와 같이 신청자 본인만 허용하며(관리자 예외 없음), 저장된 레코드를 *Key 필드로 조회해 소유자를 확인한다.
  */
 class EgovVcatnManageControllerOwnershipTest {
 
@@ -32,9 +36,14 @@ class EgovVcatnManageControllerOwnershipTest {
 	private static final String VICTIM_UNIQ_ID = "USRCNFRM_00000000009";
 	private static final String ADMIN_UNIQ_ID = "USRCNFRM_00000000002";
 
-	/** updtVcatnManage에 실제로 전달된 VO를 그대로 기록하는 스텁. */
+	/** *Key로 조회하면 storedApplcntId 소유의 저장 레코드를 돌려주고, updtVcatnManage에 전달된 VO를 기록하는 스텁. */
 	private static final class StubService implements EgovVcatnManageService {
+		private final String storedApplcntId;
 		private VcatnManageVO lastUpdtArg;
+
+		StubService(String storedApplcntId) {
+			this.storedApplcntId = storedApplcntId;
+		}
 
 		@Override
 		public List<VcatnManageVO> selectVcatnManageList(VcatnManageVO vcatnManageVO) {
@@ -48,7 +57,12 @@ class EgovVcatnManageControllerOwnershipTest {
 
 		@Override
 		public VcatnManageVO selectVcatnManage(VcatnManageVO vcatnManageVO) {
-			throw new UnsupportedOperationException();
+			if (!storedApplcntId.equals(vcatnManageVO.getApplcntId())) {
+				return null;
+			}
+			VcatnManageVO stored = new VcatnManageVO();
+			stored.setApplcntId(storedApplcntId);
+			return stored;
 		}
 
 		@Override
@@ -143,7 +157,7 @@ class EgovVcatnManageControllerOwnershipTest {
 
 	@Test
 	void updtVcatnManageIgnoresAForgedApplcntIdAndKeepsTheRecordOwner() throws Exception {
-		StubService service = new StubService();
+		StubService service = new StubService(OWNER_UNIQ_ID);
 		EgovVcatnManageController controller = controllerWith(service);
 		bindLoginUser(OWNER_UNIQ_ID);
 
@@ -168,13 +182,13 @@ class EgovVcatnManageControllerOwnershipTest {
 	}
 
 	@Test
-	void updtVcatnManageKeepsTheOriginalOwnerWhenAnAdministratorEditsSomeoneElsesLeave() throws Exception {
-		StubService service = new StubService();
+	void updtVcatnManageIsDeniedWhenAnAdministratorEditsSomeoneElsesLeave() throws Exception {
+		StubService service = new StubService(VICTIM_UNIQ_ID);
 		EgovVcatnManageController controller = controllerWith(service);
 		bindLoginUser(ADMIN_UNIQ_ID, List.of("ROLE_ADMIN"));
 
 		VcatnManageVO vcatnManageVO = new VcatnManageVO();
-		// 관리자가 타인(VICTIM)의 휴가를 수정한다. 삭제는 서비스 계층에서 ROLE_ADMIN 으로 허용된다.
+		// 관리자가 타인(VICTIM)의 휴가를 수정하려 한다. 수정은 신청자 본인만 가능하므로 관리자도 차단된다.
 		vcatnManageVO.setApplcntIdKey(VICTIM_UNIQ_ID);
 		vcatnManageVO.setVcatnSeKey("01");
 		vcatnManageVO.setBgndeKey("20260101");
@@ -188,10 +202,9 @@ class EgovVcatnManageControllerOwnershipTest {
 		SessionStatus status = new SimpleSessionStatus();
 		ModelMap model = new ModelMap();
 
-		controller.updtVcatnManage(vcatnManageVO, bindingResult, status, model);
-
-		assertEquals(VICTIM_UNIQ_ID, service.lastUpdtArg.getApplcntId(),
-				"관리자가 타인의 휴가를 수정해도 재등록되는 신청자ID는 원래 소유자여야 한다."
-						+ " 로그인 사용자로 덮으면 소유자와 연차 차감 대상이 관리자로 바뀐다.");
+		assertThrows(IllegalStateException.class,
+				() -> controller.updtVcatnManage(vcatnManageVO, bindingResult, status, model),
+				"신청자가 아닌 관리자는 타인의 휴가를 수정할 수 없어야 한다.");
+		assertNull(service.lastUpdtArg, "신청자가 아닌 관리자의 요청이 수정 서비스까지 도달하면 안 된다.");
 	}
 }

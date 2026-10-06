@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -26,6 +27,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qri.service.EgovQustnrRespondInfoService;
 import egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO;
@@ -136,20 +138,6 @@ public class EgovQustnrRespondInfoController {
 	}
 
 	/**
-	 * 설문응답 관리(응답자결과 조회/수정/삭제)는 관리자만 수행할 수 있도록 검증한다.
-	 * (KISA 보안취약점 조치: 응답 내용·응답자 개인정보를 담고 있어 관리자 전용 기능으로 제한)
-	 */
-	private void egovAssertAdmin() {
-		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
-		if (authorities == null || !authorities.contains("ROLE_ADMIN")) {
-			throw new IllegalStateException("권한이 없습니다.");
-		}
-	}
-
-	/**
 	 * 설문템플릿을 적용한다.
 	 *
 	 * @param searchVO
@@ -160,6 +148,7 @@ public class EgovQustnrRespondInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qri/template/template.do")
+	@RequireAdmin
 	public String egovQustnrRespondInfoManageTemplate(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			HttpServletRequest request, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -231,6 +220,7 @@ public class EgovQustnrRespondInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageStatistics.do")
+	@RequireAdmin
 	public String egovQustnrRespondInfoManageStatistics(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			HttpServletRequest request, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -324,6 +314,7 @@ public class EgovQustnrRespondInfoController {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do")
+	@RequireAdmin
 	public String egovQustnrRespondInfoManageRegist(
 			@Valid @ModelAttribute("searchVO") ComDefaultVO searchVO,
 			BindingResult bindingResult,
@@ -579,6 +570,7 @@ public class EgovQustnrRespondInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoList.do")
+	@RequireAdmin
 	public String egovQustnrRespondInfoList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			HttpServletRequest request, @RequestParam Map<?, ?> commandMap, QustnrRespondInfoVO qustnrRespondInfoVO,
 			RedirectAttributes redirectAttributes,
@@ -645,21 +637,25 @@ public class EgovQustnrRespondInfoController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoDetail.do")
+	@RequireAdmin
 	public String egovQustnrRespondInfoDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrRespondInfoVO qustnrRespondInfoVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
-
-		// KISA 보안취약점 조치: 객체 수준 접근제어 누락 - 관리자만 응답 상세를 조회/삭제할 수 있다.
-		egovAssertAdmin();
 
 		String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoDetail";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 삭제는 응답자(등록자) 본인만 할 수 있다.
+			List<EgovMap> storedList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrRespondInfoService.deleteQustnrRespondInfo(qustnrRespondInfoVO);
 			sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
 		} else {
+			// KISA 보안취약점 조치: 객체 수준 접근제어 누락 - 관리자만 응답 상세를 조회할 수 있다.
+			EgovAuthorizationHelper.assertAdmin();
 			List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
 			model.addAttribute("resultList", resultList);
 		}
@@ -680,6 +676,7 @@ public class EgovQustnrRespondInfoController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoModify.do")
+	@RequireAdmin
 	public String qustnrRespondInfoModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
@@ -694,8 +691,11 @@ public class EgovQustnrRespondInfoController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// KISA 보안취약점 조치: 객체 수준 접근제어 누락 - 관리자만 응답을 수정할 수 있다.
-		egovAssertAdmin();
+		// 응답결과는 설문 참여 때 참여자를 등록자로 저장한다(응답자 = 등록자).
+		// 삭제와 같이 응답자 본인만 수정 화면·저장을 쓴다(입력 오류 재표시보다 앞). 관리자도 예외가 아니다.
+		List<EgovMap> storedList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+		Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -741,6 +741,7 @@ public class EgovQustnrRespondInfoController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
+	@RequireAdmin
 	public String qustnrRespondInfoRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,

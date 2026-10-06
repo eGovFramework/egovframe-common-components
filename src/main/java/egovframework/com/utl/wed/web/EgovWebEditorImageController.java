@@ -1,6 +1,7 @@
 package egovframework.com.utl.wed.web;
 
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.LoginVO;
 
 import java.io.FileNotFoundException;
@@ -98,6 +99,7 @@ public class EgovWebEditorImageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/utl/wed/insertImage.do")
+	@RequireAdmin
 	public String imageUpload(MultipartHttpServletRequest request, Model model) throws Exception {
 
 		model.addAttribute("imageUpload", new ComDefaultVO());
@@ -116,6 +118,7 @@ public class EgovWebEditorImageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/utl/wed/insertImageCk.do")
+	@RequireAdmin
 	public String imageUploadCk(@RequestParam(value = "CKEditorFuncNum", required=false) String ckEditorFuncNum, MultipartHttpServletRequest mRequest, HttpServletResponse response, Model model) throws Exception {
 		model.addAttribute("ckEditorFuncNum", parseCkEditorFuncNum(ckEditorFuncNum));
 		uploadImageFiles(mRequest, model);
@@ -175,10 +178,11 @@ public class EgovWebEditorImageController {
 	 * @param response
 	 * @throws Exception
 	 */
+	// 게시글 등 협업 본문에 넣은 에디터 이미지를 일반 사용자도 보므로 관리자 전용이 아니다(로그인·암호화 경로 검사는 아래에서)
 	@RequestMapping(value = "/utl/web/imageSrc.do",method = RequestMethod.GET)
 	public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		//2017.12.12 - 출력 모듈 경로 변경 취약점 조치
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -257,31 +261,5 @@ public class EgovWebEditorImageController {
 		return "";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

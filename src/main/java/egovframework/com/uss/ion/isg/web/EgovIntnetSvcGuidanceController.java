@@ -24,6 +24,8 @@
 
 package egovframework.com.uss.ion.isg.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.isg.service.EgovIntnetSvcGuidanceService;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO;
@@ -65,9 +68,9 @@ public class EgovIntnetSvcGuidanceController {
 	 * @exception Exception
 	 */
     @RequestMapping("/uss/ion/isg/selectIntnetSvcGuidanceListView.do")
+    @RequireAdmin
     public String selectIntnetSvcGuidanceListView() throws Exception {
-
-        return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceList";
+    	return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
     }
 
 	/**
@@ -109,12 +112,14 @@ public class EgovIntnetSvcGuidanceController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/isg/getIntnetSvcGuidance.do")
+	@RequireAdmin
 	public String selectIntnetSvcGuidance(@RequestParam("intnetSvcId") String intnetSvcId,
 			                              @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                              ModelMap model) throws Exception {
 
 		intnetSvcGuidanceVO.setIntnetSvcId(intnetSvcId);
-		model.addAttribute("intnetSvcGuidanceVO", egovIntnetSvcGuidanceService.selectIntnetSvcGuidance(intnetSvcGuidanceVO));
+		IntnetSvcGuidanceVO stored = egovIntnetSvcGuidanceService.selectIntnetSvcGuidance(intnetSvcGuidanceVO);
+		model.addAttribute("intnetSvcGuidanceVO", stored);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceUpdt";
@@ -125,6 +130,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/isg/addViewIntnetSvcGuidance.do")
+    @RequireAdmin
     public String insertIntnetSvcGuidanceView(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
 
         return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceRegist";
@@ -136,6 +142,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/isg/addIntnetSvcGuidance.do")
+	@RequireAdmin
 	public String insertIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               BindingResult bindingResult,
 			                               ModelMap model) throws Exception {
@@ -162,9 +169,11 @@ public class EgovIntnetSvcGuidanceController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/isg/updtIntnetSvcGuidance.do")
+	@RequireAdmin
 	public String updateIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                              BindingResult bindingResult,
 			                              ModelMap model) throws Exception {
+
 
     	if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceUpdt";
@@ -184,6 +193,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/isg/removeIntnetSvcGuidance.do")
+	@RequireAdmin
 	public String deleteIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               ModelMap model) throws Exception {
 
@@ -204,13 +214,6 @@ public class EgovIntnetSvcGuidanceController {
 			return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
 		}
 
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String loginId = user == null ? "" : EgovStringUtil.isNullToString(user.getId());
-		String ownerId = EgovStringUtil.isNullToString(existing.getUserId());
-		if (!EgovStringUtil.isEmpty(ownerId) && !loginId.equals(ownerId)) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
-			return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
-		}
 
     	egovIntnetSvcGuidanceService.deleteIntnetSvcGuidance(intnetSvcGuidanceVO);
 
@@ -225,6 +228,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uss/ion/isg/selectIntnetSvcGuidanceResultList.do")
+	@RequireAdmin
 	public String selectIntnetSvcGuidanceResult(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
                                                ModelMap model ) throws Exception {
 

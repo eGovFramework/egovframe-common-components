@@ -46,6 +46,7 @@ import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.lsi.service.EgovLoginScrinImageService;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImageVO;
@@ -78,9 +79,9 @@ public class EgovLoginScrinImageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/uss/ion/lsi/selectLoginScrinImageListView.do")
+    @RequireAdmin
     public String selectLoginScrinImageListView() throws Exception {
-
-        return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageList";
+    	return "forward:/uss/ion/lsi/selectLoginScrinImageList.do";
     }
 
 	/**
@@ -143,6 +144,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/lsi/addViewLoginScrinImage.do")
+	@RequireAdmin
 	public String insertViewLoginScrinImage(@ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO) throws Exception {
     	return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageRegist";
 	}
@@ -241,6 +243,7 @@ public class EgovLoginScrinImageController {
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
 		                                ModelMap model) throws Exception {
+
 
     	if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageUpdt";
@@ -343,6 +346,9 @@ public class EgovLoginScrinImageController {
 			return "forward:/uss/ion/lsi/selectLoginScrinImageList.do";
 		}
 		String [] strImageIds = imageIds.split(";");
+
+		for (String strImageId : strImageIds) {
+		}
 
 		for (String strImageId : strImageIds) {
 			loginScrinImageVO.setImageId(strImageId);

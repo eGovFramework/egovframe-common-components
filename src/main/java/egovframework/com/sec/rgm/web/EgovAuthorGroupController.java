@@ -62,6 +62,7 @@ public class EgovAuthorGroupController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/rgm/EgovAuthorGroupListView.do")
+    @RequireAdmin
     public String selectAuthorGroupListView() throws Exception {
 
         return "egovframework/com/sec/rgm/EgovAuthorGroupManage";

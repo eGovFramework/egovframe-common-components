@@ -23,6 +23,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.bak.service.BackupOpert;
 import egovframework.com.sym.sym.bak.service.BackupScheduler;
@@ -99,13 +100,14 @@ public class EgovBackupOpertController {
 	public String deleteBackupOpert(BackupOpert backupOpert, ModelMap model, RedirectAttributes redirectAttributes)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+
 
 		// 백업스케줄러에 스케줄정보반영
 		backupScheduler.deleteBackupOpert(backupOpert);
@@ -179,7 +181,7 @@ public class EgovBackupOpertController {
 	public String selectBackupOpert(@ModelAttribute("searchVO")BackupOpert backupOpert, ModelMap model)
 	  throws Exception{
     	LOGGER.debug(" 조회조건 : {}", backupOpert);
-		BackupOpert result = egovBackupOpertService.selectBackupOpert(backupOpert);
+		BackupOpert result = EgovAuthorizationHelper.requireTarget(egovBackupOpertService.selectBackupOpert(backupOpert));
 		model.addAttribute("resultInfo", result);
 		LOGGER.debug(" 결과값 : {}", result);
 
@@ -195,6 +197,7 @@ public class EgovBackupOpertController {
 	 * @exception Exception Exception
 	 */
 	@PostMapping("/sym/sym/bak/getBackupOpertForRegist.do")
+	@RequireAdmin
 	public String selectBackupOpertForRegist(@ModelAttribute("searchVO")BackupOpert backupOpert, ModelMap model)
 	  throws Exception{
 		referenceData(model);
@@ -213,15 +216,16 @@ public class EgovBackupOpertController {
 	 * @exception Exception Exception
 	 */
 	@PostMapping("/sym/sym/bak/getBackupOpertForUpdate.do")
+	@RequireAdmin
 	public String selectBackupOpertForUpdate(@ModelAttribute("searchVO")BackupOpert backupOpert, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		referenceData(model);
 
 		LOGGER.debug(" 조회조건 : {}", backupOpert);
-		BackupOpert result = egovBackupOpertService.selectBackupOpert(backupOpert);
+		BackupOpert result = EgovAuthorizationHelper.requireTarget(egovBackupOpertService.selectBackupOpert(backupOpert));
 		model.addAttribute("backupOpert", result);
 		LOGGER.debug(" 결과값 : {}", result);
 
@@ -288,6 +292,7 @@ public class EgovBackupOpertController {
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		backupOpertValidator.validate(backupOpert, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -357,31 +362,5 @@ public class EgovBackupOpertController {
 	}
 
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

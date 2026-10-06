@@ -51,11 +51,14 @@ class EgovArticleControllerReplyValidationTest {
 				EgovArticleService.class.getClassLoader(),
 				new Class<?>[] { EgovArticleService.class },
 				(proxy, method, args) -> {
-					if ("selectArticleDetail".equals(method.getName())) {
+					if ("selectArticleDetail".equals(method.getName()) || "increaseInqireCo".equals(method.getName())) {
 						// 검증 실패 재표시는 이 메서드(내부에서 updateInqireCo 로 조회수 증가)를
 						// 부르면 안 된다. 부르면 테스트가 실패하도록 예외를 던진다.
 						throw new AssertionError(
 								"검증 실패 재표시가 selectArticleDetail 을 호출해 조회수를 올렸다");
+					}
+					if ("selectArticleDetailNoCount".equals(method.getName())) {
+						return detail;
 					}
 					throw new UnsupportedOperationException(method.getName());
 				});
@@ -148,6 +151,23 @@ class EgovArticleControllerReplyValidationTest {
 		assertEquals("0", result.getReplyLc());
 		assertEquals(0L, result.getSortOrdr().longValue());
 		assertEquals("0", result.getParnts());
+	}
+
+	@Test
+	void 블로그형_원글의_검증실패는_블로그형_답변_화면으로_재표시한다() throws Exception {
+		bindLoginUser();
+		BoardVO parent = parentArticle();
+		parent.setBlogAt("chkBlog");
+		ModelMap model = new ModelMap();
+
+		BoardVO submitted = new BoardVO();
+		BindingResult bindingResult = new BeanPropertyBindingResult(submitted, "articleVO");
+		bindingResult.rejectValue("nttSj", "Size", "제목이 너무 깁니다");
+
+		String view = controller(parent).replyBoardArticle(null, searchVO(), new BoardMasterVO(), submitted,
+				bindingResult, model);
+
+		assertEquals("egovframework/com/cop/bbs/EgovArticleBlogReply", view);
 	}
 
 }

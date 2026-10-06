@@ -21,6 +21,7 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.fsm.service.EgovFileSysMntrngService;
@@ -164,6 +165,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngVO
 	 */
 	@PostMapping("/utl/sys/fsm/selectFileSysMntrng.do")
+	@RequireAdmin
 	public String selectFileSysMntrng(@ModelAttribute("ntwrkSvcMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
 		FileSysMntrng fileSysMntrng = fileSysMntrngService.selectFileSysMntrng(fileSysMntrngVO);
 
@@ -192,6 +194,7 @@ public class EgovFileSysMntrngController {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/utl/sys/fsm/EgovFileSysMntrngUpdt";
@@ -283,6 +286,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@PostMapping("/utl/sys/fsm/selectFileSysMg.do")
+	@RequireAdmin
 	public String selectFileSysMg(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
 		int totalSpaceFileSys = 0;
 		// 2026.02.28 KISA 취약점 조치
@@ -306,6 +310,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngLogVO
 	 */
 	@RequestMapping("/utl/sys/fsm/selectFileSysMntrngLogList.do")
+	@RequireAdmin
 	public String selectFileSysMntrngLogList(@ModelAttribute("searchVO") FileSysMntrngLogVO fileSysMntrngLogVO, ModelMap model) throws Exception {
 		//로그인 객체 선언
 		//LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -368,6 +373,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngLogVO
 	 */
 	@PostMapping("/utl/sys/fsm/selectFileSysMntrngLog.do")
+	@RequireAdmin
 	public String selectFileSysMntrngLog(@ModelAttribute("fileSysMntrngLogVO") FileSysMntrngLogVO fileSysMntrngLogVO, ModelMap model) throws Exception {
 		FileSysMntrngLogVO fileSysMntrngLog = fileSysMntrngService.selectFileSysMntrngLog(fileSysMntrngLogVO);
 

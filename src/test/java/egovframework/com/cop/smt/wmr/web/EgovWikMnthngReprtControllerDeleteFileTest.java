@@ -88,6 +88,7 @@ class EgovWikMnthngReprtControllerDeleteFileTest {
 		WikMnthngReprtVO stored = new WikMnthngReprtVO();
 		stored.setReprtId("REPRT_00000000000001");
 		stored.setAtchFileId(storedAtchFileId);
+		stored.setFrstRegisterId(LOGIN_UNIQ_ID); // 삭제는 등록자 본인만 가능하므로 로그인 사용자를 등록자로 둔다
 
 		return (EgovWikMnthngReprtService) Proxy.newProxyInstance(
 				EgovWikMnthngReprtService.class.getClassLoader(),

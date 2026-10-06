@@ -1,11 +1,11 @@
 package egovframework.com.cmm.web;
 
-import egovframework.com.cmm.LoginVO;
 
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,7 +77,7 @@ public class EgovFileMngController {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
 
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
@@ -83,7 +86,7 @@ public class EgovFileMngController {
 		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
 			if (decodedAtchFileId == null || decodedAtchFileId.startsWith("FILE_ID_DECRIPT_EXCEPTION")) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 		}
 
@@ -100,7 +103,6 @@ public class EgovFileMngController {
 		model.addAttribute("fileList", result);
 		model.addAttribute("updateFlag", "N");
 		model.addAttribute("fileListCnt", result.size());
-		model.addAttribute("atchFileId", param_atchFileId);
 
 		return "egovframework/com/cmm/fms/EgovFileList";
 	}
@@ -122,7 +124,7 @@ public class EgovFileMngController {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
 
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
@@ -131,7 +133,7 @@ public class EgovFileMngController {
 		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
 			if (decodedAtchFileId == null || decodedAtchFileId.startsWith("FILE_ID_DECRIPT_EXCEPTION")) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
 		}
 
@@ -163,21 +165,34 @@ public class EgovFileMngController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping("/cmm/fms/deleteFileInfs.do")
+	@RequestMapping(value = "/cmm/fms/deleteFileInfs.do", method = RequestMethod.POST)
 	public String deleteFileInf(@ModelAttribute("searchVO") FileVO fileVO,
 			// SessionVO sessionVO,
 			HttpServletRequest request, ModelMap model) {
 
 		// 2026.07.13 KISA 보안취약점 조치
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
 
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
-		if (isAuthenticated) {
-			fileService.deleteFileInf(fileVO);
+		// 삭제 식별자는 수정 목록이 발급한 세션 결합 암호문(sessionId|atchFileId)만 받는다.
+		// 파일 테이블에 소유자가 없어 소유권은 부모를 아는 업무 컨트롤러가 판정하고 삭제 허가를 발급한다.
+		String decodedString = "";
+		try {
+			String token = request.getParameter("atchFileId").replaceAll(" ", "+");
+			decodedString = cryptoService.decrypt(new String(Base64.getDecoder().decode(token)));
+		} catch (RuntimeException e) {
+			LOGGER.debug("delete token decrypt failed: {}", e.getMessage());
 		}
+		String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
+		String decodedFileId = StringUtils.substringAfter(decodedString, "|");
+		if (StringUtils.isEmpty(decodedFileId) || !StringUtils.equals(decodedSessionId, request.getSession().getId())) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
+		EgovAttachmentGrants.assertDeleteAllowed(request, decodedFileId);
+
+		fileVO.setAtchFileId(decodedFileId);
+		fileService.deleteFileInf(fileVO);
 
 		return "blank";
 
@@ -232,32 +247,5 @@ public class EgovFileMngController {
 		return returnVal;
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	@SuppressWarnings("unused")
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

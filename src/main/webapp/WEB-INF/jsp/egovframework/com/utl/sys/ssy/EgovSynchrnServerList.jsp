@@ -208,6 +208,7 @@ function checkSyncResultMessage() {
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/ssy/selectSynchrnServerList.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <div class="board">
 	<h1><spring:message code="comUtlSysSsy.synchrnServer.title" />  <spring:message code="title.management" /></h1><!-- 동기화대상 서버 관리 -->
@@ -274,7 +275,7 @@ function checkSyncResultMessage() {
 
 <div class="wTableFrm">
 <form name="fileForm" action="${pageContext.request.contextPath}/utl/sys/ssy/uploadFile.do" method="post" enctype="multipart/form-data">
-	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<input type="hidden" name="synchrnServer.pageIndex" value="<c:out value='${synchrnServer.pageIndex}'/>" />
 	<input type="hidden" name="synchrnServer.strSynchrnServerNm" value="<c:out value='${synchrnServer.strSynchrnServerNm}'/>" />
 	<!-- 타이틀 -->
@@ -304,7 +305,7 @@ function checkSyncResultMessage() {
 
 <div class="board">
 <form name="deleteForm" action="${pageContext.request.contextPath}/utl/sys/ssy/deleteFile.do" method="post">
-	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<h1><spring:message code="comUtlSysSsy.synchrnServerFile.title" />  <spring:message code="title.list" /></h1> <!-- 동기화대상 파일 목록 -->
 
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">

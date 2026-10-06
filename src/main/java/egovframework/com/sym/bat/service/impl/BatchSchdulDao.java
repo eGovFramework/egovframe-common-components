@@ -77,6 +77,9 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 */
 	public BatchSchdul selectBatchSchdul(BatchSchdul batchSchdul) {
 		BatchSchdul result = (BatchSchdul)selectOne("BatchSchdulDao.selectBatchSchdul", batchSchdul);
+		if (result == null) {
+			return null;
+		}
 		// 스케줄요일정보를 가져온다.
 		List<BatchSchdulDfk> dfkSeList = selectList("BatchSchdulDao.selectBatchSchdulDfkList", result.getBatchSchdulId());
 		String [] dfkSes = new String [dfkSeList.size()];

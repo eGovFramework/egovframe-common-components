@@ -106,6 +106,9 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) {
 
 		WikMnthngReprtVO resultVO = wikMnthngReprtDAO.selectWikMnthngReprt(wikMnthngReprtVO);
+		if (resultVO == null) {
+			return null;
+		}
 		if(resultVO.getConfmDt() == null || resultVO.getConfmDt().equals("")){
 			String year = resultVO.getFrstRegisterPnttm().substring(0,4);
 			String month = resultVO.getFrstRegisterPnttm().substring(4,6);

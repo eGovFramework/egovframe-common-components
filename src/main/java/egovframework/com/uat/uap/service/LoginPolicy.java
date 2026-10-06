@@ -65,6 +65,10 @@ public class LoginPolicy extends ComDefaultVO {
 	 */	
     private String userId;
     /**
+	 * 최초등록자 ID
+	 */
+    private String frstRegisterId;
+    /**
 	 * 등록일시
 	 */	
     private String regDate;
@@ -165,6 +169,18 @@ public class LoginPolicy extends ComDefaultVO {
 	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	/**
+	 * @return the frstRegisterId
+	 */
+	public String getFrstRegisterId() {
+		return frstRegisterId;
+	}
+	/**
+	 * @param frstRegisterId the frstRegisterId to set
+	 */
+	public void setFrstRegisterId(String frstRegisterId) {
+		this.frstRegisterId = frstRegisterId;
 	}
 	/**
 	 * @return the regDate

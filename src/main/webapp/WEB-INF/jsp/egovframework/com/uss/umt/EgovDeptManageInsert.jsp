@@ -73,17 +73,6 @@ function fncDeptManageInsert() {
 	<tbody>
 		<!-- 입력 -->
 		<c:set var="inputTxt"><spring:message code="input.input" /></c:set>
-		<!-- 부서ID -->
-		<!-- 
-		<c:set var="title"><spring:message code="comUssUmt.deptManageRegist.deptId" /></c:set>
-		<tr>
-			<th>${title} <span class="pilsu">*</span></th>
-			<td class="left">
-				<form:input path="orgnztId" title="${title} ${inputTxt}" size="40" maxlength="50" />
-				<div><form:errors path="orgnztId" cssClass="error" /></div> 
-			</td>
-		</tr>
-		 -->
 		<!-- 부서명 -->
 		<c:set var="title"><spring:message code="comUssUmt.deptManageRegist.deptName" /></c:set>
 		<tr>

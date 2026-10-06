@@ -78,10 +78,10 @@ class EgovMemoTodoControllerMissingTodoTest {
 		assertSame(service.stored, model.get("memoTodo"));
 	}
 
-	@ParameterizedTest
-	@ValueSource(booleans = { false, true })
-	void validationErrorsOnExistingTodoKeepFormAndTimeChoices(boolean admin) throws Exception {
-		bindUser(admin);
+	/** 수정은 작성자 본인만 가능하므로(관리자 예외 없음) 검증 실패 재표시는 작성자 기준으로 확인한다. */
+	@Test
+	void validationErrorsOnExistingTodoKeepFormAndTimeChoices() throws Exception {
+		bindUser(false);
 		service.stored = storedTodo();
 		ModelMap model = new ModelMap();
 
@@ -98,8 +98,20 @@ class EgovMemoTodoControllerMissingTodoTest {
 	}
 
 	@Test
-	void adminCanStillDeleteAnExistingTodoOwnedByAnotherUser() throws Exception {
+	void adminCannotDeleteAnExistingTodoOwnedByAnotherUser() {
 		bindUser(true);
+		service.stored = storedTodo();
+
+		IllegalStateException error = assertThrows(IllegalStateException.class,
+				() -> controller.deleteMemoTodo(request(), new ModelMap()));
+
+		assertEquals("권한이 없습니다.", error.getMessage());
+		assertEquals(0, service.deleteCount);
+	}
+
+	@Test
+	void ownerCanDeleteAnExistingTodo() throws Exception {
+		bindUser(false);
 		service.stored = storedTodo();
 
 		assertEquals("forward:/cop/smt/mtm/selectMemoTodoList.do",

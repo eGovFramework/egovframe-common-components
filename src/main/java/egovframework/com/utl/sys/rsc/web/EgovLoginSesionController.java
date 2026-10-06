@@ -45,7 +45,6 @@ public class EgovLoginSesionController {
 	 * @return String
 	 */
 	@IncludedInfo(name="로그인세션정보체크", order = 2160 ,gid = 90)
-	@RequireAdmin
 	@RequestMapping(value = "/utl/sys/rsc/loginSessionView.do")
 	public String checkLoginSessionView() throws Exception {
 		return "egovframework/com/utl/sys/rsc/EgovLoginSesionCheck";

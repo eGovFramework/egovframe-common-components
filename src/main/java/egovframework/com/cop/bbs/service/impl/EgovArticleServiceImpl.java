@@ -70,12 +70,22 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
 	@Override
 	public BoardVO selectArticleDetail(BoardVO boardVO) {
+		increaseInqireCo(boardVO);
+
+		return egovArticleDao.selectArticleDetail(boardVO);
+	}
+
+	@Override
+	public BoardVO selectArticleDetailNoCount(BoardVO boardVO) {
+		return egovArticleDao.selectArticleDetail(boardVO);
+	}
+
+	@Override
+	public void increaseInqireCo(BoardVO boardVO) {
 		int iniqireCo = egovArticleDao.selectMaxInqireCo(boardVO);
 
 		boardVO.setInqireCo(iniqireCo);
 		egovArticleDao.updateInqireCo(boardVO);
-
-		return egovArticleDao.selectArticleDetail(boardVO);
 	}
 
 	@Override

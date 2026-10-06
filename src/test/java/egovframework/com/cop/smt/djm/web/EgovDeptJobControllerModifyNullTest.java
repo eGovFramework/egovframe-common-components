@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ui.ModelMap;
 
@@ -84,7 +85,7 @@ class EgovDeptJobControllerModifyNullTest {
 		vo.setDeptJobId("DEPTJOB_00000000000000");
 
 		ModelMap model = new ModelMap();
-		String view = controller.modifyDeptJob(vo, model);
+		String view = controller.modifyDeptJob(vo, model, new MockHttpServletRequest());
 
 		assertNotNull(view, "없는 부서업무로 수정화면을 열면 예외 대신 화면 이동이 나와야 한다.");
 		assertEquals("forward:/cop/smt/djm/selectDeptJobList.do", view);

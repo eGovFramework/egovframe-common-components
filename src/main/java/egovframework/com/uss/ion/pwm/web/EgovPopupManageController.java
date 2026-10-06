@@ -1,5 +1,7 @@
 package egovframework.com.uss.ion.pwm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
@@ -129,6 +132,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/detailPopup.do")
+	@RequireAdmin
 	public String egovPopupManageDetail(PopupManageVO popupManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 
@@ -157,6 +161,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/insertPopupView.do")
+	@RequireAdmin
 	public String insertPopupView(@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("popupManageVO", popupManageVO);
@@ -182,9 +187,10 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/updatePopupView.do")
+	@RequireAdmin
 	public String updatePopupView(@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, ModelMap model)
 			throws Exception {
-		PopupManageVO resultVO = egovPopupManageService.selectPopup(popupManageVO);
+		PopupManageVO resultVO = EgovAuthorizationHelper.requireTarget(egovPopupManageService.selectPopup(popupManageVO));
 
 		String sNtceBgnde = resultVO.getNtceBgnde();
 		String sNtceEndde = resultVO.getNtceEndde();
@@ -222,6 +228,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/updtPopup.do")
+	@RequireAdmin
 	public String egovPopupManageUpdt(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -234,6 +241,7 @@ public class EgovPopupManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 
 		String sLocationUrl = "egovframework/com/uss/ion/pwm/EgovPopupUpdt";
 
@@ -290,6 +298,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/pwm/registPopup.do")
+	@RequireAdmin
 	public String egovPopupManageRegist(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("popupManageVO") PopupManageVO popupManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -348,6 +357,7 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/ajaxPopupManageInfo.do")
+	@RequireAdmin
 	public void egovPopupManageInfoAjax(@RequestParam Map<?, ?> commandMap, HttpServletResponse response,
 			PopupManageVO popupManageVO) throws Exception {
 

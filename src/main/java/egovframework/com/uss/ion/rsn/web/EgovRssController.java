@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -107,6 +108,7 @@ public class EgovRssController {
      */
     @SuppressWarnings("unchecked")
 	@PostMapping("/uss/ion/rsn/detailRssTagService.do")
+    @RequireAdmin
     public String EgovRssTagServiceDetail(
             RssInfo rssInfo,
             @RequestParam Map<?, ?> commandMap,

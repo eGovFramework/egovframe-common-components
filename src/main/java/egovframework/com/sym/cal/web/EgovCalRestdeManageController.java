@@ -1,5 +1,7 @@
 package egovframework.com.sym.cal.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -20,6 +22,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.sym.cal.service.EgovCalRestdeManageService;
 import egovframework.com.sym.cal.service.Restde;
 import egovframework.com.sym.cal.service.RestdeVO;
@@ -73,6 +76,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/callCalPopup.do")
+	@RequireAdmin
 	public String callCalendar(ModelMap model) throws Exception {
 		return "egovframework/com/sym/cal/EgovCalPopup";
 	}
@@ -85,6 +89,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/callCal.do")
+	@RequireAdmin
 	public String callCal(@Valid Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -183,6 +188,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalCalPopup.do")
+	@RequireAdmin
 	public String callNormalCalPopup(ModelMap model) throws Exception {
 		return "egovframework/com/sym/cal/EgovNormalCalPopup";
 	}
@@ -196,6 +202,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovselectNormalCalendar.do")
+	@RequireAdmin
 	public String selectNormalRestdePopup(Restde restde, ModelMap model) throws Exception {
 
 //		if (bindingResult.hasErrors()) {
@@ -254,6 +261,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovAdministCalPopup.do")
+	@RequireAdmin
 	public String callAdministCalPopup(ModelMap model) throws Exception {
 		return "egovframework/com/sym/cal/EgovAdministCalPopup";
 	}
@@ -267,6 +275,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovselectAdministCalendar.do")
+	@RequireAdmin
 	public String selectAdministRestdePopup(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -327,6 +336,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalDayCalendar.do")
+	@RequireAdmin
 	public String selectNormalDayCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -400,6 +410,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalWeekCalendar.do")
+	@RequireAdmin
 	public String selectNormalWeekCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -569,6 +580,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalMonthCalendar.do")
+	@RequireAdmin
 	public String selectNormalMonthCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -632,6 +644,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalYearCalendar.do")
+	@RequireAdmin
 	public String selectNormalYearCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -818,6 +831,7 @@ public class EgovCalRestdeManageController {
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/sym/cal/EgovAdministDayCalendar.do")
+	@RequireAdmin
 	public String selectAdministDayCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -893,6 +907,7 @@ public class EgovCalRestdeManageController {
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/sym/cal/EgovAdministWeekCalendar.do")
+	@RequireAdmin
 	public String selectAdministWeekCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -1062,6 +1077,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovAdministMonthCalendar.do")
+	@RequireAdmin
 	public String selectAdministMonthCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -1125,6 +1141,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovAdministYearCalendar.do")
+	@RequireAdmin
 	public String selectAdministYearCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
@@ -1311,6 +1328,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/cal/EgovRestdeRemove.do")
+	@RequireAdmin
 	public String deleteRestde(@ModelAttribute("loginVO") LoginVO loginVO, Restde restde, ModelMap model)
 			throws Exception {
 		restdeManageService.deleteRestde(restde);
@@ -1326,6 +1344,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/cal/EgovRestdeRegistView.do")
+	@RequireAdmin
 	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM017");
@@ -1346,6 +1365,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/sym/cal/EgovRestdeRegist.do")
+	@RequireAdmin
 	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("restde") Restde restde,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -1375,6 +1395,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/cal/EgovRestdeDetail.do")
+	@RequireAdmin
 	public String selectRestdeDetail(@ModelAttribute("loginVO") LoginVO loginVO, Restde restde, ModelMap model)
 			throws Exception {
 		Restde vo = restdeManageService.selectRestdeDetail(restde);
@@ -1430,6 +1451,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/cal/EgovRestdeModifyView.do")
+	@RequireAdmin
 	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("restde") Restde restde,
 			ModelMap model) throws Exception {
 		Restde vo = restdeManageService.selectRestdeDetail(restde);
@@ -1454,8 +1476,10 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/cal/EgovRestdeModify.do")
+	@RequireAdmin
 	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("restde") Restde restde,
 			BindingResult bindingResult, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();

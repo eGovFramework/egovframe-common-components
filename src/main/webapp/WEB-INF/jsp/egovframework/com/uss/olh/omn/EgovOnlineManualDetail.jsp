@@ -50,6 +50,7 @@ function fn_egov_list_OnlineManual(){
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!--  상단타이틀 -->
 <form name="OnlineManualForm" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <!-- ----------------- 상단 타이틀  영역 -->
 <table width="100%" cellpadding="8" class="table-search" border="0">
  <tr>
@@ -127,6 +128,7 @@ function fn_egov_list_OnlineManual(){
 <tr>
 	<td>
 		<form name="formList" action="${pageContext.request.contextPath}/uss/olh/omn/listOnlineManual.do" method="post">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<span class="button"><input type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_OnlineManual(); return false;"></span>
 		</form>
 	</td>

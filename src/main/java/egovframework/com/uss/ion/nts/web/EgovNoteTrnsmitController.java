@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.resolver.EgovSecurityMap;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
@@ -93,6 +96,8 @@ public class EgovNoteTrnsmitController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
+// 진입점은 개방, 삭제는 관리자 전용 유지
+EgovAuthorizationHelper.assertAdmin();
 
         	LOGGER.debug("##### EgovNoteTrnsmitController EgovNoteTrnsmitList()  start");
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
@@ -100,6 +105,18 @@ public class EgovNoteTrnsmitController {
 
         	String[] aNoteId = ((String) commandMap.get("noteIdAll")).split(",");
             String[] aNoteTrnsmitId = ((String)commandMap.get("noteTrnsmitIdAll")).split(",");
+
+            // 일괄 삭제: 모든 건의 발신자 본인 여부를 먼저 확인한 뒤 삭제한다.
+            for(int i=0; i < aNoteId.length; i++) {
+            	securitymap.put("noteId", aNoteId[i]);
+	            securitymap.put("noteTrnsmitId", aNoteTrnsmitId[i]);
+	            NoteTrnsmit ownerCheck = new NoteTrnsmit();
+	            ownerCheck.setNoteId(securitymap.get("noteId"));
+	            ownerCheck.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
+	            ownerCheck.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	            Map<?, ?> stored = egovNoteTrnsmitService.selectNoteTrnsmitDetail(ownerCheck);
+	            EgovAuthorizationHelper.assertOwner(stored == null ? null : (String) stored.get("trnsmiterId"));
+            }
 
             for(int i=0; i < aNoteId.length; i++) {
             	String sNoteId = aNoteId[i];
@@ -165,6 +182,7 @@ public class EgovNoteTrnsmitController {
      * @throws Exception
      */
     @PostMapping("/uss/ion/nts/detailNoteTrnsmit.do")
+    @RequireAdmin
     public String EgovNoteTrnsmitDetail(
     		@ModelAttribute("searchVO") NoteTrnsmit searchVO,
     		EgovSecurityMap securityMap,
@@ -198,6 +216,8 @@ public class EgovNoteTrnsmitController {
             	searchVO.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
             	Map<?, ?> noteTrnsmitMap = egovNoteTrnsmitService.selectNoteTrnsmitDetail(searchVO);
+            	// 보낸 쪽지는 발신자 본인만 본다(조회 조건도 발신자를 로그인 사용자로 고정한다)
+            	EgovAuthorizationHelper.assertOwner(noteTrnsmitMap == null ? null : (String) noteTrnsmitMap.get("trnsmiterId"));
             	model.addAttribute("noteTrnsmit", noteTrnsmitMap);
 
             	egovframework.com.uss.ion.nts.service.NoteTrnsmit noteTrnsmit = new egovframework.com.uss.ion.nts.service.NoteTrnsmit();
@@ -219,22 +239,23 @@ public class EgovNoteTrnsmitController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/ion/nts/selectNoteTrnsmitCnfirm.do")
+    @RequireAdmin
     public String EgovNoteTrnsmitCnfirm(
     		NoteTrnsmit noteTrnsmit,
     		@RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
     		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
     		if (loginVO == null || loginVO.getUniqId() == null) {
-    			throw new IllegalStateException("인증 정보가 없습니다.");
+    			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
     		}
     		noteTrnsmit.setTrnsmiterId(EgovStringUtil.isNullToString(loginVO.getUniqId()));
     		Map<?, ?> noteTrnsmitMap = egovNoteTrnsmitService.selectNoteTrnsmitDetail(noteTrnsmit);
     		if (noteTrnsmitMap == null || noteTrnsmitMap.isEmpty()) {
-    			throw new IllegalStateException("권한이 없습니다.");
+    			throw new EgovAccessDeniedException("권한이 없습니다.");
     		}
     		Object trnsmiterId = noteTrnsmitMap.get("trnsmiterId");
     		if (trnsmiterId == null) {
@@ -244,7 +265,7 @@ public class EgovNoteTrnsmitController {
     		if (!loginVO.getUniqId().equals(String.valueOf(trnsmiterId))) {
     			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
     			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-    				throw new IllegalStateException("권한이 없습니다.");
+    				throw new EgovAccessDeniedException("권한이 없습니다.");
     			}
     		}
 
@@ -254,31 +275,5 @@ public class EgovNoteTrnsmitController {
     		return "egovframework/com/uss/ion/nts/EgovNoteTrnsmitCnfirm";
     }
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

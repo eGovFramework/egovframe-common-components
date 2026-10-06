@@ -191,6 +191,7 @@ function fn_egov_select_commentList(pageNo) {
 		<c:if test="${result.ntcrId != 'anonymous'}">
 		<!-- 익명글 수정/삭제 불가  -->
 		<form name="articleForm" action="${pageContext.request.contextPath}/cop/bbs/updateArticleView.do" method="post" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
 			<input type="hidden" name="parnts" value="<c:out value='${result.parnts}'/>" >
 			<input type="hidden" name="sortOrdr" value="<c:out value='${result.sortOrdr}'/>" >
@@ -203,7 +204,7 @@ function fn_egov_select_commentList(pageNo) {
 			<input name="pageIndex" type="hidden" value="<c:out value="${searchVO.pageIndex}" />">
 		</form>
 		<form name="formDelete" action="${pageContext.request.contextPath}/cop/bbs/deleteArticle.do" method="post" style="float:left; margin:0 0 0 3px;">
-			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_article(this.form); return false;"><!-- 삭제 -->
 			<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
@@ -214,7 +215,7 @@ function fn_egov_select_commentList(pageNo) {
 		</c:if>
 		<c:if test="${boardMasterVO.replyPosblAt == 'Y' }">
 		<form name="formReply" action="${pageContext.request.contextPath}/cop/bbs/replyArticleView.do" method="post" style="float:left; margin:0 0 0 3px;">
-			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.reply" />"><!-- 답글 -->
 			<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
@@ -227,7 +228,8 @@ function fn_egov_select_commentList(pageNo) {
 			<input name="searchWrd" type="hidden" value="<c:out value="${searchVO.searchWrd}" />">
 			<input name="pageIndex" type="hidden" value="<c:out value="${searchVO.pageIndex}" />">
 		</form>
-	<form name="formScrap" action="${pageContext.request.contextPath}/cop/scp/insertArticleScrapView.do" method="post" style="float:left; margin:0 0 0 3px;" target="targetScrap">>
+	<form name="formScrap" action="${pageContext.request.contextPath}/cop/scp/insertArticleScrapView.do" method="post" style="float:left; margin:0 0 0 3px;" target="targetScrap">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.scrap" />"><!-- 스크랩 -->
 			<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
@@ -245,7 +247,7 @@ function fn_egov_select_commentList(pageNo) {
 
 <c:if test="${useSatisfaction == 'true'}">
 	<form name="frm" method="post" action="">
-	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 	<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
 	<c:import url="/cop/stf${prefix}/selectSatisfactionList.do" charEncoding="utf-8">

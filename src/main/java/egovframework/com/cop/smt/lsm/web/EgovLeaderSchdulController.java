@@ -1,5 +1,7 @@
 package egovframework.com.cop.smt.lsm.web;
 
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -485,6 +487,8 @@ public class EgovLeaderSchdulController {
 		model.addAttribute("schdulEnddeMM", getTimeMM());
 
     	LeaderSchdulVO resultVO = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
+        // 2026.07.30 보안 조치 - 소유자 검증
+        EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
 
     	String sSchdulBgnde = resultVO.getSchdulBgnDe();
     	String sSchdulEndde = resultVO.getSchdulEndDe();
@@ -647,6 +651,10 @@ public class EgovLeaderSchdulController {
 
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulModify";
 
+		// 2026.07.30 보안 조치 - 소유자 검증
+		LeaderSchdulVO storedSchdul = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
+		EgovAuthorizationHelper.assertOwner(storedSchdul == null ? null : storedSchdul.getFrstRegisterId());
+
 		//서버  validate 체크
 		if(bindingResult.hasErrors()){
 			// validation 에러 시 셀렉트박스 옵션 다시 로드
@@ -692,6 +700,8 @@ public class EgovLeaderSchdulController {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+		LeaderSchdulVO stored = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
 		leaderSchdulService.deleteLeaderSchdul(leaderSchdulVO);
 		return "forward:/cop/smt/lsm/usr/selectLeaderSchdulList.do";
 	}
@@ -831,6 +841,8 @@ public class EgovLeaderSchdulController {
     	}
 
     	LeaderSttusVO resultVO = leaderSchdulService.selectLeaderSttus(leaderSttusVO);
+		// 2026.07.30 보안 조치 - 소유자 검증
+		EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
 		resultVO.setSearchCnd(leaderSttusVO.getSearchCnd());
 		resultVO.setSearchWrd(leaderSttusVO.getSearchWrd());
 		resultVO.setPageIndex(leaderSttusVO.getPageIndex());
@@ -861,6 +873,11 @@ public class EgovLeaderSchdulController {
 	public String updateLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		LeaderSttusVO lookup = new LeaderSttusVO();
+		lookup.setLeaderId(leaderSttusVO.getLeaderId());
+		LeaderSttusVO stored = leaderSchdulService.selectLeaderSttus(lookup);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 			// 검증 실패로 수정 화면을 다시 표시할 때 표시 경로(modifyLeaderSttus)와 동일하게 간부상태 공통코드 목록을 복원한다.
@@ -940,7 +957,11 @@ public class EgovLeaderSchdulController {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-    	leaderSchdulService.deleteLeaderSttus(leaderSttus);
+        LeaderSttusVO lookup = new LeaderSttusVO();
+		lookup.setLeaderId(leaderSttus.getLeaderId());
+		LeaderSttusVO stored = leaderSchdulService.selectLeaderSttus(lookup);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		leaderSchdulService.deleteLeaderSttus(leaderSttus);
 		return "forward:/cop/smt/lsm/mng/selectLeaderSttusList.do";
 	}
 

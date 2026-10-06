@@ -36,6 +36,7 @@ import egovframework.com.sym.log.slg.service.SysHistoryVO;
 public class EgovSysHistoryDeleteFileTest {
 
 	private static final String ATCH_FILE_ID = "FILE_000000000000001";
+	private static final String LOGIN_UNIQ_ID = "USRCNFRM_00000000001";
 
 	private EgovUserDetailsService originalUserDetailsService;
 
@@ -50,11 +51,15 @@ public class EgovSysHistoryDeleteFileTest {
 
 		SysHistoryVO stored = new SysHistoryVO();
 		stored.setAtchFileId(ATCH_FILE_ID);
+		stored.setFrstRegisterId(LOGIN_UNIQ_ID); // 삭제는 등록자 본인만 가능하므로 로그인 사용자를 등록자로 둔다
+
+		LoginVO loginVO = new LoginVO();
+		loginVO.setUniqId(LOGIN_UNIQ_ID);
 
 		EgovUserDetailsHelper helper = new EgovUserDetailsHelper();
 		originalUserDetailsService = helper.getEgovUserDetailsService();
 		helper.setEgovUserDetailsService(stub(EgovUserDetailsService.class, (method, args) ->
-				"getAuthenticatedUser".equals(method.getName()) ? new LoginVO() : null));
+				"getAuthenticatedUser".equals(method.getName()) ? loginVO : null));
 
 		EgovSysHistoryController controller = new EgovSysHistoryController();
 		ReflectionTestUtils.setField(controller, "sysHistoryService", stub(EgovSysHistoryService.class,

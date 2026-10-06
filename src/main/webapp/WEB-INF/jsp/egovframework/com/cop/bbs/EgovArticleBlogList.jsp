@@ -21,10 +21,24 @@
 <script>
 var csrfHeaderName = "${_csrf.headerName}";
 var csrfToken = "${_csrf.token}";
+var sessionUniqId = "<c:out value='${sessionUniqId}'/>";
 function egovCsrfBeforeSend(xhr) {
 	if (csrfHeaderName && csrfToken) {
 		xhr.setRequestHeader(csrfHeaderName, csrfToken);
 	}
+}
+
+// 2026.07.30 보안 조치 - innerHTML/.html()에 삽입되는 값 이스케이프
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
 }
 
 
@@ -64,17 +78,25 @@ function fn_egov_loadBdList(bbsId,blogNm,cnt){
         	var innerPaging = "";
         	var length = data['blogSubJectList'].length;
         	if(length > 0) {
+        		var targetSet = false;
         		$.each(data['blogSubJectList'], function(i) {
-        	          innerHtml += '<tr>';  
-        	          innerHtml +=    '<td id="target" onclick="fn_clickComm(\'' + bbsId + '\', \''+data['blogSubJectList'][i].nttId+'\', \''+data['blogSubJectList'][i].ntcrId+'\', \''+data['blogSubJectList'][i].replyPosblAt+'\', \''+data['blogSubJectList'][i].blogId+'\', \''+cnt+'\')"; style="cursor:pointer">';
+        	          innerHtml += '<tr>';
+        	          // 비밀글이며 작성자가 본인이 아닌 경우(클릭 불가) — 게시판 목록(EgovArticleList.jsp)과 같다
+        	          if(data['blogSubJectList'][i].secretAt == 'Y' && data['blogSubJectList'][i].frstRegisterId != sessionUniqId) {
+        	        	  innerHtml +=    '<td><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_lock.png'/>" alt="secret">&nbsp;';
+        	          } else {
+        	        	  // 진입 시 자동으로 여는 글(#target)은 첫 번째 클릭 가능한 글
+        	        	  innerHtml +=    '<td' + (targetSet ? '' : ' id="target"') + ' onclick="fn_clickComm(\'' + bbsId + '\', \''+data['blogSubJectList'][i].nttId+'\', \''+data['blogSubJectList'][i].ntcrId+'\', \''+data['blogSubJectList'][i].replyPosblAt+'\', \''+data['blogSubJectList'][i].blogId+'\', \''+cnt+'\')"; style="cursor:pointer">';
+        	        	  targetSet = true;
+        	          }
         	          if(data['blogSubJectList'][i].commentCo != "") {
-        	        	  innerHtml +=      data['blogSubJectList'][i].nttSj+"["+data['blogSubJectList'][i].commentCo+"]";
+        	        	  innerHtml +=      escapeHtml(data['blogSubJectList'][i].nttSj)+"["+escapeHtml(data['blogSubJectList'][i].commentCo)+"]";
         	          }else{
-        	        	  innerHtml +=      data['blogSubJectList'][i].nttSj;
+        	        	  innerHtml +=      escapeHtml(data['blogSubJectList'][i].nttSj);
         	          }
         	          innerHtml +=    '</td>';
         	          innerHtml +=    '<td>';
-        	          innerHtml +=      data['blogSubJectList'][i].frstRegisterPnttm;
+        	          innerHtml +=      escapeHtml(data['blogSubJectList'][i].frstRegisterPnttm);
         	          innerHtml +=    '</td>';
         	          innerHtml += '</tr>';
         	          
@@ -121,7 +143,7 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
         	var innerReply = "";
         	if(length > 0) {
         		$.each(data['blogCnList'], function(i) {
-        	          innerHtml += data['blogCnList'][i].nttCn;
+                      innerHtml += data['blogCnList'][i].nttCn; // 서버에서 EgovHtmlSanitizer 로 정제한 리치 텍스트
         		});
         		$(".cnt").html(innerHtml);
         		
@@ -133,10 +155,10 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
         			innerReply += "<dl>";
         			innerReply += "<dt>";
         			innerReply += "<strong>";
-        			innerReply += data['resultList'][i].wrterNm;
+                    innerReply += escapeHtml(data['resultList'][i].wrterNm);
         			innerReply += "</strong>";
         			innerReply += "<span>"
-        			innerReply += data['resultList'][i].frstRegisterPnttm;
+                    innerReply += escapeHtml(data['resultList'][i].frstRegisterPnttm);
         			innerReply += "</span>"
         			
        				if(cnt == 1) {
@@ -147,13 +169,13 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
         			
         			innerReply += "</dt>";
         			innerReply += "<dd>";
-        			innerReply += data['resultList'][i].commentCn;
+                    innerReply += escapeHtml(data['resultList'][i].commentCn);
         			innerReply += "</dd>";
         			innerReply += "</dl>";
       			});
         		innerReply += "<dl>";
         		innerReply += "<dd>";
-        		innerReply += "<form id='formComment' name='formComment' method='post'><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>";
+        		innerReply += "<form id='formComment' name='formComment' method='post'><c:if test="${not empty _csrf}"><input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'/></c:if>";
         		innerReply += "<textarea name='commentCn' placeholder='<spring:message code="comCopBlog.articleBlogList.validate.limitSize" />'/>";//댓글은 500byte 까지 작성할 수 있습니다.
         		innerReply += "<button type='button' onclick='fn_egov_insert_commentList(\""+bbsId+"\", \""+nttId+"\", \""+blogId+"\");'><spring:message code="title.create"/></button>";//등록
         		innerReply += "<input name='bbsId' type='hidden' value=''>";

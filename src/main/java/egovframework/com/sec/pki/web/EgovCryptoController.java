@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import jakarta.annotation.Resource;
 
@@ -56,7 +55,6 @@ public class EgovCryptoController {
      * @return
      */
 	@IncludedInfo(name="암호화/복호화", listUrl="/sec/pki/EgovCryptoInfo.do", order = 2200 ,gid = 90)
-    @RequireAdmin
     @RequestMapping(value = "/sec/pki/EgovCryptoInfo.do")
     public String displayCryptoInfo( @RequestParam Map<?, ?> commandMap,
 							    		ModelMap model) throws Exception {

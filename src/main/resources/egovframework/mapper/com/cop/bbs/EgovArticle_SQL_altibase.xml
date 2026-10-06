@@ -115,6 +115,8 @@
 	
 	<resultMap id="boardCnOne" type="egovframework.com.cop.bbs.service.BoardVO">
 		<result property="nttCn" column="NTT_CN"/>
+		<result property="secretAt" column="SECRET_AT"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 	</resultMap>
 	
 	<resultMap id="boardMasterList" type="egovframework.com.cop.bbs.service.BoardVO">
@@ -457,6 +459,7 @@
 	
 	<select id="selectBlogListManager" parameterType="egovframework.com.cop.bbs.service.BoardVO" resultMap="boardBlogManager">
 		
+			SELECT * FROM ( SELECT rownum rn, TB.* FROM (
 			SELECT 
 				A.BBS_ID, A.BLOG_ID, A.BBS_NM, C.USER_NM AS FRST_REGISTER_NM,
 				DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d') as FRST_REGIST_PNTTM,
@@ -477,6 +480,7 @@
 					A.BBS_INTRCN LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if> 
 	 		ORDER BY A.FRST_REGIST_PNTTM DESC
+			) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 						
 	</select>
 	
@@ -501,7 +505,7 @@
 	<select id="selectArticleCnOne" parameterType="egovframework.com.cop.bbs.service.BoardVO" resultMap="boardCnOne">
 		
 			SELECT
-				a.NTT_CN
+				a.NTT_CN, a.SECRET_AT, a.FRST_REGISTER_ID
 			FROM
 				COMTNBBS a
 			LEFT OUTER JOIN 

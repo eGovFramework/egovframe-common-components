@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.clg.service.EgovLoginLogService;
 import egovframework.com.sym.log.clg.service.LoginLog;
@@ -89,6 +90,7 @@ public class EgovLoginLogController {
 	 * @throws Exception
 	 */
 	@GetMapping("/sym/log/clg/SelectLoginLogDetail.do")
+	@RequireAdmin
 	public String selectLoginLog(@ModelAttribute("searchVO") LoginLog loginLog, @RequestParam("logId") String logId,
 			ModelMap model) throws Exception {
 

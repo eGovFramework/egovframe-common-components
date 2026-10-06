@@ -63,6 +63,7 @@ class EgovMemoReprtControllerDeleteFileTest {
 	}
 
 	private final List<String> deletedAtchFileIds = new ArrayList<>();
+	private String deleteRegisterId;
 
 	private EgovFileMngService fileServiceStub() {
 		return (EgovFileMngService) Proxy.newProxyInstance(
@@ -81,6 +82,7 @@ class EgovMemoReprtControllerDeleteFileTest {
 		MemoReprtVO stored = new MemoReprtVO();
 		stored.setReprtId("REPRT_00000000000001");
 		stored.setAtchFileId(storedAtchFileId);
+		stored.setFrstRegisterId(LOGIN_UNIQ_ID); // 삭제는 등록자 본인만 가능하므로 로그인 사용자를 등록자로 둔다
 
 		return (EgovMemoReprtService) Proxy.newProxyInstance(
 				EgovMemoReprtService.class.getClassLoader(),
@@ -91,6 +93,7 @@ class EgovMemoReprtControllerDeleteFileTest {
 						return stored;
 					case "deleteMemoReprt":
 						deletedReprtIds.add(((MemoReprtVO) args[0]).getReprtId());
+						deleteRegisterId = ((MemoReprtVO) args[0]).getFrstRegisterId();
 						return null;
 					default:
 						return null;
@@ -120,6 +123,13 @@ class EgovMemoReprtControllerDeleteFileTest {
 		assertEquals(List.of(STORED_ATCH_FILE_ID), deletedAtchFileIds,
 				"메모보고를 삭제하면 서버에 저장된 첨부그룹이 미사용 처리돼야 한다.");
 		assertTrue(deletedReprtIds.contains("REPRT_00000000000001"), "메모보고 자체도 삭제돼야 한다.");
+	}
+
+	@Test
+	void deleteQueryGetsTheStoredRegistrant() throws Exception {
+		callDelete("", new ArrayList<>());
+		assertEquals(LOGIN_UNIQ_ID, deleteRegisterId,
+				"삭제 SQL 은 등록자 조건으로 거르므로 원본 등록자가 채워져야 한다. 비면 0건 삭제로 조용히 실패한다.");
 	}
 
 	@Test

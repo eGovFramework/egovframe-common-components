@@ -83,6 +83,17 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	}
 
 	/**
+	 * 평가자가 지식유형의 지정 전문가인지 조회한다.
+	 *
+	 * @param knoAppraisal - knoTypeCd(지식유형), speId(평가자 고유ID)
+	 * @return int - 지정 전문가 건수
+	 */
+	@Override
+	public int selectKnoAppraisalExpertCnt(KnoAppraisal knoAppraisal) throws Exception {
+		return knoAppraisalDAO.selectKnoAppraisalExpertCnt(knoAppraisal);
+	}
+
+	/**
 	 * 지식정보평가 정보를 신규로 등록한다.
 	 * 
 	 * @param knoAps - 지식정보평가 model

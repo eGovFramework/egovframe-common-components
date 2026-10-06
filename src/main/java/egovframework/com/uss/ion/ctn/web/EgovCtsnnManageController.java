@@ -1,5 +1,7 @@
 package egovframework.com.uss.ion.ctn.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ctn.service.CtsnnManageVO;
 import egovframework.com.uss.ion.ctn.service.EgovCtsnnManageService;
@@ -35,6 +38,7 @@ import jakarta.validation.Valid;
  * 상세내용
  * - 경조관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 경조관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 소유권(관리자 예외 없음): 경조 신청 수정·삭제 = 등록자(frstRegisterId), 승인·반려 = 지정 결재자(sanctnerId)
  * @author 이용
  * @version 1.0
  * @created 06-15-2010 오후 2:08:56
@@ -66,14 +70,10 @@ public class EgovCtsnnManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/uss/ion/ctn/EgovCtsnnManageListView.do")
+    @RequireAdmin
     public String selectCtsnnManageListView(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
                                             ModelMap model) throws Exception {
-    	List<CmmnDetailCode> ctsnnCdCodeList = null;
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM054");
-		ctsnnCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
-        model.addAttribute("ctsnnCodeList",    ctsnnCdCodeList);
-        return "egovframework/com/uss/ion/ctn/EgovCtsnnManageList";
+    	return "forward:/uss/ion/ctn/selectCtsnnManageList.do";
     }
 
 	/**
@@ -120,6 +120,7 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/ctn/EgovCtsnnManageDetail.do")
+	 @RequireAdmin
 	 public String selectCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         @RequestParam Map<?, ?> commandMap,
 			                         ModelMap model) throws Exception {
@@ -129,6 +130,9 @@ public class EgovCtsnnManageController {
 
         // 등록 상세정보
     	CtsnnManageVO ctsnnManageVOTemp = egovCtsnnManageService.selectCtsnnManage(ctsnnManageVO);
+    	if(sCmd.equals("updt")){
+    		EgovAuthorizationHelper.assertOwner(ctsnnManageVOTemp == null ? null : ctsnnManageVOTemp.getFrstRegisterId());
+    	}
 
     	model.addAttribute("ctsnnManageVO", ctsnnManageVOTemp);
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -157,6 +161,7 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/ctn/EgovCtsnnRegist.do")
+	 @RequireAdmin
 	 public String insertViewCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                             ModelMap model) throws Exception {
 
@@ -186,6 +191,7 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/ctn/insertCtsnnManage.do")
+	 @RequireAdmin
 	 public String insertCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
@@ -225,10 +231,14 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
 	 @PostMapping("/uss/ion/ctn/updtCtsnnManage.do")
+	 @RequireAdmin
 	 public String updtCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                        BindingResult bindingResult,
 			                        SessionStatus status,
 		                            ModelMap model) throws Exception {
+
+    	CtsnnManageVO stored = egovCtsnnManageService.selectCtsnnManage(ctsnnManageVO);
+    	EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
     		// 유효성 오류 시 코드 목록·표시용 필드(usNm, orgnztNm 등) 유지를 위해 상세 재조회 후 제출값 반영
@@ -264,10 +274,15 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/ctn/deleteCtsnnManage.do")
-	 public String deleteCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
+	 @RequireAdmin
+	public String deleteCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         SessionStatus status,
 			                         ModelMap model) throws Exception {
 
+    	CtsnnManageVO stored = egovCtsnnManageService.selectCtsnnManage(ctsnnManageVO);
+    	EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+    	// 약식결재 삭제 대상은 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+    	ctsnnManageVO.setInfrmlSanctnId(stored.getInfrmlSanctnId());
     	egovCtsnnManageService.deleteCtsnnManage(ctsnnManageVO);
     	status.setComplete();
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -321,12 +336,15 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @PostMapping("/uss/ion/ctn/EgovCtsnnConfm.do")
+	 @RequireAdmin
 	 public String selectCtsnnConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 							         ModelMap model) throws Exception {
     	ctsnnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(ctsnnManageVO.getReqstDe()));
 
         // 등록 상세정보
     	CtsnnManageVO ctsnnManageVOTemp = egovCtsnnManageService.selectCtsnnManage(ctsnnManageVO);
+    	// 지정된 승인권자(SANCTNER_ID)만 승인 화면을 연다
+    	EgovAuthorizationHelper.assertOwner(ctsnnManageVOTemp == null ? null : ctsnnManageVOTemp.getSanctnerId());
 
     	model.addAttribute("ctsnnManageVO", ctsnnManageVOTemp);
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -340,10 +358,17 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
 	 @PostMapping("/uss/ion/ctn/updtCtsnnConfm.do")
-	 public String updateCtsnnManageConfm(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
+	 @RequireAdmin
+	public String updateCtsnnManageConfm(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                               BindingResult bindingResult,
 			                               SessionStatus status,
 		                                   ModelMap model) throws Exception {
+
+    	// 지정된 승인권자(SANCTNER_ID)만 승인·반려한다
+    	CtsnnManageVO storedConfm = egovCtsnnManageService.selectCtsnnManage(ctsnnManageVO);
+    	EgovAuthorizationHelper.assertOwner(storedConfm == null ? null : storedConfm.getSanctnerId());
+    	// 결재 갱신 대상은 권한 확인에 사용한 레코드로 고정한다. 폼이 보낸 약식결재ID 는 신뢰하지 않는다.
+    	ctsnnManageVO.setInfrmlSanctnId(storedConfm.getInfrmlSanctnId());
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("ctsnnManageVO", ctsnnManageVO);
@@ -367,6 +392,7 @@ public class EgovCtsnnManageController {
 	 * @return  String
 	 */
 	@PostMapping("/uss/ion/ctn/EgovCtsnnReturn.do")
+	@RequireAdmin
 	public String selectSanctnerListPopup(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 										  @RequestParam Map<?, ?> commandMap,
                                           ModelMap model) throws Exception{

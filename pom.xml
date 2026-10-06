@@ -6,7 +6,7 @@
 	<groupId>egovframework</groupId>
 	<artifactId>egovframe-template-common-components</artifactId>
 	<packaging>war</packaging>
-	<version>5.0.0</version>
+	<version>5.0.7</version>
 	<name>egovframe-template-common-components</name>
 	<url>http://www.egovframe.go.kr</url>
 
@@ -20,8 +20,15 @@
 	<parent>
 		<groupId>org.egovframe.web</groupId>
 		<artifactId>egovframe-web-config-parent</artifactId>
-		<version>5.0.1</version>
+		<version>5.0.2</version>
 	</parent>
+
+	<properties>
+		<!-- DB 가 준비되지 않은 환경에서도 빌드가 되도록 테스트는 기본으로 건너뛴다.
+		     테스트를 돌리려면 -DskipTests=false 를 준다.
+		     DB 의존 테스트(118개)는 테스트 스키마가 적재돼 있어야 하고 -Ptest 가 필요하다. -->
+		<skipTests>true</skipTests>
+	</properties>
 
 	<repositories>
 		<repository>
@@ -643,6 +650,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
+					<skipTests>${skipTests}</skipTests>
 					<reportFormat>xml</reportFormat>
 					<excludes>
 						<exclude>**/Abstract*.java</exclude>

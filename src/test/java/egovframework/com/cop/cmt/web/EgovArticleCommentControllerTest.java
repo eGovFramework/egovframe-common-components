@@ -15,7 +15,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
 import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.exception.EgovXssException;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovUserDetailsService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.cmt.service.Comment;
@@ -41,7 +41,7 @@ class EgovArticleCommentControllerTest {
 		comment.setCommentCn("updated");
 		BindingResult bindingResult = new BeanPropertyBindingResult(comment, "comment");
 
-		assertThrows(EgovXssException.class,
+		assertThrows(EgovAccessDeniedException.class,
 				() -> controller.updateArticleComment(null, new CommentVO(), comment, bindingResult, new ModelMap()));
 		assertFalse(service.updateCalled);
 	}
@@ -53,7 +53,7 @@ class EgovArticleCommentControllerTest {
 		CommentVO commentVO = new CommentVO();
 		commentVO.setCommentNo("COMMENT_1");
 
-		assertThrows(EgovXssException.class,
+		assertThrows(EgovAccessDeniedException.class,
 				() -> controller.deleteArticleComment(null, commentVO, new Comment(), new ModelMap(), new HashMap<>()));
 		assertFalse(service.deleteCalled);
 	}

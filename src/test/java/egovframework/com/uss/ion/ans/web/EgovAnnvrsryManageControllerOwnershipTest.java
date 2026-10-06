@@ -21,8 +21,8 @@ import egovframework.com.uss.ion.ans.service.EgovAnnvrsryManageService;
  * selectAnnvrsryGdcc의 소유권 검증 회귀 테스트.
  *
  * 알림 화면은 요청이 보낸 annId로 기념일을 그대로 읽어 화면에 싣는다. 같은 컨트롤러의
- * selectAnnvrsryManage(169행)·updateAnnvrsryManage(316행)·deleteAnnvrsryManage(366행)는 읽어온
- * 레코드의 USID를 로그인 사용자와 대조하고 관리자만 예외로 두는데, 이 경로에만 그 대조가 없다.
+ * 상세 조회와 같이 레코드의 USID(기념일 대상자)를 로그인 사용자와 대조하고 관리자만 예외로 둔다.
+ * 수정·삭제는 대상자 본인만 허용한다(사용자부재와 같은 당사자 기준).
  */
 class EgovAnnvrsryManageControllerOwnershipTest {
 
@@ -33,6 +33,8 @@ class EgovAnnvrsryManageControllerOwnershipTest {
 	/** 요청한 annId의 소유자를 고정해 돌려주는 스텁. */
 	private static final class StubService implements EgovAnnvrsryManageService {
 		private final String ownerUniqId;
+		private boolean updated;
+		private boolean deleted;
 
 		private StubService(String ownerUniqId) {
 			this.ownerUniqId = ownerUniqId;
@@ -43,6 +45,8 @@ class EgovAnnvrsryManageControllerOwnershipTest {
 			AnnvrsryManageVO stored = new AnnvrsryManageVO();
 			stored.setAnnId(annvrsryManageVO.getAnnId());
 			stored.setUsid(ownerUniqId);
+			// 일괄 등록처럼 등록자(관리자)와 대상자가 다른 경우
+			stored.setFrstRegisterId(ADMIN_UNIQ_ID);
 			stored.setAnnvrsryNm("결혼기념일");
 			stored.setAnnvrsryDe("20261225");
 			stored.setCldrSe("1");
@@ -67,12 +71,12 @@ class EgovAnnvrsryManageControllerOwnershipTest {
 
 		@Override
 		public void updateAnnvrsryManage(AnnvrsryManage annvrsryManage) {
-			throw new UnsupportedOperationException();
+			updated = true;
 		}
 
 		@Override
 		public void deleteAnnvrsryManage(AnnvrsryManage annvrsryManage) {
-			throw new UnsupportedOperationException();
+			deleted = true;
 		}
 
 		@Override
@@ -82,7 +86,7 @@ class EgovAnnvrsryManageControllerOwnershipTest {
 
 		@Override
 		public int selectAnnvrsryManageDplctAt(AnnvrsryManage annvrsryManage) {
-			throw new UnsupportedOperationException();
+			return 0;
 		}
 
 		@Override
@@ -174,5 +178,43 @@ class EgovAnnvrsryManageControllerOwnershipTest {
 
 		assertEquals("egovframework/com/uss/ion/ans/EgovAnnvrsryGdcc", view,
 				"관리자는 형제 경로와 마찬가지로 타인의 기념일도 볼 수 있어야 한다.");
+	}
+
+	// ---- 수정·삭제: 기념일 대상자(usid) 본인만, 등록자·관리자 예외 없음 ----
+
+	private static AnnvrsryManage target(String annId) {
+		AnnvrsryManage annvrsryManage = new AnnvrsryManage();
+		annvrsryManage.setAnnId(annId);
+		return annvrsryManage;
+	}
+
+	@Test
+	void targetPersonUpdatesAndDeletes() throws Exception {
+		StubService service = new StubService(OWNER_UNIQ_ID);
+		EgovAnnvrsryManageController controller = controllerWith(service);
+		bindLoginUser(OWNER_UNIQ_ID, List.of("ROLE_ADMIN"));
+
+		AnnvrsryManage req = target("ANN_0000000000001");
+		controller.updateAnnvrsryManage(req, new org.springframework.validation.BeanPropertyBindingResult(req, "annvrsryManage"),
+				request("ANN_0000000000001"), new org.springframework.web.bind.support.SimpleSessionStatus(), new ModelMap());
+		controller.deleteAnnvrsryManage(target("ANN_0000000000001"), new org.springframework.web.bind.support.SimpleSessionStatus(), new ModelMap());
+
+		org.junit.jupiter.api.Assertions.assertTrue(service.updated && service.deleted, "대상자 본인은 수정·삭제할 수 있어야 한다.");
+	}
+
+	@Test
+	void registrantAdministratorWhoIsNotTheTargetIsRejected() throws Exception {
+		StubService service = new StubService(OWNER_UNIQ_ID);
+		EgovAnnvrsryManageController controller = controllerWith(service);
+		bindLoginUser(ADMIN_UNIQ_ID, List.of("ROLE_ADMIN"));
+
+		AnnvrsryManage req = target("ANN_0000000000001");
+		assertThrows(IllegalStateException.class, () -> controller.updateAnnvrsryManage(req,
+				new org.springframework.validation.BeanPropertyBindingResult(req, "annvrsryManage"), request("ANN_0000000000001"),
+				new org.springframework.web.bind.support.SimpleSessionStatus(), new ModelMap()));
+		assertThrows(IllegalStateException.class, () -> controller.deleteAnnvrsryManage(target("ANN_0000000000001"),
+				new org.springframework.web.bind.support.SimpleSessionStatus(), new ModelMap()),
+				"일괄 등록한 관리자(등록자)라도 대상자가 아니면 삭제할 수 없다.");
+		org.junit.jupiter.api.Assertions.assertFalse(service.updated || service.deleted);
 	}
 }

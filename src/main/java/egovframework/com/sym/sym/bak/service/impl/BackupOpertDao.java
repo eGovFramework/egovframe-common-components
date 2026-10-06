@@ -80,6 +80,9 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	 */
 	public BackupOpert selectBackupOpert(BackupOpert backupOpert) {
 		BackupOpert result = (BackupOpert)selectOne("BackupOpertDao.selectBackupOpert", backupOpert);
+		if (result == null) {
+			return null;
+		}
 		// 스케줄요일정보를 가져온다.
 		List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList", result.getBackupOpertId());
 		String [] dfkSes = new String [dfkSeList.size()];

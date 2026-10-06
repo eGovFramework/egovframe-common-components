@@ -18,6 +18,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.trm.service.CntcVO;
@@ -83,6 +84,7 @@ public class EgovTrsmrcvMntrngController {
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
+
 		egovTrsmrcvMntrngService.deleteTrsmrcvMntrng(trsmrcvMntrng);
 
     	return "forward:/utl/sys/trm/getTrsmrcvMntrngList.do";
@@ -136,10 +138,11 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
     @PostMapping("/utl/sys/trm/getTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrng);
 		TrsmrcvMntrng result = egovTrsmrcvMntrngService.selectTrsmrcvMntrng(trsmrcvMntrng);
@@ -159,10 +162,11 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
     @PostMapping("/utl/sys/trm/getTrsmrcvMntrngLog.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngLog(@ModelAttribute("searchVO") TrsmrcvMntrngLog trsmrcvMntrngLog, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
-		egovAssertLoginUser();
+		EgovAuthorizationHelper.assertLoginUser();
 
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrngLog);
 		TrsmrcvMntrngLog result = egovTrsmrcvMntrngService.selectTrsmrcvMntrngLog(trsmrcvMntrngLog);
@@ -226,7 +230,7 @@ public class EgovTrsmrcvMntrngController {
 	public String selectTrsmrcvMntrngList(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
-		egovAssertLoginUser();
+		EgovAuthorizationHelper.assertLoginUser();
 
 		LOGGER.debug(" 조회조건 : {}", searchVO);
 
@@ -263,10 +267,11 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngLogList.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngLogList(@ModelAttribute("searchVO") TrsmrcvMntrngLog searchVO, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
-		egovAssertLoginUser();
+		EgovAuthorizationHelper.assertLoginUser();
 
 		LOGGER.debug(" 조회조건 : {}", searchVO);
 
@@ -338,6 +343,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getCntcList.do")
+	@RequireAdmin
 	public String selectCntcList(@ModelAttribute("searchVO") CntcVO searchVO, ModelMap model)
 	  throws Exception {
 
@@ -373,6 +379,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getCntcListPopup.do")
+	@RequireAdmin
 	public String openPopupWindow(@ModelAttribute("searchVO") CntcVO searchVO, ModelMap model)
 	  throws Exception{
 		return "egovframework/com/utl/sys/trm/EgovCntcListPopupFrame";
@@ -400,32 +407,6 @@ public class EgovTrsmrcvMntrngController {
 		    " 모니터링대상으로 연계ID {0}을 중복체크중 시스템에러가 발생했습니다. ");
 			return ;
 		}
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

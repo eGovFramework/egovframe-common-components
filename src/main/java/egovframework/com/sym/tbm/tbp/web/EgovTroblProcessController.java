@@ -18,6 +18,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.tbm.tbp.service.EgovTroblProcessService;
 import egovframework.com.sym.tbm.tbp.service.TroblProcess;
@@ -70,6 +71,7 @@ public class EgovTroblProcessController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/sym/tbm/tbp/selectTroblProcessListView.do")
+	@RequireAdmin
 	public String selectTroblProcessListView() throws Exception {
 		return "egovframework/com/sym/tbm/tbp/EgovTroblProcessList";
 	}
@@ -123,10 +125,11 @@ public class EgovTroblProcessController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/sym/tbm/tbp/getTroblProcess.do")
+	@RequireAdmin
 	public String selectTroblProcess(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblProcessVO") TroblProcessVO troblProcessVO, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		troblProcessVO.setTroblId(troblId);
@@ -174,7 +177,8 @@ public class EgovTroblProcessController {
 	public String deleteTroblProcess(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblProcess") TroblProcess troblProcess, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
 
 
 		troblProcess.setTroblId(troblId);
@@ -196,32 +200,6 @@ public class EgovTroblProcessController {
 			throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
 		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

@@ -44,7 +44,7 @@ function fn_egov_init(){
  ******************************************************** */
 function fn_egov_select_linkPage(pageNo){
 	document.BlogMasterForm.pageIndex.value = pageNo;
-	document.BlogMasterForm.action = "<c:url value='/cop/bbs/selectBlogMasterList.do'/>";
+	document.BlogMasterForm.action = "<c:url value='/cop/bbs/selectBlogList.do'/>";
    	document.BlogMasterForm.submit();
 }
 /*********************************************************

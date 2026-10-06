@@ -13,6 +13,7 @@ import java.lang.reflect.Proxy;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -23,7 +24,11 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovUserDetailsService;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.olh.hpc.service.EgovHpcmService;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
 
 /**
@@ -50,6 +55,41 @@ class EgovHpcmControllerValidationRestoreTest {
 		ReflectionTestUtils.setField(controller, "cmmUseService",
 				Proxy.newProxyInstance(getClass().getClassLoader(),
 						new Class[] { EgovCmmUseService.class }, emptyStub));
+		return controller;
+	}
+
+	@AfterEach
+	void clearLoginUser() {
+		new EgovUserDetailsHelper().setEgovUserDetailsService(null);
+	}
+
+	/** 수정 처리는 검증 실패 분기 전에 소유자를 확인하므로, 본인이 등록한 도움말을 수정하는 상황을 만든다. */
+	private EgovHpcmController newControllerOwnedByLoginUser() {
+		EgovHpcmController controller = newControllerWithStubs();
+		HpcmVO stored = new HpcmVO();
+		stored.setFrstRegisterId("USRCNFRM_00000000001");
+		ReflectionTestUtils.setField(controller, "egovHpcmService",
+				Proxy.newProxyInstance(getClass().getClassLoader(),
+						new Class[] { EgovHpcmService.class },
+						(proxy, method, args) -> "selectHpcmDetail".equals(method.getName()) ? stored : null));
+		LoginVO login = new LoginVO();
+		login.setUniqId("USRCNFRM_00000000001");
+		new EgovUserDetailsHelper().setEgovUserDetailsService(new EgovUserDetailsService() {
+			@Override
+			public Object getAuthenticatedUser() {
+				return login;
+			}
+
+			@Override
+			public List<String> getAuthorities() {
+				return List.of("ROLE_USER");
+			}
+
+			@Override
+			public Boolean isAuthenticated() {
+				return Boolean.TRUE;
+			}
+		});
 		return controller;
 	}
 
@@ -113,7 +153,7 @@ class EgovHpcmControllerValidationRestoreTest {
 	@Test
 	@DisplayName("도움말 수정 검증 실패 시 도움말구분 드롭다운 목록(hpcmSeCode)을 복원한다")
 	void updateHpcmRestoresCodeListOnValidationError() throws Throwable {
-		ModelMap model = invokeWithValidationError(findMethod("updateHpcm"), newControllerWithStubs());
+		ModelMap model = invokeWithValidationError(findMethod("updateHpcm"), newControllerOwnedByLoginUser());
 		assertTrue(model.containsAttribute("hpcmSeCode"),
 				"검증 실패 재표시 시 hpcmSeCode가 model에 있어야 드롭다운이 비지 않는다");
 	}

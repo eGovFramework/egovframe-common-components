@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -90,6 +91,7 @@ public class EgovReprtStatsController {
 	 */
     @IncludedInfo(name="보고서통계", listUrl="/sts/rst/selectReprtStatsListView.do", order = 160 ,gid = 30)
 	@RequestMapping("/sts/rst/selectReprtStatsList.do")
+	@RequireAdmin
 	public String selectReprtStatsList(@RequestParam("pmReprtTy") String pmReprtTy,
 			                           @RequestParam("pmDateTy") String pmDateTy,
 			                           @RequestParam("pmFromDate") String pmFromDate,
@@ -162,6 +164,7 @@ public class EgovReprtStatsController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sts/rst/getReprtStats.do")
+	@RequireAdmin
 	public String selectReprtStats(@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,
 			                       @RequestParam("reprtTy") String reprtTy,
 			                       @RequestParam("reprtSttus") String reprtSttus,
@@ -182,6 +185,7 @@ public class EgovReprtStatsController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sts/rst/addViewReprtStats.do")
+	@RequireAdmin
 	public String insertViewReprtStats(@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,
 			                           @ModelAttribute("comDefaultCodeVO") ComDefaultCodeVO comDefaultCodeVO,
 			                            ModelMap model) throws Exception {
@@ -201,6 +205,7 @@ public class EgovReprtStatsController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sts/rst/addReprtStats.do")
+	@RequireAdmin
 	public String insertReprtStats(@Valid @ModelAttribute("reprtStats") ReprtStats reprtStats,
 			BindingResult bindingResult,
 			@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,

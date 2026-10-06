@@ -1,5 +1,7 @@
 package egovframework.com.uss.ion.rmm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.rmm.service.EgovRoughMapService;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
@@ -111,6 +114,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
+	@RequireAdmin
 	public String selectRoughMap(RoughMapVO searchVO, ModelMap model) throws Exception {
 
 		// 권한 체크
@@ -135,6 +139,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/registRoughMap.do")
+	@RequireAdmin
 	public String goRoughMapRegist(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
 		// 권한 체크
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -154,6 +159,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/insertRoughMap.do")
+	@RequireAdmin
 	public String insertRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
 			throws Exception {
 
@@ -187,6 +193,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/updateRoughMapView.do")
+	@RequireAdmin
 	public String goRoughMapUpdt(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
 
 		// 권한 체크
@@ -196,7 +203,7 @@ public class EgovRoughMapController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		RoughMapVO result = egovRoughMapService.selectRoughMapDetail(roughMap);
+		RoughMapVO result = EgovAuthorizationHelper.requireTarget(egovRoughMapService.selectRoughMapDetail(roughMap));
 
 		model.addAttribute("result", result);
 		model.addAttribute("roughMap", result);
@@ -212,6 +219,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/updateRoughMap.do")
+	@RequireAdmin
 	public String updateRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult,
 			ModelMap model)
 			throws Exception {
@@ -222,6 +230,7 @@ public class EgovRoughMapController {
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
 
 		if (bindingResult.hasErrors()) {
 			// 형제 goRoughMapUpdt와 동일하게 재표시 폼이 참조하는 result를 담는다
@@ -246,6 +255,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@PostMapping("/com/uss/ion/rmm/deleteRoughMap.do")
+	@RequireAdmin
 	public String deleteRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap) throws Exception {
 
 		// 권한 체크
@@ -259,6 +269,7 @@ public class EgovRoughMapController {
 
 		// 사용자 인증여부 판단
 		// 2022.11.11 시큐어코딩 처리
+
 		roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 		egovRoughMapService.deleteRoughMap(roughMap);
 

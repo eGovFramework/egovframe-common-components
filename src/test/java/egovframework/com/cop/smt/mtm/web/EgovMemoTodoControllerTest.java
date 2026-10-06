@@ -28,6 +28,7 @@ class EgovMemoTodoControllerTest {
 
 	private static final String UPDT_VIEW = "egovframework/com/cop/smt/mtm/EgovMemoTodoUpdt";
 	private static final String REGIST_VIEW = "egovframework/com/cop/smt/mtm/EgovMemoTodoRegist";
+	private static final String LOGIN_UNIQ_ID = "USRCNFRM_00000000001";
 
 	private EgovMemoTodoController controller;
 
@@ -89,7 +90,10 @@ class EgovMemoTodoControllerTest {
 
 		@Override
 		public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) {
-			return new MemoTodoVO();
+			// 수정 처리는 검증 실패 분기 전에 소유자를 확인하므로 로그인 사용자가 작성한 할일로 돌려준다.
+			MemoTodoVO stored = new MemoTodoVO();
+			stored.setFrstRegisterId(LOGIN_UNIQ_ID);
+			return stored;
 		}
 
 		@Override
@@ -117,7 +121,9 @@ class EgovMemoTodoControllerTest {
 
 		@Override
 		public Object getAuthenticatedUser() {
-			return new LoginVO();
+			LoginVO loginVO = new LoginVO();
+			loginVO.setUniqId(LOGIN_UNIQ_ID);
+			return loginVO;
 		}
 
 		@Override

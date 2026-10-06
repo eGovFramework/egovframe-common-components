@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.qmc.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
@@ -80,6 +83,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do")
+	@RequireAdmin
 	public String egovQustnrManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
 		if (LOGGER.isDebugEnabled()) {
@@ -93,11 +97,10 @@ public class EgovQustnrManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
-			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
-			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
-			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
-				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
-			}
+			// 소유권 검증 - 등록자 본인만 삭제할 수 있다.
+			List<EgovMap> storedList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -147,16 +150,17 @@ public class EgovQustnrManageController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("del")) {
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
 			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
 			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
-			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
-			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
-			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
-				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
-			}
+			// 소유권 검증 - 등록자 본인만 삭제할 수 있다.
+			List<EgovMap> storedList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -200,6 +204,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qmc/EgovQustnrManageDetail.do")
+	@RequireAdmin
 	public String egovQustnrManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrManageVO qustnrManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -213,11 +218,10 @@ public class EgovQustnrManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
-			// 소유권/권한 검증 - 관리자만 삭제할 수 있다.
-			List<String> _authorities = EgovUserDetailsHelper.getAuthorities();
-			if (_authorities == null || !_authorities.contains("ROLE_ADMIN")) {
-				throw new org.springframework.security.access.AccessDeniedException("삭제 권한이 없습니다.");
-			}
+			// 소유권 검증 - 등록자 본인만 삭제할 수 있다.
+			List<EgovMap> storedList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 			sLocationUrl = "redirect:/uss/olp/qmc/EgovQustnrManageList.do";
 		} else {
@@ -245,6 +249,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qmc/EgovQustnrManageModifyView.do")
+	@RequireAdmin
 	public String qustnrManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO, QustnrManageVO qustnrManageVO,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -261,6 +266,9 @@ public class EgovQustnrManageController {
 		model.addAttribute("comCode034", listComCode);
 
 		List<EgovMap> resultList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+		// 소유권 검증 - 등록자 본인만 수정할 수 있다.
+		Object ownerId = (resultList == null || resultList.isEmpty()) ? null : resultList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 		model.addAttribute("resultList", resultList);
 
 		QustnrManageVO newQustnrManageVO = egovQustnrManageService.selectQustnrManageDetailModel(qustnrManageVO);
@@ -285,6 +293,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qmc/EgovQustnrManageModify.do")
+	@RequireAdmin
 	public String qustnrManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -294,6 +303,11 @@ public class EgovQustnrManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		// 소유권 검증 - 등록자 본인만 수정할 수 있다.
+		List<EgovMap> storedList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+		Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 
 		// 공통코드 직업유형 조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -335,6 +349,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qmc/EgovQustnrManageRegistView.do")
+	@RequireAdmin
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -369,6 +384,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qmc/EgovQustnrManageRegist.do")
+	@RequireAdmin
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {

@@ -30,8 +30,35 @@ import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
  * qustnrItemManageRegist는 로그인 여부만 확인하고 ROLE_ADMIN은 확인하지 않았다.
  * 로그인만 한 일반 사용자가 이 두 경로로 설문항목을 수정·등록할 수 있었다
  * (형제 경로 비교로 드러나는 자기모순).
+ *
+ * 항목의 소유자는 항목을 등록한 사람이 아니라 상위 설문을 등록한 사람이다.
+ * 그래서 남의 설문에 항목을 붙이는 등록도 막는다.
  */
 class EgovQustnrItemManageControllerAdminCheckTest {
+
+	private static final String SURVEY_ID = "QMANAGE_000000000001";
+	private static final String SURVEY_OWNER = "USRCNFRM_00000000001";
+
+	/** 설문 상세는 SURVEY_OWNER 가 등록한 설문 하나, 문항 상세는 그 설문에 속한 문항 하나를 돌려주는 프록시 */
+	private static <T> T surveyStub(Class<T> type) {
+		return type.cast(java.lang.reflect.Proxy.newProxyInstance(
+				EgovQustnrItemManageControllerAdminCheckTest.class.getClassLoader(),
+				new Class<?>[] { type },
+				(proxy, method, args) -> {
+					org.egovframe.rte.psl.dataaccess.util.EgovMap row = new org.egovframe.rte.psl.dataaccess.util.EgovMap();
+					if ("selectQustnrManageDetail".equals(method.getName())) {
+						row.put("qestnrId", SURVEY_ID);
+						row.put("frstRegisterId", SURVEY_OWNER);
+						return List.of(row);
+					}
+					if ("selectQustnrQestnManageDetail".equals(method.getName())) {
+						row.put("qestnrId", SURVEY_ID);
+						row.put("qestnrTmplatId", "QTMPLA_00000000000001");
+						return List.of(row);
+					}
+					return null;
+				}));
+	}
 
 	private static final class StubService implements EgovQustnrItemManageService {
 		private boolean deleteCalled = false;
@@ -55,7 +82,11 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 
 		@Override
 		public List<org.egovframe.rte.psl.dataaccess.util.EgovMap> selectQustnrItemManageDetail(QustnrItemManageVO qustnrItemManageVO) {
-			throw new UnsupportedOperationException();
+			// 항목 등록자(USRCNFRM_00000000007)는 설문 등록자(SURVEY_OWNER)와 다르다 — 소유권은 설문 기준
+			org.egovframe.rte.psl.dataaccess.util.EgovMap stored = new org.egovframe.rte.psl.dataaccess.util.EgovMap();
+			stored.put("frstRegisterId", "USRCNFRM_00000000007");
+			stored.put("qestnrId", SURVEY_ID);
+			return List.of(stored);
 		}
 
 		@Override
@@ -103,7 +134,7 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 
 	/**
 	 * MockHttpServletRequest는 이 로컬 환경에서 NoClassDefFoundError로 깨진다
-	 * ([[shell-and-egov-test-env-traps]]). 컨트롤러가 실제로 쓰는 getMethod()만
+	 *. 컨트롤러가 실제로 쓰는 getMethod()만
 	 * 최소 구현한 프록시로 대체한다.
 	 */
 	private static void bindPostRequest() {
@@ -163,6 +194,10 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 		EgovQustnrItemManageController controller = new EgovQustnrItemManageController();
 		setPrivateField(controller, "egovQustnrItemManageService", service);
 		setPrivateField(controller, "propertiesService", noopPropertiesService());
+		setPrivateField(controller, "egovQustnrManageService",
+				surveyStub(egovframework.com.uss.olp.qmc.service.EgovQustnrManageService.class));
+		setPrivateField(controller, "egovQustnrQestnManageService",
+				surveyStub(egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService.class));
 		return controller;
 	}
 
@@ -180,22 +215,32 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 	}
 
 	@Test
-	void deleteByNonAdminIsRejected() {
+	void deleteByNonOwnerIsRejected() {
 		StubService service = new StubService();
 		bindLoginUser("USRCNFRM_00000000009", List.of());
 
 		assertThrows(IllegalStateException.class, () -> callListPopupDelete(service),
-				"A logged-in non-admin must not be able to delete a survey item via the list popup.");
-		assertTrue(!service.deleteCalled, "deleteQustnrItemManage must not be reached by a non-admin.");
+				"A logged-in non-owner must not be able to delete a survey item via the list popup.");
+		assertTrue(!service.deleteCalled, "deleteQustnrItemManage must not be reached by a non-owner.");
 	}
 
 	@Test
-	void deleteByAdminSucceeds() throws Exception {
+	void deleteByAdminIsRejectedWhenNotOwner() {
 		StubService service = new StubService();
-		bindLoginUser("USRCNFRM_00000000001", List.of("ROLE_ADMIN"));
+		bindLoginUser("USRCNFRM_00000000009", List.of("ROLE_ADMIN"));
+
+		assertThrows(IllegalStateException.class, () -> callListPopupDelete(service),
+				"An admin who is not the registrant must not be able to delete a survey item via the list popup.");
+		assertTrue(!service.deleteCalled, "deleteQustnrItemManage must not be reached by a non-owner admin.");
+	}
+
+	@Test
+	void deleteByOwnerSucceeds() throws Exception {
+		StubService service = new StubService();
+		bindLoginUser("USRCNFRM_00000000001", List.of());
 
 		callListPopupDelete(service);
-		assertTrue(service.deleteCalled, "An admin must be able to delete a survey item via the list popup.");
+		assertTrue(service.deleteCalled, "The survey registrant must be able to delete a survey item via the list popup, even one another admin added.");
 	}
 
 	/** hasErrors()가 false를 돌려주는 것 외엔 관여하지 않는 최소 프록시. */
@@ -267,11 +312,21 @@ class EgovQustnrItemManageControllerAdminCheckTest {
 	}
 
 	@Test
+	void insertByAdminIsRejectedWhenNotSurveyOwner() {
+		StubService service = new StubService();
+		bindLoginUser("USRCNFRM_00000000009", List.of("ROLE_ADMIN"));
+
+		assertThrows(IllegalStateException.class, () -> callRegist(service),
+				"An admin must not be able to add a survey item to another admin's survey.");
+		assertTrue(!service.insertCalled, "insertQustnrItemManage must not be reached by a non-owner admin.");
+	}
+
+	@Test
 	void insertByAdminSucceeds() throws Exception {
 		StubService service = new StubService();
 		bindLoginUser("USRCNFRM_00000000001", List.of("ROLE_ADMIN"));
 
 		callRegist(service);
-		assertTrue(service.insertCalled, "An admin must be able to register a survey item.");
+		assertTrue(service.insertCalled, "The survey registrant must be able to register a survey item.");
 	}
 }

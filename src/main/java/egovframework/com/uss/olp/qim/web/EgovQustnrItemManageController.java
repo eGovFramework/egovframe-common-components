@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.qim.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,9 +23,14 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qim.service.EgovQustnrItemManageService;
 import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
+import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
+import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
+import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
+import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
@@ -57,6 +64,12 @@ public class EgovQustnrItemManageController {
 	@Resource(name = "egovQustnrItemManageService")
 	private EgovQustnrItemManageService egovQustnrItemManageService;
 
+	@Resource(name = "egovQustnrManageService")
+	private EgovQustnrManageService egovQustnrManageService;
+
+	@Resource(name = "egovQustnrQestnManageService")
+	private EgovQustnrQestnManageService egovQustnrQestnManageService;
+
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
@@ -71,6 +84,7 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageListPopup.do")
+	@RequireAdmin
 	public String egovQustnrItemManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -85,11 +99,10 @@ public class EgovQustnrItemManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
-			// 형제 경로 egovQustnrItemManageDetail의 cmd=del과 동일한 관리자 검증
-			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-				throw new IllegalStateException("권한이 없습니다.");
-			}
+			// 형제 경로 egovQustnrItemManageDetail의 cmd=del과 동일하게 설문 등록자만 삭제
+			List<EgovMap> storedList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+			Object ownerId = qustnrOwnerId((storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("qestnrId"));
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 		}
 
@@ -194,6 +207,7 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qim/EgovQustnrItemManageDetail.do")
+	@RequireAdmin
 	public String egovQustnrItemManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrItemManageVO qustnrItemManageVO,
@@ -211,10 +225,9 @@ public class EgovQustnrItemManageController {
 			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
 				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
 			}
-			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-				throw new IllegalStateException("권한이 없습니다.");
-			}
+			List<EgovMap> storedList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+			Object ownerId = qustnrOwnerId((storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("qestnrId"));
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 			sLocationUrl = "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
 		}else{
@@ -234,6 +247,7 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qim/EgovQustnrItemManageModifyView.do")
+	@RequireAdmin
 	public String qustnrItemManageModifyView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model)
 			throws Exception {
@@ -244,7 +258,9 @@ public class EgovQustnrItemManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+		List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+		Object ownerId = qustnrOwnerId((sampleList == null || sampleList.isEmpty()) ? null : sampleList.get(0).get("qestnrId"));
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 		model.addAttribute("resultList", sampleList);
 
 		// 설문항목(을)를 정보 불러오기
@@ -266,6 +282,7 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qim/EgovQustnrItemManageModify.do")
+	@RequireAdmin
 	public String qustnrItemManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -278,10 +295,11 @@ public class EgovQustnrItemManageController {
 		}
 
 		// 형제 경로 egovQustnrItemManageDetail의 cmd=del과 동일한 관리자 검증
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth == null || !auth.contains("ROLE_ADMIN")) {
-			throw new IllegalStateException("권한이 없습니다.");
-		}
+		EgovAuthorizationHelper.assertAdmin();
+
+		List<EgovMap> storedList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+		Object ownerId = qustnrOwnerId((storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("qestnrId"));
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -316,6 +334,7 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qim/EgovQustnrItemManageRegistView.do")
+	@RequireAdmin
 	public String qustnrItemManageRegistView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model,
 			RedirectAttributes redirectAttributes)
@@ -344,6 +363,7 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olp/qim/EgovQustnrItemManageRegist.do")
+	@RequireAdmin
 	public String qustnrItemManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
@@ -356,10 +376,7 @@ public class EgovQustnrItemManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		// 형제 경로 egovQustnrItemManageDetail의 cmd=del과 동일한 관리자 검증
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth == null || !auth.contains("ROLE_ADMIN")) {
-			throw new IllegalStateException("권한이 없습니다.");
-		}
+		EgovAuthorizationHelper.assertAdmin();
 		// validate 체크
 		if (bindingResult.hasErrors()) {
 			LOGGER.error("####설문항목 등록 컨트롤러 유효성에러 - 에러수 : {}, 에러목록: {}",bindingResult.getErrorCount(),bindingResult.getAllErrors() );
@@ -368,6 +385,15 @@ public class EgovQustnrItemManageController {
 			model.addAttribute("listQustnrTmplat", listQustnrTmplat);
 			return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
 		}
+		// 항목은 질문이 속한 설문의 등록자만 붙인다. 설문·템플릿 ID 는 요청값이 아니라 저장된 질문에서 가져온다
+		QustnrQestnManageVO qustnrQestnManageVO = new QustnrQestnManageVO();
+		qustnrQestnManageVO.setQestnrQesitmId(qustnrItemManageVO.getQestnrQesitmId());
+		List<EgovMap> qestnList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+		EgovMap qestn = (qestnList == null || qestnList.isEmpty()) ? null : qestnList.get(0);
+		EgovAuthorizationHelper.assertOwner(qustnrOwnerId(qestn == null ? null : qestn.get("qestnrId")));
+		qustnrItemManageVO.setQestnrId(String.valueOf(qestn.get("qestnrId")));
+		qustnrItemManageVO.setQestnrTmplatId(String.valueOf(qestn.get("qestnrTmplatId")));
+
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -384,31 +410,18 @@ public class EgovQustnrItemManageController {
 		return "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
 	}
 
-
 	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 * 질문·항목은 상위 설문을 등록한 사람이 관리한다. 설문 등록자를 돌려주고, 설문이 없으면 null 이다(소유권 검사에서 거부).
 	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+	private String qustnrOwnerId(Object qestnrId) throws Exception {
+		if (qestnrId == null || qestnrId.toString().isEmpty()) {
+			return null;
 		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
+		QustnrManageVO qustnrManageVO = new QustnrManageVO();
+		qustnrManageVO.setQestnrId(qestnrId.toString());
+		List<EgovMap> qustnrList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+		Object ownerId = (qustnrList == null || qustnrList.isEmpty()) ? null : qustnrList.get(0).get("frstRegisterId");
+		return ownerId == null ? null : ownerId.toString();
 	}
 
 }

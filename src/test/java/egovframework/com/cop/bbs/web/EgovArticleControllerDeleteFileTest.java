@@ -43,7 +43,17 @@ class EgovArticleControllerDeleteFileTest {
 
 		@Override
 		public BoardVO selectArticleDetail(BoardVO boardVO) {
+			throw new AssertionError("삭제 경로가 조회수를 올리는 selectArticleDetail 을 불렀다");
+		}
+
+		@Override
+		public BoardVO selectArticleDetailNoCount(BoardVO boardVO) {
 			return stored;
+		}
+
+		@Override
+		public void increaseInqireCo(BoardVO boardVO) {
+			throw new AssertionError("삭제 경로가 조회수를 올렸다");
 		}
 
 		@Override
@@ -169,7 +179,7 @@ class EgovArticleControllerDeleteFileTest {
 		board.setNttId(1L);
 		board.setBbsId("BBSMSTR_000000000001");
 
-		controller.deleteBoardArticle(null, searchVO(), board, new BoardMaster(), new ModelMap());
+		controller.deleteBoardArticle(null, searchVO(), board, new BoardMaster(), new ModelMap(), new org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap());
 
 		assertEquals(STORED_ATCH_FILE_ID, service.deletedArg.getAtchFileId(),
 				"삭제 시 첨부그룹 정리는 폼이 보내지 않는 요청값이 아니라 서버에 저장된 atchFileId로 이뤄져야 한다.");
@@ -185,7 +195,7 @@ class EgovArticleControllerDeleteFileTest {
 		board.setNttId(1L);
 		board.setBbsId("BBSMSTR_000000000001");
 
-		controller.deleteBoardArticle(null, searchVO(), board, new BoardMaster(), new ModelMap());
+		controller.deleteBoardArticle(null, searchVO(), board, new BoardMaster(), new ModelMap(), new org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap());
 
 		assertEquals("", service.deletedArg.getAtchFileId(),
 				"첨부가 없는 게시물은 빈 값이 그대로 넘어가 서비스의 정리 분기를 건너뛰어야 한다.");

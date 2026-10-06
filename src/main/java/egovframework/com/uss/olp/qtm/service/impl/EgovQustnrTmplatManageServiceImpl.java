@@ -117,4 +117,9 @@ public class EgovQustnrTmplatManageServiceImpl extends EgovAbstractServiceImpl i
 	public void deleteQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO){
 		dao.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 	}
+
+	@Override
+	public int selectQustnrTmplatOtherUseCnt(QustnrTmplatManageVO qustnrTmplatManageVO){
+		return dao.selectQustnrTmplatOtherUseCnt(qustnrTmplatManageVO);
+	}
 }

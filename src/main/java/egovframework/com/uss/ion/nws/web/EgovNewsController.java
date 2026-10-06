@@ -1,6 +1,9 @@
 package egovframework.com.uss.ion.nws.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -19,11 +22,14 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.nws.service.EgovNewsService;
 import egovframework.com.uss.ion.nws.service.NewsVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -110,6 +116,7 @@ public class EgovNewsController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/nws/selectNewsDetail.do")
+	@RequireAdmin
 	public String selectNewsDetail(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model) throws Exception {
 		NewsVO vo = egovNewsService.selectNewsDetail(newsVO);
 		model.addAttribute("newsVO", vo);
@@ -126,6 +133,7 @@ public class EgovNewsController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/nws/insertNewsView.do")
+	@RequireAdmin
 	public String insertNewsView(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model) throws Exception {
 		model.addAttribute("newsVO", newsVO);
 
@@ -142,6 +150,7 @@ public class EgovNewsController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/nws/insertNews.do")
+	@RequireAdmin
 	public String insertNews(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("newsVO") NewsVO newsVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if(bindingResult.hasErrors()){
@@ -184,8 +193,11 @@ public class EgovNewsController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/nws/updateNewsView.do")
-	public String updateNewsView(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model) throws Exception {
-		model.addAttribute("newsVO", egovNewsService.selectNewsDetail(newsVO));
+	@RequireAdmin
+	public String updateNewsView(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model, HttpServletRequest request) throws Exception {
+		NewsVO stored = EgovAuthorizationHelper.requireTarget(egovNewsService.selectNewsDetail(newsVO));
+		EgovAttachmentGrants.allowDelete(request, stored.getAtchFileId());
+		model.addAttribute("newsVO", stored);
 
 		return "egovframework/com/uss/ion/nws/EgovNewsUpdt";
 	}
@@ -202,7 +214,12 @@ public class EgovNewsController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/nws/updateNews.do")
+	@RequireAdmin
 	public String updateNewsInfo(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("newsVO") NewsVO newsVO, BindingResult bindingResult, ModelMap model) throws Exception {
+
+		NewsVO stored = EgovAuthorizationHelper.requireTarget(egovNewsService.selectNewsDetail(newsVO));
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		newsVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("newsVO", newsVO);
@@ -249,37 +266,12 @@ public class EgovNewsController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/nws/deleteNews.do")
+	@RequireAdmin
 	public String deleteNews(@ModelAttribute("newsVO") NewsVO newsVO) throws Exception {
 		egovNewsService.deleteNews(newsVO);
 
 		return "forward:/uss/ion/nws/selectNewsList.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

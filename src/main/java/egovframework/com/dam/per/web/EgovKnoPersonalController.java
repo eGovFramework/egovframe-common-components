@@ -2,6 +2,7 @@ package egovframework.com.dam.per.web;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -18,12 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.map.mat.service.EgovMapMaterialService;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
@@ -33,6 +37,7 @@ import egovframework.com.dam.per.service.EgovKnoPersonalService;
 import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -92,24 +97,6 @@ public class EgovKnoPersonalController {
 	EgovMessageSource egovMessageSource;
 
 	/**
-	 * 개인지식 작성자 본인이거나 관리자 권한을 가진 사용자인지 확인한다.
-	 *
-	 * @param user 현재 로그인한 사용자
-	 * @param frstRegisterId 개인지식 작성자 ID(frstRegisterId)
-	 * @return 소유자이거나 관리자이면 true
-	 */
-	private boolean isOwner(LoginVO user, String frstRegisterId) {
-		if (user == null || user.getUniqId() == null) {
-			return false;
-		}
-		if (frstRegisterId != null && frstRegisterId.equals(user.getUniqId())) {
-			return true;
-		}
-		List<String> authorities = EgovUserDetailsHelper.getAuthorities();
-		return authorities != null && authorities.contains("ROLE_ADMIN");
-	}
-
-	/**
 	 * 등록된 개인지식 정보를 조회 한다.
 	 * 
 	 * @param KnoPersonalVO - 개인지식 VO
@@ -167,6 +154,7 @@ public class EgovKnoPersonalController {
 	 * @param KnoPersonalVO
 	 */
 	@RequestMapping(value = "/dam/per/EgovComDamPersonal.do")
+	@RequireAdmin
 	public String selectKnoPersonal(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
 		// Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
@@ -178,7 +166,7 @@ public class EgovKnoPersonalController {
 		KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
 
 		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 조회할 수 있다.
-		if (result == null || !isOwner(loginVO, result.getFrstRegisterId())) {
+		if (result == null || !EgovAuthorizationHelper.isAdminOrOwner(result.getFrstRegisterId())) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
@@ -196,6 +184,7 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping("/dam/per/EgovComDamPersonalRegistView.do")
+	@RequireAdmin
 	public String insertKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
 		setInsertKnoPersonalViewModel(knoPersonal, model);
 		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
@@ -232,6 +221,7 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalRegist.do")
+	@RequireAdmin
 	public String insertKnoPersonal(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("knoPersonal") KnoPersonalVO knoPersonal,
 			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// Spring Security 사용자권한 처리
@@ -283,7 +273,8 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalModifyView.do")
-	public String updateKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
+	@RequireAdmin
+	public String updateKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model, HttpServletRequest request) throws Exception {
 		// Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
@@ -291,11 +282,10 @@ public class EgovKnoPersonalController {
 		}
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정폼을 조회할 수 있다.
-		KnoPersonal existing = knoPersonalService.selectKnoPersonal(knoPersonal);
-		if (existing == null || !isOwner(loginVO, existing.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		KnoPersonal existing = EgovAuthorizationHelper.requireTarget(knoPersonalService.selectKnoPersonal(knoPersonal));
+		// 개인 지식은 등록한 본인만 수정·삭제한다
+		EgovAuthorizationHelper.assertOwner(existing.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, existing.getAtchFileId());
 
 		model.addAttribute("knoPersonal", existing);
 		model.addAttribute("searchVO", knoPersonal);
@@ -311,6 +301,7 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalModify.do")
+	@RequireAdmin
 	public String updateKnoPersonal(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<String, String> commandMap,
 			@ModelAttribute("searchVO") KnoPersonalVO searchVO,
@@ -327,11 +318,11 @@ public class EgovKnoPersonalController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 수정할 수 있다.
-		KnoPersonal existingKnoPersonal = knoPersonalService.selectKnoPersonal(knoPersonal);
-		if (existingKnoPersonal == null || !isOwner(loginVO, existingKnoPersonal.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		KnoPersonal existingKnoPersonal = EgovAuthorizationHelper.requireTarget(knoPersonalService.selectKnoPersonal(knoPersonal));
+		// 개인 지식은 등록한 본인만 수정·삭제한다
+		EgovAuthorizationHelper.assertOwner(existingKnoPersonal.getFrstRegisterId());
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		knoPersonal.setAtchFileId(Objects.toString(existingKnoPersonal.getAtchFileId(), ""));
 
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalModify";
 
@@ -390,18 +381,16 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalRemove.do")
+	@RequireAdmin
 	public String deleteKnoPersonal(KnoPersonal knoPersonal) throws Exception {
 		// Spring Security 사용자권한 처리
 		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 삭제할 수 있다.
-		KnoPersonal existing = knoPersonalService.selectKnoPersonal(knoPersonal);
-		if (existing == null || !isOwner(loginVO, existing.getFrstRegisterId())) {
-			return "egovframework/com/cmm/error/accessDenied";
-		}
+		KnoPersonal existing = EgovAuthorizationHelper.requireTarget(knoPersonalService.selectKnoPersonal(knoPersonal));
+		// 개인 지식은 등록한 본인만 수정·삭제한다
+		EgovAuthorizationHelper.assertOwner(existing.getFrstRegisterId());
 
 		String atchFileId = existing.getAtchFileId();
 

@@ -20,6 +20,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.bat.service.BatchOpert;
 import egovframework.com.sym.bat.service.EgovBatchOpertService;
@@ -91,6 +92,7 @@ public class EgovBatchOpertController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+
 		egovBatchOpertService.deleteBatchOpert(batchOpert);
 
 		return "forward:/sym/bat/getBatchOpertList.do";
@@ -147,6 +149,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchOpert.do")
+	@RequireAdmin
 	public String selectBatchOpert(@ModelAttribute("searchVO") BatchOpert batchOpert, ModelMap model) throws Exception {
 		LOGGER.debug(" 조회조건 : {}", batchOpert);
 		BatchOpert result = egovBatchOpertService.selectBatchOpert(batchOpert);
@@ -259,6 +262,7 @@ public class EgovBatchOpertController {
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+
 		batchOpertValidator.validate(batchOpert, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sym/bat/EgovBatchOpertUpdt";
@@ -281,6 +285,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchOpertListPopup.do")
+	@RequireAdmin
 	public String openPopupWindow(@ModelAttribute("searchVO") BatchOpert searchVO, ModelMap model) throws Exception {
 		return "egovframework/com/sym/bat/EgovBatchOpertListPopupFrame";
 	}

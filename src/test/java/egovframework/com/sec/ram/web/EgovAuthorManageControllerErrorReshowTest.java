@@ -92,7 +92,7 @@ class EgovAuthorManageControllerErrorReshowTest {
 		searchVO.setSearchKeyword("admin");
 		ExtendedModelMap model = new ExtendedModelMap();
 
-		String view = controller.updateAuthor(searchVO, submitted, failingBindingResult(submitted), model);
+		String view = controller.updateAuthor(searchVO, submitted, failingBindingResult(submitted), model, new org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap());
 
 		assertEquals("egovframework/com/sec/ram/EgovAuthorUpdate", view);
 		assertNotNull(model.get("authorManageVO"),

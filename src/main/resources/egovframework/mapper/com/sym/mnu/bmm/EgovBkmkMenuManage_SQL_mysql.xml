@@ -43,7 +43,7 @@
 	<select id="selectBkmkMenuManage" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO">
 		 
 			 SELECT 
-			 	MENU_ID , EMPLYR_ID, MENU_NM, PROGRM_STRE_PATH 
+			 	MENU_ID , EMPLYR_ID AS USER_ID, MENU_NM, PROGRM_STRE_PATH 
 			 FROM 
 			 	COMTNBKMKMENUMANAGERESULT
 			 WHERE

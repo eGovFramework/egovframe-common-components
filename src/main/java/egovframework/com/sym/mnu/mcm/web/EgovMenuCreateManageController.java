@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -133,6 +134,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSelect.do")
+	@RequireAdmin
 	public String selectMenuCreatList(@ModelAttribute MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -156,6 +158,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@PostMapping("/sym/mnu/mcm/EgovMenuCreatInsert.do")
+	@RequireAdmin
 	public String insertMenuCreatList(@RequestParam("checkedAuthorForInsert") String checkedAuthorForInsert,
 			@RequestParam("checkedMenuNoForInsert") String checkedMenuNoForInsert,
 			@Valid @ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -190,6 +193,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSiteMapSelect.do")
+	@RequireAdmin
 	public String selectMenuCreatSiteMap(@ModelAttribute("menuSiteMapVO") MenuSiteMapVO menuSiteMapVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -267,6 +271,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mcm/EgovSiteMap.do")
+	@RequireAdmin
 	public String selectSiteMap(@ModelAttribute("menuCreatVO") MenuSiteMapVO menuSiteMapVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리

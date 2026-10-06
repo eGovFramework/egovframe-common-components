@@ -20,12 +20,15 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManage;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
@@ -82,9 +85,9 @@ public class EgovAnnvrsryManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/uss/ion/ans/selectAnnvrsryManageListView.do")
+	@RequireAdmin
 	public String selectAnnvrsryManageListView() throws Exception {
-
-		return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageList";
+		return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
 	}
 
 	/**
@@ -145,16 +148,17 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/selectAnnvrsryManage.do")
+	@RequireAdmin
 	public String selectAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO == null || loginVO.getUniqId() == null) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
@@ -163,15 +167,10 @@ public class EgovAnnvrsryManageController {
 		String sTempAnnvrsrySetup = null;
 		AnnvrsryManageVO resultVO = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
 		if (resultVO == null) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
-		// 2026.07.13 KISA 보안취약점 조치
-		if (!loginVO.getUniqId().equals(resultVO.getUsid())) {
-			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-				throw new IllegalStateException("권한이 없습니다.");
-			}
-		}
+		// 상세 조회는 기념일 대상자 또는 관리자
+		EgovAuthorizationHelper.assertAdminOrOwner(resultVO.getUsid());
 
 		if ("1".equals(resultVO.getCldrSe())) {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");// 양
@@ -192,6 +191,8 @@ public class EgovAnnvrsryManageController {
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("update")) {
+			// 기념일은 대상자 본인의 것이다(사용자부재와 같은 당사자 기준). 수정·삭제는 대상자만
+			EgovAuthorizationHelper.assertOwner(resultVO.getUsid());
 
 			annvrsryManage.setAnnId(resultVO.getAnnId());
 			annvrsryManage.setAnnvrsryNm(resultVO.getAnnvrsryNm());
@@ -217,6 +218,7 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/insertViewAnnvrsry.do")
+	@RequireAdmin
 	public String insertViewAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, ModelMap model) throws Exception {
 		// 로그인 객체 선언
@@ -246,6 +248,7 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/insertAnnvrsry.do")
+	@RequireAdmin
 	public String insertAnnvrsryManage(@Valid @ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage, BindingResult bindingResult,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model) throws Exception {
 		
@@ -264,6 +267,8 @@ public class EgovAnnvrsryManageController {
 			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 			annvrsryManage.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+			// 단건 등록은 본인 기념일이다. 대상자를 요청의 hidden 값 대신 로그인 사용자로 둔다
+			annvrsryManage.setUsid((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
 			if (egovAnnvrsryManageService.selectAnnvrsryManageDplctAt(annvrsryManage) == 0) {
 				egovAnnvrsryManageService.insertAnnvrsryManage(annvrsryManage);
@@ -292,6 +297,7 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/updateAnnvrsryManage.do")
+	@RequireAdmin
 	public String updateAnnvrsryManage(@Valid @ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage, BindingResult bindingResult,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -306,14 +312,14 @@ public class EgovAnnvrsryManageController {
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
 		} else {
 
-			// 2026.07.13 KISA 보안취약점 조치 - 조회·삭제와 동일하게 소유자 또는 관리자만 수정할 수 있다.
+			// 기념일 대상자 본인만 수정한다(삭제와 같은 기준)
 			AnnvrsryManageVO ownerVO = new AnnvrsryManageVO();
 			ownerVO.setAnnId(annvrsryManage.getAnnId());
 			AnnvrsryManageVO storedVO = egovAnnvrsryManageService.selectAnnvrsryManage(ownerVO);
 			if (storedVO == null) {
-				throw new IllegalStateException("권한이 없습니다.");
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
-			egovAssertAdminOrOwner(storedVO.getUsid());
+			EgovAuthorizationHelper.assertOwner(storedVO.getUsid());
 
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			status.setComplete();
@@ -346,29 +352,17 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/deleteAnnvrsryManage.do")
+	@RequireAdmin
 	public String deleteAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
 			SessionStatus status, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
-
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
 		AnnvrsryManageVO annvrsryManageVO = new AnnvrsryManageVO();
 		annvrsryManageVO.setAnnId(annvrsryManage.getAnnId());
 		AnnvrsryManageVO resultVO = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
-		if (resultVO == null) {
-			throw new IllegalStateException("권한이 없습니다.");
-		}
-		// 2026.07.13 KISA 보안취약점 조치
-		if (!loginVO.getUniqId().equals(resultVO.getUsid())) {
-			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-				throw new IllegalStateException("권한이 없습니다.");
-			}
-		}
+		// 기념일 대상자 본인만 삭제한다(수정과 같은 기준)
+		EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getUsid());
 
 		egovAnnvrsryManageService.deleteAnnvrsryManage(annvrsryManage);
 		status.setComplete();
@@ -422,10 +416,11 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/selectAnnvrsryGdcc.do")
+	@RequireAdmin
 	public String selectAnnvrsryGdcc(@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		String sTempAnnvrsryDe = null;
 		String sTempCldrSe = null;
@@ -442,10 +437,10 @@ public class EgovAnnvrsryManageController {
 		 */
 		AnnvrsryManageVO resultVO = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
 		if (resultVO == null) {
-			throw new IllegalStateException("권한이 없습니다.");
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
-		// 상세조회·수정·삭제와 동일하게 소유자 또는 관리자만 볼 수 있다.
-		egovAssertAdminOrOwner(resultVO.getUsid());
+		// 상세 조회와 같이 기념일 대상자 또는 관리자만 볼 수 있다.
+		EgovAuthorizationHelper.assertAdminOrOwner(resultVO.getUsid());
 		sAnnvrsryDe = EgovStringUtil.removeMinusChar(resultVO.getAnnvrsryDe());
 		if ("1".equals(resultVO.getCldrSe())) {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");// 양
@@ -500,6 +495,7 @@ public class EgovAnnvrsryManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uss/ion/ans/EgovAnnvrsryManageListPop.do")
+	@RequireAdmin
 	public String selectAnnvrsryManageBnde(final HttpServletRequest request,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, @RequestParam Map<?, ?> commandMap,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -518,6 +514,7 @@ public class EgovAnnvrsryManageController {
 	}
 
 	@RequestMapping(value = "/uss/ion/ans/EgovAnnvrsryManageListPopAction.do")
+	@RequireAdmin
 	public String selectAnnvrsryManageBndeAction(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -542,6 +539,25 @@ public class EgovAnnvrsryManageController {
 				Entry<String, MultipartFile> entry = itr.next();
 				file = entry.getValue();
 				if (!"".equals(file.getOriginalFilename())) {
+					// 2026.07.30 보안 조치 - 업로드 MIME/magic-byte 검증(엑셀 파일만 허용)
+					String fileExt = org.apache.commons.io.FilenameUtils.getExtension(file.getOriginalFilename())
+							.toLowerCase();
+					if (!"xls".equals(fileExt) && !"xlsx".equals(fileExt)) {
+						throw new IllegalArgumentException("허용되지 않는 파일 형식입니다: " + fileExt);
+					}
+					byte[] header = new byte[8];
+					int headerLen;
+					try (InputStream headerIn = file.getInputStream()) {
+						headerLen = headerIn.read(header);
+					}
+					boolean isXls = headerLen >= 8 && (header[0] & 0xFF) == 0xD0 && (header[1] & 0xFF) == 0xCF
+							&& (header[2] & 0xFF) == 0x11 && (header[3] & 0xFF) == 0xE0;
+					boolean isXlsx = headerLen >= 4 && (header[0] & 0xFF) == 0x50 && (header[1] & 0xFF) == 0x4B
+							&& (header[2] & 0xFF) == 0x03 && (header[3] & 0xFF) == 0x04;
+					if (!isXls && !isXlsx) {
+						throw new IllegalArgumentException("유효한 엑셀 파일이 아닙니다: " + file.getOriginalFilename());
+					}
+
 					// KISA 보안약점 조치 - 자원해제
 					InputStream is = null;
 					try {
@@ -572,6 +588,7 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/uss/ion/ans/insertAnnvrsryManageBnde.do")
+	@RequireAdmin
 	public String insertAnnvrsryManageBnde(
 			@RequestParam("checkedAnnvrsryManageForInsert") String checkedAnnvrsryManageForInsert,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model)
@@ -594,32 +611,6 @@ public class EgovAnnvrsryManageController {
 		// model.addAttribute("message", sTempMessage);
 		// return "egovframework/com/uss/ion/bnt/EgovBndtManageBndeListPop";
 		// }
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

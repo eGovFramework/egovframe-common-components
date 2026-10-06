@@ -1,6 +1,7 @@
 package egovframework.com.sym.prm.web;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.lang.reflect.Field;
@@ -47,7 +48,12 @@ class EgovProgrmManageControllerChangRequstDeleteTest {
 
 		@Override
 		public ProgrmManageDtlVO selectProgrmChangeRequst(ProgrmManageDtlVO vo) {
-			throw new UnsupportedOperationException();
+			// 삭제 전 소유자 조회: DB에 저장된 요청자ID는 OWNER_UNIQ_ID
+			ProgrmManageDtlVO stored = new ProgrmManageDtlVO();
+			stored.setProgrmFileNm(vo.getProgrmFileNm());
+			stored.setRqesterNo(vo.getRqesterNo());
+			stored.setRqesterPersonId(OWNER_UNIQ_ID);
+			return stored;
 		}
 
 		@Override
@@ -204,8 +210,9 @@ class EgovProgrmManageControllerChangRequstDeleteTest {
 		EgovProgrmManageController controller = controllerWith(service);
 		bindLoginUser(OTHER_LOGIN_ID, OTHER_UNIQ_ID);
 
-		controller.deleteProgrmChangeRequst(submittedForm(OWNER_UNIQ_ID), new ModelMap());
-
+		assertThrows(IllegalStateException.class,
+				() -> controller.deleteProgrmChangeRequst(submittedForm(OWNER_UNIQ_ID), new ModelMap()),
+				"요청자가 아닌 사용자의 삭제는 거부돼야 한다.");
 		assertFalse(service.deleteCalled, "요청자가 아닌 사용자의 삭제는 서비스까지 도달하면 안 된다.");
 	}
 }

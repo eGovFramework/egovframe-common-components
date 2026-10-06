@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovUserDetailsService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.ion.rmm.service.EgovRoughMapService;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 
 /**
@@ -35,9 +36,10 @@ class EgovRoughMapControllerErrorReshowTest {
 		}
 	}
 
-	private static void bindLoginUser(String uniqId) {
+	private static void bindLoginUser(String uniqId, String loginId) {
 		LoginVO login = new LoginVO();
 		login.setUniqId(uniqId);
+		login.setId(loginId);
 		EgovUserDetailsService stub = new EgovUserDetailsService() {
 			@Override
 			public Object getAuthenticatedUser() {
@@ -60,8 +62,13 @@ class EgovRoughMapControllerErrorReshowTest {
 	@Test
 	void updateWithValidationErrorsRestoresResultForReshow() throws Exception {
 		EgovRoughMapController controller = new EgovRoughMapController();
-		setPrivateField(controller, "egovRoughMapService", null);
-		bindLoginUser("USRCNFRM_00000000001");
+		// 수정 처리는 검증 실패 분기 전에 저장된 약도의 등록자(로그인 id)가 본인인지 확인한다.
+		RoughMapVO stored = new RoughMapVO();
+		stored.setFrstRegisterId("user01");
+		setPrivateField(controller, "egovRoughMapService", java.lang.reflect.Proxy.newProxyInstance(
+				getClass().getClassLoader(), new Class<?>[] { EgovRoughMapService.class },
+				(proxy, method, args) -> "selectRoughMapDetail".equals(method.getName()) ? stored : null));
+		bindLoginUser("USRCNFRM_00000000001", "user01");
 
 		RoughMapVO roughMap = new RoughMapVO();
 		roughMap.setRoughMapId("1");

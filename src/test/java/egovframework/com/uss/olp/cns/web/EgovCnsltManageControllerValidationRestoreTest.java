@@ -14,7 +14,10 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovUserDetailsService;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO;
 import egovframework.com.uss.olp.cns.service.CnsltManageVO;
 import egovframework.com.uss.olp.cns.service.EgovCnsltManageService;
@@ -41,6 +44,7 @@ class EgovCnsltManageControllerValidationRestoreTest {
 		case "selectCnsltListDetail":
 			CnsltManageVO vo = new CnsltManageVO();
 			vo.setCnsltId(((CnsltManageVO) args[0]).getCnsltId());
+			vo.setFrstRegisterId("OWNER");
 			return vo;
 		case "selectCmmCodeDetail":
 			return Collections.emptyList();
@@ -70,6 +74,13 @@ class EgovCnsltManageControllerValidationRestoreTest {
 	@Test
 	@DisplayName("상담 수정 검증 실패 시 재표시 폼이 참조하는 result(대상 식별자)를 복원한다")
 	void updateCnsltDtls_restoresResultOnValidationError() throws Exception {
+		// 수정 저장은 재표시보다 소유권 검증을 먼저 하므로 작성자 본인으로 로그인한다
+		LoginVO login = new LoginVO();
+		login.setUniqId("OWNER");
+		new EgovUserDetailsHelper().setEgovUserDetailsService((EgovUserDetailsService) Proxy.newProxyInstance(
+				getClass().getClassLoader(), new Class<?>[] { EgovUserDetailsService.class },
+				(proxy, m, a) -> "getAuthenticatedUser".equals(m.getName()) ? login
+						: "isAuthenticated".equals(m.getName()) ? Boolean.TRUE : java.util.List.of()));
 		EgovCnsltManageController controller = newControllerWithStubs();
 		CnsltManageVO submitted = new CnsltManageVO();
 		submitted.setCnsltId("CNSLT_X");

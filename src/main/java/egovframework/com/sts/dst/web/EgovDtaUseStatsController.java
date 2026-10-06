@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -77,6 +78,7 @@ public class EgovDtaUseStatsController {
 	 */
 	@IncludedInfo(name="자료이용현황통계", listUrl="/sts/dst/selectDtaUseStatsListView.do", order = 161 ,gid = 30)
 	@RequestMapping("/sts/dst/selectDtaUseStatsList.do")
+	@RequireAdmin
 	public String selectDtaUseStatsList(@RequestParam("pmFromDate") String pmFromDate,
             							@RequestParam("pmToDate") String pmToDate,
             							@ModelAttribute("dtaUseStatsVO") DtaUseStatsVO dtaUseStatsVO,
@@ -139,6 +141,7 @@ public class EgovDtaUseStatsController {
 	 * @return String
 	 */
 	@PostMapping("/sts/dst/getDtaUseStats.do")
+	@RequireAdmin
 	public String selectDtaUseStats(@ModelAttribute("dtaUseStatsVO") DtaUseStatsVO dtaUseStatsVO,
 			                         ModelMap model) throws Exception {
 

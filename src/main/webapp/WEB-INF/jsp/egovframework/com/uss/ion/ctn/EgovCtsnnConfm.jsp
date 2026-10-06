@@ -162,6 +162,7 @@
 			<th><spring:message code="comUssIonCtn.ctsnnConfm.ctsnnNm"/> <span class="pilsu">*</span></th><!-- 경조명 -->
 			<td class="left" colspan="3">
 			    <c:out value='${ctsnnManageVO.ctsnnNm}'/>
+			    <form:errors path="ctsnnNm" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
@@ -172,12 +173,14 @@
 			<th><spring:message code="comUssIonCtn.ctsnnConfm.occrrDe"/> <span class="pilsu">*</span></th><!-- 발생일 -->
 			<td class="left">
 			    <c:out value='${ctsnnManageVO.occrrDe}'/>
+			    <form:errors path="occrrDe" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonCtn.ctsnnConfm.trgterNm"/> <span class="pilsu">*</span></th><!-- 대상자명 -->
 			<td class="left" colspan="3">
 			    <c:out value='${ctsnnManageVO.trgterNm}'/>
+			    <form:errors path="trgterNm" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
@@ -188,6 +191,7 @@
 			<th><spring:message code="comUssIonCtn.ctsnnConfm.brth"/> <span class="pilsu">*</span></th><!-- 생년월일 -->
 			<td class="left">
 			    <c:out value='${ctsnnManageVO.brth}'/>
+			    <form:errors path="brth" cssClass="error" />
 			</td>
 		</tr>
 		<tr>

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.bak.service.BackupResult;
 import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
@@ -79,6 +80,7 @@ public class EgovBackupResultController {
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
+
     	egovBackupResultService.deleteBackupResult(backupResult);
 
     	return "forward:/sym/sym/bak/getBackupResultList.do";
@@ -98,7 +100,7 @@ public class EgovBackupResultController {
 	public String selectBackupResult(@ModelAttribute("searchVO")BackupResult backupResult, ModelMap model)
 	  throws Exception{
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		LOGGER.debug(" 조회조건 : {}", backupResult);
 		BackupResult result = egovBackupResultService.selectBackupResult(backupResult);
@@ -145,31 +147,5 @@ public class EgovBackupResultController {
 	}
 
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

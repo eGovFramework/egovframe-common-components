@@ -1,5 +1,7 @@
 package egovframework.com.cop.cmy.web;
 
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -204,7 +206,8 @@ public class EgovCommuManageController {
      * @return
      */
     @PostMapping("/cop/cmy/insertCommuUserBySelf.do")
-    public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model) {
+    public String insertCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUser cmmntyUser, ModelMap model,
+    		RedirectAttributes redirectAttributes) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -215,9 +218,8 @@ public class EgovCommuManageController {
 
 		String retVal = "";
 
-		if ("".equals(cmmntyUser.getMngrAt())) {
-		    cmmntyUser.setMngrAt("N");
-		}
+		// 본인 가입에서 운영자 권한은 클라이언트가 지정할 수 없다.
+		cmmntyUser.setMngrAt("N");
 		cmmntyUser.setUseAt("Y");
 		cmmntyUser.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		cmmntyUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -234,8 +236,10 @@ public class EgovCommuManageController {
 	    	retVal = egovMessageSource.getMessage("comCopCmy.commuMain.joinMember.info.fail"); //이미 가입처리가 되어 있습니다.
 	    }
 
-		model.addAttribute("returnMsg", retVal);
-		model.addAttribute("cmmntyId", cmmntyUser.getCmmntyId());
+		// 2026.09.21 Spring 6 이관 조치 - ignoreDefaultModelOnRedirect 기본값이 true 로 바뀌어
+		// model 속성이 redirect URL 로 승격되지 않는다. RedirectAttributes 로 명시 전달한다.
+		redirectAttributes.addAttribute("returnMsg", retVal);
+		redirectAttributes.addAttribute("cmmntyId", cmmntyUser.getCmmntyId());
 
 		return "redirect:/cop/cmy/cmmntyMain.do";
     }
@@ -249,7 +253,8 @@ public class EgovCommuManageController {
      * @return
      */
     @PostMapping("/cop/cmy/deleteCommuUserBySelf.do")
-    public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model) {
+    public String deleteCmmntyUserBySelf(@ModelAttribute("cmmntyUser") CommunityUserVO cmmntyUserVO, ModelMap model,
+    		RedirectAttributes redirectAttributes) {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -275,8 +280,10 @@ public class EgovCommuManageController {
 			resultMsg = egovMessageSource.getMessage("comCopCmy.commuMain.deleteMember.info.admin"); //관리자는 탈퇴할수 없습니다.
 		}
 
-		model.addAttribute("cmmntyId", cmmntyUserVO.getCmmntyId());
-		model.addAttribute("returnMsg", resultMsg);
+		// 2026.09.21 Spring 6 이관 조치 - ignoreDefaultModelOnRedirect 기본값이 true 로 바뀌어
+		// model 속성이 redirect URL 로 승격되지 않는다. RedirectAttributes 로 명시 전달한다.
+		redirectAttributes.addAttribute("cmmntyId", cmmntyUserVO.getCmmntyId());
+		redirectAttributes.addAttribute("returnMsg", resultMsg);
 
 		return "redirect:/cop/cmy/cmmntyMain.do";
     }

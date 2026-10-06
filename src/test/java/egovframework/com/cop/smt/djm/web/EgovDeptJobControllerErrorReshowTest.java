@@ -17,6 +17,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovUserDetailsService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.djm.service.DeptJobBxVO;
+import egovframework.com.cop.smt.djm.service.EgovDeptJobService;
 
 /**
  * 부서업무함 등록·수정의 검증 실패 재표시가 표시순서 상한({@code indictOrdrValue})을 다시 담는지 확인한다.
@@ -39,13 +40,29 @@ class EgovDeptJobControllerErrorReshowTest {
 						return Boolean.TRUE;
 					}
 					if ("getAuthenticatedUser".equals(method.getName())) {
-						return new LoginVO();
+						LoginVO user = new LoginVO();
+						user.setUniqId("USER_A");
+						user.setOrgnztId("DEPT_A");
+						return user;
 					}
 					return null;
 				});
 		ReflectionTestUtils.setField(EgovUserDetailsHelper.class, "egovUserDetailsService", auth);
 
+		// 수정 저장은 재표시 전에 같은 부서인지 확인하므로, 저장된 함을 로그인 사용자와 같은 부서로 둔다.
+		EgovDeptJobService service = (EgovDeptJobService) Proxy.newProxyInstance(
+				getClass().getClassLoader(), new Class<?>[] { EgovDeptJobService.class },
+				(proxy, method, args) -> {
+					if ("selectDeptJobBx".equals(method.getName())) {
+						DeptJobBxVO stored = new DeptJobBxVO();
+						stored.setDeptId("DEPT_A");
+						return stored;
+					}
+					return null;
+				});
+
 		controller = new EgovDeptJobController();
+		ReflectionTestUtils.setField(controller, "deptJobService", service);
 	}
 
 	@AfterEach
@@ -73,6 +90,8 @@ class EgovDeptJobControllerErrorReshowTest {
 	@Test
 	void insertDeptJobBx_restoresIndictOrdrValueOnValidationError() throws Exception {
 		DeptJobBxVO vo = new DeptJobBxVO();
+		// 업무함은 자기 부서에만 만든다 — 부서 검사가 재표시보다 먼저라 로그인 사용자의 부서로 둔다
+		vo.setDeptId("DEPT_A");
 		ModelMap model = new ModelMap();
 
 		String view = controller.insertDeptJobBx(vo, failing(vo), "5", new RedirectAttributesModelMap(), model);

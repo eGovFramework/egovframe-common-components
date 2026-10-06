@@ -21,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
@@ -88,6 +89,7 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ulm/listUnityLinkSample.do")
+	@RequireAdmin
 	public String egovUnityLinkSample1List(UnityLink unityLink, ModelMap model) throws Exception {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("unityLink={}", unityLink);
@@ -149,10 +151,11 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ulm/detailUnityLink.do")
+	@RequireAdmin
 	public String egovUnityLinkDetail(@ModelAttribute("unityLink") UnityLink unityLink,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		String sLocationUrl = "egovframework/com/uss/ion/ulm/EgovUnityLinkDetail";
@@ -160,11 +163,6 @@ public class EgovUnityLinkController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
-			// 2026.08.09 KISA 보안취약점 조치 - 관리자만 삭제 가능
-			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-			if (auth == null || !auth.contains("ROLE_ADMIN")) {
-				throw new IllegalStateException("권한이 없습니다.");
-			}
 			egovUnityLinkService.deleteUnityLink(unityLink);
 			sLocationUrl = "forward:/uss/ion/ulm/listUnityLink.do";
 		} else {
@@ -187,6 +185,7 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ulm/updtUnityLinkView.do")
+	@RequireAdmin
 	public String egovUnityLinkModify(@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -198,7 +197,7 @@ public class EgovUnityLinkController {
 		// 통합링크구분설정
 		model.addAttribute("unityLinkSeCodeList", unityLinkSeCode());
 		// 수정정보 불러오기
-		UnityLink resultUnityLink = egovUnityLinkService.selectUnityLinkDetail(unityLink);
+		UnityLink resultUnityLink = EgovAuthorizationHelper.requireTarget(egovUnityLinkService.selectUnityLinkDetail(unityLink));
 		model.addAttribute("unityLink", resultUnityLink);
 
 		return "egovframework/com/uss/ion/ulm/EgovUnityLinkUpdt";
@@ -224,6 +223,8 @@ public class EgovUnityLinkController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		UnityLink stored = egovUnityLinkService.selectUnityLinkDetail(unityLink);
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("unityLinkSeCodeList", unityLinkSeCode());
@@ -253,6 +254,7 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/ion/ulm/registUnityLinkView.do")
+	@RequireAdmin
 	public String egovUnityLinkRegist(@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -307,31 +309,5 @@ public class EgovUnityLinkController {
 		return "redirect:/uss/ion/ulm/listUnityLink.do";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

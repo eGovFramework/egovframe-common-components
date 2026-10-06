@@ -3,6 +3,7 @@ package egovframework.com.utl.pao.web;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,7 @@ public class EgovPrntngOutptController {
 	 * @throws IOException
 	 */
 	@RequestMapping(value = "/utl/pao/EgovPrntngOutpt.do")
+	@RequireAdmin
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LOGGER.info("EgovPrntngOutptController start....");
 		Map<String, Object> cmdModel = new HashMap<>();

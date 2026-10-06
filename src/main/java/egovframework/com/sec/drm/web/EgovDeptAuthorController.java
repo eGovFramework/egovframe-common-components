@@ -65,6 +65,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/drm/EgovDeptAuthorListView.do")
+    @RequireAdmin
     public String selectDeptAuthorListView() throws Exception {
         return "egovframework/com/sec/drm/EgovDeptAuthorManage";
     }
@@ -79,6 +80,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 */
     @IncludedInfo(name="부서권한관리", listUrl="/sec/drm/EgovDeptAuthorList.do", order = 100,gid = 20)
     @RequestMapping(value = "/sec/drm/EgovDeptAuthorList.do")
+    @RequireAdmin
 	public String selectDeptAuthorList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO,
 			                            @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
 			                             ModelMap model) throws Exception {
@@ -177,6 +179,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/drm/EgovDeptSearchView.do")
+    @RequireAdmin
     public String selectDeptListView() throws Exception {
         return "egovframework/com/sec/drm/EgovDeptSearch";
     }
@@ -189,6 +192,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 */
     //@IncludedInfo(name="부서목록관리", order = 101)
     @RequestMapping(value = "/sec/drm/EgovDeptSearchList.do")
+    @RequireAdmin
 	public String selectDeptList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO,
 			                             ModelMap model) throws Exception {
 

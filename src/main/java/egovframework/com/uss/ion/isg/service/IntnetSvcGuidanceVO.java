@@ -74,6 +74,11 @@ public class IntnetSvcGuidanceVO extends ComDefaultVO {
 	private String frstRegisterPnttm;
 
 	/**
+	 * 최초등록자ID
+	 */
+	private String frstRegisterId;
+
+	/**
 	 * 인터넷서비스 목록
 	 */
 	private List<IntnetSvcGuidanceVO> intnetSvcGuidanceList;

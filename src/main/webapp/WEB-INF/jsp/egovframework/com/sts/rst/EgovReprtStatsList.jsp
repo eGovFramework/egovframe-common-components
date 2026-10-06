@@ -164,6 +164,7 @@ function press() {
 	<h1>${pageTitle}</h1>
 
 <form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sts/rst/selectReprtStatsList.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <input type="hidden" name="pmFromDate" value="<c:out value="${reprtStatsVO.pmFromDate}"/>" >
 <input type="hidden" name="pmToDate" value="<c:out value="${reprtStatsVO.pmToDate}"/>" >
 

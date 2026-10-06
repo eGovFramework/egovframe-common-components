@@ -87,4 +87,11 @@ public interface EgovQustnrTmplatManageService {
 	 */
 	void deleteQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO) throws Exception;
 
+	/**
+	 * 다른 사용자가 등록한 설문이 이 템플릿을 쓰는 건수를 조회한다.
+	 * @param qustnrTmplatManageVO - 템플릿 ID·조회자(frstRegisterId)
+	 * @return int
+	 */
+	int selectQustnrTmplatOtherUseCnt(QustnrTmplatManageVO qustnrTmplatManageVO);
+
 }

@@ -70,6 +70,12 @@ function fncMainImageDelete() {
 
 function fncOnChangeImage() {
 	var varFrom = document.getElementById("mainImageVO") || document.forms["mainImageVO"];
+	// 2026.07.30 보안 조치 - 클라이언트단 이미지 확장자 화이트리스트 검증
+	if (!EgovMultiFilesChecker.checkExtensions("egovfile_0", ".gif,.jpg,.jpeg,.png,.bmp")) {
+		varFrom.file_1.value = "";
+		varFrom.image.value = "";
+		return;
+	}
 	varFrom.image.value = varFrom.file_1.value;
 }
 

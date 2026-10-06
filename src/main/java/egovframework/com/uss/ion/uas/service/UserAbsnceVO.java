@@ -78,6 +78,11 @@ public class UserAbsnceVO extends ComDefaultVO {
 	private String frstRegisterPnttm;
 
 	/**
+	 * 최초등록자ID
+	 */
+	private String frstRegisterId;
+
+	/**
 	 * 등록여부
 	 */
 	private String regYn;
@@ -181,6 +186,20 @@ public class UserAbsnceVO extends ComDefaultVO {
 	 */
 	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
 		this.frstRegisterPnttm = frstRegisterPnttm;
+	}
+
+	/**
+	 * @return the frstRegisterId
+	 */
+	public String getFrstRegisterId() {
+		return frstRegisterId;
+	}
+
+	/**
+	 * @param frstRegisterId the frstRegisterId to set
+	 */
+	public void setFrstRegisterId(String frstRegisterId) {
+		this.frstRegisterId = frstRegisterId;
 	}
 
 	/**

@@ -12,6 +12,9 @@ public interface EgovFaqService {
 
 	FaqVO selectFaqDetail(FaqVO searchVO) throws Exception;
 
+	// 조회수를 올리지 않는 단건 조회 — 권한 확인·수정·삭제용
+	FaqVO selectFaqDetailNoCount(FaqVO searchVO) throws Exception;
+
 	void insertFaq(FaqVO faqVO) throws FdlException;
 
 	void updateFaq(FaqVO faqVO);

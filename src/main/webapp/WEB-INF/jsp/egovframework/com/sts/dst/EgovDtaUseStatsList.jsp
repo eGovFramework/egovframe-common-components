@@ -156,6 +156,7 @@ function press() {
 	<h1>${pageTitle}</h1>
 	
 	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sts/dst/selectDtaUseStatsList.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<input type="hidden" name="pmFromDate" value="<c:out value="${dtaUseStatsVO.pmFromDate}"/>" >
 		<input type="hidden" name="pmToDate" value="<c:out value="${dtaUseStatsVO.pmToDate}"/>" >

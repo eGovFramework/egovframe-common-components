@@ -29,6 +29,16 @@
 	 AND A.NOTE_ID=#{noteId} 
 	]]>
 	</select>
+	<!-- 2026.07.30 보안 조치 - 쪽지 수신자 확인 -->
+	<select id="selectNoteRecptnCheck" resultType="int">
+		SELECT COUNT(*)
+		FROM COMTNNOTERECPTN A, COMTNNOTETRNSMIT B
+		WHERE A.NOTE_ID = B.NOTE_ID
+		AND A.NOTE_TRNSMIT_ID = B.NOTE_TRNSMIT_ID
+		AND A.NOTE_ID = #{noteId}
+		AND A.RCVER_ID = #{rcverId}
+	</select>
+
 	
 	<!-- 쪽지관리::쪽지관리  등록  -->
 	<insert id="NoteManage.insertNoteManage">	     

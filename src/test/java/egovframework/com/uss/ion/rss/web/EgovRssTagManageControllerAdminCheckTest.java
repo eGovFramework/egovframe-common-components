@@ -28,6 +28,8 @@ import egovframework.com.uss.ion.rss.service.RssManage;
  */
 class EgovRssTagManageControllerAdminCheckTest {
 
+	private static final String LOGIN_UNIQ_ID = "USRCNFRM_00000000009";
+
 	private static final class StubService implements EgovRssTagManageService {
 		private boolean updateCalled = false;
 		private boolean insertCalled = false;
@@ -54,7 +56,10 @@ class EgovRssTagManageControllerAdminCheckTest {
 
 		@Override
 		public RssManage selectRssTagManageDetail(RssManage rssManage) {
-			return rssManage;
+			// 수정은 등록자 본인만 가능하므로 저장된 RSS태그는 로그인 사용자가 등록한 것으로 둔다.
+			RssManage stored = new RssManage();
+			stored.setFrstRegisterId(LOGIN_UNIQ_ID);
+			return stored;
 		}
 
 		@Override
@@ -75,7 +80,7 @@ class EgovRssTagManageControllerAdminCheckTest {
 
 	private static void bindLoginUser(List<String> authorities) {
 		LoginVO login = new LoginVO();
-		login.setUniqId("USRCNFRM_00000000009");
+		login.setUniqId(LOGIN_UNIQ_ID);
 		EgovUserDetailsService stub = new EgovUserDetailsService() {
 			@Override
 			public Object getAuthenticatedUser() {

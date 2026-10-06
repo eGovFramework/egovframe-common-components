@@ -1,5 +1,7 @@
 package egovframework.com.uss.olh.omm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -21,8 +23,8 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.uss.olh.omm.service.EgovOnlineManualService;
 import egovframework.com.uss.olh.omm.service.OnlineManualVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
@@ -118,6 +120,7 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omn/selectOnlineManualDetail.do")
+	@RequireAdmin
 	public String selectOnlineManualUserDetail(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			OnlineManualVO onlineManualVO, ModelMap model) throws Exception {
 
@@ -175,6 +178,7 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omm/selectOnlineManualDetail.do")
+	@RequireAdmin
 	public String selectOnlineManualDetail(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			OnlineManualVO onlineManualVO, ModelMap model) throws Exception {
 
@@ -193,6 +197,7 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omm/insertOnlineManualView.do")
+	@RequireAdmin
 	public String insertOnlineManualView(@ModelAttribute("searchVO") OnlineManualVO searchVO, Model model)
 			throws Exception {
 
@@ -219,6 +224,7 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omm/insertOnlineManual.do")
+	@RequireAdmin
 	public String insertOnlineManual(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
 			Model model)
@@ -256,6 +262,7 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omm/updateOnlineManualView.do")
+	@RequireAdmin
 	public String updateOnlineManualView(@RequestParam("onlineMnlId") String onlineMnlId,
 			@ModelAttribute("searchVO") OnlineManualVO searchVO, ModelMap model) throws Exception {
 
@@ -269,7 +276,8 @@ public class EgovOnlineManualController {
 		OnlineManualVO onlineManualVO = new OnlineManualVO();
 		onlineManualVO.setOnlineMnlId(onlineMnlId);
 
-		model.addAttribute("onlineManualVO", egovOnlineManualService.selectOnlineManualDetail(onlineManualVO));
+		OnlineManualVO stored = EgovAuthorizationHelper.requireTarget(egovOnlineManualService.selectOnlineManualDetail(onlineManualVO));
+		model.addAttribute("onlineManualVO", stored);
 
 		return "egovframework/com/uss/olh/omm/EgovOnlineManualUpdt";
 	}
@@ -284,10 +292,12 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omm/updateOnlineManual.do")
+	@RequireAdmin
 	public String updateOnlineManual(HttpServletRequest request, @ModelAttribute("searchVO") OnlineManualVO searchVO,
 			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
 			Model model)
 			throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -297,22 +307,6 @@ public class EgovOnlineManualController {
 			model.addAttribute("onlineMnlSeCode", onlineMnlSeCode);
 			return "egovframework/com/uss/olh/omm/EgovOnlineManualUpdt";
 		}
-
-		// --------------------------------------------------------------------------------------------
-		// @ XSS 사용자권한체크 START
-		// param1 : 사용자고유ID(uniqId,esntlId)
-		// --------------------------------------------------------
-		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-
-		// step1 DB에서 해당 게시물의 uniqId 조회
-		OnlineManualVO vo = egovOnlineManualService.selectOnlineManualDetail(onlineManualVO);
-
-		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
-		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-		// --------------------------------------------------------
-		// @ XSS 사용자권한체크 END
-		// --------------------------------------------------------------------------------------------
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
@@ -333,24 +327,10 @@ public class EgovOnlineManualController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/olh/omm/deleteOnlineManual.do")
+	@RequireAdmin
 	public String deleteOnlineManual(HttpServletRequest request, OnlineManualVO onlineManualVO,
 			@ModelAttribute("searchVO") OnlineManualVO searchVO) throws Exception {
 
-		// --------------------------------------------------------------------------------------------
-		// @ XSS 사용자권한체크 START
-		// param1 : 사용자고유ID(uniqId,esntlId)
-		// --------------------------------------------------------
-		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-
-		// step1 DB에서 해당 게시물의 uniqId 조회
-		OnlineManualVO vo = egovOnlineManualService.selectOnlineManualDetail(onlineManualVO);
-
-		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
-		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-		// --------------------------------------------------------
-		// @ XSS 사용자권한체크 END
-		// --------------------------------------------------------------------------------------------
 
 		egovOnlineManualService.deleteOnlineManual(onlineManualVO);
 

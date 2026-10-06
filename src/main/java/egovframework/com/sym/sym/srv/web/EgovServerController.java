@@ -21,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.srv.service.EgovServerService;
 import egovframework.com.sym.sym.srv.service.Server;
@@ -85,8 +86,9 @@ public class EgovServerController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/sym/sym/srv/selectServerEqpmnListView.do")
+	@RequireAdmin
 	public String selectServerEqpmnListView() throws Exception {
-		return "egovframework/com/sym/sym/srv/EgovServerEqpmnList";
+		return "forward:/sym/sym/srv/selectServerEqpmnList.do";
 	}
 
 	/**
@@ -150,6 +152,7 @@ public class EgovServerController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/sym/srv/addViewServerEqpmn.do")
+	@RequireAdmin
 	public String insertViewServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO, ModelMap model)
 			throws Exception {
 
@@ -192,11 +195,13 @@ public class EgovServerController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/sym/srv/updtViewServerEqpmn.do")
+	@RequireAdmin
 	public String updateViewServerEqpmn(@RequestParam("serverEqpmnId") String serverEqpmnId,
 			@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO, ModelMap model) throws Exception {
 
 		serverEqpmnVO.setServerEqpmnId(serverEqpmnId);
-		model.addAttribute("serverEqpmn", egovServerService.selectServerEqpmn(serverEqpmnVO));
+		ServerEqpmnVO stored = egovServerService.selectServerEqpmn(serverEqpmnVO);
+		model.addAttribute("serverEqpmn", stored);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/sym/sym/srv/EgovServerEqpmnUpdt";
 	}
@@ -214,6 +219,7 @@ public class EgovServerController {
 	public String updateServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sym/sym/srv/EgovServerEqpmnUpdt";
@@ -240,7 +246,7 @@ public class EgovServerController {
 	public String deleteServerEqpmn(@RequestParam("serverEqpmnId") String serverEqpmnId,
 			@ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		serverEqpmn.setServerEqpmnId(serverEqpmnId);
 		egovServerService.deleteServerEqpmn(serverEqpmn);
@@ -256,6 +262,7 @@ public class EgovServerController {
 	 */
 	@RequestMapping(value = "/sym/sym/srv/checkServerEqpmnRelations.do")
 	@ResponseBody
+	@RequireAdmin
 	public List<ServerVO> checkServerEqpmnRelations(@RequestParam("serverEqpmnId") String serverEqpmnId)
 			throws Exception {
 		return egovServerService.selectRelatedServersByEqpmnId(serverEqpmnId);
@@ -267,8 +274,9 @@ public class EgovServerController {
 	 * @return String
 	 */
 	@RequestMapping(value = "/sym/sym/srv/selectServerListView.do")
+	@RequireAdmin
 	public String selectServerListView() throws Exception {
-		return "egovframework/com/sym/sym/srv/EgovServerList";
+		return "forward:/sym/sym/srv/selectServerList.do";
 	}
 
 	/**
@@ -335,6 +343,7 @@ public class EgovServerController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/sym/srv/addViewServer.do")
+	@RequireAdmin
 	public String insertViewServer(@ModelAttribute("serverVO") ServerVO serverVO, ModelMap model) throws Exception {
 
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM064"));
@@ -377,11 +386,13 @@ public class EgovServerController {
 	 * @return String - 리턴 Url
 	 */
 	@PostMapping("/sym/sym/srv/updtViewServer.do")
+	@RequireAdmin
 	public String updateViewServer(@RequestParam("serverId") String serverId,
 			@ModelAttribute("serverVO") ServerVO serverVO, ModelMap model) throws Exception {
 
 		serverVO.setServerId(serverId);
-		model.addAttribute("server", egovServerService.selectServer(serverVO));
+		ServerVO stored = egovServerService.selectServer(serverVO);
+		model.addAttribute("server", stored);
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM064"));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/sym/sym/srv/EgovServerUpdt";
@@ -400,6 +411,7 @@ public class EgovServerController {
 	public String updateServer(@ModelAttribute("serverVO") ServerVO serverVO,
 			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM064"));
@@ -427,7 +439,7 @@ public class EgovServerController {
 	public String deleteServer(@RequestParam("serverId") String serverId, @ModelAttribute("server") Server server,
 			ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 
 		server.setServerId(serverId);
@@ -445,6 +457,7 @@ public class EgovServerController {
 	 * @param serverEqpmnRelateVO
 	 */
 	@RequestMapping(value = "/sym/sym/srv/selectServerEqpmnRelateList.do")
+	@RequireAdmin
 	public String selectServerEqpmnRelateList(@RequestParam("strServerId") String strServerId,
 			@ModelAttribute("serverVO") ServerVO serverVO,
 			@ModelAttribute("serverEqpmnRelateVO") ServerEqpmnRelateVO serverEqpmnRelateVO, ModelMap model)
@@ -528,32 +541,6 @@ public class EgovServerController {
 	public List<?> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId) throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
 		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

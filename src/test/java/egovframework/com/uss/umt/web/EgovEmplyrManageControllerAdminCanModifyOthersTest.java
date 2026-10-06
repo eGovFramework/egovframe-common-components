@@ -27,7 +27,7 @@ import egovframework.com.uss.umt.service.EmplyrManageVO;
  *
  * <p>고친 전 코드는 로그인한 관리자에게도 "수정·삭제 대상이 로그인한 자기 자신"까지 요구해,
  * 관리자가 다른 직원을 관리할 수 없었다(둘 다 {@code @RequireAdmin} 으로 이미 관리자만
- * 도달 가능한데, 그 위에 자기 자신 검사까지 겹쳐 걸었다). {@code EgovUmtAuthorizationHelper.canModifyUser}
+ * 도달 가능한데, 그 위에 자기 자신 검사까지 겹쳐 걸었다). {@code EgovAuthorizationHelper.isAdminOrOwner}
  * 로 형제와 같은 처리를 쓰도록 고쳤다 — 관리자면 대상과 무관하게 통과한다.</p>
  */
 class EgovEmplyrManageControllerAdminCanModifyOthersTest {

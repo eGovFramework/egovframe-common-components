@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
@@ -70,6 +71,7 @@ public class EgovInsttCodeRecptnController {
 	 * @throws Exception
 	 */
     @PostMapping("/sym/ccm/icr/addInsttCode.do")
+	@RequireAdmin
 	public String insertInsttCodeRecptn (InsttCodeRecptn insttCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -94,6 +96,7 @@ public class EgovInsttCodeRecptnController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/ccm/icr/getInsttCodeDetail.do")
+ 	@RequireAdmin
  	public String selectInsttCodeDetail (@ModelAttribute("insttCode") InsttCodeRecptn insttCode
 			, @ModelAttribute("insttCodeRecptnVO") InsttCodeRecptnVO insttCodeRecptnVO
 			, ModelMap model
@@ -172,6 +175,7 @@ public class EgovInsttCodeRecptnController {
      * @throws Exception
      */
     @RequestMapping(value = "/sym/ccm/icr/getInsttCodeRecptnMainList.do")
+	@RequireAdmin
 	public String selectInsttCodeRecptnMainList (@ModelAttribute("searchVO") InsttCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {

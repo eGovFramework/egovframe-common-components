@@ -1,5 +1,7 @@
 package egovframework.com.uss.sam.cpy.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
@@ -69,6 +71,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/sam/cpy/EgovMain.do")
+	@RequireAdmin
 	public String egovMain(ModelMap model) throws Exception {
 		return "egovframework/com/uss/sam/cpy/EgovMain";
 	}
@@ -81,6 +84,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/sam/cpy/EgovLeft.do")
+	@RequireAdmin
 	public String egovLeft(ModelMap model) throws Exception {
 		return "egovframework/com/uss/sam/cpy/EgovLeft";
 	}
@@ -132,6 +136,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do")
+	@RequireAdmin
 	public String selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
 			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -151,6 +156,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegistView.do")
+	@RequireAdmin
 	public String insertCpyrhtPrtcPolicyCnView(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			Model model) throws Exception {
 
@@ -170,6 +176,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do")
+	@RequireAdmin
 	public String insertCpyrhtPrtcPolicyCn(
 		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
@@ -204,6 +211,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdtView.do")
+	@RequireAdmin
 	public String updateCpyrhtPrtcPolicyCnView(@RequestParam("cpyrhtId") String cpyrhtId,
 			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -211,6 +219,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 		// Primary Key 값 세팅
 		cpyrhtPrtcPolicyVO.setCpyrhtId(cpyrhtId);
+
 
 		// 변수명은 CoC 에 따라
 		model.addAttribute(selectCpyrhtPrtcPolicyDetail(cpyrhtPrtcPolicyVO, searchVO, model));
@@ -232,10 +241,12 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do")
+	@RequireAdmin
 	public String updateCpyrhtPrtcPolicyCn(
 		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
 			BindingResult bindingResult) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 
@@ -265,6 +276,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do")
+	@RequireAdmin
 	public String deleteCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
 			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -285,11 +297,6 @@ public class EgovCpyrhtPrtcPolicyController {
 			return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
 		}
 
-		// 관리자 또는 최초등록자만 삭제 가능 (IDOR 방지)
-		if (!EgovUmtAuthorizationHelper.canModifyUser(existing.getFrstRegisterId())) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
-			return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
-		}
 
 		cpyrhtPrtcPolicyService.deleteCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
 

@@ -21,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovUserDetailsService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.smt.lsm.service.EgovLeaderSchdulService;
 import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
 
 /**
@@ -91,6 +92,13 @@ class EgovLeaderSchdulControllerLeaderSttusRestoreTest {
 		ReflectionTestUtils.setField(controller, "cmmUseService",
 				Proxy.newProxyInstance(getClass().getClassLoader(),
 						new Class[] { EgovCmmUseService.class }, emptyStub));
+		// 수정 처리는 검증 실패 분기 전에 소유자를 확인하므로, 로그인 사용자가 등록한 간부상태로 둔다.
+		LeaderSttusVO stored = new LeaderSttusVO();
+		stored.setFrstRegisterId("USRCNFRM_TEST");
+		ReflectionTestUtils.setField(controller, "leaderSchdulService",
+				Proxy.newProxyInstance(getClass().getClassLoader(),
+						new Class[] { EgovLeaderSchdulService.class },
+						(proxy, method, args) -> "selectLeaderSttus".equals(method.getName()) ? stored : null));
 
 		LeaderSttusVO leaderSttusVO = new LeaderSttusVO();
 		BindingResult bindingResult = new BeanPropertyBindingResult(leaderSttusVO, "leaderSttusVO");

@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.bat.service.BatchResult;
 import egovframework.com.sym.bat.service.EgovBatchResultService;
@@ -77,6 +78,7 @@ public class EgovBatchResultController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
+
 		egovBatchResultService.deleteBatchResult(batchResult);
 
 		return "forward:/sym/bat/getBatchResultList.do";
@@ -91,9 +93,10 @@ public class EgovBatchResultController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchResult.do")
+	@RequireAdmin
 	public String selectBatchResult(@ModelAttribute("searchVO") BatchResult batchResult, ModelMap model) throws Exception {
 		// 2026.07.13 KISA 보안취약점 조치
-		LoginVO _loginVO = egovAssertLoginUser();
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
 		LOGGER.debug(" 조회조건 : {}", batchResult);
 		BatchResult result = egovBatchResultService.selectBatchResult(batchResult);
@@ -138,31 +141,5 @@ public class EgovBatchResultController {
 		return "egovframework/com/sym/bat/EgovBatchResultList";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

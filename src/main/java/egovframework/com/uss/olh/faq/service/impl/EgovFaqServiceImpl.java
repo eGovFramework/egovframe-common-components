@@ -37,6 +37,11 @@ public class EgovFaqServiceImpl extends EgovAbstractServiceImpl implements EgovF
 		//조회수 증가
 		egovFaqDao.updateFaqInqireCo(searchVO);
 
+		return selectFaqDetailNoCount(searchVO);
+	}
+
+	@Override
+	public FaqVO selectFaqDetailNoCount(FaqVO searchVO) throws Exception {
 		FaqVO resultVO = egovFaqDao.selectFaqDetail(searchVO);
 		if (resultVO == null) {
 			throw processException("info.nodata.msg");

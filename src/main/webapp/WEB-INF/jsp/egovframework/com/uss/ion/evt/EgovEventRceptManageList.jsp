@@ -116,7 +116,7 @@ function fncEventReqstDetailPop(eventId){
 <div class="board">
 	<h1><spring:message code="comUssIonEvt.eventRceptManageList.title"/></h1><!-- 행사접수관리 목록 -->
 	
-<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/evt/selectEventRceptList.do" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/evt/EgovEventRcrptManageList.do" method="post">
 	
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="eventId">

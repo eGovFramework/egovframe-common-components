@@ -21,8 +21,7 @@ package egovframework.com.ext.oauth.web;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -89,6 +88,7 @@ public class EgovSignupController {
 	private OAuthVO kakaoAuthVO;
 
 	@RequestMapping(value = "/uat/uia/oauthLoginUsr", method = RequestMethod.GET)
+	@RequireAdmin
 	public String login(Model model, HttpSession session) throws Exception {
 		LOGGER.debug("===>>> OAuth Login .....");
 
@@ -112,6 +112,7 @@ public class EgovSignupController {
 	}
 
 	@RequestMapping(value = "/auth/{oauthService}/callback", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequireAdmin
 	public String oauthLoginCallback(@PathVariable String oauthService, Model model,
 			@RequestParam String code, @RequestParam(required = false) String state, HttpSession session) throws Exception {
 
@@ -166,31 +167,5 @@ public class EgovSignupController {
 		return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";
 	}
 
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
-	 */
-	private LoginVO egovAssertLoginUser() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
-			throw new IllegalStateException("인증 정보가 없습니다.");
-		}
-		return loginVO;
-	}
-
-	/**
-	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
-	 */
-	private void egovAssertAdminOrOwner(String ownerUniqId) {
-		LoginVO loginVO = egovAssertLoginUser();
-		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
-			return;
-		}
-		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
-		if (auth != null && auth.contains("ROLE_ADMIN")) {
-			return;
-		}
-		throw new IllegalStateException("권한이 없습니다.");
-	}
 
 }

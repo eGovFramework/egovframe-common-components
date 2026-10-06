@@ -27,7 +27,8 @@ class EgovLoginPolicyControllerAdminCheckTest {
 	@Test
 	void insertLoginPolicyRequiresAdmin() throws Exception {
 		Method m = method("insertLoginPolicy", egovframework.com.uat.uap.service.LoginPolicy.class,
-				org.springframework.validation.BindingResult.class, org.springframework.ui.ModelMap.class);
+				org.springframework.validation.BindingResult.class, org.springframework.ui.ModelMap.class,
+				org.springframework.web.servlet.mvc.support.RedirectAttributes.class);
 		assertTrue(m.isAnnotationPresent(RequireAdmin.class),
 				"로그인정책 신규등록은 관리자만 가능해야 한다.");
 	}
@@ -35,7 +36,8 @@ class EgovLoginPolicyControllerAdminCheckTest {
 	@Test
 	void updateLoginPolicyRequiresAdmin() throws Exception {
 		Method m = method("updateLoginPolicy", egovframework.com.uat.uap.service.LoginPolicy.class,
-				org.springframework.validation.BindingResult.class, org.springframework.ui.ModelMap.class);
+				org.springframework.validation.BindingResult.class, org.springframework.ui.ModelMap.class,
+				org.springframework.web.servlet.mvc.support.RedirectAttributes.class);
 		assertTrue(m.isAnnotationPresent(RequireAdmin.class),
 				"로그인정책 수정은 관리자만 가능해야 한다.");
 	}
@@ -43,7 +45,8 @@ class EgovLoginPolicyControllerAdminCheckTest {
 	@Test
 	void deleteLoginPolicyRequiresAdmin() throws Exception {
 		Method m = method("deleteLoginPolicy", egovframework.com.uat.uap.service.LoginPolicy.class,
-				org.springframework.ui.ModelMap.class);
+				org.springframework.ui.ModelMap.class,
+				org.springframework.web.servlet.mvc.support.RedirectAttributes.class);
 		assertTrue(m.isAnnotationPresent(RequireAdmin.class),
 				"로그인정책 삭제는 관리자만 가능해야 한다.");
 	}

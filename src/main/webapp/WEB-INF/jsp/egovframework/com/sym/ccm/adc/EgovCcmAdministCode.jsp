@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmAdc.ccmAdministCode.upperCode"/> <spring:message code="title.list" /></c:set>
 <html lang="ko">
 <head>
@@ -122,7 +123,8 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-			<tr style="cursor:pointer;cursor:hand;" onclick="fnReturnDay('${resultInfo.administZoneCode}','${resultInfo.administZoneNm}');">
+			<%-- 2026.07.30 보안 조치 - JS 문자열 컨텍스트 이스케이프(행정코드 팝업 XSS 차단) --%>
+			<tr style="cursor:pointer;cursor:hand;" onclick="fnReturnDay('<c:out value="${egovc:escapeJavaScript(resultInfo.administZoneCode)}"/>','<c:out value="${egovc:escapeJavaScript(resultInfo.administZoneNm)}"/>');">
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
 					<c:choose>

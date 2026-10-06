@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.lang.reflect.Proxy;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -14,6 +15,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.support.SimpleSessionStatus;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.service.EgovUserDetailsService;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.evt.service.EgovEventManageService;
 import egovframework.com.uss.ion.evt.service.EventManage;
 import egovframework.com.uss.ion.evt.service.EventManageVO;
@@ -26,6 +30,37 @@ import egovframework.com.uss.ion.evt.service.EventManageVO;
  * 화면을 그린 뒤 신청이 들어오면 참가신청을 남긴 채 행사만 지우는 요청이 실행된다.</p>
  */
 class EgovEventManageControllerTest {
+
+	private static final String LOGIN_UNIQ_ID = "USRCNFRM_00000000001";
+
+	private EgovUserDetailsService previousUserDetailsService;
+
+	/** 삭제는 등록자 본인만 가능하므로 로그인 사용자를 묶고, 저장본의 등록자를 같은 사용자로 둔다. */
+	@BeforeEach
+	void bindLoginUser() {
+		previousUserDetailsService = new EgovUserDetailsHelper().getEgovUserDetailsService();
+		LoginVO loginVO = new LoginVO();
+		loginVO.setUniqId(LOGIN_UNIQ_ID);
+		new EgovUserDetailsHelper().setEgovUserDetailsService((EgovUserDetailsService) Proxy.newProxyInstance(
+				EgovUserDetailsService.class.getClassLoader(), new Class<?>[] { EgovUserDetailsService.class },
+				(proxy, method, args) -> {
+					if ("getAuthenticatedUser".equals(method.getName())) {
+						return loginVO;
+					}
+					if ("isAuthenticated".equals(method.getName())) {
+						return Boolean.TRUE;
+					}
+					if ("getAuthorities".equals(method.getName())) {
+						return java.util.Collections.emptyList();
+					}
+					return null;
+				}));
+	}
+
+	@AfterEach
+	void restoreLoginUser() {
+		new EgovUserDetailsHelper().setEgovUserDetailsService(previousUserDetailsService);
+	}
 
 	private EgovEventManageController controller;
 	private final AtomicBoolean deleted = new AtomicBoolean(false);
@@ -41,6 +76,7 @@ class EgovEventManageControllerTest {
 						EventManageVO found = new EventManageVO();
 						found.setEventId("EVT_000000000001");
 						found.setEventAtdrnCount(eventAtdrnCount);
+						found.setFrstRegisterId(LOGIN_UNIQ_ID);
 						return found;
 					case "deleteEventManage":
 						deleted.set(true);

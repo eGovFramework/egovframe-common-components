@@ -60,10 +60,9 @@ function fncSelectDeptList(pageNo){
 }
 
 function fncSelectDept(deptCode, deptNm) {
-    parent.document.listForm.deptCode.value = deptCode;
-    parent.document.listForm.deptNm.value = deptNm;
-    
-    parent.$('.ui-dialog-content').dialog('close');
+    opener.listForm.deptCode.value = deptCode;
+    opener.listForm.deptNm.value = deptNm;
+    window.close();
 }
 
 function linkPage(pageNo){
@@ -92,18 +91,18 @@ function fncSelectDeptConfirm() {
 			}
 
 			if(checkCount == 1) {
-                parent.document.listForm.deptCode.value = org_cd;
-                parent.document.listForm.deptNm.value = org_nm;
-                parent.$('.ui-dialog-content').dialog('close');
+                opener.listForm.deptCode.value = org_cd;
+                opener.listForm.deptNm.value = org_nm;
+                window.close();
 		    } else {
 			    alert("<spring:message code="comCopSecDrm.deptSearchPopup.validate.alert.selectOne" />"); //하나의 부서를 선택하세요.
 			    return;
 			}
 		} else {
 			if(document.listForm.delYn.checked) {
-                parent.document.listForm.deptCode.value = document.listForm.checkId.value;
-                parent.document.listForm.deptNm.value = document.listForm.checkNm.value;
-                parent.$('.ui-dialog-content').dialog('close');
+                opener.listForm.deptCode.value = document.listForm.checkId.value;
+                opener.listForm.deptNm.value = document.listForm.checkNm.value;
+                window.close();
 			} else {
 	            alert("<spring:message code="comCopSecDrm.deptSearchPopup.validate.alert.selectNothing" />"); //선택된 항목이 없습니다.
 	            return;
@@ -131,7 +130,7 @@ function press() {
 <div class="popup">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 부서조회팝업 목록 -->
 	<!-- 검색영역 -->
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
+	<div class="pop_search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li><div style="line-height:4px;">&nbsp;</div><div><spring:message code="comCopSecDrm.deptSearchPopup.searchKeywordText" /> : </div></li><!-- 권한명 -->
 			<!-- 검색키워드 및 조회버튼 -->
@@ -145,7 +144,7 @@ function press() {
 	</div>
 	
 	<!-- 목록영역 -->
-	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
+	<table class="pop_board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
 		<col style="width: 9%;">
