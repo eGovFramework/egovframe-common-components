@@ -70,7 +70,7 @@ function selectMenuListTmp() {
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="req_RetrunPath" value="/sym/mnu/mpm/EgovMenuMvmn">
 <c:forEach var="result" items="${list_menulist}" varStatus="status" >
-<input type="hidden" name="tmp_menuNmVal" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.progrmFileNm}|${result.menuNo}|${result.menuOrdr}|${result.menuNm}|${result.upperMenuId}|${result.menuDc}|${result.relateImagePath}|${result.relateImageNm}|${result.progrmFileNm}|">
+<input type="hidden" name="tmp_menuNmVal" value="<c:out value='${result.menuNo}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.progrmFileNm}'/>|<c:out value='${result.menuNo}'/>|<c:out value='${result.menuOrdr}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuDc}'/>|<c:out value='${result.relateImagePath}'/>|<c:out value='${result.relateImageNm}'/>|<c:out value='${result.progrmFileNm}'/>|">
 </c:forEach>
 
 <div class="wTableFrm" style="width:580px">
