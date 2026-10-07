@@ -77,6 +77,7 @@ public class EgovAuthorGroupController {
 	 */
     @IncludedInfo(name="권한그룹관리", listUrl="/sec/rgm/EgovAuthorGroupList.do", order = 70,gid = 20)
     @RequestMapping(value = "/sec/rgm/EgovAuthorGroupList.do")
+    @RequireAdmin
 	public String selectAuthorGroupList(@ModelAttribute("authorGroupVO") AuthorGroupVO authorGroupVO,
 			                            @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
 			                             ModelMap model) throws Exception {

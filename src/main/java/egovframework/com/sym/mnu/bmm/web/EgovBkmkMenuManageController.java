@@ -1,5 +1,6 @@
 package egovframework.com.sym.mnu.bmm.web;
 
+import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.annotation.RequireAdmin;
 
 import java.util.Map;
@@ -196,7 +197,7 @@ public class EgovBkmkMenuManageController {
     @RequireAdmin
     public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
-        String requestUrl = (String)commandMap.get("requestUrl");
+        String requestUrl = EgovWebUtil.sanitizeRelativeRequestUrl((String)commandMap.get("requestUrl"));
         requestUrl = requestUrl.replaceAll("&", "&amp;");
         String width = (String)commandMap.get("width");
         String height = (String)commandMap.get("height");
