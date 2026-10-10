@@ -40,3 +40,6 @@ src/main/webapp/META-INF/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml #
 hs_err_pid*
+
+# 암호화 키 초기화 도구(init-crypto-key) 백업 - 옛 키가 들어 있으므로 커밋하지 않는다
+/crypto-key-backup/
