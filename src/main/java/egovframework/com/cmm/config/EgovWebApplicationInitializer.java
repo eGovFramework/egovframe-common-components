@@ -55,7 +55,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		LOGGER.debug("EgovWebApplicationInitializer START-============================================");
-		
+
 		//-------------------------------------------------------------
 		// Egov Web ServletContextListener 설정
 		//-------------------------------------------------------------
@@ -88,14 +88,14 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		xmlWebApplicationContext.setConfigLocation("/WEB-INF/config/egovframework/springmvc/egov-com-*.xml");
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(xmlWebApplicationContext));
 		//dispatcher.addMapping("*.do");
-		dispatcher.addMapping("/"); // Facebook OAuth 혹은 모바일신분증 에서 사용
+		dispatcher.addMapping("/"); // Facebook OAuth 에서 사용
 		dispatcher.setLoadOnStartup(1);
 		
 		if("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
 			
 			//-------------------------------------------------------------
 			// springSecurityFilterChain 설정
-			//-------------------------------------------------------------		
+			//-------------------------------------------------------------
 			FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());
 			springSecurityFilterChain.addMappingForUrlPatterns(null, false, "*");
 			//servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy("springSecurityFilterChain")).addMappingForUrlPatterns(null, false, "/*");
@@ -147,7 +147,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		//-------------------------------------------------------------
 		// Tomcat의 경우 allowCasualMultipartParsing="true" 추가
 		// <Context docBase="" path="/" reloadable="true" allowCasualMultipartParsing="true">
-		//-------------------------------------------------------------
+		//-------------------------------------------------------------	
 		MultipartFilter springMultipartFilter = new MultipartFilter();
 		springMultipartFilter.setMultipartResolverBeanName("multipartResolver");
 		FilterRegistration.Dynamic multipartFilter = servletContext.addFilter("springMultipartFilter", springMultipartFilter);

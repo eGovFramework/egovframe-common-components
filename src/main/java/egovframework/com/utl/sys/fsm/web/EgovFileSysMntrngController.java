@@ -17,6 +17,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -44,8 +45,9 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
- *  2010.06.28   장철호     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  2010.06.28	장철호		최초 생성
+ *  2011.08.26	정진오		IncludedInfo annotation 추가
+ *  2023.06.09	김수용		NSR 보안조치 (파일시스템 변수에서 개행문자 제거)
  * </pre>
  */
 
@@ -271,7 +273,7 @@ public class EgovFileSysMntrngController {
 
 		int totalSpaceFileSys = 0;
 		try {
-			totalSpaceFileSys = FileSystemChecker.totalSpaceGb(fileSysMntrngVO.getFileSysNm());
+			totalSpaceFileSys = FileSystemChecker.totalSpaceGb(EgovWebUtil.removeCRLF(fileSysMntrngVO.getFileSysNm()));
 		} catch (IOException e) {
 			model.addAttribute("notApplicableFileSys", "true");
 		}

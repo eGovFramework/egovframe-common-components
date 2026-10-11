@@ -53,13 +53,15 @@ import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *  수정일               수정자                  수정내용
- *  ----------   -----------   ---------------------------
- *  2014.12.04   표준프레임워크       최초 적용 (패키지 변경 및 소스 정리)
- *  2016.04.21   장동한                 공통컴포넌트 V3.6 수정
- *  2018.12.11   신용호                 KISA 보안취약점 등 수정
- *  2018.12.28   신용호                 업로드 이미지 URL 생성 부분 수정
- *  2020-08-28   신용호                 보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *  수정일		수정자			수정내용
+ *  ----------	-----------		---------------------------
+ *  2014.12.04	표준프레임워크		최초 적용 (패키지 변경 및 소스 정리)
+ *  2016.04.21	장동한			공통컴포넌트 V3.6 수정
+ *  2018.12.11	신용호			KISA 보안취약점 등 수정
+ *  2018.12.28	신용호			업로드 이미지 URL 생성 부분 수정
+ *  2020.08.28	신용호			보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *  2023.06.09	이택진			NSR 보안조치 (크로스사이트 스크립트 방지를 위한 데이터 변환 코드 수정)
+ *  2023.06.27	김혜준			크로스사이트 스크립트 방지 코드 미사용 변수 개선
  *  
  * </pre>
  */
@@ -161,7 +163,17 @@ public class CkImageSaver {
 			// The original script can be found at [fckeditor_dir]/_dev/domain_fix_template.js
 			// sb.append("(function(){var d=document.domain;while (true){try{var A=window.parent.document.domain;break;}catch(e) {};d=d.replace(/.*?(?:\\.|$)/,'');if (d.length==0) break;try{document.domain=d;}catch (e){break;}}})();\n");
 			// KISA 보안약점 조치 (2018-12-11, 신용호)
-			String funcNo = EgovWebUtil.clearXSSMaximum(request.getParameter(FUNC_NO));
+			String funcNo = request.getParameter(FUNC_NO);
+			boolean isInteger = true;
+			try {
+				Integer.parseInt(funcNo);
+			} catch (NumberFormatException e) {
+				isInteger = false;
+				log.error(e);
+			}
+			if(!isInteger) {
+				funcNo = "1";		// 가장 많이 사용되는 값
+			}
 			sb.append("window.parent.CKEDITOR.tools.callFunction(").append(funcNo).append(", '");
 			sb.append(relUrl);
 			if (errorMessage != null) {

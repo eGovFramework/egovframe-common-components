@@ -89,12 +89,4 @@ public interface EgovMenuCreateManageService {
 	 */
 	 List<?> selectSiteMapByUser(MenuSiteMapVO vo) throws Exception;
 
-	 /**
-	 * 사이트맵 등록
-	 * @param vo MenuSiteMapVO
-	 * @param vHtmlValue String
-	 * @return boolean
-	 * @exception Exception
-	 */
-	 boolean creatSiteMap(MenuSiteMapVO vo, String vHtmlValue) throws Exception;
 }

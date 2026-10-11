@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.raonsecure.omnione.core.eoscommander.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -57,7 +57,7 @@ public class EgovComUtlController {
 
 		// service 사용하여 리턴할 결과값 처리하는 부분은 생략하고 단순 페이지 링크만 처리함
 		// 2022.11.11 시큐어코딩 처리
-		if (StringUtils.isEmpty(link)) {
+		if (StringUtils.isEmpty(linkPage)) {
 			link="egovframework/com/cmm/egovError";
 		}
 

@@ -11,7 +11,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,11 +28,12 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  * @Description : Form-based File Upload 유틸리티
  * @Modification Information
  *
- *   수정일                수정자              수정내용
- *   ----------   --------     ---------------------------
- *   2009.08.26   한성곤               최초 생성
- *   2017.03.03     조성원 	            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2019.12.09   신용호               KISA 보안약점 조치 (위험한 형식 파일 업로드) : uploadFiles 삭제  => EgovFileUploadUtil.uploadFilesExt(확장자 기록) 대체
+ *   수정일			수정자		수정내용
+ *   ----------		--------	---------------------------
+ *   2009.08.26		한성곤		최초 생성
+ *   2017.03.03		조성원		시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2019.12.09		신용호		KISA 보안약점 조치 (위험한 형식 파일 업로드) : uploadFiles 삭제  => EgovFileUploadUtil.uploadFilesExt(확장자 기록) 대체
+ *   2023.06.27		김혜준		NSR 보안조치 (CKEditor 이미지 보기 기능의 스크립트 실행 취약점)
  *
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
@@ -270,6 +273,25 @@ public class EgovFormBasedFileUtil {
 		}
 
 		response.setContentType(EgovWebUtil.removeCRLF(mimeType));
+		
+		boolean contentTypeFlag = false;
+		if(mimeType != null) {
+			Map<String, String> contentTypeWL = getContentTypeWL();
+			if(contentTypeWL != null) {
+				for(String ext: contentTypeWL.keySet()) {
+					String matchMimeType = contentTypeWL.get(ext);
+					if(matchMimeType.equals(mimeType)) {
+						response.setContentType(matchMimeType);		// 지정된 값이므로 안전
+						contentTypeFlag = true;
+						break;
+					}
+				}
+			}
+		}
+		if(!contentTypeFlag) {
+			response.setContentType("application/octet-stream;");
+		}
+		
 		response.setHeader("Content-Disposition", "filename=image;");
 
 		BufferedInputStream fin = null;
@@ -287,5 +309,16 @@ public class EgovFormBasedFileUtil {
 		} finally {
 			EgovResourceCloseHelper.close(outs, fin);
 		}
+	}
+	
+	public static Map<String, String> getContentTypeWL() {
+		Map<String, String> contentTypeWL = new HashMap<>();
+		
+		contentTypeWL.put("gif", "image/gif");
+		contentTypeWL.put("jpg", "image/jpg");
+		contentTypeWL.put("jpeg", "image/jpeg");
+		contentTypeWL.put("png", "image/png");
+		
+		return contentTypeWL;
 	}
 }

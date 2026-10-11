@@ -203,66 +203,6 @@ public class EgovMenuCreateManageController {
 		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatSiteMap";
 	}
 
-	/**
-	 * 메뉴사이트맵 생성처리 및 사이트맵을 등록한다.
-	 *
-	 * @param menuSiteMapVO
-	 *            MenuSiteMapVO
-	 * @param valueHtml
-	 *            String
-	 * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreatSiteMap"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSiteMapInsert.do")
-	public String selectMenuCreatSiteMapInsert(@ModelAttribute("menuSiteMapVO") MenuSiteMapVO menuSiteMapVO, @RequestParam("valueHtml") String valueHtml, ModelMap model
-			,HttpServletResponse response)
-			throws Exception {
-		boolean chkCreat = false;
-		String resultMsg = "";
-		// 0. Spring Security 사용자권한 처리
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "redirect:/uat/uia/egovLoginUsr.do";
-		}
-
-		/*menuSiteMapVO.setTmpRootPath(EgovProperties.RELATIVE_PATH_PREFIX
-				+ ".." + System.getProperty("file.separator") + ".."
-				+ System.getProperty("file.separator") + "..");*/
-
-		/* 사이트맵 파일 생성 위치 지정 */
-		//String currentPath = EgovMenuCreateManageController.class.getResource("").getPath();
-		String currentPath = EgovMenuCreateManageController.class.getProtectionDomain().getCodeSource() == null ? "" : EgovStringUtil.isNullToString(EgovMenuCreateManageController.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-		//System.out.println("===>>> currentPath = "+currentPath);
-		String path = currentPath.substring(0, currentPath.lastIndexOf("WEB-INF"));
-		menuSiteMapVO.setTmpRootPath(path);
-		menuSiteMapVO.setBndeFilePath("/html/egovframework/com/sym/mnu/mcm/");
-		//System.out.println("===>>> path = "+path);
-		//System.out.println("===>>> menuSiteMapVO.getMapCreatId() = "+menuSiteMapVO.getMapCreatId());
-		
-		/*
-		 * 사이트맵 파일 생성 위치 지정 if ("WINDOWS".equals(Globals.OS_TYPE)) {
-		 * menuSiteMapVO
-		 * .setTmp_rootPath("D:/egovframework/workspace/egovcmm/src/main/webapp"
-		 * ); }else{menuSiteMapVO.setTmp_rootPath(
-		 * "/product/jeus/webhome/was_com/egovframework-com-1_0/egovframework-com-1_0_war___"
-		 * ); }
-		 */
-		chkCreat = menuCreateManageService.creatSiteMap(menuSiteMapVO, valueHtml);
-		if (!chkCreat) {
-			resultMsg = egovMessageSource.getMessage("fail.common.insert");
-		} else {
-			resultMsg = egovMessageSource.getMessage("success.common.insert");
-		}
-		List<?> list_menulist = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
-		
-		model.addAttribute("list_menulist", list_menulist);
-		model.addAttribute("resultVO", menuSiteMapVO);
-		model.addAttribute("resultMsg", resultMsg);
-
-		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatSiteMap";
-	}
-
 	/* 메뉴사이트맵 생성조회 */
 	/**
 	 * 메뉴사이트맵을 생성할 내용을 조회한다.

@@ -115,7 +115,7 @@ function fMenuCreatSiteMap() {
 				<input class="s_input2 vat" name="authorCode" type="text" value="<c:out value='${resultVO.authorCode}'/>" maxlength="30" title="<spring:message code="comSymMnuMpm.MenuCreat.authCode" />" readonly="readonly" style="width:250px" /><!-- 권한코드 -->
 				
 				<span class="btn_b"><a href="#LINK" onclick="fInsertMenuCreat(); return false;" title="<spring:message code="comSymMnuMpm.MenuCreat.createMenu" />"><spring:message code="comSymMnuMpm.MenuCreat.createMenu" /></a></span><!-- 메뉴생성 -->
-				<input class="s_btn" type="submit" value="<spring:message code="comSymMnuMpm.MenuCreat.createSiteMap" />" title="<spring:message code="comSymMnuMpm.MenuCreat.createSiteMap" />" onclick="fMenuCreatSiteMap(); return false;" /><!-- 사이트맵생성 -->
+				<input class="s_btn" type="submit" value="<spring:message code="comSymMnuMpm.MenuCreat.viewSiteMap" />" title="<spring:message code="comSymMnuMpm.MenuCreat.viewSiteMap" />" onclick="fMenuCreatSiteMap(); return false;" /><!-- 사이트맵보기 -->
 			</li>
 		</ul>
 	</div>

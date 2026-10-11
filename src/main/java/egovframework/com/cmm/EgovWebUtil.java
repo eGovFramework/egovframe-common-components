@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
  *   2018.08.17  신용호           filePathBlackList 수정
  *   2018.10.10  신용호           . => \\.으로 수정
  *   2022.05.10  정진오           clearXSS() 메소드 추가
+ *   2022.06.09  김장하			NSR 보안조치 (removeOSCmdRisk 함수에 윈도우 다중 명령 실행 키워드 추가)
  * </pre>
  */
 
@@ -137,7 +138,7 @@ public class EgovWebUtil {
 	}
 
 	public static String removeOSCmdRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("\\|", "").replaceAll(";", "");
+		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("\\|", "").replaceAll(";", "").replaceAll("&", "");
 	}
 
 	/**

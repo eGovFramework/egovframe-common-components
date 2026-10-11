@@ -52,28 +52,30 @@ function fCallUrl(fURL){
 </head>
 <body>
 
-<title><spring:message code="comSymMnuStm.siteMapng.siteMap"/></title><!-- 사이트맵 -->
+<title><spring:message code="comSymMnuStm.siteMapng.siteMap"/>(사용자메뉴 예시)</title><!-- 사이트맵 -->
 
+<c:if test="${!empty resultList}">
+	<c:import url="/sym/mnu/mcm/EgovMenuCreatSiteMapSelect.do?authorCode=${authorCode}" />
+</c:if>
 
-<div class="wTableFrm">
-<form name="siteMapngForm" action ="javascript:fSiteMapng()" method="post">
-<!-- 타이틀 -->
-<h2><spring:message code="comSymMnuStm.siteMapng.siteMap"/></h2><!-- 사이트맵 -->
-<!-- 가로배열 -->
-<table>
-  <tr>
-    <input type="hidden" name="scrtyId" value="">
-	<c:if test="${!empty resultVO.bndeFileNm}">
-		<c:import url="${fn:trim(resultVO.bndeFileNm)}" />
-	</c:if>
-	<c:if test="${empty resultVO.bndeFileNm}">
-		<span><spring:message code="comSymMnuStm.siteMapng.emptySiteMap"/></span>
-		<!-- 1100.메뉴생성관리 > [메뉴생성]클릭 > 목록에서 체크선택 > [메뉴생성]클릭 > [사이트맵생성] 클릭 > 팝업에서 [사이트맵생성]클릭 과정을 거쳐야 사이트맵 생성이 됩니다. -->
-	</c:if>
-  </tr>
-</table>
-</div>
-</form>
+<c:if test="${empty resultList}">
+
+	<form name="siteMapngForm" action ="javascript:fSiteMapng()" method="post">
+	<div class="wTableFrm">
+	<!-- 타이틀 -->
+	<h2><spring:message code="comSymMnuStm.siteMapng.siteMap"/></h2><!-- 사이트맵 -->
+	<!-- 가로배열 -->
+	<table>
+	  <tr>
+	    <input type="hidden" name="scrtyId" value="">
+	
+			<span><spring:message code="comSymMnuStm.siteMapng.emptySiteMap"/></span>
+			<!-- 1100.메뉴생성관리 > [메뉴생성]클릭 > 목록에서 체크선택 > [메뉴생성]클릭 과정을 거쳐야 사이트맵 생성이 됩니다. -->
+	  </tr>
+	</table>
+	</div>
+	</form>
+</c:if>
 </body>
 </html>
 

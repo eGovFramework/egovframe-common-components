@@ -183,7 +183,7 @@ public class EgovNumberCheckUtil {
      * @return  유효한 외국인등록번호인지 여부 (True/False)
      */
 	@SuppressWarnings("static-access")
-	public static boolean checkforeignNumber( String foreign1, String foreign2  ) {
+	public static boolean checkForeignNumber( String foreign1, String foreign2  ) {
 
 		EgovDateUtil egovDateUtil = new EgovDateUtil();
 		String foreignNumber = foreign1 + foreign2;
@@ -197,12 +197,12 @@ public class EgovNumberCheckUtil {
     			return false;
     	}
 
-     	if(Character.getNumericValue(foreignNumber.charAt(0)) == 0 || Character.getNumericValue(foreignNumber.charAt(0)) == 1){
+     	if(Character.getNumericValue(foreignNumber.charAt(0)) == 0 || Character.getNumericValue(foreignNumber.charAt(0)) == 1 || Character.getNumericValue(foreignNumber.charAt(0)) == 2){
        		if(Character.getNumericValue(foreignNumber.charAt(6)) == 5 && Character.getNumericValue(foreignNumber.charAt(6)) == 6) return false;
        		String temp = "20" + foreignNumber.substring(0,6);
        		if(!egovDateUtil.checkDate(temp)) return false;
        	}else{
-       		if(Character.getNumericValue(foreignNumber.charAt(6)) == 5 && Character.getNumericValue(foreignNumber.charAt(6)) == 6) return false;
+       		if(Character.getNumericValue(foreignNumber.charAt(6)) == 7 && Character.getNumericValue(foreignNumber.charAt(6)) == 8) return false;
        		String temp = "19" + foreignNumber.substring(0,6);
        		if(!egovDateUtil.checkDate(temp)) return false;
        	}	//외국인등록번호 앞자리 날짜유효성체크 & 성별구분 숫자 체크
@@ -236,10 +236,10 @@ public class EgovNumberCheckUtil {
      * @param   13자리 외국인등록번호 문자열
      * @return  유효한 외국인등록번호인지 여부 (True/False)
      */
-	public static boolean checkforeignNumber( String foreign  ) {
+	public static boolean checkForeignNumber( String foreign  ) {
 
 		if(foreign.length() != 13) return false;
-		return checkforeignNumber(foreign.substring(0,6), foreign.substring(6,13));
+		return checkForeignNumber(foreign.substring(0,6), foreign.substring(6,13));
 	}
 }
 
