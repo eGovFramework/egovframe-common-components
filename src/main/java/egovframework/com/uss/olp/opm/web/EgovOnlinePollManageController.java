@@ -90,8 +90,6 @@ public class EgovOnlinePollManageController {
             OnlinePollManage onlinePollManage, ModelMap model)
             throws Exception {
 
-//        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
-
         /** EgovPropertyService.sample */
         searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
         searchVO.setPageSize(propertiesService.getInt("pageSize"));

@@ -8,7 +8,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import com.raonsecure.omnione.core.eoscommander.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Cross-Site Scripting 체크하여 값을 되돌려 받는 핸들러 JSP TLD, 자바에서 사용가능

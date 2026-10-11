@@ -197,7 +197,7 @@ function press() {
 	    <td><a href="<c:url value='/sec/gmt/EgovGroup.do?groupId=${group.groupId}'/>" onclick="javascript:fncSelectGroup('<c:out value="${group.groupId}"/>')"><c:out value="${group.groupId}"/></a></td>
 	    <td><c:out value="${group.groupNm}"/></td>
 	    <td><c:out value="${group.groupDc}"/></td>
-	    <td><c:out value="${fn:substring(group.groupCreatDe,0,4)}"/>-<c:out value="${fn:substring(group.groupCreatDe,4,6)}"/>-<c:out value="${fn:substring(group.groupCreatDe,6,8)}"/></td>
+	    <td><c:out value="${fn:substring(group.groupCreatDe, 0, 10)}"/></td>
 	    <td><a href="<c:url value='/sec/gmt/EgovGroup.do?groupId=${group.groupId}'/>" onclick="javascript:fncSelectGroup('<c:out value="${group.groupId}"/>')"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>"  align="middle" alt="<spring:message code="title.detail" />"  title="<spring:message code="title.detail" />"></a></td>
 	</tr>
 	</c:forEach>

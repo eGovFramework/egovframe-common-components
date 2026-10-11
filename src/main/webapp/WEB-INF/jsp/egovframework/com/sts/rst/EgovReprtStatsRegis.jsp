@@ -101,13 +101,7 @@ function fncReprtStatsDelete() {
 	</colgroup>
 	<tbody>
 		<tr>
-			<th><label for="reprtId">보고서ID <span class="pilsu">*</span></label></th>
-			<td class="left">
-			    <input name="reprtId" id="reprtId" type="text" size="30" class="readOnlyClass" readonly title="<spring:message code="sts.reprtId" />">   
-			</td>
-		</tr>
-		<tr>
-			<th><label for="reprtId">보고서명 <span class="pilsu">*</span></label></th>
+			<th><label for="reprtNm">보고서명 <span class="pilsu">*</span></label></th>
 			<td class="nopd">
 				<input name="reprtNm" id="reprtNm" type="text" maxLength="10" size="30" title="<spring:message code="sts.title" />">&nbsp;<form:errors path="reprtNm" />
 			</td>
@@ -130,12 +124,6 @@ function fncReprtStatsDelete() {
 		            <option value="<c:out value="${cmmCode036.code}"/>" ><c:out value="${cmmCode036.codeNm}"/></option>
 		            </c:forEach>
 		        </select>
-			</td>
-		</tr>
-		<tr>
-			<th><label for="regDate">등록일시 <span class="pilsu">*</span></label></th>
-			<td class="left">
-		        <input name="regDate" id="regDate" type="text" maxLength="20" size="20" class="readOnlyClass" readonly title="<spring:message code="sts.regDate" />">
 			</td>
 		</tr>
 		

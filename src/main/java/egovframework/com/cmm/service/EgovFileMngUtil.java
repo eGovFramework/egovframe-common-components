@@ -49,6 +49,7 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
  *   2022.11.11   김혜준            시큐어코딩 처리
+ *   2024.12.04   신용호            downFile() KISA 시큐어코딩 처리
  *
  * @see
  * @since 2009. 02. 13
@@ -270,7 +271,8 @@ public class EgovFileMngUtil {
 
 		orgFileName = orgFileName.replaceAll("\r", "").replaceAll("\n", "");
 
-		File file = new File(EgovWebUtil.filePathBlackList(downFileName));
+		File file = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH + downFileName));
+		//File file = new File(EgovWebUtil.filePathBlackList(downFileName,FILE_STORE_PATH));
 
 		if (!file.exists()) {
 			throw new FileNotFoundException(downFileName);
@@ -377,22 +379,23 @@ public class EgovFileMngUtil {
 	 * 서버 파일에 대하여 다운로드를 처리한다.
 	 *
 	 * @param response
-	 * @param streFileNm 파일저장 경로가 포함된 형태
+	 * @param streFileNm 파일된 파일명
 	 * @param orignFileNm
 	 * @throws Exception
 	 */
 	public void downFile(HttpServletResponse response, String streFileNm, String orignFileNm) throws Exception {
-		String downFileName = EgovWebUtil.filePathBlackList(streFileNm);
+		String downFilePath = EgovWebUtil.filePathBlackList(FILE_STORE_PATH + streFileNm);
+		//String downFilePath = EgovWebUtil.filePathBlackList(streFileNm,FILE_STORE_PATH);
 		String orgFileName = orignFileNm;
 
-		File file = new File(downFileName);
+		File file = new File(downFilePath);
 
 		if (!file.exists()) {
-			throw new FileNotFoundException(downFileName);
+			throw new FileNotFoundException(downFilePath);
 		}
 
 		if (!file.isFile()) {
-			throw new FileNotFoundException(downFileName);
+			throw new FileNotFoundException(downFilePath);
 		}
 
 		int fSize = (int) file.length();

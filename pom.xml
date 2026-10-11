@@ -554,65 +554,11 @@
 		</dependency>
 		<!-- 디지털원패스 라이브러리 끝 -->
 		
-		<!-- 모바일 운전면허증 라이브러리 시작 -->
-		<!-- Omnione Start -->
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKCore</artifactId>
-			<version>1.0.3.5</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKServerCore</artifactId>
-			<version>1.0.3.5</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKVerifier</artifactId>
-			<version>1.0.3.6</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>RSLicenseSDK</artifactId>
-			<version>1.0.4</version>
-		</dependency>
-		<!-- Omnione End -->
-
-		<!-- Utility for Omnione Start -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.9</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>20.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.madgag.spongycastle</groupId>
-			<artifactId>pkix</artifactId>
-			<version>1.54.0.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.70</version>
-		</dependency>
-		
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.12.0</version>
 		</dependency>
-		<!-- Utility for Omnione End -->
-		<!-- 모바일 운전면허증 라이브러리 끝 -->
 
 		<dependency>
 		    <groupId>javax.faces</groupId>
