@@ -636,6 +636,12 @@
 						<failOnMissingWebXml>false</failOnMissingWebXml>
 					</configuration>
 				</plugin>
+				<!-- 암호화 키 초기화 도구 실행용(init-crypto-key.sh / init-crypto-key.bat) -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>3.5.0</version>
+				</plugin>
 				<!-- PMD manven plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
