@@ -24,6 +24,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import egovframework.com.uat.uia.service.impl.EgovInitialPasswordChecker;
 import jakarta.annotation.Resource;
 
 /**
@@ -57,6 +58,7 @@ import jakarta.annotation.Resource;
  *   2020.07.08  신용호          비밀번호를 수정한후 경과한 날짜 조회
  *   2020.08.28  정진오          표준프레임워크 v3.10 개선
  *   2025.05.30  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *   2026.10.02  개발팀         초기 비밀번호 사용 여부(initialPassword) 추가 - 첫 화면 변경 안내
  *
  *      </pre>
  */
@@ -72,6 +74,10 @@ public class EgovComIndexController {
 	/** EgovLoginService */
 	@Resource(name = "loginService")
 	private EgovLoginService loginService;
+
+	/** 초기 비밀번호 사용 여부 확인 */
+	@Resource(name = "egovInitialPasswordChecker")
+	private EgovInitialPasswordChecker initialPasswordChecker;
 
 	@RequestMapping("/index.do")
 	public String index(ModelMap model) {
@@ -120,6 +126,9 @@ public class EgovComIndexController {
 
 		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
 		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
+
+		// 초기(공개) 비밀번호 사용 중이면 닫을 수 없는 변경 안내를 띄운다(유효기간과 무관)
+		model.addAttribute("initialPassword", initialPasswordChecker.isInitialPassword(loginVO));
 
 		return "egovframework/com/cmm/EgovUnitContent";
 	}
