@@ -125,7 +125,7 @@ public class CnsltManageDAO extends EgovComAbstractDAO {
 	 */
     public CnsltManageVO selectCnsltAnswerListDetail(CnsltManageVO vo) {
 
-        return (CnsltManageVO) selectOne("CnsltManageDAO.selectCnsltAnswerListDetail", vo);
+        return (CnsltManageVO) selectOne("CnsltManageDAO.selectCnsltAnswerDetail", vo);
 
     }
 
