@@ -36,6 +36,13 @@
  			   ORDER BY FRST_REGIST_PNTTM DESC
         
     </select>
+
+    <select id="selectBndtManageListTotCnt" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO" resultType="int">
+        SELECT COUNT(*)
+        FROM COMTNBNDTMANAGE manage
+			   WHERE   1=1
+			   AND     binary(SUBSTR(BNDT_DE, 1, 6)) like  CONCAT('%', #{bndtDe}, '%')
+    </select>
     
     <select id="selectBndtManage" resultType="egovframework.com.uss.ion.bnt.service.BndtManageVO">
         
