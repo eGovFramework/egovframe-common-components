@@ -25,7 +25,7 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception;
+	List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO);
 
 	/**
 	 * 지식정보평가 목록 총 개수를 조회한다.
@@ -34,7 +34,7 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception;
+	int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO);
 
 	/**
 	 * 지식정보평가 상세 정보를 조회 한다.
@@ -43,14 +43,14 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception;
+	KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal);
 
 	/**
 	 * 평가자가 지식유형의 지정 전문가인지 조회한다.
 	 * @param knoAppraisal - knoTypeCd(지식유형), speId(평가자 고유ID)
 	 * @return int - 지정 전문가 건수(0 이면 전문가 아님)
 	 */
-	int selectKnoAppraisalExpertCnt(KnoAppraisal knoAppraisal) throws Exception;
+	int selectKnoAppraisalExpertCnt(KnoAppraisal knoAppraisal);
 
 	/**
 	 * 지식정보평가 정보를 신규로 등록한다.
@@ -58,7 +58,7 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param knoAps
 	 */
-	void insertKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception;
+	void insertKnoAppraisal(KnoAppraisal knoAppraisal);
 
 	/**
 	 * 기 등록 된 지식정보평가 정보를 수정 한다.
@@ -66,7 +66,7 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param knoAps
 	 */
-	void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception;
+	void updateKnoAppraisal(KnoAppraisal knoAppraisal);
 
 	/**
 	 * 기 등록된 지식정보평가 정보를 삭제한다.
@@ -74,6 +74,6 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param knoAps
 	 */
-	void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception;
+	void deleteKnoAppraisal(KnoAppraisal knoAppraisal);
 
 }

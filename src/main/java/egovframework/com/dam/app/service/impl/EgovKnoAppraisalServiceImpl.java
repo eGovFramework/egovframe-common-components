@@ -51,7 +51,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param KnoAppraisalVO
 	 */
 	@Override
-	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
+	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) {
 		return knoAppraisalDAO.selectKnoAppraisalList(searchVO);
 	}
 
@@ -64,7 +64,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param KnoAppraisalVO
 	 */
 	@Override
-	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception {
+	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) {
 		return knoAppraisalDAO.selectKnoAppraisalTotCnt(searchVO);
 	}
 
@@ -77,7 +77,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param KnoAppraisalVO
 	 */
 	@Override
-	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) {
 		KnoAppraisal kal = knoAppraisalDAO.selectKnoAppraisal(knoAppraisal);
 		return kal;
 	}
@@ -89,7 +89,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return int - 지정 전문가 건수
 	 */
 	@Override
-	public int selectKnoAppraisalExpertCnt(KnoAppraisal knoAppraisal) throws Exception {
+	public int selectKnoAppraisalExpertCnt(KnoAppraisal knoAppraisal) {
 		return knoAppraisalDAO.selectKnoAppraisalExpertCnt(knoAppraisal);
 	}
 
@@ -101,7 +101,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param knoAps
 	 */
 	@Override
-	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) {
 		knoAppraisalDAO.insertKnoAppraisal(knoAppraisal);
 	}
 
@@ -113,7 +113,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param knoAps
 	 */
 	@Override
-	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) {
 		knoAppraisalDAO.updateKnoAppraisal(knoAppraisal);
 	}
 
@@ -125,7 +125,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param knoAps
 	 */
 	@Override
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) {
 		knoAppraisalDAO.deleteKnoAppraisal(knoAppraisal);
 	}
 
