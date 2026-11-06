@@ -13,6 +13,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
 
+import egovframework.com.cmm.crypto.EgovCryptoKeyGuardFilter;
 import egovframework.com.cmm.filter.HTMLTagFilter;
 import egovframework.com.cmm.filter.SessionTimeoutCookieFilter;
 import egovframework.com.cmm.service.EgovProperties;
@@ -49,6 +50,7 @@ import jakarta.servlet.ServletRegistration;
  *   2025.05.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
  *   2026.04.01  유지보수        MultipartConfigElement를 globals.properties 값으로 생성
  *   2026.04.01  유지보수        Security Fiter 추가
+ *   2026.10.02  개발팀          암호화 키 안내 페이지 필터(EgovCryptoKeyGuardFilter) 추가 - 기본 키면 모든 요청에 안내
  *
  *      </pre>
  */
@@ -90,6 +92,13 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		rootContext.start();
 
 		servletContext.addListener(new ContextLoaderListener(rootContext));
+
+		//-------------------------------------------------------------
+		// 암호화 키 안내 페이지 필터 - 배포 기본 키(egovframe)이면 어떤 주소로 접근해도 이유와 조치 방법(init-crypto-key)을
+		// 안내한다(HTTP 503). 보안·로그인 필터보다 앞에 둔다. 키를 초기화하면 아무것도 하지 않는다.
+		//-------------------------------------------------------------
+		FilterRegistration.Dynamic cryptoKeyGuardFilter = servletContext.addFilter("egovCryptoKeyGuardFilter", new EgovCryptoKeyGuardFilter(rootContext));
+		cryptoKeyGuardFilter.addMappingForUrlPatterns(null, false, "/*");
 
 		// -------------------------------------------------------------
 		// Spring ServletContextListener 설정

@@ -4,6 +4,14 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<!-- 암호화 키 기동 가드: algorithmKey 가 배포 기본값이거나 키·해시가 맞지 않으면 "안전하지 않음" 으로 판정해 로그에 남긴다.
+	     기동은 막지 않고, EgovCryptoKeyGuardFilter 가 키를 초기화하기 전까지 모든 요청에 안내 페이지를 응답한다.
+	     조치는 프로젝트 루트의 init-crypto-key.sh / init-crypto-key.bat. -->
+	<bean id="egovCryptoKeyGuard" class="egovframework.com.cmm.crypto.EgovCryptoKeyGuard">
+		<constructor-arg ref="egovCryptoConfig"/>
+		<constructor-arg value="${Globals.CryptoConfigPath:}"/>
+	</bean>
+
 	<context:component-scan base-package="egovframework, org.egovframe.rte.fdl.security, org.egovframe.rte.fdl.crypto">
 		<context:include-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
