@@ -13,6 +13,7 @@
   * @수정일               수정자            수정내용
   *  ----------   --------   ---------------------------
   *  2020.07.08   신용호            비밀번호 만료 처리
+  *  2026.10.02   개발팀           초기 비밀번호 사용 안내(다음에 변경 불가)
   *
   *  @author 공통서비스 개발팀 신용호
   *  @since 2020.07.08
@@ -26,7 +27,7 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>eGovFrame <spring:message code="comCmm.unitContent.20"/></title>
+<title>eGovFrame <c:choose><c:when test="${initialPassword}"><spring:message code="comCmm.unitContent.21"/></c:when><c:otherwise><spring:message code="comCmm.unitContent.20"/></c:otherwise></c:choose></title>
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>" ></script>
 <script type="text/javascript">
@@ -97,6 +98,20 @@ function fn_egov_change_pwd() {
 			flagTopFrame = true;
 		</script>
 	</c:if>
+	<c:choose>
+	<c:when test="${initialPassword}">
+	<%-- 초기(공개) 비밀번호 사용 중: 변경 화면으로 가는 것 외에는 닫을 수 없다 --%>
+	<p/><p/><p/>
+	<b><img src="${pageContext.request.contextPath }/images/egovframework/com/cmm/icon/tit_icon.png"> <spring:message code="comCmm.initialPwdContent.1"/></b><p/><!-- 초기 비밀번호 사용 중 -->
+	<spring:message code="comCmm.initialPwdContent.2"/><p/><!-- 지금 사용 중인 비밀번호는 공개된 초기 비밀번호입니다. -->
+	<spring:message code="comCmm.initialPwdContent.3"/><p/><!-- 누구나 이 계정으로 로그인할 수 있으니 지금 비밀번호를 변경해 주세요. -->
+	<spring:message code="comCmm.initialPwdContent.4"/><p/><!-- 비밀번호를 변경하기 전에는 이 안내가 계속 표시됩니다. -->
+	<br/>
+	<div align="center">
+		<input class="btn_03" type="submit" value="<spring:message code="comCmm.expirePwdContent.50"/>" title="<spring:message code="comCmm.expirePwdContent.50"/>" onclick="fn_egov_change_pwd(); return false;" /><!-- 지금 즉시 변경하기 -->
+	</div>
+	</c:when>
+	<c:otherwise>
 	<p/><p/><p/>
 	<b><spring:message code="comCmm.expirePwdContent.21"/></b><br/><!-- 비밀번호 유효기간의 변경은 다음 파일을 참조하여 주세요. -->
 	src/main/resources/egovframework/egovProps/globals.properties
@@ -117,6 +132,9 @@ function fn_egov_change_pwd() {
 		<input class="btn_03" type="submit" value="<spring:message code="comCmm.expirePwdContent.51"/>" title="<spring:message code="comCmm.expirePwdContent.51"/>" onclick="parent.$dialog.dialog('close'); return false;" /><!-- 다음에 변경하기 -->
 	</div>
 	
+	</c:otherwise>
+	</c:choose>
+
 	<form:form id="pwdManage" name="pwdManage" modelAttribute="loginVO" method="post" target="_parent">
 		<input type="hidden" id="loginId" name="loginId" readonly="readonly"  value="${loginVO.id}"/>
 		<input type="hidden" id="uniqId" name="uniqId" readonly="readonly"  value="${loginVO.uniqId}"/>
