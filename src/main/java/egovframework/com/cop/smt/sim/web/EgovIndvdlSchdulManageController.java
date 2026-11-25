@@ -93,6 +93,18 @@ public class EgovIndvdlSchdulManageController {
 	private EgovFileMngUtil fileUtil;
 
 	/**
+	 * 2026.11.25 KVE-2026-3297 조치 - 월/주/일 목록을 본인 일정으로 제한한다(관리자는 전체).
+	 * 요청 파라미터로 들어온 같은 이름의 값은 서버 값으로 덮어쓴다.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void putSchdulOwnerFilter(Map commandMap) {
+		Object principal = EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = principal instanceof LoginVO ? (LoginVO) principal : null;
+		commandMap.put("uniqId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		commandMap.put("adminAt", EgovAuthorizationHelper.isAdmin() ? "Y" : "N");
+	}
+
+	/**
 	 * 메인페이지/일정관리조회
 	 * 
 	 * @param model
@@ -185,6 +197,7 @@ public class EgovIndvdlSchdulManageController {
 		model.addAttribute("month", iNowMonth);
 		model.addAttribute("day", iNowDay);
 
+		putSchdulOwnerFilter(commandMap);
 		List<EgovMap> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
 		model.addAttribute("resultList", resultList);
 
@@ -332,6 +345,7 @@ public class EgovIndvdlSchdulManageController {
 		commandMap.put("schdulBgnde", listWeek.get(0));
 		commandMap.put("schdulEndde", listWeek.get(listWeek.size() - 1));
 
+		putSchdulOwnerFilter(commandMap);
 		List resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
 		model.addAttribute("resultList", resultList);
 
@@ -396,6 +410,7 @@ public class EgovIndvdlSchdulManageController {
 		commandMap.put("searchMonth", sSearchDate);
 		commandMap.put("searchMode", "MONTH");
 
+		putSchdulOwnerFilter(commandMap);
 		List<EgovMap> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
 		model.addAttribute("resultList", resultList);
 

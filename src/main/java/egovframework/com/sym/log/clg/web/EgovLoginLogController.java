@@ -55,6 +55,7 @@ public class EgovLoginLogController {
 	 */
 	@IncludedInfo(name = "접속로그관리", order = 1080, gid = 60)
 	@RequestMapping(value = "/sym/log/clg/SelectLoginLogList.do")
+	@RequireAdmin
 	public String selectLoginLogInf(@ModelAttribute("searchVO") LoginLog loginLog, ModelMap model) throws Exception {
 
 		loginLog.setPageUnit(propertyService.getInt("pageUnit"));

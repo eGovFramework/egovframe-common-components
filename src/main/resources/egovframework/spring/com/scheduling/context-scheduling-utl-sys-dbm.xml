@@ -16,7 +16,7 @@
 		<property name="repeatInterval" value="600000" />
 	</bean>
 	
-	<!-- 모니터링 스케줄러 -->
+	<!-- 모니터링 스케줄러 (사용 시 주석 해제) -->
 	<!-- <bean id="mntrngScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>

@@ -96,6 +96,8 @@ public class EgovFileMngController {
 		// FileId를 유추하지 못하도록 세션ID와 함께 암호화하여 표시한다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
 		for (FileVO file : result) {
 			String sessionId = request.getSession().getId();
+			// 2026.11.25 KVE-2026-3293 조치 - 토큰을 발급한 첨부만 이 세션에서 다운로드할 수 있다
+			EgovAttachmentGrants.allowDownload(request, file.getAtchFileId());
 			String toEncrypt = sessionId + "|" + file.getAtchFileId();
 			file.setAtchFileId(Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes()));
 		}
@@ -144,6 +146,8 @@ public class EgovFileMngController {
 		// FileId를 유추하지 못하도록 세션ID와 함께 암호화하여 표시한다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
 		for (FileVO file : result) {
 			String sessionId = request.getSession().getId();
+			// 2026.11.25 KVE-2026-3293 조치 - 토큰을 발급한 첨부만 이 세션에서 다운로드할 수 있다
+			EgovAttachmentGrants.allowDownload(request, file.getAtchFileId());
 			String toEncrypt = sessionId + "|" + file.getAtchFileId();
 			file.setAtchFileId(Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes()));
 		}

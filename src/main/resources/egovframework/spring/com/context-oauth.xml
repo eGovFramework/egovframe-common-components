@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
         
-	<!-- GOOGLE OAuth Configuration -->
+	<!-- Google OAuth -->
 	<bean id="googleAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
 		<constructor-arg value="google" /><!-- Service Name -->
 		<constructor-arg value="googleClientID" /><!-- googleClientID -->
@@ -11,7 +11,7 @@
 		<constructor-arg value="profile email" /><!-- googleScope -->
 	</bean>
 	
-	<!-- NAVER OAuth Configuration -->
+	<!-- Naver OAuth -->
 	<bean id="naverAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
 		<constructor-arg value="naver" /><!-- Service Name -->
 		<constructor-arg value="naverClientID" /><!-- naverClientID -->
@@ -20,7 +20,7 @@
 		<constructor-arg value = "profile" /><!-- naverScope -->
 	</bean>
 	
-	<!-- KAKAO OAuth Configuration -->
+	<!-- Kakao OAuth -->
 	<bean id="kakaoAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
 		<constructor-arg value="kakao" /><!-- Service Name -->
 		<constructor-arg value="kakaoClientID" /><!-- kakaoClientID -->

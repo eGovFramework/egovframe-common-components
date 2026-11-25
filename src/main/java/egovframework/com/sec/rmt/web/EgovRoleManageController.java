@@ -92,6 +92,7 @@ public class EgovRoleManageController {
 	 */
     @IncludedInfo(name="롤관리", listUrl="/sec/rmt/EgovRoleList.do", order = 90,gid = 20)
     @RequestMapping(value = "/sec/rmt/EgovRoleList.do")
+    @RequireAdmin
 	public String selectRoleList(@ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
 			                      ModelMap model) throws Exception {
 

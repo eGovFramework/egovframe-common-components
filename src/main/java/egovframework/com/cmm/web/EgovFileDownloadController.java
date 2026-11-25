@@ -23,6 +23,7 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
 import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import jakarta.annotation.Resource;
@@ -107,6 +108,10 @@ public class EgovFileDownloadController {
 			if (!isSameSessionId) {
 				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
+
+			// 2026.11.25 KVE-2026-3293 조치 - 첨부 목록이 이 세션에 토큰을 발급한 첨부만 허용한다.
+			// 암호화 기능 등으로 만든 "세션ID|파일ID" 암호문은 복호화되더라도 여기서 거부된다.
+			EgovAttachmentGrants.assertDownloadAllowed(request, decodedFileId);
 
 			FileVO fileVO = new FileVO();
 			fileVO.setAtchFileId(decodedFileId);

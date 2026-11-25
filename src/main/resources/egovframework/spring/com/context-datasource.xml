@@ -8,12 +8,10 @@
         <property name="locations">
             <list>
                 <value>classpath:/egovframework/egovProps/globals.properties</value>
-                <!-- <value>file:/product/jeus/egovProps/globals.properties</value> -->
             </list>
         </property>
     </bean>
 	
-	<!-- DataSource -->
 	<alias name="dataSource" alias="egov.dataSource" />
 	
 	<!-- MySQL -->
@@ -22,13 +20,13 @@
 		<property name="driverClassName" value="${Globals.mysql.DriverClassName}"/>
 		<property name="jdbcUrl" value="${Globals.mysql.Url}" />
 		<property name="username" value="${Globals.mysql.UserName}"/>
-		<!-- 암호화(Crypto) 관련 서비스 https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte2:fdl:crypto_simplify_v3_8 참조 -->
+		<!-- DB 비밀번호는 암호화 값 사용 (egovPasswordResolver) -->
 		<property name="password" value="#{egovPasswordResolver.resolvePassword('Globals.mysql.Password')}"/>
 		<property name="maximumPoolSize" value="10"/>
 	</bean>
 	</beans>
 	
-	<!-- oracle -->
+	<!-- Oracle -->
 	<beans profile="oracle">
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.oracle.DriverClassName}"/>
@@ -39,7 +37,7 @@
 	</bean>
 	</beans>
 
-	<!-- altibase -->
+	<!-- Altibase -->
 	<beans profile="altibase">
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.altibase.DriverClassName}"/>
@@ -52,7 +50,7 @@
 	</bean>
 	</beans>
 
-	<!-- tibero -->
+	<!-- Tibero -->
 	<beans profile="tibero">
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.tibero.DriverClassName}"/>
@@ -63,7 +61,7 @@
 	</bean>
 	</beans>
 
-    <!-- cubrid -->
+    <!-- CUBRID -->
     <beans profile="cubrid">
     <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
         <property name="driverClassName" value="${Globals.cubrid.DriverClassName}"/>
@@ -75,11 +73,7 @@
         <property name="connectionTestQuery" value="select 1"/>
     </bean>
     </beans>
-    <!--
-    	CUBRID 가이드 참조
-    	https://www.cubrid.com/tutorial/3794188
-        * HikariCP의 connectionTestQuery를 통해 connection 유효성을 확인
-     -->
+    <!-- connectionTestQuery 로 연결 유효성 확인 (https://www.cubrid.com/tutorial/3794188) -->
 
 	<!-- MariaDB -->
 	<beans profile="maria">
@@ -92,7 +86,7 @@
 	</bean>
 	</beans>
 
-	<!-- PostresSQL -->
+	<!-- PostgreSQL -->
 	<beans profile="postgres">  
 	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
 		<property name="driverClassName" value="${Globals.postgres.DriverClassName}"/>
@@ -114,10 +108,5 @@
 	</bean>
 	</beans>
 
-	<!-- DBMS가 유휴 connection을 종료하는 경우 다음 HikariCP 설정으로 연결 유지 주기를 지정할 수 있습니다. -->
-	<!--
-	<property name="keepaliveTime" value="60000" /> -->  <!-- 1분 -->
-
-	<!-- HikariCP가 아닌 WAS의 DataSource를 사용하시는 경우도 WAS별로 동일한 설정을 하실 수 있습니다.
-		(WAS별 구체적인 설정은 WAS document 확인) -->
+	<!-- DBMS 가 유휴 연결을 끊으면 keepaliveTime(ms) 지정 -->
 </beans>

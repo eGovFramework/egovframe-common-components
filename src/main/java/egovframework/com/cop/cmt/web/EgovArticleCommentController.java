@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -238,7 +239,25 @@ public class EgovArticleCommentController {
         return "redirect:/uat/uia/egovLoginUsr.do";
     }
 
-	CommentVO articleCommentVO = new CommentVO();
+	// 2026.11.25 KVE-2026-3295 조치 - 인가 검사를 목록 조회보다 먼저 한다.
+	// 수정 대상 댓글은 본인 것이어야 하고, 요청의 bbsId/nttId 글에 달린 댓글이어야 한다.
+	CommentVO articleCommentVO = egovArticleCommentService.selectArticleCommentDetail(commentVO);
+	// 2026.07.30 보안 조치 - 소유자 검증
+	// 2026.09.21 식별자 교정 - 댓글 WRTER_ID 는 등록 시 uniqId 로 저장하므로 uniqId 기준으로 비교한다.
+	EgovAuthorizationHelper.assertOwner(articleCommentVO == null ? null : articleCommentVO.getWrterId());
+	if (articleCommentVO.getNttId() != commentVO.getNttId()
+			|| !EgovStringUtil.isNullToString(articleCommentVO.getBbsId()).equals(commentVO.getBbsId())) {
+		throw new EgovAccessDeniedException("권한이 없습니다.");
+	}
+
+	// 부모 글이 비밀글이면 작성자만 — 댓글 목록(selectArticleCommentList)과 같은 검사
+	BoardVO parent = new BoardVO();
+	parent.setBbsId(commentVO.getBbsId());
+	parent.setNttId(commentVO.getNttId());
+	parent = egovArticleService.selectArticleDetailNoCount(parent);
+	if (parent != null) {
+		EgovAuthorizationHelper.assertArticleReadable(parent.getSecretAt(), parent.getFrstRegisterId());
+	}
 
 	commentVO.setWrterNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
 
@@ -263,11 +282,6 @@ public class EgovArticleCommentController {
 	model.addAttribute("resultCnt", map.get("resultCnt"));
 	model.addAttribute("paginationInfo", paginationInfo);
 	model.addAttribute("type", "body");	// body import
-
-	articleCommentVO = egovArticleCommentService.selectArticleCommentDetail(commentVO);
-	// 2026.07.30 보안 조치 - 소유자 검증
-	// 2026.09.21 식별자 교정 - 댓글 WRTER_ID 는 등록 시 uniqId 로 저장하므로 uniqId 기준으로 비교한다.
-	EgovAuthorizationHelper.assertOwner(articleCommentVO == null ? null : articleCommentVO.getWrterId());
 
 	model.addAttribute("articleCommentVO", articleCommentVO);
 

@@ -183,6 +183,7 @@
                 SBSCRB_DE             as SBSCRB_DE
             FROM    COMTNENTRPRSMBER
             WHERE 1=1
+            AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
             AND ENTRPRS_MBER_STTUS LIKE  #{sbscrbSttus}
         </if>
@@ -207,6 +208,7 @@
 	   SELECT COUNT(1) totcnt
 	   FROM    COMTNENTRPRSMBER
 		WHERE 1=1
+		AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
 	]]>
 	
 	<if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>

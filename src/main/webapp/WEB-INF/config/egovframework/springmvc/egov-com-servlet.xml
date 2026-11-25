@@ -14,7 +14,7 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 	</context:component-scan>
 
-	<!-- For Pagination Tag -->
+	<!-- 페이징 렌더러 -->
 	<bean id="imageRenderer" class="egovframework.com.cmm.ImagePaginationRenderer"/>
 
 	<bean id="paginationManager" class="org.egovframe.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
@@ -41,10 +41,10 @@
 		</property>
 	</bean>
 
-	<!-- form:form CSRF 자동 필드 (RequestMappingHandlerAdapter 속성 대신 빈 등록) -->
+	<!-- form:form CSRF 자동 필드 -->
 	<bean id="requestDataValueProcessor" class="org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor"/>
 
-	<!-- setting Locale Locale Interceptor 설정하기  -->
+	<!-- 로케일 변경 인터셉터 -->
 	<bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor" p:paramName="lang" />
 
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
@@ -60,7 +60,7 @@
 		</property>
 	</bean>
 
-	<!-- IP 정보 기록 및 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->
+	<!-- 예외별 오류 화면 -->
 	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView" value="egovframework/com/cmm/error/egovError"/>
 		<property name="exceptionMappings">
@@ -75,7 +75,7 @@
 				<prop key="egovframework.com.cmm.exception.EgovFileExtensionException">egovframework/com/cmm/error/egovFileExtensionException</prop>
 			</props>
 		</property>
-		<!-- 권한 거부는 화면과 함께 HTTP 403 으로 응답한다 -->
+		<!-- 권한 거부 시 403 응답 -->
 		<property name="statusCodes">
 			<props>
 				<prop key="egovframework/com/cmm/error/accessDenied">403</prop>
@@ -83,7 +83,7 @@
 		</property>
 	</bean>
 
-	<!-- for JFile -->
+	<!-- 빈 이름 뷰 (파일 다운로드 등) -->
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
 
 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
@@ -96,13 +96,13 @@
 
 	<mvc:annotation-driven/>
 
-	<!-- 정적 리소스 매핑 설정 -->
+	<!-- 정적 리소스 -->
 	<mvc:resources mapping="/css/**" location="/css/"/>
 	<mvc:resources mapping="/js/**" location="/js/"/>
 	<mvc:resources mapping="/images/**" location="/images/"/>
 	<mvc:resources mapping="/html/**" location="/html/"/>
 
-	<!-- Facebook 설정 -->
+	<!-- 그 밖의 정적 요청은 기본 서블릿으로 -->
 	<mvc:default-servlet-handler/>
 
 </beans>

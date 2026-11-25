@@ -4,8 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
+import org.springframework.transaction.NoTransactionException;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import egovframework.com.sym.log.slg.service.EgovSysHistoryService;
 import egovframework.com.sym.log.slg.service.SysHistory;
@@ -21,6 +25,7 @@ import jakarta.annotation.Resource;
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 9.   이삼섭
+ *    2026. 10. 27.             동일 밀리초 이력 ID 충돌 시 저장점 복원 후 재시도
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 9.
@@ -31,6 +36,8 @@ import jakarta.annotation.Resource;
 @Service("EgovSysHistoryService")
 public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implements
 		EgovSysHistoryService {
+
+	private static final int MAX_INSERT_ATTEMPTS = 10;
 
 	@Resource(name="sysHistoryDAO")
 	private SysHistoryDAO sysHistoryDAO;
@@ -44,13 +51,46 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 	@Override
 	public Map<?, ?> insertSysHistory(SysHistory history) throws Exception {
 
-//		String histId = "HIST_"+20091021144553005; yyyyMMddhhmmssSSS
-		String histId = "HT_"+EgovStringUtil.getTimeStamp();
-		history.setHistId(histId);
+		TransactionStatus transaction;
+		try {
+			transaction = TransactionAspectSupport.currentTransactionStatus();
+		} catch (NoTransactionException e) {
+			// 프록시를 통하지 않는 직접 호출에는 복원할 트랜잭션이 없다.
+			transaction = null;
+		}
 
-		sysHistoryDAO.insertSysHistory(history);
+		for (int attempt = 1; ; attempt++) {
+			history.setHistId(createHistId());
+			Object savepoint = transaction == null ? null : transaction.createSavepoint();
+			try {
+				sysHistoryDAO.insertSysHistory(history);
+				if (transaction != null) {
+					transaction.releaseSavepoint(savepoint);
+				}
+				return null;
+			} catch (DuplicateKeyException e) {
+				// PostgreSQL 등은 중복 키 오류 후 저장점까지 복원해야 다음 INSERT가 가능하다.
+				if (transaction != null) {
+					transaction.rollbackToSavepoint(savepoint);
+					transaction.releaseSavepoint(savepoint);
+				}
+				if (attempt >= MAX_INSERT_ATTEMPTS) {
+					throw e;
+				}
+			}
 
-		return null;
+			// 이전 ID에 1을 더하지 않고 실제 시각이 전진한 뒤 다시 생성한다.
+			try {
+				Thread.sleep(1L);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				throw e;
+			}
+		}
+	}
+
+	String createHistId() {
+		return "HT_" + EgovStringUtil.getTimeStamp();
 	}
 
 	/**

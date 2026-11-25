@@ -105,6 +105,7 @@
 		FROM COMTNSCHDULINFO A
 		WHERE 1=1 
 		AND A.SCHDUL_KND_CODE = '2' 
+		AND (#{adminAt} = 'Y' OR A.SCHDUL_CHARGER_ID = #{uniqId} OR A.FRST_REGISTER_ID = #{uniqId})
 	 ]]>
 	 <if test='searchMode != null and searchMode != ""'>
 	 <if test='searchMode == "MONTH"'>

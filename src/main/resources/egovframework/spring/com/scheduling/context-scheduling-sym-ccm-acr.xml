@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- 법정동코드수신 처리 -->
+	<!-- 법정동코드 수신 (사용 시 아래 작업·트리거·스케줄러 주석 해제) -->
 	<!-- 
 	<bean id="administCodeReceiver"
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -20,7 +20,7 @@
 	</bean>
 	 -->
 	
-	<!-- 법정동코드수신 처리 스케줄  -->
+	<!-- 법정동코드 수신 스케줄러 -->
 	<!-- 
 	<bean id="administCodeReceiverScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">

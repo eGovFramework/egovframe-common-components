@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<!--  Privacy Log Aspect -->
+	<!-- 개인정보 조회 로그 AOP -->
 	<bean id="privacyLog" class="egovframework.com.sym.log.plg.service.EgovPrivacyLogAspect">
 		<property name="maxListCount" value="1" />
 		<property name="target">
@@ -20,7 +20,6 @@
 
 	<aop:config>
 		<aop:aspect id="privacyLogAspect" ref="privacyLog">
-			<!--  service Method -->
 			<aop:after-returning returning="returnVal" pointcut="execution(public * egovframework.com..impl.*Impl.*(..)) 
 				 &amp;&amp; ! execution(public * egovframework.com.cmm.service.impl.EgovUserDetailsSessionServiceImpl.*(..)) 
 				 &amp;&amp; ! execution(public * egovframework.com.sec.ram.service.impl.EgovUserDetailsSecurityServiceImpl.*(..)) 
@@ -29,7 +28,7 @@
 				 &amp;&amp; ! execution(public * egovframework.com.sym.log.lgm.service.impl.EgovSysLogServiceImpl.*(..))"
 				 method="insertLog" />
 		</aop:aspect>
-		<!--  warning : 자체 서비스(EgovPrivacyLogServiceImpl) 및 내부 호출 서비스, 로그 처리 부분  제외 필요 -->
+		<!-- EgovPrivacyLogServiceImpl 등 로그 처리 서비스는 대상에서 제외 -->
 	</aop:config>
 
 </beans>

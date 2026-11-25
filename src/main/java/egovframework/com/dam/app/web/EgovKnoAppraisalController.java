@@ -77,8 +77,7 @@ public class EgovKnoAppraisalController {
 	 */
 	@IncludedInfo(name = "지식평가관리", listUrl = "/dam/app/EgovComDamAppraisalList.do", order = 1290, gid = 80)
 	@RequestMapping(value = "/dam/app/EgovComDamAppraisalList.do")
-	public String selectKnoAppraisalList(@ModelAttribute("searchVO") KnoAppraisalVO searchVO, ModelMap model)
-			throws Exception {
+	public String selectKnoAppraisalList(@ModelAttribute("searchVO") KnoAppraisalVO searchVO, ModelMap model) {
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -126,7 +125,7 @@ public class EgovKnoAppraisalController {
 	 */
 	@PostMapping("/dam/app/EgovComDamAppraisal.do")
 	@RequireAdmin
-	public String selectKnoAppraisal(KnoAppraisal knoAppraisal, ModelMap model) throws Exception {
+	public String selectKnoAppraisal(KnoAppraisal knoAppraisal, ModelMap model) {
 		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 		assertExpert(vo);
 		model.addAttribute("result", vo);
@@ -143,8 +142,7 @@ public class EgovKnoAppraisalController {
 	 */
 	@GetMapping(value = "/dam/app/EgovComDamAppraisalModify.do")
 	@RequireAdmin
-	public String updateKnoAppraisalView(@ModelAttribute("knoId") KnoAppraisal knoAppraisal, ModelMap model)
-			throws Exception {
+	public String updateKnoAppraisalView(@ModelAttribute("knoId") KnoAppraisal knoAppraisal, ModelMap model) {
 
 		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 		assertExpert(vo);
@@ -163,7 +161,7 @@ public class EgovKnoAppraisalController {
 	@PostMapping(value = "/dam/app/EgovComDamAppraisalModify.do")
 	@RequireAdmin
 	public String updateKnoAppraisal(@Valid @ModelAttribute("knoId") KnoAppraisal knoAppraisal, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 
 		KnoAppraisal stored = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 		assertExpert(stored);
@@ -188,7 +186,7 @@ public class EgovKnoAppraisalController {
 	 * 평가는 작성자가 아니라 지식유형의 지정 전문가(COMTNDAMPRO.EXPERT_ID)가 한다. 관리자도 예외가 아니다.
 	 * 목록 SQL 이 같은 조건으로 거르므로 상세·수정도 맞춘다.
 	 */
-	private void assertExpert(KnoAppraisal stored) throws Exception {
+	private void assertExpert(KnoAppraisal stored) {
 		if (stored == null) {
 			throw new IllegalStateException("대상 정보가 없습니다.");
 		}

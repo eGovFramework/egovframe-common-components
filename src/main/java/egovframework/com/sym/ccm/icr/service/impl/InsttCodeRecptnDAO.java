@@ -127,7 +127,7 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
      * @return List(기관코드 목록)
      */
     public List<EgovMap> selectInsttCodeList(InsttCodeRecptnVO searchVO) {
-        return selectList("InsttCodeRecptnDAO.selectInsttCodeList", searchVO);
+        return selectList("InsttCodeRecptnDAO.selectInsttCodeRecptnList", searchVO);
     }
 
     /**
@@ -136,6 +136,6 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
      * @return int(기관코드 총 개수)
      */
     public int selectInsttCodeListTotCnt(InsttCodeRecptnVO searchVO) {
-        return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeListTotCnt", searchVO);
+        return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeRecptnListTotCnt", searchVO);
     }
 }

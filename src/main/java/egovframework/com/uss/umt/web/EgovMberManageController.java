@@ -20,6 +20,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovAuthorizationHelper;
@@ -97,6 +98,9 @@ public class EgovMberManageController {
 		if (!isAuthenticated) {
 			return "index";
 		}
+
+		// 2026.11.25 KVE-2026-3294 조치 - 관리자는 전체, 그 외에는 본인 한 건
+		applyListScope(userSearchVO, model);
 
 		/** EgovPropertyService */
 		userSearchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -236,7 +240,6 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberSelectUpdtView.do")
-	@RequireAdmin
 	public String updateMberView(@RequestParam("selectedId") String mberId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -249,6 +252,9 @@ public class EgovMberManageController {
 		if (!EgovAuthorizationHelper.isAdminOrOwner(mberId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
+
+		// 삭제·잠금해제 버튼은 관리자에게만 보여준다(화면 표시용)
+		model.addAttribute("isAdmin", EgovAuthorizationHelper.isAdmin());
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -335,7 +341,6 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberSelectUpdt.do")
-	@RequireAdmin
 	public String updateMber(@Valid @ModelAttribute("mberManageVO") MberManageVO mberManageVO, BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -353,6 +358,13 @@ public class EgovMberManageController {
 
 		if (!EgovAuthorizationHelper.isAdminOrOwner(currentMber.getUniqId())) {
 			return "egovframework/com/cmm/error/accessDenied";
+		}
+
+		// 본인이 수정하는 경우(관리자 아님) 권한과 관련된 항목은 기존 저장값으로 고정한다.
+		if (!EgovAuthorizationHelper.isAdmin()) {
+			mberManageVO.setMberId(currentMber.getMberId());
+			mberManageVO.setGroupId(currentMber.getGroupId());
+			mberManageVO.setMberSttus(currentMber.getMberSttus());
 		}
 
 		if (bindingResult.hasErrors()) {
@@ -531,7 +543,6 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberPasswordUpdt.do")
-	@RequireAdmin
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO,
@@ -541,6 +552,11 @@ public class EgovMberManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
+		}
+
+		// 비밀번호 변경은 관리자 또는 본인(로그인 사용자의 uniqId 와 일치)만 할 수 있다
+		if (!EgovAuthorizationHelper.isAdminOrOwner(mberPasswordManageVO.getUniqId())) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		if (bindingResult.hasErrors()) {
@@ -591,7 +607,6 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovMberPasswordUpdtView.do")
-	@RequireAdmin
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO) throws Exception {
@@ -600,6 +615,11 @@ public class EgovMberManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
+		}
+
+		// 비밀번호 변경은 관리자 또는 본인(로그인 사용자의 uniqId 와 일치)만 할 수 있다
+		if (!EgovAuthorizationHelper.isAdminOrOwner(mberPasswordManageVO.getUniqId())) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		String userTyForPassword = (String) commandMap.get("userTyForPassword");
@@ -611,6 +631,31 @@ public class EgovMberManageController {
 		model.addAttribute("userSearchVO", userSearchVO);
 
 		return "egovframework/com/uss/umt/EgovMberPasswordUpdt";
+	}
+
+	/**
+	 * 2026.11.25 KVE-2026-3294 조치 - 목록 범위를 정한다. 관리자는 전체, 일반회원 본인은 자기 한 건만 조회한다.
+	 * 그 밖의 사용자는 거부한다. 요청으로 들어온 범위·검색 값은 서버 값으로 덮어쓴다.
+	 */
+	private void applyListScope(UserDefaultVO userSearchVO, ModelMap model) {
+		boolean isAdmin = EgovAuthorizationHelper.isAdmin();
+		model.addAttribute("isAdmin", isAdmin);
+		if (isAdmin) {
+			userSearchVO.setOwnerOnly("N");
+			userSearchVO.setOwnerUniqId("");
+			return;
+		}
+		Object principal = EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = principal instanceof LoginVO ? (LoginVO) principal : null;
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+		if (loginVO == null || uniqId.isEmpty() || !"GNR".equals(loginVO.getUserSe())) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
+		userSearchVO.setOwnerOnly("Y");
+		userSearchVO.setOwnerUniqId(uniqId);
+		userSearchVO.setSbscrbSttus("0");
+		userSearchVO.setSearchKeyword("");
+		userSearchVO.setPageIndex(1);
 	}
 
 	private String decryptSelectedId(String selectedId) {

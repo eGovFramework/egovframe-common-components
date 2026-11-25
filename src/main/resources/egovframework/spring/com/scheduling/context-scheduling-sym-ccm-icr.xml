@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<!-- 기관코드 수신 작업 정의  -->
+	<!-- 기관코드 수신 -->
 	<bean id="insttCodeReceiver" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="InsttCodeRecptnService" />
 		<property name="targetMethod" value="insertInsttCodeRecptn" />
@@ -16,7 +16,7 @@
 		<property name="repeatInterval" value="60000" />
 	</bean>
 		
-	<!-- 기관코드 수신 스케줄  -->	
+	<!-- 기관코드 수신 스케줄러 (사용 시 주석 해제) -->	
 	<!--
 	<bean id="insttCodeReceiverScheduler"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

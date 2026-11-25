@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<!--  System Log Aspect -->
+	<!-- 시스템 로그 AOP -->
 	<bean id="syslog" class="egovframework.com.sym.log.lgm.service.EgovSysLogAspect" />
 
 	<aop:config>

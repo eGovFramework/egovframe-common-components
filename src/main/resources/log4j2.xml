@@ -16,7 +16,7 @@
         <Logger name="org.egovframe" level="DEBUG" additivity="false">
             <AppenderRef ref="console" />
         </Logger>
-		<!-- log SQL with timing information, post execution -->
+		<!-- SQL 실행 시간 로그 -->
 	    <Logger name="jdbc.sqltiming" level="DEBUG" additivity="false">
 	        <AppenderRef ref="console" />
 	    </Logger>

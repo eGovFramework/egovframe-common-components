@@ -27,6 +27,7 @@ FROM(
         MBER_STTUS            as sttus,
         DATE_FORMAT(SBSCRB_DE,'%Y-%m-%d') as sbscrbDe
     FROM    COMTNGNRLMBER
+    WHERE (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
     ) A
         WHERE 1=1
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
@@ -62,6 +63,7 @@ FROM(
                 MBER_STTUS            sttus,
                 SBSCRB_DE             sbscrbDe
             FROM    COMTNGNRLMBER
+            WHERE (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
             ) A
         WHERE 1=1
             <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>

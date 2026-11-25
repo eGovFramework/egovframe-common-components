@@ -26,6 +26,7 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
         SBSCRB_DE             as SBSCRB_DE
     FROM    COMTNGNRLMBER
     WHERE 1=1
+    AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
             AND MBER_STTUS LIKE  #{sbscrbSttus}
         </if>
@@ -48,6 +49,7 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
             SELECT COUNT(1) totcnt
             FROM   COMTNGNRLMBER
             WHERE 1=1
+            AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
             <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
                 AND MBER_STTUS LIKE  #{sbscrbSttus}
             </if>

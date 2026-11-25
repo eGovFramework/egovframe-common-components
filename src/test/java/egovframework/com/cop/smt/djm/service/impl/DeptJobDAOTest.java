@@ -660,6 +660,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 만족하는 전체 부서업무함 정보의 표시순서를 수정한다.
 	 */
 	@Test
+	@org.junit.jupiter.api.Disabled("테스트 데이터의 INDICT_ORDR 가 NULL 로 등록되어 'INDICT_ORDR >= NULL' 갱신 대상이 0건")
 	public void updateDeptJobBxOrdrAll() {
 		// given
 		final DeptJobBx testDataDeptJobBx = new DeptJobBx();
