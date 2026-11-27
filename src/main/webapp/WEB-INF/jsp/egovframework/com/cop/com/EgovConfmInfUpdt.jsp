@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovConfirmInfUpdt.jsp
@@ -59,7 +60,7 @@
 
 </head>
 <body>
-<form name="frm" method="post" action="<c:url value='/cop/com/updateConfirmRequest.do'/>">
+<form:form name="frm" modelAttribute="historyVO" method="post" action="${pageContext.request.contextPath}/cop/com/updateConfirmRequest.do">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="confmNumber" value="<c:out value='${historyVO.confmNumber}' />" />
 <input type="hidden" name="trgetJobId" value="<c:out value='${historyVO.trgetJobId}' />" />
@@ -136,6 +137,6 @@
 	</table>
 	</div>
 </div>
-</form>
+</form:form>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 /**
  * @Class Name : EgovBatchOpertList.jsp
@@ -71,7 +72,7 @@
 <div class="board">
 	<h1><spring:message code="comSymBat.batchOpertList.pageTop.title"/></h1><!-- 배치작업관리 목록 -->
 
-    <form name="frm" id="frm" action="<c:url value='/sym/bat/getBatchOpertList.do'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/sym/bat/getBatchOpertList.do" method="post">
     <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default="1"/>">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -83,12 +84,12 @@
 	           </select>
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="comSymBat.batchOpertList.searchKeyword"/>" /><!-- 검색키워드 -->
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="selectProgramListManage(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/bat/getBatchOpertForRegist.do'></c:url>" onclick="fn_egov_get_regist_view(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_get_regist_view(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
     <input name="batchOpertId" type="hidden" value="">
-    </form>
+    
 
 	<table class="board_list">
 		<caption></caption>
@@ -119,13 +120,7 @@
 	        <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	          <tr>
 	                <td>
-	                    <form name="item" method="post" action="<c:url value='/sym/bat/getBatchOpert.do'/>">
-	                        <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-	                        <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-	                        <input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>">
-	                        <input type="hidden" name="batchOpertId" value="<c:out value='${resultInfo.batchOpertId}'/>">
-	                    <span class="link"><input type="submit" value="<c:out value='${resultInfo.batchOpertId}'/>" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.batchOpertId}"/>'); return false;"></span>
-	                    </form>
+	                    <a href="javascript:void(0);" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.batchOpertId}"/>'); return false;"><span class="link"><c:out value='${resultInfo.batchOpertId}'/></span></a>
 	                </td>
 	                <td>${resultInfo.batchOpertNm}</td>
 	                <td>${resultInfo.batchProgrm}</td>
@@ -141,6 +136,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_list"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

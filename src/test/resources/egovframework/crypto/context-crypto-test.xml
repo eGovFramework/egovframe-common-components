@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- egovframework.com.crypto.* 테스트용 Crypto 간소화 설정 (4.3.2 XML 네임스페이스) -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:egov-crypto="http://maven.egovframe.go.kr/schema/egov-crypto"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://maven.egovframe.go.kr/schema/egov-crypto http://maven.egovframe.go.kr/schema/egov-crypto/egov-crypto-4.3.2.xsd">
+
+	<egov-crypto:config id="egovCryptoConfig"
+		initial="true"
+		crypto="true"
+		algorithm="SHA-256"
+		algorithmKey="egovframe"
+		algorithmKeyHash="gdyYs/IZqY86VcWhT8emCYfqY1ahw2vtLG+/FzNqtrQ="
+		cryptoBlockSize="1024"
+		cryptoPropertyLocation="classpath:/egovframework/crypto/globals.properties"
+	/>
+
+	<!-- 테스트 코드가 참조하는 빈 이름 -->
+	<alias name="egovEnvCryptoService" alias="egov.envCryptoService"/>
+	<alias name="egovEnvARIACryptoService" alias="egov.ariaCryptoService"/>
+	<alias name="egovEnvCryptoConfigurerService" alias="egovPropertyConfigurer"/>
+
+	<bean id="egov.digestService" class="org.egovframe.rte.fdl.cryptography.impl.EgovDigestServiceImpl">
+		<property name="algorithm" value="SHA-256"/>
+		<property name="plainDigest" value="false"/>
+	</bean>
+
+	<bean id="generalCryptoService" class="org.egovframe.rte.fdl.cryptography.impl.EgovGeneralCryptoServiceImpl">
+		<property name="passwordEncoder" ref="egovEnvPasswordEncoderService"/>
+		<property name="algorithm" value="PBEWithSHA1AndDESede"/>
+		<property name="blockSize" value="1024"/>
+	</bean>
+
+	<!-- 암호화 비밀번호(algorithmKey) -->
+	<bean id="password" class="java.lang.String">
+		<constructor-arg value="egovframe"/>
+	</bean>
+
+</beans>

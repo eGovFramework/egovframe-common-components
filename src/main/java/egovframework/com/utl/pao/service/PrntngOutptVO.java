@@ -2,6 +2,9 @@ package egovframework.com.utl.pao.service;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * 관인이미지 모델 클래스
@@ -19,6 +22,8 @@ import java.io.Serializable;
  *
  * </pre>
  */
+@Getter
+@Setter
 public class PrntngOutptVO implements Serializable {
 
 	private static final long serialVersionUID = 941289557959718464L;
@@ -71,54 +76,5 @@ public class PrntngOutptVO implements Serializable {
 			this.imgInfo[i] = imgInfo[i];
 		}
 	}
-
-	/**
-	 * imgType attribute 를 리턴한다.
-	 * @return String
-	 */
-	public String getImgType() {
-		return imgType;
-	}
-
-	/**
-	 * imgType attribute 값을 설정한다.
-	 * @param imgType String
-	 */
-	public void setImgType(String imgType) {
-		this.imgType = imgType;
-	}
-
-	/**
-	 * orgCode attribute 를 리턴한다.
-	 * @return String
-	 */
-	public String getOrgCode() {
-		return orgCode;
-	}
-
-	/**
-	 * orgCode attribute 값을 설정한다.
-	 * @param orgCode String
-	 */
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
-	}
-
-	/**
-	 * erncslSe attribute 를 리턴한다.
-	 * @return String
-	 */
-	public String getErncslSe() {
-		return erncslSe;
-	}
-
-	/**
-	 * erncslSe attribute 값을 설정한다.
-	 * @param erncslSe String
-	 */
-	public void setErncslSe(String erncslSe) {
-		this.erncslSe = erncslSe;
-	}
-
 
 }

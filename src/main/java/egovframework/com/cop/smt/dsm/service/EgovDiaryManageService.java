@@ -27,46 +27,40 @@ public interface EgovDiaryManageService {
 	 * 일지관리 목록을 조회한다. 
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO);
 	
     /**
 	 * 일지관리를(을) 상세조회 한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO
 	 * @return DiaryManageVO
-	 * @throws Exception
 	 */
-	public DiaryManageVO selectDiaryManageDetail(DiaryManageVO diaryManageVO) throws Exception;
+	public DiaryManageVO selectDiaryManageDetail(DiaryManageVO diaryManageVO);
 	
     /**
 	 * 일지관리를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectDiaryManageListCnt(ComDefaultVO searchVO) throws Exception;
+	public int selectDiaryManageListCnt(ComDefaultVO searchVO);
 
     /**
 	 * 일지관리를(을) 등록한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO
-	 * @throws Exception
 	 */
-	void  insertDiaryManage(DiaryManageVO diaryManageVO) throws Exception;
+	void  insertDiaryManage(DiaryManageVO diaryManageVO);
 	
     /**
 	 * 일지관리를(을) 수정한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO 
-	 * @throws Exception
 	 */
-	void  updateDiaryManage(DiaryManageVO diaryManageVO) throws Exception;
+	void  updateDiaryManage(DiaryManageVO diaryManageVO);
 	
     /**
 	 * 일지관리를(을) 삭제한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO 
-	 * @throws Exception
 	 */
-	void  deleteDiaryManage(DiaryManageVO diaryManageVO) throws Exception;
+	void  deleteDiaryManage(DiaryManageVO diaryManageVO);
 	
 	
 }

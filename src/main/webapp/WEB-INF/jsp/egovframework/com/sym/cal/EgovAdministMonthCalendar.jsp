@@ -67,6 +67,7 @@ function fn_egov_change_Calendar(form){
 <DIV id="content">
 <!-- ------------------------------------------------------------------ 상단타이틀 -->
 <form name="administMonthCalendar" action ="<c:url value='/sym/cal/EgovAdministMonthCalendar.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="init" value="${init}" />
 	<input type="hidden" name="day" />
 	<table width="700" cellpadding="8" class="table-search" border="0">
@@ -137,8 +138,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result.year eq restde.year && result.month eq restde.month && result.day eq restde.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result.day}

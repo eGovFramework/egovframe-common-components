@@ -53,9 +53,9 @@
 	                #{applcntNm},
 	                sysdate,
 	                #{entrprsMberSttus},
-	                #{entrprsMberPassword},
-	                #{entrprsMberPasswordHint},
-	                #{entrprsMberPasswordCnsr},
+	                #{password},
+	                #{passwordHint},
+	                #{passwordCnsr},
 	                #{groupId},
 	                #{detailAdres},
 	                #{entrprsEndTelno},
@@ -92,9 +92,9 @@
                 APPLCNT_NM                   as applcntNm,
                 SBSCRB_DE                    as sbscrbDe,
                 ENTRPRS_MBER_STTUS           as entrprsMberSttus,
-                ENTRPRS_MBER_PASSWORD        as entrprsMberPassword,
-                ENTRPRS_MBER_PASSWORD_HINT   as entrprsMberPasswordHint,
-                ENTRPRS_MBER_PASSWORD_CNSR   as entrprsMberPasswordCnsr,
+                ENTRPRS_MBER_PASSWORD        as password,
+                ENTRPRS_MBER_PASSWORD_HINT   as passwordHint,
+                ENTRPRS_MBER_PASSWORD_CNSR   as passwordCnsr,
                 GROUP_ID                     as groupId,
                 DETAIL_ADRES                 as detailAdres,
                 ENTRPRS_END_TELNO            as entrprsEndTelno,
@@ -124,8 +124,8 @@
                 INDUTY_CODE                  = #{indutyCode},
                 APPLCNT_NM                   = #{applcntNm},
                 ENTRPRS_MBER_STTUS           = #{entrprsMberSttus},
-                ENTRPRS_MBER_PASSWORD_HINT   = #{entrprsMberPasswordHint},
-                ENTRPRS_MBER_PASSWORD_CNSR   = #{entrprsMberPasswordCnsr},
+                ENTRPRS_MBER_PASSWORD_HINT   = #{passwordHint},
+                ENTRPRS_MBER_PASSWORD_CNSR   = #{passwordCnsr},
                 GROUP_ID                     = #{groupId},
                 DETAIL_ADRES                 = #{detailAdres},
                 ENTRPRS_END_TELNO            = #{entrprsEndTelno},
@@ -150,16 +150,16 @@
         
             UPDATE COMTNENTRPRSMBER 
             SET 
-                   ENTRPRS_MBER_PASSWORD   =  #{entrprsMberPassword}
+                   ENTRPRS_MBER_PASSWORD   =  #{password}
                  , CHG_PWD_LAST_PNTTM = sysdate
             WHERE  ESNTL_ID  = #{uniqId}
         
     </update>
     
-    <select id="selectPassword_S" resultType="egovframework.com.uss.umt.service.EntrprsManageVO">
+    <select id="selectPassword_S" resultType="egovframework.com.uss.umt.service.EntrprsPasswordManageVO">
         
             SELECT
-                    ENTRPRS_MBER_PASSWORD          entrprsMberPassword 
+                    ENTRPRS_MBER_PASSWORD          entrprsMberPassword
             FROM    COMTNENTRPRSMBER
             WHERE   ESNTL_ID=#{uniqId}
         
@@ -183,6 +183,7 @@
                 SBSCRB_DE             as SBSCRB_DE
             FROM    COMTNENTRPRSMBER
             WHERE 1=1
+            AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
             AND ENTRPRS_MBER_STTUS LIKE  #{sbscrbSttus}
         </if>
@@ -207,6 +208,7 @@
 	   SELECT COUNT(1) totcnt
 	   FROM    COMTNENTRPRSMBER
 		WHERE 1=1
+		AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
 	]]>
 	
 	<if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>

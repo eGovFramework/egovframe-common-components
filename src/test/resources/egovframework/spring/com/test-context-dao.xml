@@ -5,8 +5,11 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+	<!-- Crypto 간소화 설정(egovEnvCryptoService) : 4.3.2 XML 네임스페이스 context-crypto.xml (egovPasswordResolver 가 참조) -->
 	<import
 		resource="classpath*:/egovframework/spring/com/context-crypto.xml" />
+	<bean id="egovPasswordResolver" class="egovframework.com.cmm.util.EgovPasswordResolver" />
+
 	<import
 		resource="classpath*:/egovframework/spring/com/context-datasource.xml" />
 	<import

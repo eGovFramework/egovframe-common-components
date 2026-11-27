@@ -61,8 +61,6 @@ function fInsertMenuCreat() {
                 if(checkField[i].checked) {
                     checkMenuNos += ((checkedCount==0? "" : ",") + checkField[i].value);
                     checkedCount++;
-                    console.log("checkMenuNos = "+checkMenuNos);
-                    console.log("checkedCount = "+checkedCount);
                 }
             }
         } else {
@@ -102,6 +100,7 @@ function fMenuCreatSiteMap() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="menuCreatManageForm" action ="<c:url value='/sym/mnu/mcm/EgovMenuCreatSiteMapSelect.do' />" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input name="checkedMenuNoForInsert" type="hidden" >
 <input name="checkedAuthorForInsert"  type="hidden" >
 
@@ -121,7 +120,8 @@ function fMenuCreatSiteMap() {
 	</div>
 	
 	<c:forEach var="result1" items="${resultList}" varStatus="status" >
-	<input type="hidden" name="tmp_menuNmVal" value="${result1.menuNo}|${result1.upperMenuId}|${result1.menuNm}|${result1.progrmFileNm}|${result1.chkYeoBu}|">
+	<%-- 2026.07.30 보안 조치 - 속성값 이스케이프(HTML 속성 breakout 저장형 XSS 차단) --%>
+	<input type="hidden" name="tmp_menuNmVal" value="<c:out value='${result1.menuNo}'/>|<c:out value='${result1.upperMenuId}'/>|<c:out value='${result1.menuNm}'/>|<c:out value='${result1.progrmFileNm}'/>|<c:out value='${result1.chkYeoBu}'/>|">
 	</c:forEach>
 		
 	<div class="tree">
@@ -158,7 +158,6 @@ function fMenuCreatSiteMap() {
 				}
             }else{
                 alert("<spring:message code="comSymMnuMpm.MenuCreat.validate.menuNmVal.none2" />"); //메뉴가 존재하지 않습니다. 메뉴 등록 후 사용하세요.
-                //window.close();
             }
 		</script>
 	</div>

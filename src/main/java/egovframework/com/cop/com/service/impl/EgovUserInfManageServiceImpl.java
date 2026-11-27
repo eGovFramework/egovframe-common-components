@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.com.service.EgovUserInfManageService;
 import egovframework.com.cop.com.service.UserInfVO;
+import javax.annotation.Resource;
 
 /**
  * 협업에서 사용할 사용자 조회 서비스 기능 구현 클래스
@@ -40,11 +39,11 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectClubOprtrList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public Map<String, Object> selectClubOprtrList(UserInfVO userVO) throws Exception {
+	public Map<String, Object> selectClubOprtrList(UserInfVO userVO) {
 		List<UserInfVO> result = userInfDAO.selectClubOprtrList(userVO);
 		int cnt = userInfDAO.selectClubOprtrListCnt(userVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -58,11 +57,11 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectClubUserList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public Map<String, Object> selectClubUserList(UserInfVO userVO) throws Exception {
+	public Map<String, Object> selectClubUserList(UserInfVO userVO) {
 		List<UserInfVO> result = userInfDAO.selectClubUserList(userVO);
 		int cnt = userInfDAO.selectClubUserListCnt(userVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -76,11 +75,11 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectCmmntyMngrList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public Map<String, Object> selectCmmntyMngrList(UserInfVO userVO) throws Exception {
+	public Map<String, Object> selectCmmntyMngrList(UserInfVO userVO) {
 		List<UserInfVO> result = userInfDAO.selectCmmntyMngrList(userVO);
 		int cnt = userInfDAO.selectCmmntyMngrListCnt(userVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -94,11 +93,11 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectCmmntyUserList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public Map<String, Object> selectCmmntyUserList(UserInfVO userVO) throws Exception {
+	public Map<String, Object> selectCmmntyUserList(UserInfVO userVO) {
 		List<UserInfVO> result = userInfDAO.selectCmmntyUserList(userVO);
 		int cnt = userInfDAO.selectCmmntyUserListCnt(userVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -112,11 +111,11 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectUserList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public Map<String, Object> selectUserList(UserInfVO userVO) throws Exception {
+	public Map<String, Object> selectUserList(UserInfVO userVO) {
 		List<UserInfVO> result = userInfDAO.selectUserList(userVO);
 		int cnt = userInfDAO.selectUserListCnt(userVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -130,7 +129,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectAllClubUser(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception {
+	public List<UserInfVO> selectAllClubUser(UserInfVO userVO) {
 		return userInfDAO.selectAllClubUser(userVO);
 	}
 
@@ -140,7 +139,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectAllCmmntyUser(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
-	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) throws Exception {
+	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) {
 		return userInfDAO.selectAllCmmntyUser(userVO);
 	}
 }

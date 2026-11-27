@@ -64,6 +64,12 @@
         </if>
     </select>
 
+    <select id="selectExistingAdministCodes" resultType="string">
+        SELECT DISTINCT ADMINIST_ZONE_CODE
+          FROM COMTCADMINISTCODERECPTNLOG
+         WHERE ADMINIST_ZONE_SE = '1'
+    </select>
+
     <select id="selectAdministCodeDetail" parameterType="egovframework.com.sym.ccm.acr.service.AdministCodeRecptn" resultType="egovframework.com.sym.ccm.acr.service.AdministCodeRecptn">
         
             SELECT  ADMINIST_ZONE_SE            administZoneSe

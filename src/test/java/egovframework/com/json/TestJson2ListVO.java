@@ -5,11 +5,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TestJson2ListVO {
 
 	//@SuppressWarnings("unchecked")
@@ -60,18 +65,16 @@ public class TestJson2ListVO {
 			String str;
 			
 			while ((str = reader.readLine()) != null) {
-				System.out.println(str);
+				log.debug(str);
 				jsonStr += str;
 			}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
 			try {
 				reader.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				throw new BaseRuntimeException(e);
 			}
 		}
 
@@ -83,20 +86,17 @@ public class TestJson2ListVO {
 
 			for (DataSetInfo vo : readValue) {
 				//MapUtils.debugPrint(System.out, "map", vo);
-				System.out.println(vo.getTitle());
-				System.out.println(vo.getDescription());
-				System.out.println(vo.getTrainClass());
-				System.out.println(vo.getDataSetFile());
+				log.debug(vo.getTitle());
+				log.debug(vo.getDescription());
+				log.debug(vo.getTrainClass());
+				log.debug(vo.getDataSetFile());
 			}
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 	}
 }

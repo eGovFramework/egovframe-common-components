@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%--
   Class Name : EgovLeaderSchdulModify.jsp
   Description : 간부일정관리 수정 페이지
@@ -33,8 +32,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>
- <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="leaderSchdulVO" staticJavascript="false" xhtml="true" cdata="false"/>
+ <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 function initCalendar(){
@@ -346,7 +344,7 @@ String.prototype.replaceAll = function(src, repl){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_save_LeaderSchdul(document.forms[0]); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulList.do'/>" onclick="fn_egov_list_LeaderSchdul(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_LeaderSchdul(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

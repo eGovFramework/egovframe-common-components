@@ -6,7 +6,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
  /**
   * @Class Name : EgovBoardUseInfInqire.jsp
@@ -29,8 +28,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="boardUseInf" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_updt_bbsUseInf(){
 		if (!validateBoardUseInf(document.boardUseInf)){
@@ -55,7 +53,8 @@
 
 </head>
 <body>
-<form name="boardUseInf" method="post" action="<c:url value='/cop/com/updateBBSUseInf.do'/>">
+<form name="boardUseInf" method="post" action="${pageContext.request.contextPath}/cop/com/updateBBSUseInf.do">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
 <input type="hidden" name="bbsId" value="<c:out value='${bdUseVO.bbsId}'/>" />
@@ -128,11 +127,11 @@
 	<table border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
       <td><span class="button">
-      <a href="<c:url value='/cop/com/updateBBSUseInf.do'/>" onclick="fn_egov_updt_bbsUseInf(); return false;">수정</a>
+      <a href="javascript:void(0);" onclick="fn_egov_updt_bbsUseInf(); return false;">수정</a>
       </span></td>
       <td width="10"></td>
       <td><span class="button">
-      <a href="<c:url value='/cop/com/selectBBSUseInfs.do'/>" onclick="fn_egov_select_bbsUseInfs(); return false;">목록</a>
+      <a href="javascript:void(0);" onclick="fn_egov_select_bbsUseInfs(); return false;">목록</a>
       </span></td>
 	</tr>
 	</table>

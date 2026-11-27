@@ -24,7 +24,8 @@
 <ul>
 <c:forEach var="result" items="${resultList}" varStatus="status">
    	<li style="padding-top:5px">
-		<form name="cmmntyForm2" method="post"  action="<c:url value='/cop/cmy/selectCommuMasterDetail.do'/>" >
+		<form name="cmmntyForm2" method="post"  action="${pageContext.request.contextPath}/cop/cmy/selectCommuMasterDetail.do" >
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="hidden" name="cmmntyId" value="<c:out value='${result.cmmntyId}'/>"/>
 		<input type="hidden" name="cmmntyNm" value="<c:out value='${result.cmmntyNm}'/>"/>
 		<input type="submit" value="<c:out value="${result.cmmntyNm}"/>"/>

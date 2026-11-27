@@ -34,9 +34,8 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
 	 * 
 	 * @param searchVO 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectIndvdlInfoPolicyList(ComDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectIndvdlInfoPolicyList(ComDefaultVO searchVO) {
 		return selectList("IndvdlInfoPolicy.selectIndvdlInfoPolicy", searchVO);
 	}
 
@@ -45,9 +44,8 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
 	 * 
 	 * @param searchVO 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectIndvdlInfoPolicyListCnt(ComDefaultVO searchVO) throws Exception {
+	public int selectIndvdlInfoPolicyListCnt(ComDefaultVO searchVO) {
 		return (Integer) selectOne("IndvdlInfoPolicy.selectIndvdlInfoPolicyCnt", searchVO);
 	}
 
@@ -56,9 +54,8 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
 	 * 
 	 * @param indvdlInfoPolicy 개인정보보호정책 정보가 담김 VO
 	 * @return IndvdlInfoPolicy
-	 * @throws Exception
 	 */
-	public IndvdlInfoPolicy selectIndvdlInfoPolicyDetail(IndvdlInfoPolicy indvdlInfoPolicy) throws Exception {
+	public IndvdlInfoPolicy selectIndvdlInfoPolicyDetail(IndvdlInfoPolicy indvdlInfoPolicy) {
 		return (IndvdlInfoPolicy) selectOne("IndvdlInfoPolicy.selectIndvdlInfoPolicyDetail", indvdlInfoPolicy);
 	}
 
@@ -66,9 +63,8 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
 	 * 개인정보보호정책를(을) 등록한다.
 	 * 
 	 * @param qindvdlInfoPolicy 개인정보보호정책 정보가 담김 VO
-	 * @throws Exception
 	 */
-	public void insertIndvdlInfoPolicy(IndvdlInfoPolicy indvdlInfoPolicy) throws Exception {
+	public void insertIndvdlInfoPolicy(IndvdlInfoPolicy indvdlInfoPolicy) {
 		insert("IndvdlInfoPolicy.insertIndvdlInfoPolicy", indvdlInfoPolicy);
 	}
 
@@ -76,9 +72,8 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
 	 * 개인정보보호정책를(을) 수정한다.
 	 * 
 	 * @param indvdlInfoPolicy 개인정보보호정책 정보가 담김 VO
-	 * @throws Exception
 	 */
-	public void updateIndvdlInfoPolicy(IndvdlInfoPolicy indvdlInfoPolicy) throws Exception {
+	public void updateIndvdlInfoPolicy(IndvdlInfoPolicy indvdlInfoPolicy) {
 		update("IndvdlInfoPolicy.updateIndvdlInfoPolicy", indvdlInfoPolicy);
 	}
 
@@ -86,9 +81,8 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
 	 * 개인정보보호정책를(을) 삭제한다.
 	 * 
 	 * @param indvdlInfoPolicy 개인정보보호정책 정보가 담김 VO
-	 * @throws Exception
 	 */
-	public void deleteIndvdlInfoPolicy(IndvdlInfoPolicy indvdlInfoPolicy) throws Exception {
+	public void deleteIndvdlInfoPolicy(IndvdlInfoPolicy indvdlInfoPolicy) {
 		delete("IndvdlInfoPolicy.deleteIndvdlInfoPolicy", indvdlInfoPolicy);
 	}
 

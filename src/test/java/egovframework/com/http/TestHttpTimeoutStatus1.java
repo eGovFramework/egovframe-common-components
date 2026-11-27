@@ -1,5 +1,7 @@
 package egovframework.com.http;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -18,16 +20,17 @@ import java.net.URL;
  * </pre>
  */
 
+@Slf4j
 public class TestHttpTimeoutStatus1 {
 
 	public static void main(String[] args) {
-		System.out.println("Start Chceck URL");
+		log.debug("Start Chceck URL");
 		String httpSttusCd = null;
 		String siteUrl = "http://googlezzz.com:81";
 		long start = System.currentTimeMillis();
 
-		System.out.println("sun.net.client.defaultConnectTimeout = "+System.getProperty("sun.net.client.defaultConnectTimeout"));
-		System.out.println("sun.net.client.defaultReadTimeout = "+System.getProperty("sun.net.client.defaultReadTimeout"));
+		log.debug("sun.net.client.defaultConnectTimeout = {}", System.getProperty("sun.net.client.defaultConnectTimeout"));
+		log.debug("sun.net.client.defaultReadTimeout = {}", System.getProperty("sun.net.client.defaultReadTimeout"));
 		
 		System.setProperty("sun.net.client.defaultConnectTimeout", "10000");
 		System.setProperty("sun.net.client.defaultReadTimeout", "10000");
@@ -42,11 +45,11 @@ public class TestHttpTimeoutStatus1 {
 			httpSttusCd = "02";
 		}
 
-		System.out.println("실행 결과 : " + httpSttusCd );
+		log.debug("실행 결과 : {}", httpSttusCd);
 
 		long end = System.currentTimeMillis();
-		System.out.println("실행 시간 : " + ( end - start ) / 1000.0 + "초" );
-		System.out.println("Finish Chceck URL");
+		log.debug("실행 시간 : {}초", ( end - start ) / 1000.0);
+		log.debug("Finish Chceck URL");
 
 	}
 

@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <%
 
@@ -21,7 +22,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
  
 %>
@@ -48,15 +49,15 @@ function fncSelectBanner(bannerId) {
 
 <div class="board">
 <!-- MYPAGE배너관리 -->
-<form name="items" method="post" action="<c:url value='/uss/ion/bnr/getBanner.do'/>">
+<form:form name="items" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/uss/ion/bnr/getBanner.do">
 	<h1><spring:message code="ussIonBnr.bannerMainList.bannerMainList"/></h1>
 	<span>※<spring:message code="ussIonBnr.bannerMainList.EgovBannerDc"/></span>
 
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="" />
-			<col style="width:10%" />
+			<col style="width:80%" />
+			<col style="width:20%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -75,6 +76,14 @@ function fncSelectBanner(bannerId) {
 				</td>
 			</tr>
 			</c:forEach>
+			<%-- 데이터를 없을때 화면에 메세지를 출력해준다 --%>
+			<c:if test="${fn:length(bannerList) == 0}">
+			<tr>
+				<td class="lt_text3" colspan="2">
+					<spring:message code="common.nodata.msg" />
+				</td>
+			</tr>
+			</c:if>
 		</tbody>
 	</table>
 
@@ -84,6 +93,6 @@ function fncSelectBanner(bannerId) {
 <input type="hidden" name="pageIndex" value="1">
 <input type="hidden" name="searchCondition" value="1">
 <input type="hidden" name="searchKeyword" value="">
-</form>
+</form:form>
 </body>
 </html>

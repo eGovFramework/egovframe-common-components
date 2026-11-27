@@ -32,7 +32,14 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
+<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />">
+function fn_egov_detail_item(tmpProgrmNm, tmpRqesterNo) {
+	document.programChangeRequstProcessListForm.tmpProgrmNm.value = tmpProgrmNm;
+	document.programChangeRequstProcessListForm.tmpRqesterNo.value = tmpRqesterNo;
+	document.programChangeRequstProcessListForm.action = "<c:url value='/sym/prm/EgovProgramChangRequstProcessDetailSelect.do'/>";
+	document.programChangeRequstProcessListForm.submit();
+}
+</script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script language="javascript1.2"  type="text/javaScript">
 <!--
@@ -129,6 +136,7 @@ function fncSearchSpan(vSearch) {
 	<h1><spring:message code="comSymPrm.programChangeRequstProcess.pageTop.title"/></h1><!-- 프로그램변경요청처리 -->
 
 	<form name="programChangeRequstProcessListForm" method="post" action="">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -181,11 +189,7 @@ function fncSearchSpan(vSearch) {
 			  <tr>
 			    <td><c:out value="${result.rqesterNo}"/></td>
 			    <td>
-			        <form name="item" method="post" action="<c:url value='/sym/prm/EgovProgramChangRequstProcessDetailSelect.do'/>">
-						<input type="hidden" name="tmpProgrmNm"  value="<c:out value="${result.progrmFileNm  }"/>"/>
-						<input type="hidden" name="tmpRqesterNo" value="<c:out value="${result.rqesterNo     }"/>"/>
-			            <span class="link"><input type="submit"   value="<c:out value="${result.progrmFileNm  }"/>" onclick="selectChangeRequstProcessListDetail('<c:out value="${result.progrmFileNm}"/>','<c:out value="${result.rqesterNo}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="selectChangeRequstProcessListDetail('<c:out value="${result.progrmFileNm}"/>','<c:out value="${result.rqesterNo}"/>'); return false;"><span class="link"><c:out value="${result.progrmFileNm  }"/></span></a>
 				</td>
 			    <td>
 			      <c:if test="${empty result.processSttus}">N/A</c:if>

@@ -13,14 +13,17 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author 전우성(슈퍼개발자K3)
  */
 package egovframework.com.ext.ldapumt.service;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
 *
-* 사용자 VO 객 체 
+* 사용자 VO 객 체
 * @author 전우성
 * @since 2014.10.12
 * @version 1.0
@@ -35,6 +38,8 @@ package egovframework.com.ext.ldapumt.service;
 *
 * </pre>
 */
+@Getter
+@Setter
 public class UserVO extends LdapObject {
 	private String ou = "";
 	private String cn = "";
@@ -51,116 +56,4 @@ public class UserVO extends LdapObject {
 
 	private Integer ouLevel = null;
 	private Integer ouOrder = null;
-
-	public String getOu() {
-		return ou;
-	}
-
-	public void setOu(String ou) {
-		this.ou = ou;
-	}
-
-	public String getCn() {
-		return cn;
-	}
-
-	public void setCn(String cn) {
-		this.cn = cn;
-	}
-
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
-	}
-
-	public String getCompanyName() {
-		return companyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-
-	public String getDepartmentName() {
-		return departmentName;
-	}
-
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
-
-	public String getGrade() {
-		return grade;
-	}
-
-	public void setGrade(String grade) {
-		this.grade = grade;
-	}
-
-	public String getInsayn() {
-		return insayn;
-	}
-
-	public void setInsayn(String insayn) {
-		this.insayn = insayn;
-	}
-
-	public String getOuCode() {
-		return ouCode;
-	}
-
-	public void setOuCode(String ouCode) {
-		this.ouCode = ouCode;
-	}
-
-	public String getParentouCode() {
-		return parentouCode;
-	}
-
-	public void setParentouCode(String parentouCode) {
-		this.parentouCode = parentouCode;
-	}
-
-	public String getTopouCode() {
-		return topouCode;
-	}
-
-	public void setTopouCode(String topouCode) {
-		this.topouCode = topouCode;
-	}
-
-	public String getUcOrgFullName() {
-		return ucOrgFullName;
-	}
-
-	public void setUcOrgFullName(String ucOrgFullName) {
-		this.ucOrgFullName = ucOrgFullName;
-	}
-
-	public String getUserFullName() {
-		return userFullName;
-	}
-
-	public void setUserFullName(String userFullName) {
-		this.userFullName = userFullName;
-	}
-
-	public Integer getOuLevel() {
-		return ouLevel;
-	}
-
-	public void setOuLevel(Integer ouLevel) {
-		this.ouLevel = ouLevel;
-	}
-
-	public Integer getOuOrder() {
-		return ouOrder;
-	}
-
-	public void setOuOrder(Integer ouOrder) {
-		this.ouOrder = ouOrder;
-	}
 }

@@ -10,12 +10,12 @@ import egovframework.com.uss.ion.sit.service.SiteVO;
 @Repository("EgovSiteDAO")
 public class EgovSiteDAO extends EgovComAbstractDAO {
 
-	public List<SiteVO> selectSiteList(SiteVO searchVO) {
-		return selectList("SiteManage.selectSiteList", searchVO);
+	public List<SiteVO> selectSiteList(SiteVO siteVO) {
+		return selectList("SiteManage.selectSiteList", siteVO);
 	}
 
-	public int selectSiteListCnt(SiteVO searchVO) {
-		return (Integer) selectOne("SiteManage.selectSiteListCnt", searchVO);
+	public int selectSiteListCnt(SiteVO siteVO) {
+		return (Integer) selectOne("SiteManage.selectSiteListCnt", siteVO);
 	}
 
 	public SiteVO selectSiteDetail(SiteVO siteVO) {

@@ -66,7 +66,8 @@ function fn_egov_update_view(){
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymBat.batchSchdulDetail.pageTop.title"/></h2><!-- 배치스케줄 상세조회 -->
 
-<form name="batchSchdulForm"  id="batchSchdulForm" action="<c:url value='/sym/bat/getBatchSchdul.do'/>" method="post">
+<form name="batchSchdulForm"  id="batchSchdulForm" action="${pageContext.request.contextPath}/sym/bat/getBatchSchdul.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="batchSchdulId" type="hidden" value="<c:out value='${resultInfo.batchSchdulId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
@@ -82,34 +83,34 @@ function fn_egov_update_view(){
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.batchSchdulId"/></th><!-- 배치스케줄ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchSchdulId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchSchdulId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.batchOpertId"/></th><!-- 배치작업ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.batchOpertNm"/></th><!-- 배치작업명 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertNm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.executCycleNm"/></th><!-- 실행주기 -->
 			<td class="left">
-			    <c:out value="${resultInfo.executCycleNm}" escapeXml="false" />&nbsp;<c:out value="${resultInfo.executSchdul}" escapeXml="false" />
+			    <c:out value="${resultInfo.executCycleNm}"/>&nbsp;<c:out value="${resultInfo.executSchdul}"/>
 			</td>
 		</tr>
 	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s2"><a href="<c:url value='/sym/bat/getBatchSchdulForUpdate.do'></c:url>" onclick="fn_egov_update_view(); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
+		<span class="btn_s2"><a href="javascript:void(0);" onclick="fn_egov_update_view(); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete(); return false;" /><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/bat/getBatchSchdulList.do'></c:url>" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 

@@ -52,6 +52,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2022.11.11   김혜준       시큐어코딩 처리
  *  2024.10.29   win777	    디렉토리 생성 성공 시 생성된 절대경로를 리턴하도록 변경
  *  2025.02.06   신용호       deleteFile() KISA 시큐어코딩 처리
+ *  2026.07.09   EricSeokgon  지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * </pre>
  */
@@ -66,7 +67,7 @@ public class EgovFileTool {
 
 	// LOGGER
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileTool.class);
-	
+
 	private static final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
 
 
@@ -81,7 +82,7 @@ public class EgovFileTool {
 	public static String deletePath(String filePath) {
 		return deletePath(FILE_STORE_PATH, filePath);
 	}
-	
+
 	/**
 	 * <pre>
 	 * Comment : 디렉토리(파일)를 삭제한다. (파일,디렉토리 구분없이 존재하는 경우 무조건 삭제한다)
@@ -92,15 +93,16 @@ public class EgovFileTool {
 	 * @return 성공하면 삭제된 절대경로, 아니면블랭크
 	 */
 	public static String deletePath(String basePath, String filePath) {
-		
+
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
 			basePath = FILE_STORE_PATH;
 		}
-		
+
 		String result = "";
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
+		// basePath가 구분자로 끝나지 않아도 경로가 올바르게 구성되도록 결합한다.
+		File file = new File(EgovWebUtil.filePathBlackList(new File(basePath, filePath).getPath()));
 		if (file.exists()) {
 			result = file.getAbsolutePath();
 			if (!file.delete()) {
@@ -123,7 +125,7 @@ public class EgovFileTool {
 	public static String createDirectories(String dirPath) {
 		return createDirectories(FILE_STORE_PATH, dirPath);
 	}
-	
+
 	/**
 	 * <pre>
 	 * Comment : 디렉토리를 생성한다. (여러 레벨의 경로를 동시에 생성)
@@ -135,7 +137,7 @@ public class EgovFileTool {
 	 */
 	public static String createDirectories(String basePath, String dirPath) {
 		String result = "";
-		
+
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
 			basePath = FILE_STORE_PATH;
@@ -145,7 +147,7 @@ public class EgovFileTool {
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
-				file.getAbsolutePath();
+				result = file.getAbsolutePath();
 			} else {
 				LOGGER.error("[file.mkdirs] file : Path Creation Fail");
 			}
@@ -161,16 +163,16 @@ public class EgovFileTool {
 	 * @return ArrayList list 파일목록(절대경로)
 	 */
 	public static List<String> getSubFilesByAll(File[] fileArray) throws Exception {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 
-		for (int i = 0; i < fileArray.length; i++) {
+		for (File element : fileArray) {
 			// 디렉토리 안에 디렉토리면 그 안의 파일목록에서 찾도록 재귀호출한다.
-			if (fileArray[i].isDirectory()) {
-				File[] tmpArray = fileArray[i].listFiles();
+			if (element.isDirectory()) {
+				File[] tmpArray = element.listFiles();
 				list.addAll(getSubFilesByAll(tmpArray));
 				// 파일이면 담는다.
 			} else {
-				list.add(fileArray[i].getAbsolutePath());
+				list.add(element.getAbsolutePath());
 			}
 		}
 
@@ -189,7 +191,7 @@ public class EgovFileTool {
 
 		return createNewDirectory(FILE_STORE_PATH, dirPath);
 	}
-	
+
 	/**
 	 * <pre>
 	 * Comment : 디렉토리를 생성한다.
@@ -205,7 +207,7 @@ public class EgovFileTool {
 		if (basePath == null || basePath.equals("")) {
 			basePath = FILE_STORE_PATH;
 		}
-		
+
 		// 인자값 유효하지 않은 경우 블랭크 리턴
 		if (dirPath == null || dirPath.equals("")) {
 			return "";
@@ -233,7 +235,7 @@ public class EgovFileTool {
 
 		return result;
 	}
-	
+
 	/**
 	 * <pre>
 	 * Comment : 파일을 생성한다.
@@ -245,7 +247,7 @@ public class EgovFileTool {
 	public static String createNewFile(String filePath) {
 		return createNewFile(FILE_STORE_PATH, filePath);
 	}
-	
+
 	/**
 	 * <pre>
 	 * Comment : 파일을 생성한다.
@@ -256,7 +258,7 @@ public class EgovFileTool {
 	 * @return 성공하면 생성된 파일의 절대경로, 아니면블랭크
 	 */
 	public static String createNewFile(String basePath, String filePath) {
-		
+
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
 			basePath = FILE_STORE_PATH;
@@ -303,7 +305,7 @@ public class EgovFileTool {
 	public static String deleteFile(String fileDeletePath) {
 		return deleteFile(FILE_STORE_PATH, fileDeletePath);
 	}
-	
+
 	/**
 	 * <pre>
 	 * Comment : 파일을 삭제한다.
@@ -314,7 +316,7 @@ public class EgovFileTool {
 	 * @return 성공하면 삭제된 파일의 절대경로, 아니면블랭크
 	 */
 	public static String deleteFile(String basePath, String fileDeletePath) {
-		
+
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
 			basePath = FILE_STORE_PATH;
@@ -325,7 +327,7 @@ public class EgovFileTool {
 			return "";
 		}
 		String result = "";
-		File file = new File(EgovWebUtil.filePathBlackList(fileDeletePath));
+		File file = new File(EgovWebUtil.filePathBlackList(new File(basePath, fileDeletePath).getPath()));
 		if (file.isFile()) {
 			result = deletePath(basePath, fileDeletePath);
 		} else {
@@ -350,13 +352,13 @@ public class EgovFileTool {
 		if (basePath == null || basePath.equals("")) {
 			basePath = FILE_STORE_PATH;
 		}
-		
+
 		if (!EgovFileBasePathSecurityValidator.validate(basePath)) {
 			throw new SecurityException("Unacceptable base path : " + basePath);
 		}
-		
+
 		// 파싱결과 구조체
-		Vector<List<String>> parResult = new Vector<List<String>>();
+		Vector<List<String>> parResult = new Vector<>();
 
 		// 파일 오픈
 		String parFile1 = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
@@ -366,9 +368,9 @@ public class EgovFileTool {
 			// 파일이며, 존재하면 파싱 시작
 			if (file.exists() && file.isFile()) {
 
-				// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
+				// 1. 파일 텍스트 내용을 읽어서 StringBuilder에 쌓는다.
 				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				StringBuffer strBuff = new StringBuffer();
+				StringBuilder strBuff = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
 					if (line.length() < MAX_STR_LEN) {
@@ -381,11 +383,14 @@ public class EgovFileTool {
 
 				// 3. 필드 수 만큼 돌아가며 Vector<ArrayList> 형태로 만든다.
 				int filedCnt = 1;
-				List<String> arr = new ArrayList<String>();
+				List<String> arr = new ArrayList<>();
 				for (int i = 0; i < strArr.length; i++) {
 
 					if (parField != 1) {
 						if ((filedCnt % parField) == 1) {
+							// 2026.09.03 레코드가 시작될 때 새 List를 할당한다.
+							// (할당하지 않으면 모든 레코드가 같은 List 인스턴스를 참조하게 된다.)
+							arr = new ArrayList<>();
 							if (strArr[i] != null) {
 								arr.add(strArr[i]);
 							}
@@ -406,7 +411,7 @@ public class EgovFileTool {
 							}
 						}
 					} else {
-						arr = new ArrayList<String>();
+						arr = new ArrayList<>();
 						if (strArr[i] != null) {
 							arr.add(strArr[i]);
 						}

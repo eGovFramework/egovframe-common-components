@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssIonEcc.tnextrlHrVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -32,11 +31,10 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/popup.js'/>" ></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="tnextrlHrVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 $(function() {
 	$("#brth").datepicker(   
@@ -56,25 +54,15 @@ $(function() {
 });
 
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-
-	// 첫 입력란에 포커스
-	document.getElementById("tnextrlHrVO").extrlHrNm.focus();
-
-}
-/* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_hr(form){
 	//input item Client-Side validate
 	if (!validateTnextrlHrVO(form)) {	
 		return false;
-	} else {
-		if(confirm("<spring:message code="common.regist.msg" />")){	
-			form.submit();	
-		}
+	}
+	if(confirm("<spring:message code="common.regist.msg" />")){	
+		form.submit();
 	} 
 }
 
@@ -89,7 +77,7 @@ function fn_egov_regist_hr(form){
 </script>
 
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -114,10 +102,11 @@ function fn_egov_regist_hr(form){
 		<tr>
 			<th><label for="eventCn">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:textarea path="eventCn" title="${title} ${inputTxt}" cols="300" rows="20" readonly="true" style="width:94%;"/>   
+			    <form:input path="eventCn" title="${title} ${inputTxt}" size="70" maxlength="1000" readonly="true" style="width:70%;"/>
 			    <a href="#" onClick="fn_egov_popup_event()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comUssIonEcc.eventCmpgnVO.findEv"/> title="<spring:message code="comUssIonEcc.eventCmpgnVO.findEv"/>"></a>
 			    <div style="display:none"><form:input path="eventId" /></div>
-   				<div><form:errors path="eventCn" cssClass="error" /></div>     
+   				<div><form:errors path="eventId" cssClass="error" /></div>
+   				<div><form:errors path="eventCn" cssClass="error" /></div>
 			</td>
 		</tr>
 		
@@ -149,7 +138,7 @@ function fn_egov_regist_hr(form){
 		<tr>
 			<th><label for="brth">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-				<form:input path="brth" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:70px;"/>
+				<form:input path="brth" title="${title} ${inputTxt}" maxlength="10" readonly="true" style="width:70px;"/>
 				<div><form:errors path="brth" cssClass="error" /></div>       
 			</td>
 		</tr>
@@ -177,24 +166,24 @@ function fn_egov_regist_hr(form){
 			</td>
 		</tr>
 		
-		<!-- 연락처 -->
+		<!-- 연락처 (숫자만 입력) -->
 		<c:set var="title"><spring:message code="comUssIonEcc.tnextrlHrVO.telNo"/> </c:set>
 		<tr>
 			<th><label for="areaNo">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-			    <form:input path="areaNo" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>&nbsp;-&nbsp;
-			    <form:input path="middleTelno" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>&nbsp;-&nbsp;
-			    <form:input path="endTelno" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>
+			    <form:input path="areaNo" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;" oninput="this.value=this.value.replace(/[^0-9]/g,'');"/>&nbsp;-&nbsp;
+			    <form:input path="middleTelno" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;" oninput="this.value=this.value.replace(/[^0-9]/g,'');"/>&nbsp;-&nbsp;
+			    <form:input path="endTelno" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;" oninput="this.value=this.value.replace(/[^0-9]/g,'');"/>
    				<div><form:errors path="areaNo" cssClass="error" /></div>     
 			</td>
 		</tr>
 		
-		<!-- 이메일주소 -->
+		<!-- 이메일주소 (숫자/문자/@/. 만 입력) -->
 		<c:set var="title"><spring:message code="comUssIonEcc.tnextrlHrVO.emailAdres"/> </c:set>
 		<tr>
 			<th><label for="emailAdres">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="emailAdres" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="emailAdres" title="${title} ${inputTxt}" size="70" maxlength="70" oninput="this.value=this.value.replace(/[^0-9a-zA-Z@.]/g,'');" />
    				<div><form:errors path="emailAdres" cssClass="error" /></div>     
 			</td>
 		</tr>

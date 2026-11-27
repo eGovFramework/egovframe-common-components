@@ -3,8 +3,6 @@ package egovframework.com.sym.ccm.icr.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -12,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
@@ -22,6 +22,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sym.ccm.icr.service.EgovInsttCodeRecptnService;
 import egovframework.com.sym.ccm.icr.service.InsttCodeRecptn;
 import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
+import javax.annotation.Resource;
 
 /**
  *
@@ -39,7 +40,7 @@ import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
  *   2009.04.01  이중호          최초 생성
  *   2011.8.26	정진오			IncludedInfo annotation 추가
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 
@@ -69,7 +70,8 @@ public class EgovInsttCodeRecptnController {
 	 * @return "forward:/sym/ccm/icr/getInsttCodeRecptnList.do"
 	 * @throws Exception
 	 */
-    @RequestMapping(value="/sym/ccm/icr/addInsttCode.do")
+    @PostMapping("/sym/ccm/icr/addInsttCode.do")
+	@RequireAdmin
 	public String insertInsttCodeRecptn (InsttCodeRecptn insttCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -93,7 +95,8 @@ public class EgovInsttCodeRecptnController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/ccm/icr/getInsttCodeDetail.do")
+	@PostMapping("/sym/ccm/icr/getInsttCodeDetail.do")
+ 	@RequireAdmin
  	public String selectInsttCodeDetail (@ModelAttribute("insttCode") InsttCodeRecptn insttCode
 			, @ModelAttribute("insttCodeRecptnVO") InsttCodeRecptnVO insttCodeRecptnVO
 			, ModelMap model
@@ -135,7 +138,7 @@ public class EgovInsttCodeRecptnController {
      * @throws Exception
      */
 	@IncludedInfo(name="기관코드수신", listUrl="/sym/ccm/icr/getInsttCodeRecptnList.do", order = 1020 ,gid = 60)
-    @RequestMapping(value="/sym/ccm/icr/getInsttCodeRecptnList.do")
+    @RequestMapping(value = "/sym/ccm/icr/getInsttCodeRecptnList.do")
 	public String selectInsttCodeRecptnList (@ModelAttribute("searchVO") InsttCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -171,7 +174,8 @@ public class EgovInsttCodeRecptnController {
      * @return "egovframework/com/cmm/sym/ccm/EgovCcmInsttCodeList"
      * @throws Exception
      */
-    @RequestMapping(value="/sym/ccm/icr/getInsttCodeRecptnMainList.do")
+    @RequestMapping(value = "/sym/ccm/icr/getInsttCodeRecptnMainList.do")
+	@RequireAdmin
 	public String selectInsttCodeRecptnMainList (@ModelAttribute("searchVO") InsttCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -196,13 +200,11 @@ public class EgovInsttCodeRecptnController {
      * @return
      */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap){
-		String ret = "";
-       	for(Object key:commandMap.keySet()){
-    		Object value = commandMap.get(key);
-
-    		ret += "key:" + key.toString() + " value:" + value.toString();
+		StringBuilder ret = new StringBuilder();
+       	for(Map.Entry<?, ?> entry : commandMap.entrySet()){
+    		ret.append("key:").append(entry.getKey()).append(" value:").append(entry.getValue());
     	}
-       	return ret;
+       	return ret.toString();
 	}
 
 }

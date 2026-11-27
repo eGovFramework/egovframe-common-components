@@ -2,14 +2,13 @@ package egovframework.com.cop.smt.sam.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cop.smt.sam.service.EgovAllSchdulManageService;
+import javax.annotation.Resource;
 /**
  * 전체일정을 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -36,10 +35,9 @@ public class EgovAllSchdulManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 전체일정 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	@Override
-	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) {
 
 		return dao.selectAllSchdulManageeList(searchVO);
 	}
@@ -48,10 +46,9 @@ public class EgovAllSchdulManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 전체일정를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
 	@Override
-	public int selectAllSchdulManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectAllSchdulManageListCnt(ComDefaultVO searchVO) {
 
 		return dao.selectAllSchdulManageListCnt(searchVO);
 	}

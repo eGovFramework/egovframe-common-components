@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQrm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -27,10 +26,8 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value='/validator.do'/>"></script>
-<validator:javascript formName="qustnrRespondManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js'/>" ></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
@@ -53,7 +50,6 @@ function fn_egov_save_QustnrRespondManage(){
 	if(confirm("<spring:message code="common.save.msg" />")){
 		varFrom.action =  "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do' />";
 
-		//varFrom.brth.value = fn_egov_SelectBoxValue('brthYYYY') + "" + fn_egov_SelectBoxValue('brthMM') + "" + fn_egov_SelectBoxValue('brthDD');
 
 		if(!validateQustnrRespondManageVO(varFrom)){
 			return;
@@ -137,7 +133,7 @@ return  FValue;
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrSj}"/></span>
 			</td>
 		</tr>
 		<!-- 성별 -->
@@ -151,6 +147,7 @@ return  FValue;
 				<option value="${comCodeList.code}" <c:if test="${comCodeList.code eq resultList[0].sexdstnCode}">selected</c:if>>${comCodeList.codeNm}</option>
 				</c:forEach>
 				</select>
+				<div><form:errors path="sexdstnCode"/></div> 
 			</td>
 		</tr>
 		<!-- 직업 -->	
@@ -164,6 +161,7 @@ return  FValue;
 				<option value="${comCodeList.code}" <c:if test="${comCodeList.code eq resultList[0].occpTyCode}">selected</c:if>>${comCodeList.codeNm}</option>
 				</c:forEach>
 				</select>
+				<div><form:errors path="occpTyCode"/></div>
 			</td>
 		</tr>
 		<!-- 응답자명 -->

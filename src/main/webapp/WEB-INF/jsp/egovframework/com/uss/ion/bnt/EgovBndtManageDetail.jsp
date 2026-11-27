@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -31,7 +31,6 @@
 <title><spring:message code="comUssIonBnt.bndtManageDetail.title"/></title><!-- 당직  상세 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<validator:javascript formName="bndtManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -68,7 +67,7 @@ function fncDeleteBndtManage() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="bndtManage" id="bndtManage" method="post">  
+<form name="bndtManage" id="bndtManage" method="post"><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>  
 <input name="cmd" type="hidden" value="updt"/>
 <input name="bndtId" type="hidden" value="<c:out value='${bndtManageVO.bndtId}'/>"/>
 <input name="bndtDe" type="hidden" value="<c:out value='${bndtManageVO.bndtDe}'/>"/>
@@ -80,8 +79,8 @@ function fncDeleteBndtManage() {
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
-			<col style="width:16%" />
-			<col style="" />
+			<col style="width:20%" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
 			<th><spring:message code="comUssIonBnt.common.bndtIdName"/> <span class="pilsu">*</span></th><!-- 당직자명 -->
@@ -112,8 +111,8 @@ function fncDeleteBndtManage() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="title.update"/>" onclick="fncEgovBndtManage(); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/deleteBndtManage.do'/>?bndtId=<c:out value='${bndtManageVO.bndtId}'/>&bndtDe=<c:out value='${bndtManageVO.bndtDe}'/>" onclick="fncDeleteBndtManage(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteBndtManage(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

@@ -1,152 +1,189 @@
-/**
- *  Class Name : EgovClntInfo.java
- *  Description : 클라이언트(Client)의 IP주소, OS정보, 웹브라우저정보를 조회하는 Business Interface class
- *  Modification Information
- * 
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.01.19    박지욱          최초 생성
- *
- *  @author 공통 서비스 개발팀 박지욱
- *  @since 2009. 01. 19
- *  @version 1.0
- *  @see 
- * 
- *  Copyright (C) 2009 by MOPAS  All right reserved.
- */
 package egovframework.com.utl.sim.service;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
+import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 클라이언트(Client)의 IP주소, OS정보, 웹브라우저정보를 조회하는 Business Interface class
+ *
+ * @author 공통 서비스 개발팀 박지욱
+ * @since 2009.01.19
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.19  박지욱          최초 생성
+ *   2025.09.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.06.29  Chung10kr       X-Forwarded-For 다중 IP 시 첫 번째 IP만 추출하도록 수정 (IP 스푸핑 방지)
+ *
+ *      </pre>
+ */
 public class EgovClntInfo {
-	
+
 	/**
 	 * 클라이언트(Client)의 IP주소를 조회하는 기능
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String ipAddr IP주소
-	 * @exception Exception
-	*/
-	public static String getClntIP(HttpServletRequest request) throws Exception {
-		
+	 */
+	public static String getClntIP(HttpServletRequest request) {
+
 		String ipAddr = null;
-		
-		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		 
-		 ipAddr = request.getHeader("X-Forwarded-For");
- 		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
- 			ipAddr = req.getHeader("Proxy-Client-IP"); 
-		 } 
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("WL-Proxy-Client-IP"); 
-		 } 
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("HTTP_CLIENT_IP"); 
-		 } 
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR"); 
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("X-Real-IP"); 
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("X-RealIP"); 
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("REMOTE_ADDR");
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getRemoteAddr(); 
-		 }
-		 
-		// IP주소		
+
+		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+
+		ipAddr = request.getHeader("X-Forwarded-For");
+		if (ipAddr != null && ipAddr.contains(",")) {
+			ipAddr = ipAddr.split(",")[0].trim();
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("Proxy-Client-IP");
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("HTTP_CLIENT_IP");
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR");
+			if (ipAddr != null && ipAddr.contains(",")) {
+				ipAddr = ipAddr.split(",")[0].trim();
+			}
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("X-Real-IP");
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("X-RealIP");
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("REMOTE_ADDR");
+		}
+		if (ipAddr == null || ipAddr.isEmpty() || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getRemoteAddr();
+		}
+
+		// IP주소
 		return ipAddr;
 	}
-	
+
 	/**
 	 * 클라이언트(Client)의 OS 정보를 조회하는 기능
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String osInfo OS 정보
-	 * @exception Exception
-	*/
-	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
-	
-		String user_agent = request.getHeader("user-agent");
-		String os_info = user_agent.toUpperCase().split(";")[2].split("\\)")[0];
-		String os_conf = EgovProperties.getProperty(Globals.CLIENT_CONF_PATH, os_info.replaceAll(" ", ""));
-		String osInfo = "";
-		if (os_conf != null && !"".equals(os_conf)) {
-			osInfo = os_conf;
-		} else {
-			osInfo = os_info;
+	 */
+	public static String getClntOsInfo(HttpServletRequest request) {
+
+		String userAgent = request.getHeader("user-agent");
+		//2026.02.28 KISA 취약점 조취
+		if (userAgent == null) {
+			return "";
 		}
-		return osInfo;
+
+		String[] uaParts = userAgent.toUpperCase().split(";");
+		if (uaParts.length < 3) {
+			return "";
+		}
+
+		String part = uaParts[2];
+		int idx = part.indexOf(")");
+		String osinfo2 = (idx > -1) ? part.substring(0, idx) : part;
+		String osConf = EgovProperties.getProperty(Globals.CLIENT_CONF_PATH, osinfo2.replaceAll(" ", ""));
+		String osInfo = "";
+		if (osConf != null && !"".equals(osConf)) {
+			osInfo = osConf;
+		} else {
+			osInfo = osinfo2;
+		}
+			return osInfo;
 	}
-	
+
 	/**
 	 * 클라이언트(Client)의 웹브라우저 종류를 조회하는 기능
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webKind 웹브라우저 종류
-	 * @exception Exception
-	*/
-	public static String getClntWebKind(HttpServletRequest request) throws Exception {
-		
-		String user_agent = request.getHeader("user-agent");
-		
+	 */
+	public static String getClntWebKind(HttpServletRequest request) {
+
+		String userAgent = request.getHeader("user-agent");
+		//2026.02.28 KISA 취약점 조치
+		if (userAgent == null || userAgent.isEmpty()) {
+			return "Other Web Browsers";
+		}
+
+		String ua = userAgent.toUpperCase();
 		// 웹브라우저 종류 조회
 		String webKind = "";
-		if (user_agent.toUpperCase().indexOf("GECKO") != -1) {
-			if (user_agent.toUpperCase().indexOf("NESCAPE") != -1) {
+		if (ua.contains("GECKO")) {
+			if (ua.contains("NESCAPE")) {
 				webKind = "Netscape (Gecko/Netscape)";
-			} else if (user_agent.toUpperCase().indexOf("FIREFOX") != -1) {
+			} else if (ua.contains("FIREFOX")) {
 				webKind = "Mozilla Firefox (Gecko/Firefox)";
 			} else {
 				webKind = "Mozilla (Gecko/Mozilla)";
 			}
-		} else if (user_agent.toUpperCase().indexOf("MSIE") != -1) {
-			if (user_agent.toUpperCase().indexOf("OPERA") != -1) {
+		} else if (ua.contains("MSIE")) {
+			if (ua.contains("OPERA")) {
 				webKind = "Opera (MSIE/Opera/Compatible)";
 			} else {
 				webKind = "Internet Explorer (MSIE/Compatible)";
 			}
-		} else if (user_agent.toUpperCase().indexOf("SAFARI") != -1) {
-			if (user_agent.toUpperCase().indexOf("CHROME") != -1) {
+		} else if (ua.contains("SAFARI")) {
+			if (ua.contains("CHROME")) {
 				webKind = "Google Chrome";
 			} else {
 				webKind = "Safari";
 			}
-		} else if (user_agent.toUpperCase().indexOf("THUNDERBIRD") != -1) {
+		} else if (userAgent.toUpperCase().contains("THUNDERBIRD")) {
 			webKind = "Thunderbird";
 		} else {
 			webKind = "Other Web Browsers";
 		}
 		return webKind;
 	}
-	
+
 	/**
 	 * 클라이언트(Client)의 웹브라우저 버전을 조회하는 기능
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webVer 웹브라우저 버전
-	 * @exception Exception
-	*/
-	public static String getClntWebVer(HttpServletRequest request) throws Exception {
-		
-		String user_agent = request.getHeader("user-agent");
-		
+	 */
+	public static String getClntWebVer(HttpServletRequest request) {
+
+		String userAgent = request.getHeader("user-agent");
+		//2026.02.28 KISA 취약점 조치
+		if (userAgent == null || userAgent.isEmpty()) {
+			return "";
+		}
 		// 웹브라우저 버전 조회
 		String webVer = "";
-		String [] arr = {"MSIE", "OPERA", "NETSCAPE", "FIREFOX", "SAFARI"};
+		String[] arr = { "MSIE", "OPERA", "NETSCAPE", "FIREFOX", "SAFARI" };
+		String ua = userAgent.toUpperCase();
+
 		for (int i = 0; i < arr.length; i++) {
-			int s_loc = user_agent.toUpperCase().indexOf(arr[i]);
-			if (s_loc != -1) {
-				int f_loc = s_loc + arr[i].length();
-				webVer = user_agent.toUpperCase().substring(f_loc, f_loc+5);
-				webVer = webVer.replaceAll("/", "").replaceAll(";", "").replaceAll("^", "").replaceAll(",", "").replaceAll("//.", "");
+			int sLoc = ua.indexOf(arr[i]);
+			if (sLoc != -1) {
+				int fLoc = sLoc + arr[i].length();
+				// ★ 핵심 수정: 문자열 길이를 초과하지 않도록 endLoc 계산
+				int endLoc = Math.min(fLoc + 5, ua.length());
+				if (fLoc < ua.length()) { // 키워드 바로 뒤에 내용이 있을 때만 추출
+					webVer = ua.substring(fLoc, endLoc);
+					webVer = webVer.replaceAll("/", "").replaceAll(";", "")
+								   .replaceAll("\\^", "").replaceAll(",", "")
+								   .replaceAll("//.", "");
+				}
 			}
 		}
 		return webVer;

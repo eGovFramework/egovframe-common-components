@@ -12,7 +12,7 @@
 <body>
 <div class="wTableFrm">
 	<h2><spring:message code="comCmm.left.3300"/> 검증 결과</h2>
-	<div style="font-size: 20px; color: ${result ? 'blue' : 'red'};">${message}</div>
+	<div style="font-size: 20px; color: ${result ? 'blue' : 'red'};"><c:out value="${message}"/></div>
 	<div class="btn"><input type="button" class="s_submit" value="돌아가기" onclick="document.location.href='<c:url value='/ext/captcha/input.do'/>';"></div>
 	</div>
 </body>

@@ -20,7 +20,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQtm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -28,10 +27,8 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value='/validator.do'/>"></script>
-<validator:javascript formName="qustnrTmplatManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 /* ********************************************************
@@ -59,78 +56,73 @@ function fn_egov_list_QustnrTmplatManage(){
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
-function fn_egov_save_QustnrTmplatManage(form){
-	
-	var resultExtension = EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", "<c:out value='${fileUploadExtensions}'/>"); // 결과가 false인경우 허용되지 않음
-	if (!resultExtension) return true;
-	var resultSize = EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", 65535); // 파일당 1M까지 허용 (1K=1024), 결과가 false인경우 허용되지 않음
-	if (!resultSize) return true;
-	
-	if(confirm("<spring:message code='common.save.msg'/>")){
-		if(!validateQustnrTmplatManageVO(form)){
-			return;
-		}else{
+ function fn_egov_save_QustnrTmplatManage(form) {
+     const fileInput = document.getElementById("qestnrTmplatImage");
+		//중복검사 제거 파일이 들어가지 않을 때 
+     if (fileInput.files.length === 0) {
+         alert("템플릿 유형 이미지를 선택해주세요!");
+         fileInput.focus();
+         return;
+     }
 
-			if(form.qestnrTmplatImage.value == ""){
-			 	alert("<spring:message code='comUssOlpQtm.regist.egovfile'/><spring:message code='comUssOlpQtm.alert.select'/>"); //템플릿유형 이미지를 선택해주세요!
-				form.focus();
-				return;
-			}
-
-			form.submit();
-		}
-	}
-}
-
+     if (confirm("<spring:message code='common.save.msg'/>")) {
+         if (!validateQustnrTmplatManageVO(form)) {
+             return;
+         }
+         form.submit();
+     }
+ }
 
 /* ********************************************************
  * 선택이미지 미리보기
  ******************************************************** */
-function fnImgChange(obj){
+function fnImgChange(obj) {
 
-	//기존 소스
-	if(obj.value != "") {
-		
-		var pathname = obj.value;
-		var ext = pathname.split('.').pop().toLowerCase();
-		
-		if( "<c:out value='${fileUploadExtensions}'/>.".indexOf(ext+".") != -1 ){
-		
-			document.getElementById("DIV_IMG_VIEW").style.display = "";
-			
-			//파일선택 후 파일명 보이기
-			var leafname= pathname.split('\\').pop().split('/').pop();
-			document.getElementById("uploadFileName").value= leafname;
+    if (!obj.files || obj.files.length === 0) {
+        return;
+    }
 
-			//파일선택 후 파일 미리보기
-			if ( window.FileReader ) {
-				 /* 크롬, 사파리, 파이어폭스, 오페라, IE 10 이상에서는 HTML5 FileReader  이용 */
-				var reader = new FileReader();
-		        reader.onload = function (e) {
-		            //$('#'+preImg).attr('src', e.target.result);
-		            document.getElementById("IMG_VIEW").src = e.target.result;
-		        };
-		        reader.readAsDataURL(obj.files[0]);
-		        //return input.files[0].name;  // 파일명 return
-			} else {
-				
-				/* IE 8, 9에서 가능하나 권장하지 않음 */
-				var img = document.getElementById("IMG_VIEW");
-				img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"
-                    + obj.value + "', sizingMethod='scale')"; //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
-                /* IE 8, 9에서 불가능 */
-                //document.getElementById("IMG_VIEW").src = obj.value;
-                img.width = 66;
-                img.height = 52;
-                img.alt = "";
-			}
-		}else{
-		   alert("<spring:message code='comUssOlpQtm.alert.image'/>"); //이미지 형식의 확장자만 업로드 가능합니다!
-		   
-	 	}
+    const file = obj.files[0];
+    const fileName = file.name;
 
-	}
-	
+    // 공통 컴포넌트로 확장자 검사 (false면 불허용)
+    const isAllowed = EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", "<c:out value='${fileUploadExtensions}'/>");
+    // 확인용
+    if (!isAllowed) {
+        obj.value = ""; // 초기화
+        document.getElementById("DIV_IMG_VIEW").style.display = "none";
+        return;
+    }
+
+    // 서버가 넘긴 이미지 한도(바이트)로 크기 검사 (false면 불허용)
+    if (!EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", <c:out value='${fileUploadMaxSize}'/>)) {
+        obj.value = "";
+        document.getElementById("DIV_IMG_VIEW").style.display = "none";
+        return;
+    }
+
+
+    // 미리보기 영역 보이기
+    document.getElementById("DIV_IMG_VIEW").style.display = "block";
+
+    // 파일명 표시
+    document.getElementById("uploadFileName").value = fileName;
+
+    // 이미지 미리보기
+    if (window.FileReader) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById("IMG_VIEW").src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // IE 8~9 fallback (거의 안 씀)
+        const img = document.getElementById("IMG_VIEW");
+        img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + obj.value + "', sizingMethod='scale')";
+        img.width = 66;
+        img.height = 52;
+        img.alt = "";
+    }
 }
 
 </script>
@@ -178,9 +170,10 @@ function fnImgChange(obj){
 			
 			<div class="egov_file_box">
 				<label for="qestnrTmplatImage" id="qestnrTmplatImage_label"><spring:message code="title.attachedFileSelect" /></label><!-- 파일선택 -->
-				<input type="file" id="qestnrTmplatImage" name="qestnrTmplatImage" onChange="fnImgChange(this)" title="<spring:message code='comUssOlpQtm.regist.qestnrTmplatTy'/><spring:message code='input.cSelect'/>"><!-- title="템플릿유형이미지 선택" -->
+				<input type="file" id="qestnrTmplatImage" name="qestnrTmplatImage" onchange="fnImgChange(obj)" title="<spring:message code='comUssOlpQtm.regist.qestnrTmplatTy'/><spring:message code='input.cSelect'/>"><!-- title="템플릿유형이미지 선택" -->
 	    		<input type="text" id="uploadFileName" value="" readonly style="width:150px;"/><!-- 파일명 보이게 하는 기능 -->
 	    	</div>
+			<div><form:errors path="qestnrTmplatImagepathnm" cssClass="error" /></div>
 	    	<div id="DIV_IMG_VIEW" style="display:none;">
 		     	<img src="" name="IMG_VIEW" id="IMG_VIEW" align="middle" alt="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>" title="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>"><!-- alt="이미지미리보기" title="이미지미리보기" -->
 		     	<!-- onLoad="if(this.width>65){this.width=65}" -->
@@ -218,10 +211,25 @@ function fnImgChange(obj){
 	</div><div style="clear:both;"></div>
 	
 
+<script>
 
+/*onchange가 동작을 안함*/
+document.getElementById("qestnrTmplatImage").addEventListener("change",function(){fnImgChange(this)});
+/*
+document.addEventListener("DOMContentLoaded", function() {
+    const fileInput = document.getElementById("qestnrTmplatImage");
+    
+    if (fileInput) {
+        fileInput.addEventListener("change", function() {
+            fnImgChange(this);  // 기존 함수 호출
+        });
+    } else {
+    }
+});
+*/
+</script>
 </form:form>
 </div><!-- div end(wTableFrm)  -->
-
 
 </body>
 </html>

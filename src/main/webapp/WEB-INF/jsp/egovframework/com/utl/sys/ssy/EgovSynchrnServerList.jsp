@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 --%>
 
@@ -25,7 +25,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
- 
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -193,15 +194,21 @@ function checkResultMessage() {
 	if ( resultMessage != "" ) alert(resultMessage);
 }
 
+function checkSyncResultMessage() {
+	var syncResultMessage = "<c:out value='${syncResultMessage}'/>";
+	if (syncResultMessage != "") alert(syncResultMessage);
+}
+
 -->
 </script>
 
 </head>
 
-<body onload="checkResultMessage();">
+<body onload="checkResultMessage(); checkSyncResultMessage();">
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form name="listForm" action="<c:url value='/utl/sys/ssy/selectSynchrnServerList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/ssy/selectSynchrnServerList.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <div class="board">
 	<h1><spring:message code="comUtlSysSsy.synchrnServer.title" />  <spring:message code="title.management" /></h1><!-- 동기화대상 서버 관리 -->
@@ -210,30 +217,27 @@ function checkResultMessage() {
 		<ul>
 			<li>
 				<label for=""><spring:message code="comUtlSysSsy.synchrnServer.serverNm.label" /> : </label>
-				<input id="strSynchrnServerNm" class="s_input2 vat" name="strSynchrnServerNm" type="text" value='<c:out value="${synchrnServerVO.strSynchrnServerNm}"/>' size="30" onkeypress="press();" title="검색" />
-				
+				<input id="strSynchrnServerNm" class="s_input2 vat" name="strSynchrnServerNm" type="text" value='<c:out value="${synchrnServer.strSynchrnServerNm}"/>' size="30" onkeypress="press();" title="검색" />
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectSynchrnServerList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/ssy/addViewSynchrnServer.do'/>?pageIndex=<c:out value='${synchrnServerVO.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServerVO.strSynchrnServerNm}"/>" onclick="fncAddSynchrnServerInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/utl/sys/ssy/processSynchrn.do'/>?pageIndex=<c:out value='${synchrnServerVO.pageIndex}'/>" onclick="fncProcessSynchrn(); return false;" title="동기화"><spring:message code="comUtlSysSsy.synchrnServer.synch"/></a></span><!-- 동기화 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddSynchrnServerInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncProcessSynchrn(); return false;" title="동기화"><spring:message code="comUtlSysSsy.synchrnServer.synch"/></a></span><!-- 동기화 -->
 			</li>
 		</ul>
 	</div>
-<input type="hidden" name="serverId">
-<input type="hidden" name="pageIndex" value="<c:if test="${empty synchrnServerVO.pageIndex }">1</c:if><c:if test="${!empty synchrnServerVO.pageIndex }"><c:out value='${synchrnServerVO.pageIndex}'/></c:if>">
-</form>
+<input type="hidden" name="serverId" value="">
+<input type="hidden" name="pageIndex" value="<c:if test="${empty synchrnServer.pageIndex }">1</c:if><c:if test="${!empty synchrnServer.pageIndex }"><c:out value='${synchrnServer.pageIndex}'/></c:if>">
+</form:form>
 
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
 			<col style="width:25%" />
 			<col style="width:25%" />
-			<col style="width:20%" />
-			<col style="width:15%" />
-			<col style="width:15%" />
+			<col style="width:25%" />
+			<col style="width:25%" />
 		</colgroup>
 		<thead>
 			<tr>
-			   <th scope="col"><spring:message code="comUtlSysSsy.synchrnServer.serverId.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysSsy.synchrnServer.serverNm.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysSsy.synchrnServer.serverIp.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysSsy.synchrnServer.reflctAt.label" /></th>
@@ -241,22 +245,19 @@ function checkResultMessage() {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="synchrnServer" items="${synchrnServerList}" varStatus="status">
+			<c:forEach var="result" items="${synchrnServerList}" varStatus="status">
 			  <tr>
-			    <td>
-			        <form name="item" method="post" action="<c:url value='/utl/sys/ssy/getSynchrnServer.do'/>">
-			            <input type="hidden" name="serverId" value="<c:out value="${synchrnServer.serverId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${synchrnServerVO.pageIndex}'/>">
-			            <input type="hidden" name="strSynchrnServerNm" value="<c:out value="${synchrnServerVO.strSynchrnServerNm}"/>">
-			            <span class="link"><input type="submit" value="<c:out value="${synchrnServer.serverId}"/>" onclick="fncSelectSynchrnServer('<c:out value="${synchrnServer.serverId}"/>'); return false;"></span>
-			        </form>
-			    </td>
-			    <td><c:out value="${synchrnServer.serverNm}"/></td>
-			    <td><c:out value="${synchrnServer.serverIp}"/></td>
-			    <td><c:out value="${synchrnServer.reflctAt}"/></td>
-			    <td><c:out value="${synchrnServer.lastUpdusrId}"/></td>
+			    <td><a href="#" class="link" onclick="fncSelectSynchrnServer('<c:out value="${egovc:encryptId(result.serverId)}"/>'); return false;"><c:out value="${result.serverNm}"/></a></td>
+			    <td><c:out value="${result.serverIp}"/></td>
+			    <td><c:out value="${result.reflctAt}"/></td>
+			    <td><c:out value="${result.lastUpdusrId}"/></td>
 			  </tr>
 			 </c:forEach>
+			 <c:if test="${fn:length(synchrnServerList) == 0}">
+			   <tr>
+			     <td colspan="4"><spring:message code="common.nodata.msg" /></td>
+			   </tr>
+			</c:if>
 		</tbody>
 	</table>
 
@@ -273,7 +274,10 @@ function checkResultMessage() {
 </form>
 
 <div class="wTableFrm">
-<form name="fileForm" action="<c:url value='/utl/sys/ssy/uploadFile.do'/>" method="post" enctype="multipart/form-data">
+<form name="fileForm" action="${pageContext.request.contextPath}/utl/sys/ssy/uploadFile.do" method="post" enctype="multipart/form-data">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
+	<input type="hidden" name="synchrnServer.pageIndex" value="<c:out value='${synchrnServer.pageIndex}'/>" />
+	<input type="hidden" name="synchrnServer.strSynchrnServerNm" value="<c:out value='${synchrnServer.strSynchrnServerNm}'/>" />
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUtlSysSsy.synchrnServerFile.title" />  <spring:message code="title.create" /></h2><!-- 동기화대상 파일 등록 -->
 
@@ -300,7 +304,8 @@ function checkResultMessage() {
 </div>
 
 <div class="board">
-<form name="deleteForm" action="<c:url value='/utl/sys/ssy/deleteFile.do'/>" method="post">
+<form name="deleteForm" action="${pageContext.request.contextPath}/utl/sys/ssy/deleteFile.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<h1><spring:message code="comUtlSysSsy.synchrnServerFile.title" />  <spring:message code="title.list" /></h1> <!-- 동기화대상 파일 목록 -->
 
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">
@@ -335,7 +340,8 @@ function checkResultMessage() {
 			</c:forEach>
 		</tbody>
 	</table>
-	<input type="hidden" name="pageIndex" value="<c:out value='${synchrnServerVO.pageIndex}'/>" />
+	<input type="hidden" name="synchrnServer.pageIndex" value="<c:out value='${synchrnServer.pageIndex}'/>" />
+	<input type="hidden" name="synchrnServer.strSynchrnServerNm" value="<c:out value='${synchrnServer.strSynchrnServerNm}'/>" />
 	<input type="hidden" name="deleteFiles" />
 </form>
 </div>

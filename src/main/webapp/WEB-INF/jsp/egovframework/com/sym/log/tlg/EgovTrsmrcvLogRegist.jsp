@@ -5,6 +5,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymLogTlg.trsmrcvLog.test"/></c:set>
 <%
  /**
@@ -49,7 +50,7 @@
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="frm" method="post" action="<c:url value='/sym/log/tlg/InsertTrsmrcvLog.do'/>">
+<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/sym/log/tlg/InsertTrsmrcvLog.do">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input name="trsmrcvSeCode" type="hidden" />
 
@@ -115,7 +116,7 @@
 </div>
 
 
-</form>
+</form:form>
 
 </body>
 </html>

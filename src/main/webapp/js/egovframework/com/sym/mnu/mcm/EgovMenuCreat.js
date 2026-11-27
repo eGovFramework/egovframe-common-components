@@ -20,6 +20,21 @@ var treeIcons			= new Array(6);
 //var imgpath         = "./../../../../../../images/egovframework/com/cmm/utl/";
 
 /*
+ * 2026.07.30 보안 조치 - 저장형 XSS 차단(document.write에 사용되는 메뉴명 등 HTML 이스케이프)
+ */
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
+/*
  * 노드 , 트리 구성 이미지 정보
  */
 function preloadIcons() {
@@ -130,7 +145,7 @@ function addTreeNode(parentNode, recursedNodes) {
 				document.write(".gif' border='0' alt='Folder' >");
 			} else document.write("<img id='icon" + nodeValues[0] + "' src='"+imgpath+"menu_page.gif' border='0' align='absbottom' alt='Page'>");
 			document.write("<a href=javascript:parent.temp_aa('" + treeNodes[i] + "');>");
-			document.write(nodeValues[2]);
+			document.write(escapeHtml(nodeValues[2]));
 			document.write("</a><br>");
 			if (hasChildNode) {
 				document.write("<div id='div" + nodeValues[0] + "'");

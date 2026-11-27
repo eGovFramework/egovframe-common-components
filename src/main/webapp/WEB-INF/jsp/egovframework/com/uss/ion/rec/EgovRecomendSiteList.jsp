@@ -21,22 +21,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssIonRec.recomendSiteVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
-/*********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.recomendSiteForm.searchCondition.focus();
-}
-
 /*********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -63,11 +57,11 @@ function fn_egov_inquire_sitedetail(recomendSiteId) {
 }
 </script>
 </head>
-<body onload="fn_egov_init()">
+<body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="recomendSiteForm" action="<c:url value='/uss/ion/rec/selectRecomendSiteList.do'/>" method="post" onSubmit="fn_egov_search_site(); return false;"> 
+<form:form name="recomendSiteForm" modelAttribute="recomendSiteVO" action="${pageContext.request.contextPath}/uss/ion/rec/selectRecomendSiteList.do" method="post" onSubmit="fn_egov_search_site(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -75,15 +69,15 @@ function fn_egov_inquire_sitedetail(recomendSiteId) {
 		<ul>
 			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" /> <spring:message code="input.cSelect" />">
-					<option value="0"  <c:if test="${searchVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteNm" /></option><!-- 추천사이트명 -->
-					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteUrl" /></option><!-- 추천사이트URL -->
+					<option value="0"  <c:if test="${recomendSiteVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteNm" /></option><!-- 추천사이트명 -->
+					<option value="1"  <c:if test="${recomendSiteVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteUrl" /></option><!-- 추천사이트URL -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
+				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${recomendSiteVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rec/insertRecomendSiteView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/rec/insertRecomendSiteView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -115,8 +109,8 @@ function fn_egov_inquire_sitedetail(recomendSiteId) {
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td><a href="<c:url value='/uss/ion/rec/selectRecomendSiteDetail.do?recomendSiteId=${resultInfo.recomendSiteId}'/>" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.recomendSiteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.recomendSiteNm, 0, 40)}'/></a></td>
+		<td><c:out value="${(recomendSiteVO.pageIndex-1) * recomendSiteVO.pageSize + status.count}"/></td>
+		<td><a href="javascript:void(0);" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.recomendSiteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.recomendSiteNm, 0, 40)}'/></a></td>
 		<td><c:out value='${fn:substring(resultInfo.recomendSiteUrl, 0, 40)}'/></td>
 		<td><c:out value='${resultInfo.recomendConfmAt}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
@@ -135,9 +129,9 @@ function fn_egov_inquire_sitedetail(recomendSiteId) {
 	
 </div>
 
-<input name="recomendSiteId" type="hidden" value="<c:out value='${searchVO.recomendSiteId}'/>">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+<input name="recomendSiteId" type="hidden" value="<c:out value='${recomendSiteVO.recomendSiteId}'/>">
+<input name="pageIndex" type="hidden" value="<c:out value='${recomendSiteVO.pageIndex}'/>">
+</form:form>
 
 </body>
 </html>

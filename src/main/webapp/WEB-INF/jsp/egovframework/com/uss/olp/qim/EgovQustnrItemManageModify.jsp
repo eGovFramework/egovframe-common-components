@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQim.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -27,10 +26,8 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value='/validator.do'/>"></script>
-<validator:javascript formName="qustnrItemManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
@@ -89,7 +86,7 @@ function fn_egov_save_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrCn}"/></span>
   				<input name="qestnrId" type="hidden" value="<c:out value='${resultList[0].qestnrId}' />">
   				<input name="qestnrTmplatId" type="hidden" value="<c:out value='${resultList[0].qestnrTmplatId}' />"> 
 			</td>
@@ -99,7 +96,7 @@ function fn_egov_save_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<c:out value="${fn:replace(resultList[0].qestnrQesitmCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrQesitmCn}"/></span>
   				<input name="qestnrQesitmId" type="hidden" title="<spring:message code='comUssOlpQim.regist.qestnrQesitmCn'/>" value="<c:out value='${resultList[0].qestnrQesitmId}' />"><!-- title="설문문항정보" -->
 			</td>
 		</tr>

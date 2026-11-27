@@ -22,7 +22,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
@@ -33,10 +32,8 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="wikMnthngReprtVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_WikMnthngReprt(){
 		
@@ -108,7 +105,7 @@
 			<td class="left">
 			    <c:forEach items="${reprtSe}" var="reprtSeInfo" varStatus="status">
 				<c:if test="${reprtSeInfo.code eq wikMnthngReprt.reprtSe}">	
-				<c:out value="${reprtSeInfo.codeNm}" escapeXml="false" />
+				<c:out value="${reprtSeInfo.codeNm}"/>
 				</c:if>
 				</c:forEach>&nbsp;
 			</td>
@@ -116,53 +113,53 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtDe"/> <span class="pilsu">*</span></th><!-- 보고일자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtDe}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reprtDe}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtBgnEndDe"/> <span class="pilsu">*</span></th><!-- 해당일자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtBgnDe}" escapeXml="false" />
+			    <c:out value="${wikMnthngReprt.reprtBgnDe}"/>
 				~
-				<c:out value="${wikMnthngReprt.reprtEndDe}" escapeXml="false" />&nbsp;
+				<c:out value="${wikMnthngReprt.reprtEndDe}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-				<c:out value="${wikMnthngReprt.wrterClsfNm}" escapeXml="false" />
-				<c:out value="${wikMnthngReprt.wrterNm}" escapeXml="false" />&nbsp;
+				<c:out value="${wikMnthngReprt.wrterClsfNm}"/>
+				<c:out value="${wikMnthngReprt.wrterNm}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reportrNm"/> <span class="pilsu">*</span></th><!-- 보고대상자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reportrClsfNm}" escapeXml="false" />
-				<c:out value="${wikMnthngReprt.reportrNm}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reportrClsfNm}"/>
+				<c:out value="${wikMnthngReprt.reportrNm}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtSuj"/> <span class="pilsu">*</span></th><!-- 보고서제목 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtSj}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reprtSj}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtThswikCn"/> <span class="pilsu">*</span></th><!-- 금주보고내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(wikMnthngReprt.reprtThswikCn , crlf , '<br>')}" escapeXml="false" />&nbsp;
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(wikMnthngReprt.reprtThswikCn , crlf , '<br>')}"/></span>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtLesseeCn"/> <span class="pilsu">*</span></th><!-- 차주보고내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(wikMnthngReprt.reprtLesseeCn , crlf , '<br>')}" escapeXml="false" />&nbsp;
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(wikMnthngReprt.reprtLesseeCn , crlf , '<br>')}"/></span>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.partclrMatter"/></th><!-- 특이사항 -->
 			<td class="left">
-			    <c:out value="${fn:replace(wikMnthngReprt.partclrMatter , crlf , '<br>')}" escapeXml="false" />&nbsp;
+			    <c:out value="${fn:replace(wikMnthngReprt.partclrMatter , crlf , '<br>')}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -176,7 +173,7 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtSttus"/></th><!-- 보고서 상태 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtSttus}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reprtSttus}"/>&nbsp;
 			</td>
 		</tr>
 	</table>
@@ -184,12 +181,12 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${fn:substring(wikMnthngReprt.reprtSttus,0,2) eq '등록' && wikMnthngReprt.reportrId eq uniqId}">
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/confirmWikMnthngReprt.do'/>?searchWrd=<c:out value='${wikMnthngReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${wikMnthngReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${wikMnthngReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${wikMnthngReprtVO.searchSttus}'/>&amp;searchDe=<c:out value='${wikMnthngReprtVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${wikMnthngReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${wikMnthngReprtVO.searchEndDe}'/>" onclick="fn_egov_confirm_wikmnthngreprt(); return false;"><spring:message code="button.acknowledgment" /></a></span><!-- 승인 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_confirm_wikmnthngreprt(); return false;"><spring:message code="button.acknowledgment" /></a></span><!-- 승인 -->
 		</c:if>
 		
 		<c:if test="${fn:substring(wikMnthngReprt.reprtSttus,0,2) eq '등록' && wikMnthngReprt.wrterId eq uniqId}">	
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_wikmnthngreprt(); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/deleteWikMnthngReprt.do'/>?reprtId=<c:out value='${egovc:encryptId(wikMnthngReprtVO.reprtId)}'/>" onclick="fn_egov_delete_wikmnthngreprt(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_wikmnthngreprt(); return false;"><spring:message code="button.delete" /></a></span>
 		</c:if>
 		
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_wikmnthngreprt(); return false;" /><!-- 목록 -->

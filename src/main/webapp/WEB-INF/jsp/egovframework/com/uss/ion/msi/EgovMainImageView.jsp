@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
  --%>
 
@@ -26,7 +26,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 

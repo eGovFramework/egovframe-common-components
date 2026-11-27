@@ -19,25 +19,30 @@
 package egovframework.com.ext.ldapumt.web;
 
 import java.util.Map;
-
-import javax.annotation.Resource;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
 import egovframework.com.ext.ldapumt.service.UcorgVO;
 import egovframework.com.ext.ldapumt.service.UserVO;
+import javax.annotation.Resource;
 
 @Controller
 public class EgovOrgManageLdapController {
+	private static final Pattern LDAP_DN_PATTERN = Pattern.compile("^[A-Za-z0-9=,\\-._\\s]+$");
+	private static final Pattern LDAP_RDN_VALUE_PATTERN = Pattern.compile("^[^,=+<>#;\"\\\\]{1,64}$");
 
 	@Autowired
 	private EgovOrgManageLdapService orgManageLdapService;
@@ -52,8 +57,9 @@ public class EgovOrgManageLdapController {
      * @return
      * @throws Exception
      */
-	@RequestMapping(value = "/ext/ldapumt/dpt/getDeptManageSublist.do")
+	@PostMapping("/ext/ldapumt/dpt/getDeptManageSublist.do")
 	public ModelAndView selectDeptManageSublist(@RequestParam("dn") String dn, ModelMap model) throws Exception {
+		validateDn(dn);
 		model.addAttribute("deptManage", orgManageLdapService.selectDeptManageSubList(dn));
 
 		ModelAndView modelAndView = new ModelAndView("jsonView", model);
@@ -67,8 +73,10 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/getDeptManage.do")
+	@PostMapping("/ext/ldapumt/dpt/getDeptManage.do")
+	@RequireAdmin
 	public ModelAndView selectDeptManage(@RequestParam("dn") String dn, ModelMap model) throws Exception {
+		validateDn(dn);
 		model.addAttribute("deptManage", orgManageLdapService.selectDeptManage(dn));
 
 		ModelAndView modelAndView = new ModelAndView("jsonView", model);
@@ -82,8 +90,10 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/getUserManage.do")
+	@PostMapping("/ext/ldapumt/dpt/getUserManage.do")
+	@RequireAdmin
 	public ModelAndView selectUserManage(@RequestParam("dn") String dn, ModelMap model) throws Exception {
+		validateDn(dn);
 		model.addAttribute("userManage", orgManageLdapService.selectUserManage(dn));
 
 		ModelAndView modelAndView = new ModelAndView("jsonView", model);
@@ -98,8 +108,11 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/createNode.do")
+	@PostMapping("/ext/ldapumt/dpt/createNode.do")
+	@RequireAdmin
 	public ModelAndView createDeptManage(@RequestParam("dn") String parentDn, @RequestParam("text") String ou, ModelMap model) throws Exception {
+		validateDn(parentDn);
+		validateRdnValue(ou);
 		Map<Object, Object> map = orgManageLdapService.insertDeptManage(parentDn, ou);
 
 		model.addAttribute("deptManage", map);
@@ -117,8 +130,11 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/createUserNode.do")
+	@PostMapping("/ext/ldapumt/dpt/createUserNode.do")
+	@RequireAdmin
 	public ModelAndView createUserManage(@RequestParam("dn") String parentDn, @RequestParam("text") String cn, ModelMap model) throws Exception {
+		validateDn(parentDn);
+		validateRdnValue(cn);
 		Map<Object, Object> map = orgManageLdapService.insertUserManage(parentDn, cn);
 
 		model.addAttribute("deptManage", map);
@@ -136,8 +152,10 @@ public class EgovOrgManageLdapController {
 	 * @throws Exception
 	 * 하위부서까지 모두 삭제된다.
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/deleteNode.do")
+	@PostMapping("/ext/ldapumt/dpt/deleteNode.do")
+	@RequireAdmin
 	public ModelAndView removeDeptManage(@RequestParam("dn") String dn, ModelMap model) throws Exception {
+		validateDn(dn);
 		orgManageLdapService.deleteDeptManage(dn);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -155,8 +173,11 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/renameNode.do")
+	@PostMapping("/ext/ldapumt/dpt/renameNode.do")
+	@RequireAdmin
 	public ModelAndView renameDeptManage(@RequestParam("id") String dn, @RequestParam("text") String name, ModelMap model) throws Exception {
+		validateDn(dn);
+		validateRdnValue(name);
 		orgManageLdapService.renameDeptManage(dn, name);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
@@ -174,8 +195,11 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/renameUserNode.do")
+	@PostMapping("/ext/ldapumt/dpt/renameUserNode.do")
+	@RequireAdmin
 	public ModelAndView renameUserManage(@RequestParam("id") String dn, @RequestParam("text") String name, ModelMap model) throws Exception {
+		validateDn(dn);
+		validateRdnValue(name);
 		orgManageLdapService.renameUserManage(dn, name);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
@@ -193,8 +217,11 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/moveOrgNode.do")
+	@PostMapping("/ext/ldapumt/dpt/moveOrgNode.do")
+	@RequireAdmin
 	public ModelAndView moveOrgManage(@RequestParam("id") String dn, @RequestParam("parent") String parentDn, ModelMap model) throws Exception {
+		validateDn(dn);
+		validateDn(parentDn);
 		orgManageLdapService.moveOrgManage(dn, parentDn);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
@@ -211,7 +238,8 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/modifyDeptManage.do")
+	@PostMapping("/ext/ldapumt/dpt/modifyDeptManage.do")
+	@RequireAdmin
 	public ModelAndView modifyDeptManage(@ModelAttribute("ucorgVO") UcorgVO ucorgVO,
             ModelMap model) throws Exception {
 		orgManageLdapService.modifyDeptManage(ucorgVO);
@@ -230,7 +258,8 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/modifyUserManage.do")
+	@PostMapping("/ext/ldapumt/dpt/modifyUserManage.do")
+	@RequireAdmin
 	public ModelAndView modifyUserManage(@ModelAttribute("userVO") UserVO userVO,
 			ModelMap model) throws Exception {
 		orgManageLdapService.modifyUserManage(userVO);
@@ -248,7 +277,8 @@ public class EgovOrgManageLdapController {
 	 */
 	@IncludedInfo(name="LDAP 조직도 트리",order = 3100 ,gid = 100)
     @RequestMapping("/ext/ldapumt/dpt/selectDeptManageTreeView.do")
-    public String selectDeptManageTreeView() throws Exception {
+    public String selectDeptManageTreeView(ModelMap model) throws Exception {
+		model.addAttribute("baseDn", EgovProperties.getProperty("ldap.rootDn"));
 
         return "egovframework/com/ext/ldapumt/EgovDeptManageTree";
     }
@@ -264,5 +294,26 @@ public class EgovOrgManageLdapController {
 
     	return "egovframework/com/ext/ldapumt/EgovDeptManageOrgChart";
     }
+
+	private void validateDn(String dn) {
+		if (dn == null || dn.trim().isEmpty() || !LDAP_DN_PATTERN.matcher(dn).matches()) {
+			throw new IllegalArgumentException("Invalid LDAP DN");
+		}
+
+		String rootDn = EgovProperties.getProperty("ldap.rootDn");
+		if (rootDn != null && !rootDn.trim().isEmpty()) {
+			String normalizedDn = dn.toLowerCase();
+			String normalizedRootDn = rootDn.toLowerCase();
+			if (!normalizedDn.endsWith(normalizedRootDn)) {
+				throw new IllegalArgumentException("DN is out of LDAP root scope");
+			}
+		}
+	}
+
+	private void validateRdnValue(String rdnValue) {
+		if (rdnValue == null || rdnValue.trim().isEmpty() || !LDAP_RDN_VALUE_PATTERN.matcher(rdnValue).matches()) {
+			throw new IllegalArgumentException("Invalid LDAP RDN value");
+		}
+	}
 
 }

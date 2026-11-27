@@ -33,7 +33,6 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	public List<EgovMap> selectDeptSchdulManageAuthorGroupPopup(ComDefaultVO searchVO){
 		return selectList("DeptSchdulManage.selectDeptSchdulAuthorGroupPopup", searchVO);
@@ -43,7 +42,6 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 아이디 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
 	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
 		return selectList("DeptSchdulManage.selectDeptSchdulEmpLyrPopup", searchVO);
@@ -53,9 +51,8 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서일정 목록을 Map(map)형식으로 조회한다. 
 	 * @param Map(map) - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<EgovMap> selectDeptSchdulManageMainList(Map<String, String> map) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageMainList(Map<String, String> map) {
 		 return selectList("DeptSchdulManage.selectDeptSchdulManageMainList", map);
 	}
 	
@@ -63,9 +60,8 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서일정 목록을 Map(map)형식으로 조회한다. 
 	 * @param Map(map) - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<EgovMap> selectDeptSchdulManageRetrieve(Map<String, String> map) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageRetrieve(Map<String, String> map) {
 		 return selectList("DeptSchdulManage.selectDeptSchdulManageRetrieve", map);
 	}
 	
@@ -74,9 +70,8 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서일정 목록을 VO(model)형식으로 조회한다. 
 	 * @param deptSchdulManageVO - 조회할 정보가 담긴 VO
 	 * @return DeptSchdulManageVO
-	 * @exception Exception
 	 */
-	public DeptSchdulManageVO selectDeptSchdulManageDetailVO(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public DeptSchdulManageVO selectDeptSchdulManageDetailVO(DeptSchdulManageVO deptSchdulManageVO) {
 		return (DeptSchdulManageVO)selectOne("DeptSchdulManage.selectDeptSchdulManageDetailVO", deptSchdulManageVO);
 	}
 	
@@ -84,9 +79,8 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서일정 목록을 조회한다. 
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) {
 		return selectList("DeptSchdulManage.selectDeptSchdulManage", searchVO);
 	}
 	
@@ -94,9 +88,8 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서일정를(을) 상세조회 한다.
 	 * @param deptSchdulManageVO - 부서일정 정보 담김 VO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<EgovMap> selectDeptSchdulManageDetail(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageDetail(DeptSchdulManageVO deptSchdulManageVO) {
 		return selectList("DeptSchdulManage.selectDeptSchdulManageDetail", deptSchdulManageVO);
 	}
 
@@ -104,36 +97,32 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * 부서일정를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @exception Exception
 	 */
-	public int selectDeptSchdulManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectDeptSchdulManageListCnt(ComDefaultVO searchVO) {
 		return (Integer)selectOne("DeptSchdulManage.selectDeptSchdulManageCnt", searchVO);
 	}
 	
     /**
 	 * 부서일정를(을) 등록한다.
 	 * @param qdeptSchdulManageVO - 부서일정 정보 담김 VO
-	 * @exception Exception
 	 */
-	public void insertDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public void insertDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) {
 		insert("DeptSchdulManage.insertDeptSchdulManage", deptSchdulManageVO);
 	}
 
     /**
 	 * 부서일정를(을) 수정한다.
 	 * @param deptSchdulManageVO - 부서일정 정보 담김 VO
-	 * @exception Exception
 	 */
-	public void updateDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public void updateDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) {
 		insert("DeptSchdulManage.updateDeptSchdulManage", deptSchdulManageVO);
 	}
 	
     /**
 	 * 부서일정를(을) 삭제한다.
 	 * @param deptSchdulManageVO - 부서일정 정보 담김 VO
-	 * @exception Exception
 	 */
-	public void deleteDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
+	public void deleteDeptSchdulManage(DeptSchdulManageVO deptSchdulManageVO) {
 		// 일지 삭제
 		delete("DeptSchdulManage.deleteDiaryManage", deptSchdulManageVO);
 		// 부서일정 삭제

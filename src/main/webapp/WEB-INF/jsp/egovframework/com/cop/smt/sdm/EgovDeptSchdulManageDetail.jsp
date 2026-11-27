@@ -24,7 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <%
@@ -69,7 +68,7 @@ function fn_egov_list_DeptSchdulManage(){
 
 	<%-- 전체일정목록 이동 --%>
 	<c:if test="${sLinkType eq 'asm'}">
-		location.href = "<c:url value='/cop/smt/asm/EgovAllSchdulManageList.do' />";
+		location.href = "<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do' />";
 	</c:if>
 }
 /* ********************************************************
@@ -120,7 +119,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<td class="left">
 			    <c:forEach items="${schdulSe}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].schdulSe}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -132,7 +131,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<td class="nopd">
 			    <c:forEach items="${schdulIpcrCode}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].schdulIpcrCode}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -142,7 +141,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulDeptName , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulDeptName}"/></span>
 			</td>
 		</tr>
 		<!-- 일정명 -->
@@ -150,7 +149,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulNm}"/></span>
 			</td>
 		</tr>
 		<!-- 일정내용 -->
@@ -158,7 +157,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulCn}"/></span>
 			</td>
 		</tr>
 		<!-- 반복구분 -->
@@ -168,7 +167,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<td class="nopd">
 			    <c:forEach items="${reptitSeCode}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].reptitSeCode}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -187,7 +186,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulChargerName , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulChargerName}"/></span>
 			</td>
 		</tr>
 		<!-- 첨부파일 -->
@@ -205,14 +204,16 @@ function fn_egov_delete_DeptSchdulManage(frm){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	
-	<form name="DeptSchdulManageForm" id="DeptSchdulManageForm" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageModify.do'/>" method="post" method="post" style="float:left;">
+	<form name="DeptSchdulManageForm" id="DeptSchdulManageForm" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageModify.do" method="post" style="float:left;">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 	<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 	<input name="linkType" type="hidden" value="${sLinkType}">
 	<input name="cmd" type="hidden" value="<c:out value=''/>"/>
 	</form>		
 	
-	<form name="formDelete" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formDelete" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_DeptSchdulManage(this.form); return false;">
 	<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 	<input name="linkType" type="hidden" value="${sLinkType}">
@@ -220,14 +221,16 @@ function fn_egov_delete_DeptSchdulManage(frm){
 	</form>
 	
 	
-	<form name="formSubDiaryManage" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formSubDiaryManage" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="submit" class="s_submit" value="<spring:message code="comCopSmtSdm.btn.diaryManage" />" title="<spring:message code="comCopSmtSdm.btn.diaryManage" /> <spring:message code="input.button" />" onclick="fn_egov_diary_DeptSchdulManage(this.form); return false;">
 	<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 	<input name="linkType" type="hidden" value="${sLinkType}">
 	<input name="cmd" type="hidden" value=""/>
 	</form>
 	
-	<form name="formList" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formList" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.list" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />" onClick="fn_egov_list_DeptSchdulManage(); return false;">
 	</form>
 

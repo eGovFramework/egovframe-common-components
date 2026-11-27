@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysDbm.dbMntrngLogList.title"/></c:set>
 <%
@@ -46,8 +47,6 @@ function fn_egov_init(){
 
     if (vForm.searchKeywordFrom.value == "") {
         // 조회일자에 현재날짜 세팅
-        //vForm.searchStartDate.value = fn_egov_getToday();
-        //vForm.searchEndDate.value = fn_egov_getToday();
         //vForm.searchEndHour.options[23].selected = true;
     } else {
         // 조회조건 지정된 것 설정하기.
@@ -224,7 +223,7 @@ function fn_egov_select_db_mntrng(){
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-    <form name="frm" id="frm" action="<c:url value='/utl/sys/dbm/getDbMntrngLogList.do'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/utl/sys/dbm/getDbMntrngLogList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -270,7 +269,7 @@ function fn_egov_select_db_mntrng(){
 	            </select>
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_get_db_mntrng_log_list('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/dbm/getDbMntrngList.do'/>" onclick="fn_egov_select_db_mntrng(); return false;" title="<spring:message code="button.list" />"><spring:message code="button.list" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_select_db_mntrng(); return false;" title="<spring:message code="button.list" />"><spring:message code="button.list" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -278,7 +277,7 @@ function fn_egov_select_db_mntrng(){
     <input name="searchKeywordFrom" type="hidden" value="<c:out value='${searchVO.searchKeywordFrom}'/>">
     <input name="searchKeywordTo" type="hidden" value="<c:out value='${searchVO.searchKeywordTo}'/>">
     <input name="logId" type="hidden" value="">
-    </form>
+    
 
 	<table class="board_list">
 		<caption></caption>
@@ -315,13 +314,7 @@ function fn_egov_select_db_mntrng(){
 	        <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	          <tr>
                 <td>
-                    <form name="item" method="post" action="<c:url value='/utl/sys/dbm/getDbMntrngLog.do'/>">
-                        <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-                        <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-                        <input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
-                        <input type="hidden" name="logId" value="<c:out value="${resultInfo.logId}"/>">
-                    <span class="link"><input type="submit" value="<c:out value="${resultInfo.dataSourcNm}"/>" onclick="fn_egov_get_db_mntrng_log('<c:out value="${resultInfo.logId}"/>'); return false;"  style="text-align : left;"></span>
-                    </form>
+                    <a href="javascript:void(0);" onclick="fn_egov_get_db_mntrng_log('<c:out value="${resultInfo.logId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.dataSourcNm}"/></span></a>
                 </td>
                 <td>${resultInfo.serverNm}</td>
                 <td class="lt_text3" nowrap>${resultInfo.dbmsKindNm}</td>
@@ -340,6 +333,8 @@ function fn_egov_select_db_mntrng(){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_db_mntrng_log_list"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

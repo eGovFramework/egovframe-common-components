@@ -64,6 +64,7 @@
 			     ,  CL_CODE_NM clCodeNm
                  ,  CL_CODE_DC clCodeDc
                  ,  USE_AT     useAt
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTCCMMNCLCODE
              WHERE  CL_CODE    = #{clCode}
              ]]>

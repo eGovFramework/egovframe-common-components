@@ -99,13 +99,9 @@ public class EgovWhiteList {
 		try{
 		    list = Files.readAllLines(path,cs);
 		}catch(IOException e){
-		    //e.printStackTrace();
 			throw new RuntimeException("Link WhiteList config file not found!");
 		}
-		/*for(String readLine : list){
-		    System.out.println(readLine);
-		}*/
-		
+
 		return list;
 	}
 
@@ -120,13 +116,10 @@ public class EgovWhiteList {
 			String line;
 			while ((line = br.readLine()) != null) {
 				list.add(line);
-				//System.out.println(line);
 			}
 		} catch (FileNotFoundException e) {
-			//e.printStackTrace();
 			throw new RuntimeException("Link WhiteList config file not found!");
 		} catch (IOException e) {
-			//e.printStackTrace();
 			throw new RuntimeException("Link WhiteList config file not found!");
 		}finally {
 			if(br != null) try {br.close(); } catch (IOException e) {}

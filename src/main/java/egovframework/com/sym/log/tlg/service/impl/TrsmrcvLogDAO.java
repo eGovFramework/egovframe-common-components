@@ -16,6 +16,7 @@ import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.tlg)
+ *    2026. 6. 16.   이백행         [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
@@ -31,9 +32,8 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param TrsmrcvLog
 	 * @return
-	 * @throws Exception
 	 */
-	public void logInsertTrsmrcvLog(TrsmrcvLog trsmrcvLog) throws Exception{
+	public void logInsertTrsmrcvLog(TrsmrcvLog trsmrcvLog) {
 		insert("TrsmrcvLogDAO.logInsertTrsmrcvLog", trsmrcvLog);
 	}
 
@@ -42,9 +42,8 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param
 	 * @return
-	 * @throws Exception
 	 */
-	public void logInsertTrsmrcvLogSummary() throws Exception{
+	public void logInsertTrsmrcvLogSummary() {
 		insert("TrsmrcvLogDAO.logInsertTrsmrcvLogSummary", null);
 		delete("TrsmrcvLogDAO.logDeleteTrsmrcvLogSummary", null);
 	}
@@ -54,9 +53,8 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param trsmrcvLog
 	 * @return trsmrcvLog
-	 * @throws Exception
 	 */
-	public TrsmrcvLog selectTrsmrcvLog(TrsmrcvLog trsmrcvLog) throws Exception{
+	public TrsmrcvLog selectTrsmrcvLog(TrsmrcvLog trsmrcvLog) {
 
 		return (TrsmrcvLog) selectOne("TrsmrcvLogDAO.selectTrsmrcvLog", trsmrcvLog);
 	}
@@ -66,9 +64,8 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
      *
      * @param TrsmrcvLog
      * @return
-     * @throws Exception
      */
-    public List<TrsmrcvLog> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception {
+    public List<TrsmrcvLog> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) {
         return selectList("TrsmrcvLogDAO.selectTrsmrcvLogInf", trsmrcvLog);
     }
 
@@ -76,9 +73,8 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 	 * 송수신 로그정보 목록의 숫자를 조회한다.
 	 * @param TrsmrcvLog
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectTrsmrcvLogInfCnt(TrsmrcvLog trsmrcvLog) throws Exception{
+	public int selectTrsmrcvLogInfCnt(TrsmrcvLog trsmrcvLog) {
 
 		return (Integer)selectOne("TrsmrcvLogDAO.selectTrsmrcvLogInfCnt", trsmrcvLog);
 	}

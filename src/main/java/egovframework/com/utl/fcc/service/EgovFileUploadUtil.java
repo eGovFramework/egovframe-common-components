@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Class Name  : EgovFileUploadUtil.java
@@ -28,6 +27,7 @@ import egovframework.com.cmm.EgovWebUtil;
  *  2020.08.05   신용호            uploadFilesExt Parameter 수정
  *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
  *  2022.11.11   김혜준            시큐어코딩 처리
+ *  2026.07.10   EricSeokgon      InputStream 자원 처리를 try-with-resources로 변경(자원 누수 방지, java:S2093)
  *
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
@@ -45,7 +45,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @throws Exception
 	 */
 	public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest request, String where, long maxFileSize) throws Exception {
-		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
+		List<EgovFormBasedFileVo> list = new ArrayList<>();
 		MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
 
 		if (mptRequest != null) {//2022.01 Possible null pointer dereference due to return value of called method 조치
@@ -81,16 +81,9 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 					}
 
 					if (mFile.getSize() > 0) {
-						InputStream is = null;
-
-						try {
-							is = mFile.getInputStream();
+						try (InputStream is = mFile.getInputStream()) {
 							saveFile(is, new File(EgovWebUtil.filePathBlackList(
 								where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName())));
-						} finally {
-							if (is != null) {
-								is.close();
-							}
 						}
 						list.add(vo);
 					}
@@ -111,7 +104,8 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @throws Exception
 	 */
 	public static List<EgovFormBasedFileVo> uploadFilesExt(MultipartHttpServletRequest mptRequest, String where, long maxFileSize, String extensionWhiteList) throws Exception {
-		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
+		List<EgovFormBasedFileVo> list = new ArrayList<>();
+		List<MultipartFile> filesToSave = new ArrayList<>();
 
 		if (mptRequest != null) {
 			Iterator<?> fileIter = mptRequest.getFileNames();
@@ -140,35 +134,39 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 					} else {
 						throw new SecurityException("Unacceptable file extension."); // 허용되지 않는 확장자 처리
 					}
-					if (extensionWhiteList.indexOf(ext) < 0) {
+					if (!isAllowedExtension(ext, extensionWhiteList)) {
 						throw new SecurityException("Unacceptable file extension."); // 허용되지 않는 확장자 처리
+					}
+
+					long fileSize = mFile.getSize();
+					if (!checkFileMaxSize(mFile, maxFileSize)) {
+						throw new SecurityException("File size exceeds maximum allowed size.");
 					}
 
 					vo.setFileName(tmp);
 					vo.setContentType(mFile.getContentType());
 					vo.setServerSubPath(getTodayString());
 					vo.setPhysicalName(getPhysicalFileName() + "." + ext);
-					vo.setSize(mFile.getSize());
+					vo.setSize(fileSize);
 
 					if (tmp.lastIndexOf(".") >= 0) {
 						vo.setPhysicalName(vo.getPhysicalName()); // 2012.11 KISA 보안조치
 					}
 
-					if (mFile.getSize() > 0) {
-						InputStream is = null;
-
-						try {
-							is = mFile.getInputStream();
-							String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile"; 
-							saveFile(is, new File(EgovWebUtil.filePathBlackList( fullPath )));
-						} finally {
-							if (is != null) {
-								is.close();
-							}
-						}
+					if (fileSize > 0) {
+						filesToSave.add(mFile);
 						list.add(vo);
 					}
 				}
+			}
+		}
+
+		// 모든 파일의 확장자와 크기 검증이 끝난 뒤 저장을 시작한다.
+		for (int i = 0; i < filesToSave.size(); i++) {
+			EgovFormBasedFileVo vo = list.get(i);
+			try (InputStream is = filesToSave.get(i).getInputStream()) {
+				String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile";
+				saveFile(is, new File(EgovWebUtil.filePathBlackList(fullPath)));
 			}
 		}
 
@@ -186,9 +184,12 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 		if (fileNamePath == null) {
 			return "";
 		}
-		String ext = fileNamePath.substring(fileNamePath.lastIndexOf(".") + 1, fileNamePath.length());
+		int extensionIndex = fileNamePath.lastIndexOf(".");
+		if (extensionIndex < 0) {
+			return "";
+		}
 
-		return (ext == null) ? "" : ext;
+		return fileNamePath.substring(extensionIndex + 1);
 	}
 
 	/**
@@ -197,27 +198,37 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @param fileNamePath
 	 * @param whiteListExtensions : ex) .png.pdf.txt
 	 * @return true : 허용
-	 * @return true : 불가
 	 */
 	public static boolean checkFileExtension(String fileNamePath, String whiteListExtensions) {
 		String extension = getFileExtension(fileNamePath);
+		return isAllowedExtension(extension, whiteListExtensions);
+	}
 
-		if ("".equals(extension)) {
+	/**
+	 * 확장자가 허용목록에 포함되는지 exact match로 검증한다.
+	 *
+	 * @param extension 확장자 (점 없이)
+	 * @param whiteListExtensions ex) .gif,.jpg,.jpeg,.png
+	 * @return true : 허용
+	 */
+	public static boolean isAllowedExtension(String extension, String whiteListExtensions) {
+		if (extension == null || extension.isEmpty() || whiteListExtensions == null || whiteListExtensions.isEmpty()) {
 			return false;
 		}
 
-		if (whiteListExtensions == null) {
-			return false;
-		}
-		if ("".equals(whiteListExtensions)) {
-			return false;
-		}
+		String[] allowedExtensions = whiteListExtensions.split(",");
+		String normalizedExt = extension.toLowerCase();
 
-		if (whiteListExtensions.indexOf("." + extension) >= 0) {
-			return true;
-		} else {
-			return false;
+		for (String allowedExt : allowedExtensions) {
+			String trimmedExt = allowedExt.trim().toLowerCase();
+			if (trimmedExt.startsWith(".")) {
+				trimmedExt = trimmedExt.substring(1);
+			}
+			if (trimmedExt.equals(normalizedExt)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	/**
@@ -226,7 +237,6 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @param multipartFile
 	 * @param maxFileSize : ex) 1048576 = 1M , 1K = 1024
 	 * @return true : 허용
-	 * @return true : 불가
 	 */
 	public static boolean checkFileMaxSize(MultipartFile multipartFile, long maxFileSize) {
 
@@ -234,11 +244,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 			return false;
 		}
 
-		if (multipartFile.getSize() <= maxFileSize) {
-			return true;
-		} else {
-			return false;
-		}
+		return multipartFile.getSize() <= maxFileSize;
 	}
 
 }

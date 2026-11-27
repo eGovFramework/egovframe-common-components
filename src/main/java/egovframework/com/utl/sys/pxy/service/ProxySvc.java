@@ -2,12 +2,16 @@ package egovframework.com.utl.sys.pxy.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * 개요 - 프록시서비스정보에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용 - 프록시서비스정보의 ID, 프록시 명, 프록시 IP, 프록시 포트, 서비스 명, 서비스 설명, 서비스 IP, 서비스 포트,
  * 서비스 상태 등의 항목을 관리한다.
- * 
+ *
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:50
@@ -24,21 +28,30 @@ public class ProxySvc extends ComDefaultVO {
     /**
      * 프록시 명
      */
+    @EgovNullCheck
+    @Size(max=30)
     private String proxyNm;
 
     /**
      * 프록시 IP
      */
+    @EgovNullCheck
+    @Size(max=23)
     private String proxyIp;
 
     /**
      * 프록시 포트
      */
+    @EgovNullCheck
+    @Size(max=10)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String proxyPort;
 
     /**
      * 서비스 명
      */
+    @EgovNullCheck
+    @Size(max=30)
     private String trgetSvcNm;
 
     /**
@@ -49,11 +62,16 @@ public class ProxySvc extends ComDefaultVO {
     /**
      * 서비스 IP
      */
+    @EgovNullCheck
+    @Size(max=23)
     private String svcIp;
 
     /**
      * 서비스 포트
      */
+    @EgovNullCheck
+    @Size(max=10)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String svcPort;
 
     /**
@@ -85,6 +103,16 @@ public class ProxySvc extends ComDefaultVO {
      * 최종수정자ID
      */
     private String lastUpdusrId;
+
+    /**
+     * 프록시 명 조회조건
+     */
+    private String strProxyNm;
+
+    /**
+     * 이전 서비스 상태
+     */
+    private String strPreSvcSttus;
 
     /**
      * @return the proxyId
@@ -280,6 +308,34 @@ public class ProxySvc extends ComDefaultVO {
      */
     public void setLastUpdusrId(String lastUpdusrId) {
         this.lastUpdusrId = lastUpdusrId;
+    }
+
+    /**
+     * @return the strProxyNm
+     */
+    public String getStrProxyNm() {
+        return strProxyNm;
+    }
+
+    /**
+     * @param strProxyNm the strProxyNm to set
+     */
+    public void setStrProxyNm(String strProxyNm) {
+        this.strProxyNm = strProxyNm;
+    }
+
+    /**
+     * @return the strPreSvcSttus
+     */
+    public String getStrPreSvcSttus() {
+        return strPreSvcSttus;
+    }
+
+    /**
+     * @param strPreSvcSttus the strPreSvcSttus to set
+     */
+    public void setStrPreSvcSttus(String strPreSvcSttus) {
+        this.strPreSvcSttus = strPreSvcSttus;
     }
 
 }

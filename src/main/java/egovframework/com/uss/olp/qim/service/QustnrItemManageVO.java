@@ -2,7 +2,13 @@ package egovframework.com.uss.olp.qim.service;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 설문항목관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -16,10 +22,12 @@ import javax.validation.constraints.NotEmpty;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  장동한			최초 생성
- *   2024.10.29  권태성			필수값 BindingResult 검증을 위한 @NotEmpty 추가
- *
+ *   2024.10.29  권태성			필수값 BindingResult 검증을 위한 @EgovNullCheck 추가
+ *   2026.02.02                 주석내용 변경 및 시스템 자동 생성값 @EgovNullCheck 제거
  * </pre>
  */
+@Getter
+@Setter
 public class QustnrItemManageVO implements Serializable {
 
 	private static final long serialVersionUID = -8233519594470362395L;
@@ -28,26 +36,29 @@ public class QustnrItemManageVO implements Serializable {
 	private String qestnrQesitmId = "";
 
 	/** 설문지 아이디 */
-	@NotEmpty(message = "설문정보{common.required.msg}")
+	@EgovNullCheck
 	private String qestnrId = "";
 
 	/** 항목순번 */
-	@NotEmpty(message = "항목순번{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=5)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String iemSn = "";
 
-	/** 항목내용 */
-	@NotEmpty(message = "항목내용{common.required.msg}")
+	/** 설문항목아이디 */
 	private String qustnrIemId = "";
 
-	/** 설문항목아이디 */
+	/** 항목내용 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String iemCn = "";
 
 	/** 기타답변여부 */
-	@NotEmpty(message = "기타답변여부{common.required.msg}")
+	@EgovNullCheck
 	private String etcAnswerAt = "";
 
 	/** 설문항목(을)를 아이디 */
-	@NotEmpty(message = "설문문항정보{common.required.msg}")
+	@EgovNullCheck
 	private String qestnrTmplatId = "";
 
 	/** 최초등록시점  */
@@ -64,198 +75,5 @@ public class QustnrItemManageVO implements Serializable {
 
 	/** 컨트롤 명령어 */
 	private String cmd = "";
-
-	/**
-	 * qestnrQesitmId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrQesitmId() {
-		return qestnrQesitmId;
-	}
-
-	/**
-	 * qestnrQesitmId attribute 값을 설정한다.
-	 * @return qestnrQesitmId String
-	 */
-	public void setQestnrQesitmId(String qestnrQesitmId) {
-		this.qestnrQesitmId = qestnrQesitmId;
-	}
-
-	/**
-	 * qestnrId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrId() {
-		return qestnrId;
-	}
-
-	/**
-	 * qestnrId attribute 값을 설정한다.
-	 * @return qestnrId String
-	 */
-	public void setQestnrId(String qestnrId) {
-		this.qestnrId = qestnrId;
-	}
-
-	/**
-	 * iemSn attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getIemSn() {
-		return iemSn;
-	}
-
-	/**
-	 * iemSn attribute 값을 설정한다.
-	 * @return iemSn String
-	 */
-	public void setIemSn(String iemSn) {
-		this.iemSn = iemSn;
-	}
-
-	/**
-	 * qustnrIemId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQustnrIemId() {
-		return qustnrIemId;
-	}
-
-	/**
-	 * qustnrIemId attribute 값을 설정한다.
-	 * @return qustnrIemId String
-	 */
-	public void setQustnrIemId(String qustnrIemId) {
-		this.qustnrIemId = qustnrIemId;
-	}
-
-	/**
-	 * iemCn attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getIemCn() {
-		return iemCn;
-	}
-
-	/**
-	 * iemCn attribute 값을 설정한다.
-	 * @return iemCn String
-	 */
-	public void setIemCn(String iemCn) {
-		this.iemCn = iemCn;
-	}
-
-	/**
-	 * etcAnswerAt attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEtcAnswerAt() {
-		return etcAnswerAt;
-	}
-
-	/**
-	 * etcAnswerAt attribute 값을 설정한다.
-	 * @return etcAnswerAt String
-	 */
-	public void setEtcAnswerAt(String etcAnswerAt) {
-		this.etcAnswerAt = etcAnswerAt;
-	}
-
-	/**
-	 * qestnrTmplatId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrTmplatId() {
-		return qestnrTmplatId;
-	}
-
-	/**
-	 * qestnrTmplatId attribute 값을 설정한다.
-	 * @return qestnrTmplatId String
-	 */
-	public void setQestnrTmplatId(String qestnrTmplatId) {
-		this.qestnrTmplatId = qestnrTmplatId;
-	}
-
-	/**
-	 * frstRegisterPnttm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterPnttm() {
-		return frstRegisterPnttm;
-	}
-
-	/**
-	 * frstRegisterPnttm attribute 값을 설정한다.
-	 * @return frstRegisterPnttm String
-	 */
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-		this.frstRegisterPnttm = frstRegisterPnttm;
-	}
-
-	/**
-	 * frstRegisterId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterId() {
-		return frstRegisterId;
-	}
-
-	/**
-	 * frstRegisterId attribute 값을 설정한다.
-	 * @return frstRegisterId String
-	 */
-	public void setFrstRegisterId(String frstRegisterId) {
-		this.frstRegisterId = frstRegisterId;
-	}
-
-	/**
-	 * lastUpdusrPnttm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getLastUpdusrPnttm() {
-		return lastUpdusrPnttm;
-	}
-
-	/**
-	 * lastUpdusrPnttm attribute 값을 설정한다.
-	 * @return lastUpdusrPnttm String
-	 */
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-		this.lastUpdusrPnttm = lastUpdusrPnttm;
-	}
-
-	/**
-	 * lastUpdusrId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getLastUpdusrId() {
-		return lastUpdusrId;
-	}
-
-	/**
-	 * lastUpdusrId attribute 값을 설정한다.
-	 * @return lastUpdusrId String
-	 */
-	public void setLastUpdusrId(String lastUpdusrId) {
-		this.lastUpdusrId = lastUpdusrId;
-	}
-
-	/**
-	 * cmd attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getCmd() {
-		return cmd;
-	}
-
-	/**
-	 * cmd attribute 값을 설정한다.
-	 * @return cmd String
-	 */
-	public void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-
 
 }

@@ -30,7 +30,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoPersonalVO
 	 */
-	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
+	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) {
 		return selectList("KnoPersonalDAO.selectKnoPersonalList", searchVO);
 	}
 
@@ -41,7 +41,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoPersonalVO
 	 */
-	public int selectKnoPersonalTotCnt(KnoPersonalVO searchVO) throws Exception {
+	public int selectKnoPersonalTotCnt(KnoPersonalVO searchVO) {
 		return selectOne("KnoPersonalDAO.selectKnoPersonalTotCnt", searchVO);
 	}
 
@@ -52,7 +52,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoPersonalVO
 	 */
-	public KnoPersonal selectKnoPersonal(KnoPersonal knoPersonal) throws Exception {
+	public KnoPersonal selectKnoPersonal(KnoPersonal knoPersonal) {
 		return selectOne("KnoPersonalDAO.selectKnoPersonal", knoPersonal);
 	}
 
@@ -62,7 +62,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoNm
 	 */
-	public void insertKnoPersonal(KnoPersonal knoPersonal) throws Exception {
+	public void insertKnoPersonal(KnoPersonal knoPersonal) {
 		insert("KnoPersonalDAO.insertKnoPersonal", knoPersonal);
 	}
 
@@ -72,7 +72,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoNm
 	 */
-	public void updateKnoPersonal(KnoPersonal knoPersonal) throws Exception {
+	public void updateKnoPersonal(KnoPersonal knoPersonal) {
 		update("KnoPersonalDAO.updateKnoPersonal", knoPersonal);
 	}
 
@@ -82,7 +82,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoNm
 	 */
-	public void deleteKnoPersonal(KnoPersonal knoPersonal) throws Exception {
+	public void deleteKnoPersonal(KnoPersonal knoPersonal) {
 		delete("KnoPersonalDAO.deleteKnoPersonal", knoPersonal);
 	}
 

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page session="false" %>
-<spring:eval expression="@customProperties.getProperty('facebook.appId')" var="appId"/>
 <%
 
 /**
@@ -20,7 +19,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2014 by MOGAHA  All right reserved.
+ *  Copyright (C) 2014 by MOGAHA  All rights reserved.
  */
 
 %>
@@ -35,8 +34,21 @@
 <body>
 	<script>
 	
+		// 2026.07.30 보안 조치 - innerHTML에 삽입되는 외부(Facebook) 데이터 이스케이프
+		function escapeHtml(value) {
+			if (value == null) {
+				return '';
+			}
+			return String(value)
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/"/g, '&quot;')
+				.replace(/'/g, '&#39;');
+		}
+
 		window.fbAsyncInit = function() {
-			var appId = "<c:out value='${appId}' />";
+			var appId = "<c:out value='${facebookAppId}' />";
 			// https 페이지에서 호출하지 않을 시, accessToken과 userID 값은 임의로 설정이 필요하다.
 			// https://developers.facebook.com/에서 그래프 API 탐색기를 통해 값을 확인한 후 설정
 			var accessToken = "";
@@ -50,45 +62,47 @@
 				version : 'v17.0' // 버전은 그래프 API GET 옆에 나타나는 버전과 일치시켜야 한다.
 			});
 			
-			var callback = function(response) {
-				accessToken = response.authResponse.accessToken;
-				userID = response.authResponse.userID;
-			}
-			
 			// 페이스북 로그인 여부 확인
-			FB.getLoginStatus(callback);
-	
-			FB.api(
-					'/' + albumId+'?fields=photos{picture},name',
-					  'GET',
-					  {"fields":"photos{picture},name"},
-					  function(response) {
-						  var html = "";
-	
-						  html += '<h2>Your Facebook Photo Album: ' + response.name + '</h2>';
-						  
-						  //사진이 없고 사진첩만 있으면
-						  if(!response.hasOwnProperty('photos')) { 
-							  html += '<h2>등록된 사진이 없습니다.</h2>' 
-						  } else {
-							  var data = response.photos.data;
-							  html += '<table class="wTable">';
-							  html += '<colgroup><col style="width:25%"><col style="width:auto"></colgroup>';
-							  html += '<tbody>';
-						      
-							  for (var i = 0; i < data.length; i++) {
-									html += '<tr>';
-									html += '<td class="left" style="padding:20px 8px">';
-									html += '<img src="' + data[i].picture + '" alt="' + response.name + '" align="middle"/>';
-									html += '</td>';
-									html += '</tr>'
-								}
-						  };  
-						  document.querySelector('#dv').innerHTML  = html;
-					  }, {access_token: accessToken}
-					);
+			// 페이스북 로그인 여부 확인 후 api진행
+			FB.getLoginStatus(function(response){
+				if(!response.authResponse || !response.authResponse.userID){
+					return;
+				}
+				var accessToken = response.authResponse.accessToken;
+				var userID = response.authResponse.userID;
+				
+				FB.api(
+						'/' + albumId+'?fields=photos{picture},name',
+						  'GET',
+						  {"fields":"photos{picture},name"},
+						  function(response) {
+							  var html = "";
 		
+							  html += '<h2>Your Facebook Photo Album: ' + response.name + '</h2>';
+							  
+							  //사진이 없고 사진첩만 있으면
+							  if(!response.hasOwnProperty('photos')) { 
+								  html += '<h2>등록된 사진이 없습니다.</h2>' 
+							  } else {
+								  var data = response.photos.data;
+								  html += '<table class="wTable">';
+								  html += '<colgroup><col style="width:25%"><col style="width:auto"></colgroup>';
+								  html += '<tbody>';
+							      
+								  for (var i = 0; i < data.length; i++) {
+										html += '<tr>';
+										html += '<td class="left" style="padding:20px 8px">';
+										html += '<img src="' + escapeHtml(data[i].picture) + '" alt="' + escapeHtml(response.name) + '" align="middle"/>';
+										html += '</td>';
+										html += '</tr>'
+									}
+							  };  
+							  document.querySelector('#dv').innerHTML  = html;
+						  }, {access_token: accessToken}
+				);
+			});
 		};
+			
 		
 		(function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0];
@@ -104,7 +118,7 @@
 	</script>
 	
 <div class="wTableFrm">
-	<input type="hidden" id="albumId" value="${albumId}"/>
+	<input type="hidden" id="albumId" value="<c:out value="${albumId}"/>"/>
 	<div id="dv"></div>
 </div>
 </body>

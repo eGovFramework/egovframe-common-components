@@ -62,7 +62,8 @@ function fn_egov_list(){
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymBat.batchResultDetail.pageTop.title"/></h2><!-- 배치결과 상세조회 -->
 
-<form name="batchResultForm"  id="batchResultForm" action="<c:url value='/sym/bat/getBatchResult.do'/>" method="post">
+<form name="batchResultForm"  id="batchResultForm" action="${pageContext.request.contextPath}/sym/bat/getBatchResult.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="batchResultId" type="hidden" value="<c:out value='${resultInfo.batchResultId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
@@ -80,49 +81,49 @@ function fn_egov_list(){
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchResultId"/></th><!-- 배치결과ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchResultId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchResultId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchSchdulId"/></th><!-- 배치스케줄ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchSchdulId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchSchdulId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchOpertId"/></th><!-- 배치작업ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchOpertNm"/></th><!-- 배치작업명 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertNm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchProgrm"/></th><!-- 배치프로그램 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchProgrm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchProgrm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.paramtr"/></th><!-- 파라미터 -->
 			<td class="left">
-			    <c:out value="${resultInfo.paramtr}" escapeXml="false" />
+			    <c:out value="${resultInfo.paramtr}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.sttusNm"/></th><!-- 상태 -->
 			<td class="left">
-			    <c:out value="${resultInfo.sttusNm}" escapeXml="false" />
+			    <c:out value="${resultInfo.sttusNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.errorInfo"/></th><!-- 에러정보 -->
 			<td class="left">
-			    <c:out value="${resultInfo.errorInfo}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${resultInfo.errorInfo}"/></span>
 			</td>
 		</tr>
 		<tr>
@@ -144,7 +145,7 @@ function fn_egov_list(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete(); return false;" /><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/bat/getBatchResultList.do'></c:url>" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 

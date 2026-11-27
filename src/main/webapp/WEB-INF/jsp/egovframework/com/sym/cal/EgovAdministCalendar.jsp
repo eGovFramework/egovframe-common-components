@@ -97,6 +97,7 @@ function fnReturnConfirm(day, rest){
 
 <body onLoad=javascript:fnInit();>
 <form name="Form" action ="<c:url value='/sym/cal/EgovselectAdministCalendar.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" name="init" value="${init}" />
 <input type="hidden" name="year" value="${resultList[0].year}" />
 <input type="hidden" name="month" value="${resultList[0].month}" />
@@ -153,8 +154,8 @@ function fnReturnConfirm(day, rest){
 					</c:choose>
 			 		<c:choose>
 			 		<c:when test='${result.week == 7}'>
-					    <c:out value="</tr>" escapeXml="false"/>
-					    <c:out value="<tr>" escapeXml="false"/>
+					    </tr>
+					    <tr>
 					</c:when>
 					</c:choose>
 				</c:otherwise>

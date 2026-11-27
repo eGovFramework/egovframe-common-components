@@ -82,6 +82,7 @@
 			     ,  BULD_NM			buldNm
 			     ,  DETAIL_BULD_NM	detailBuldNm
 			     ,  ZIP				zip
+			     ,  FRST_REGISTER_ID  frstRegisterId
 			  FROM  COMTRDNMADRZIP
 			 WHERE	RDMN_CODE = #{rdmnCode}
                AND  SN  = #{sn}

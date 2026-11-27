@@ -9,18 +9,41 @@
 <meta charset="utf-8">
 <title><spring:message code="title.html"/></title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css" />
+
 <script language="javascript">
 function fncGoAfterErrorPage(){
     history.back(-2);
 }
 </script>
+<script>
+// 2026.04.22 추가
+(function () {
+  try {
+    var topFrame = parent && parent.frames ? parent.frames["_top"] : null;
+    if (!topFrame || !topFrame.document) return;
+    // leftTimeInfo가 없으면(로그인 직후 미갱신 상태) 그때만 갱신
+    var hasTimer = topFrame.document.getElementById("leftTimeInfo") !== null;
+    if (!hasTimer) {
+      topFrame.location.reload();
+      // 왼쪽 메뉴도 로그인 직후 미갱신일 때만 새로 고친다(거부 때마다 새로 고치면 펼친 메뉴가 초기화된다)
+      var leftFrame = parent && parent.frames ? parent.frames["_left"] : null;
+      if (leftFrame) {
+        leftFrame.location.reload();
+      }
+    }
+  } catch (e) {
+    // cross-frame 예외 무시
+  }
+})();
+</script>
+
 </head>
 <body>
 <div style="width: 1000px; margin: 50px auto 50px;">
 	<p style="font-size: 18px; color: #000; margin-bottom: 10px; "><img src="<c:url value='/images/egovframework/com/cmm/er_logo.jpg' />" width="379" height="57" /></p>
 	<div style="border: ppx solid #666; padding: 20px;">
 		
-		<p style="color:red; margin-bottom: 8px; ">${pageTitle}</p> 
+		<p style="color:red; margin-bottom: 8px; ">${pageTitle}<br /></p>
 
 		<div class="boxType1" style="width: 700px;">
 			<div class="box">

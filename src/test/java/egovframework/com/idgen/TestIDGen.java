@@ -1,5 +1,8 @@
 package egovframework.com.idgen;
 
+import lombok.extern.slf4j.Slf4j;
+
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.context.ApplicationContext;
@@ -22,6 +25,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * </pre>
  */
 
+@Slf4j
 public class TestIDGen {
 
 	@SuppressWarnings("resource")
@@ -37,15 +41,11 @@ public class TestIDGen {
 
 		try {
 			String result = idgenService.getNextStringId();
-			System.out.println("=====>>>>> Result Next ID = "+result);
-			System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextStringId());
-			System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextStringId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextIntegerId());
-			//System.out.println("=====>>>>> Result Next ID = "+idgenService.getNextBigDecimalId());
+			log.debug("=====>>>>> Result Next ID = {}", result);
+			log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextStringId());
+			log.debug("=====>>>>> Result Next ID = {}", idgenService.getNextStringId());
 		} catch (FdlException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 		
 		//BeanFactory

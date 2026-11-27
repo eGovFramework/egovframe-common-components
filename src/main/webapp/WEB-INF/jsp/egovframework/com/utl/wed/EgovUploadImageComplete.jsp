@@ -20,5 +20,5 @@
 	 */
 %>
 <script type='text/javascript'>
-window.parent.CKEDITOR.tools.callFunction('${ckEditorFuncNum}', '${url}', '${msg}');
+window.parent.CKEDITOR.tools.callFunction(${ckEditorFuncNum}, '<c:out value="${url}" escapeXml="true"/>', '<c:out value="${msg}" escapeXml="true"/>');
 </script>

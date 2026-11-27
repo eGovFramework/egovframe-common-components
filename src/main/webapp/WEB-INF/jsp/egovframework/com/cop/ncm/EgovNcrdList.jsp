@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovNcrdList.jsp
@@ -71,7 +72,7 @@
 
 </head>
 <body>
-<form name="frm" method="post" action="${pageContext.request.contextPath}/cop/ncm/selectNcrdInfs.do">
+<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/ncm/selectNcrdInfs.do">
 <div style="visibility:hidden;display:none;">
 <input name="iptSubmit" type="submit" value="<spring:message code="comCopNcm.ncrdList.submit" />" title="<spring:message code="comCopNcm.ncrdList.submit" />">
 </div>
@@ -142,6 +143,6 @@
 	</div>
 </div>
 
-</form>
+</form:form>
 </body>
 </html>

@@ -14,7 +14,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/ext/msg/button.css'/>"/>
 
-<script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+<%-- 2026.07.30 보안 조치 - 외부 CDN(평문 HTTP) 스크립트 로드 제거, 번들 jQuery 사용 --%>
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>
 <script>
 	$(document).ready(function() {
 		$('#connectMsgBtn').click(function() {
@@ -28,6 +29,7 @@
 </head>
 <body>
 <form name="msgForm" id="msgForm" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<c:if test="${loginVO!= null}">
 		${loginVO.name}<spring:message code="comExtMsg.webSocketInto.msg1"/>  <!-- 님, 메신저에 접속 합니다. -->
 		<input type="button" id="connectMsgBtn" name="connectMsgBtn" value="<spring:message code="comExtMsg.webSocket.btnInto"/>"/>

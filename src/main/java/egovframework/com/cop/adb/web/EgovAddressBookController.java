@@ -1,19 +1,18 @@
 package egovframework.com.cop.adb.web;
 
-import java.util.Map;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 
-import javax.annotation.Resource;
+import java.util.Map;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -24,6 +23,8 @@ import egovframework.com.cop.adb.service.AddressBookUserVO;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.cop.adb.service.EgovAddressBookService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 주소록정보를 관리하기 위한 컨트롤러 클래스
@@ -41,6 +42,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2011.8.26	 정진오		 IncludedInfo annotation 추가
  *   2016.12.13  최두영      클래스명 변경
  *   2022.11.11  김혜준      시큐어코딩 처리
+ *   2026.08.31  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
@@ -53,9 +55,6 @@ public class EgovAddressBookController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-
      /**
      * 주소록 정보에 대한 목록을 조회한다.
      *
@@ -63,11 +62,10 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @IncludedInfo(name="주소록관리", order = 380, gid = 40)
     @RequestMapping("/cop/adb/selectAdbkList.do")
-    public String selectAdressBookList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+    public String selectAdressBookList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -113,10 +111,9 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/adb/selectAdbkMainList.do")
-    public String selectAdressBookmainList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+    public String selectAdressBookmainList(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -160,13 +157,12 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
-    @RequestMapping("/cop/adb/addAdbkInf.do")
+    @PostMapping("/cop/adb/addAdbkInf.do")
     public String addAdressBook(
-    		@ModelAttribute("searchVO") AddressBookVO adbkVO, 
+    		@ModelAttribute("searchVO") AddressBookVO adbkVO,
     		@ModelAttribute("adbk") AddressBookVO addressBookVO,
-    		ModelMap model) throws Exception {
+    		ModelMap model) {
         return "egovframework/com/cop/adb/EgovAddressBookRegist";
     }
 
@@ -177,17 +173,21 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
-    @SuppressWarnings("unused")
-	@RequestMapping("/cop/adb/deleteAdbkInf.do")
-    public String deleteAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
+	@PostMapping("/cop/adb/deleteAdbkInf.do")
+    public String deleteAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
+        if(!isAuthenticated) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
         AddressBook adbk = adbkService.selectAdressBook(adbkVO);
+        EgovAuthorizationHelper.assertOwnerById(adbk == null ? null : adbk.getWrterId());
+
         adbk.setUseAt("N");
         adbk.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
         adbkService.deleteAdressBook(adbk);
@@ -204,28 +204,24 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
-    @SuppressWarnings("unused")
-	@RequestMapping("/cop/adb/addUser.do")
+	@PostMapping("/cop/adb/addUser.do")
     public String addUser(@ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-            @RequestParam("checkCnd")String checkCnd, ModelMap model) throws Exception {
-
-        LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+            @RequestParam("checkCnd")String checkCnd, ModelMap model) {
 
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
 
-        for(int i =0; i < tempId.length; i++){
-            if(!tempId[i].equals("")){
-                AddressBookUser adbkUser = adbkService.selectAdbkUser(tempId[i]);
+        for (String element : tempId) {
+            if(!element.equals("")){
+                AddressBookUser adbkUser = adbkService.selectAdbkUser(element);
                 adbkVO.getAdbkMan().add(adbkUser);
             }
         }
-
-        if(checkCnd.equals("regist"))
-            return "egovframework/com/cop/adb/EgovAddressBookRegist";
-        else{
+        
+        // 2026.03.23 kisa 보안점검 대응 조치
+        if("regist".equals(checkCnd)) {
+			return "egovframework/com/cop/adb/EgovAddressBookRegist";
+		} else{
             model.addAttribute("writer" , true);
             return "egovframework/com/cop/adb/EgovAddressBookUpdt";
         }
@@ -241,14 +237,11 @@ public class EgovAddressBookController {
      * @param status
      * @param model
      * @return
-     * @throws Exception
      */
-    @RequestMapping("/cop/adb/deleteUser.do")
+    @PostMapping("/cop/adb/deleteUser.do")
     public String deleteUser( @ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-            @RequestParam("checkWord")String checkWord, @RequestParam("checkCnd")String checkCnd, ModelMap model) throws Exception {
+            @RequestParam("checkWord")String checkWord, @RequestParam("checkCnd")String checkCnd, ModelMap model) {
 
-        @SuppressWarnings("unused")
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
@@ -259,27 +252,27 @@ public class EgovAddressBookController {
 
         String id = "";
 
-        for(int i =0; i < tempId.length; i++){
+        for (String element : tempId) {
 
-            if(tempId[i].equals(checkWord)){
+            if(element.equals(checkWord)){
                 continue;
             }
 
-            if(!tempId[i].equals("")){
-                AddressBookUser adbkUser = adbkService.selectAdbkUser(tempId[i]);
+            if(!element.equals("")){
+                AddressBookUser adbkUser = adbkService.selectAdbkUser(element);
                 adbkVO.getAdbkMan().add(adbkUser);
             }
 
-            id += tempId[i] + ",";
+            id += element + ",";
         }
 
         adbkUserVO.setUserId(id);
 
 
-
-        if(checkCnd.equals("regist"))
-            return "egovframework/com/cop/adb/EgovAddressBookRegist";
-        else{
+        // 2026.03.23 kisa 보안점검 대응 조치
+        if("regist".equals(checkCnd)) {
+			return "egovframework/com/cop/adb/EgovAddressBookRegist";
+		} else{
             model.addAttribute("writer" , true);
             return "egovframework/com/cop/adb/EgovAddressBookUpdt";
         }
@@ -292,12 +285,18 @@ public class EgovAddressBookController {
      * @param commandMap
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/adb/openPopup.do")
-    public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+    public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) {
 
         String requestUrl = (String)commandMap.get("requestUrl");
+
+        // iframe src로 그대로 반영되므로, 외부 URL/스킴 URI(javascript:, data: 등)를 차단하고
+        // 애플리케이션 내부의 절대경로만 허용한다.
+        if (!isSafeInternalUrl(requestUrl)) {
+            return "egovframework/com/cmm/error/accessDenied";
+        }
+
         String width = (String)commandMap.get("width");
         String height = (String)commandMap.get("height");
 
@@ -308,6 +307,28 @@ public class EgovAddressBookController {
         return "egovframework/com/cop/adb/EgovModalPopupFrame";
   }
 
+    /**
+     * openPopup.do의 requestUrl이 iframe src로 그대로 반영되므로,
+     * 애플리케이션 내부의 절대경로("/"로 시작)만 허용하고 외부 URL이나
+     * javascript:/data: 등 스킴 URI를 차단한다.
+     *
+     * @param url 검증할 요청 URL
+     * @return 내부 절대경로이면 true
+     */
+    private boolean isSafeInternalUrl(String url) {
+        if (url == null) {
+            return false;
+        }
+        String trimmed = url.trim();
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+        if (!trimmed.startsWith("/") || trimmed.startsWith("//") || trimmed.startsWith("/\\") || trimmed.contains(":")) {
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * 주소록 등록가능한 구성원을 조회한다.
@@ -316,10 +337,9 @@ public class EgovAddressBookController {
      * @param commandMap
      * @param model
      * @return
-     * @throws Exception
      */
     @RequestMapping("/cop/adb/selectManList.do")
-    public String selectUserList(@ModelAttribute("searchVO") AddressBookUserVO adbkUserVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+    public String selectUserList(@ModelAttribute("searchVO") AddressBookUserVO adbkUserVO, @RequestParam Map<String, Object> commandMap, ModelMap model) {
 
         if(adbkUserVO.getSearchCnd() == null || adbkUserVO.getSearchCnd().equals("")){
             adbkUserVO.setSearchCnd("0");
@@ -360,7 +380,7 @@ public class EgovAddressBookController {
         return "egovframework/com/cop/adb/EgovAddressBookPopup";
     }
 
-    
+
     /**
      * 주소록상세조회수정 화면으로 이동한다.
      *
@@ -368,11 +388,10 @@ public class EgovAddressBookController {
      * @param commandMap
      * @param model
      * @return
-     * @throws Exception
      */
-    @RequestMapping("/cop/adb/updateAdbkInf.do")
-    public String updateAdbkInf(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) throws Exception {
-    	
+    @PostMapping("/cop/adb/updateAdbkInf.do")
+    public String updateAdbkInf(@ModelAttribute("searchVO") AddressBookVO adbkVO, ModelMap model) {
+
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -382,28 +401,34 @@ public class EgovAddressBookController {
 
         AddressBookVO tempAdbkVO = adbkService.selectAdressBook(adbkVO);
 
+        // 서비스가 조회 결과 없음을 그대로 돌려주므로(EgovAddressBookServiceImpl 의 null 검사)
+        // 확인한 뒤 사용한다. 없는 주소록이면 목록으로 돌려보낸다.
+        if (tempAdbkVO == null) {
+            return "forward:/cop/adb/selectAdbkList.do";
+        }
+
         AddressBookUserVO adbkUserVO = new AddressBookUserVO();
 
         boolean writer = false;
         String id = "";
 
-        for(int i = 0; i < tempAdbkVO.getAdbkMan().size(); i++){
-            if( tempAdbkVO.getAdbkMan().get(i).getNcrdId() == null){
-                tempAdbkVO.getAdbkMan().get(i).setNcrdId("");
+        for (AddressBookUser element : tempAdbkVO.getAdbkMan()) {
+            if( element.getNcrdId() == null){
+                element.setNcrdId("");
             } else {
-            	tempAdbkVO.getAdbkMan().get(i).setNcrdId(tempAdbkVO.getAdbkMan().get(i).getNcrdId().trim());
+            	element.setNcrdId(element.getNcrdId().trim());
             }
-            if( tempAdbkVO.getAdbkMan().get(i).getEmplyrId() == null){
-                tempAdbkVO.getAdbkMan().get(i).setEmplyrId("");
+            if( element.getEmplyrId() == null){
+                element.setEmplyrId("");
             }
         }
-        for(int i = 0; i < tempAdbkVO.getAdbkMan().size(); i++){
+        for (AddressBookUser element : tempAdbkVO.getAdbkMan()) {
 
-            if(tempAdbkVO.getAdbkMan().get(i).getEmplyrId().equals(""))
+            if(element.getEmplyrId().equals(""))
                     {
-                id += tempAdbkVO.getAdbkMan().get(i).getNcrdId() + ",";
+                id += element.getNcrdId() + ",";
             }else{
-                id += tempAdbkVO.getAdbkMan().get(i).getEmplyrId() + ",";
+                id += element.getEmplyrId() + ",";
             }
         }
 
@@ -413,7 +438,9 @@ public class EgovAddressBookController {
             writer = true;
         }
 
-        model.addAttribute("searchVO", tempAdbkVO);
+        // 저장·삭제와 같이 작성자 본인만 연다
+        EgovAuthorizationHelper.assertOwnerById(tempAdbkVO.getWrterId());
+		model.addAttribute("searchVO", tempAdbkVO);
         model.addAttribute("adbkUserVO", adbkUserVO);
         model.addAttribute("writer" , writer);
         return "egovframework/com/cop/adb/EgovAddressBookUpdt";
@@ -428,22 +455,31 @@ public class EgovAddressBookController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
-    @RequestMapping("/cop/adb/RegistAdbkInf.do")
-    public String registadbk(@ModelAttribute("searchVO") AddressBookVO adbkVO, @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-        BindingResult bindingResult, ModelMap model) throws Exception {
+    @PostMapping("/cop/adb/RegistAdbkInf.do")
+    public String registadbk(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult, 
+    		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
+    		ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        beanValidator.validate(adbkVO, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "egovframework/com/cop/adb/EgovAddressBookRegist";
-        }
-
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
+        // 구성원 정보 로드
+        String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
+
+        for (String element : tempId) {
+            if(!element.equals("")){
+                AddressBookUser adbkUser = adbkService.selectAdbkUser(element);
+                adbkVO.getAdbkMan().add(adbkUser);
+            }
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "egovframework/com/cop/adb/EgovAddressBookRegist";
         }
 
         adbkVO.setWrterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
@@ -451,15 +487,6 @@ public class EgovAddressBookController {
         adbkVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
         // 2022.11.11 시큐어코딩 처리
         adbkVO.setTrgetOrgnztId(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztId()));
-
-        String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
-
-        for(int i =0; i < tempId.length; i++){
-            if(!tempId[i].equals("")){
-                AddressBookUser adbkUser = adbkService.selectAdbkUser(tempId[i]);
-                adbkVO.getAdbkMan().add(adbkUser);
-            }
-        }
 
         adbkService.insertAdressBook(adbkVO);
 
@@ -475,11 +502,11 @@ public class EgovAddressBookController {
      * @param bindingResult
      * @param model
      * @return
-     * @throws Exception
      */
-    @RequestMapping("/cop/adb/UpdateAddressBook.do")
-    public String updateAdressBook(@ModelAttribute("searchVO") AddressBookVO adbkVO,  @ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
-        BindingResult bindingResult, ModelMap model) throws Exception {
+    @PostMapping("/cop/adb/UpdateAddressBook.do")
+    public String updateAdressBook(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult,
+    		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
+    		ModelMap model) {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -488,19 +515,22 @@ public class EgovAddressBookController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
-        beanValidator.validate(adbkVO, bindingResult);
+        AddressBookVO savedAdbk = adbkService.selectAdressBook(adbkVO);
+        EgovAuthorizationHelper.assertOwnerById(savedAdbk == null ? null : savedAdbk.getWrterId());
 
-        if (bindingResult.hasErrors()) {
-            return "egovframework/com/cop/adb/EgovAddressBookUpdate";
-        }
-
+        // 구성원 정보 로드
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
 
-        for(int i =0; i < tempId.length; i++){
-            if(!tempId[i].equals("")){
-                AddressBookUser adbkUser = adbkService.selectAdbkUser(tempId[i]);
+        for (String element : tempId) {
+            if(!element.equals("")){
+                AddressBookUser adbkUser = adbkService.selectAdbkUser(element);
                 adbkVO.getAdbkMan().add(adbkUser);
             }
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("writer", true);
+            return "egovframework/com/cop/adb/EgovAddressBookUpdt";
         }
 
         adbkVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));

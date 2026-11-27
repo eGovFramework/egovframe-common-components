@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopScp.articleScrapVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -66,7 +67,7 @@ function fn_egov_inquire_articleScrapDetail(scrapId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="articleScrapForm" action="<c:url value='/cop/scp/selectArticleScrapList.do'/>" method="post" onSubmit="fn_egov_search_articleScrap(); return false;"> 
+<form:form name="articleScrapForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/scp/selectArticleScrapList.do" method="post" onSubmit="fn_egov_search_articleScrap(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -84,7 +85,8 @@ function fn_egov_inquire_articleScrapDetail(scrapId) {
 			</li>
 		</ul>
 	</div>
-	</form>
+	<input name="scrapId" type="hidden" value="">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
@@ -111,12 +113,9 @@ function fn_egov_inquire_articleScrapDetail(scrapId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td>
-			<form name="subForm" method="post" action="<c:url value='/cop/scp/selectArticleScrapDetail.do'/>">
-			    <input name="scrapId" type="hidden" value="<c:out value="${resultInfo.scrapId}"/>">
-			    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-			    <span class="link"><input type="submit" value="<c:out value="${resultInfo.scrapNm}"/>" style="border:0px solid #e0e0e0;"></span>
-			</form>
+		<td class="left">
+			<a href="javascript:void(0);" onclick="fn_egov_inquire_articleScrapDetail('<c:out value="${resultInfo.scrapId}"/>'); return false;"><c:out value="${resultInfo.scrapNm}"/></a>
+		</td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 	</tr>
@@ -131,7 +130,7 @@ function fn_egov_inquire_articleScrapDetail(scrapId) {
 		</ul>
 	</div>
 	
-	
+</form:form>
 </div>
 
 

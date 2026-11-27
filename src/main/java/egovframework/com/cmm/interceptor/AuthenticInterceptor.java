@@ -3,17 +3,14 @@ package egovframework.com.cmm.interceptor;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
 
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 인증여부 체크 인터셉터
@@ -29,53 +26,54 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  *  -------    --------    ---------------------------
  *  2011.07.01  서준식          최초 생성
  *  2011.09.07  서준식          인증이 필요없는 URL을 패스하는 로직 추가
- *  2017.08.31  장동한          인증된 사용자 체크로직 변경 및 관리자 권한 체크 로직 추가 
+ *  2017.08.31  장동한          인증된 사용자 체크로직 변경 및 관리자 권한 체크 로직 추가
  *  2021.08.27  신용호          dummy모드 사용시 "60. 권한관리" 접근오류 수정
+ *  2026.10.27                Spring Security 6.5 권장 PathPatternRequestMatcher로 전환
+ *  2026.11.08                실행환경 4.3.2(Spring Security 5.8) 적용 - AntPathRequestMatcher 사용
  *  </pre>
  */
 
 
 public class AuthenticInterceptor implements HandlerInterceptor {
 
-	@SuppressWarnings("unused")
-	@Autowired
-	private Environment environment;
-	
 	/** 관리자 접근 권한 패턴 목록 */
 	private List<String> adminAuthPatternList;
-	
+
+	/** 설정 시 파싱한 관리자 접근 권한 패턴 */
+	private List<AntPathRequestMatcher> adminAuthPatternMatchers;
+
 	public List<String> getAdminAuthPatternList() {
 		return adminAuthPatternList;
 	}
 
 	public void setAdminAuthPatternList(List<String> adminAuthPatternList) {
 		this.adminAuthPatternList = Collections.unmodifiableList(adminAuthPatternList);
+		this.adminAuthPatternMatchers = adminAuthPatternList.stream().map(AntPathRequestMatcher::new).collect(java.util.stream.Collectors.toList());
 	}
 
 	/**
 	 * 인증된 사용자 여부로 인증 여부를 체크한다.
 	 * 관리자 권한에 따라 접근 페이지 권한을 체크한다.
+	 * @throws ModelAndViewDefiningException 
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ModelAndViewDefiningException {
 		//인증된사용자 여부
-		boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();	
+		boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		//미민증사용자 체크
 		if(!isAuthenticated) {
 			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
 			throw new ModelAndViewDefiningException(modelAndView);
 		}
 		//인증된 권한 목록
-		List<String> authList = (List<String>)EgovUserDetailsHelper.getAuthorities();
+		List<String> authList = EgovUserDetailsHelper.getAuthorities();
 		//관리자인증여부
 		boolean adminAuthUrlPatternMatcher = false;
-		//AntPathRequestMatcher
-		AntPathRequestMatcher antPathRequestMatcher = null;
-		//관리자가 아닐때 체크함
-		for(String adminAuthPattern : adminAuthPatternList){
-			antPathRequestMatcher = new AntPathRequestMatcher(adminAuthPattern);
-			if(antPathRequestMatcher.matches(request)){
+		//관리자 URL 패턴 체크
+		for(AntPathRequestMatcher adminAuthPatternMatcher : adminAuthPatternMatchers){
+			if(adminAuthPatternMatcher.matches(request)){
 				adminAuthUrlPatternMatcher = true;
+				break;
 			}
 		}
 		//관리자 권한 체크

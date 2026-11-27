@@ -3,14 +3,17 @@ package egovframework.com.uss.ion.nts.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
+import javax.annotation.Resource;
 /**
  * 보낸쪽지함관리를 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -73,6 +76,29 @@ public class EgovNoteTrnsmitServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public void deleteNoteTrnsmit(NoteTrnsmit noteTrnsmit) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new EgovBizException("인증 정보가 없습니다.");
+    	}
+    	noteTrnsmit.setTrnsmiterId(loginVO.getUniqId());
+    	Map<?, ?> noteTrnsmitMap = dao.selectNoteTrnsmitDetail(noteTrnsmit);
+    	if (noteTrnsmitMap == null || noteTrnsmitMap.isEmpty()) {
+    		throw new EgovBizException("권한이 없습니다.");
+    	}
+    	Object trnsmiterId = noteTrnsmitMap.get("trnsmiterId");
+    	if (trnsmiterId == null) {
+    		trnsmiterId = noteTrnsmitMap.get("TRNSMITER_ID");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치
+    	if (!loginVO.getUniqId().equals(String.valueOf(trnsmiterId))) {
+    		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    			throw new EgovBizException("권한이 없습니다.");
+    		}
+    	}
 
         //보낸쪽지함 건수를 조회함
         int nCnt = dao.selectTrnsmitRelationCnt(noteTrnsmit);
@@ -109,4 +135,5 @@ public class EgovNoteTrnsmitServiceImpl extends EgovAbstractServiceImpl
 	public List<EgovMap> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) throws Exception {
         return dao.selectNoteTrnsmitCnfirm(noteTrnsmit);
     }
+
 }

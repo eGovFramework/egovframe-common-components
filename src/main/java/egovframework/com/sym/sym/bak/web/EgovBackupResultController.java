@@ -1,7 +1,7 @@
 package egovframework.com.sym.sym.bak.web;
-import java.util.List;
 
-import javax.annotation.Resource;
+import egovframework.com.cmm.LoginVO;
+import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -10,13 +10,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.bak.service.BackupResult;
 import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
+import javax.annotation.Resource;
 
 /**
  * 백업결과관리에 대한 controller 클래스
@@ -49,7 +54,7 @@ public class EgovBackupResultController {
     @Resource(name="propertiesService")
     private EgovPropertyService propertyService;
 
-    /* 메세지 서비스 */
+    /* 메시지 서비스 */
     @Resource(name="egovMessageSource")
     private EgovMessageSource egovMessageSource;
 
@@ -62,16 +67,19 @@ public class EgovBackupResultController {
 	 *
 	 * @param backupResult 삭제대상 백업결과model
 	 * @param model		ModelMap
+	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/sym/sym/bak/deleteBackupResult.do")
-	public String deleteBackupResult(BackupResult backupResult, ModelMap model)
+    @PostMapping("/sym/sym/bak/deleteBackupResult.do")
+	@RequireAdmin
+	public String deleteBackupResult(BackupResult backupResult, ModelMap model, RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+
 
     	egovBackupResultService.deleteBackupResult(backupResult);
 
@@ -88,8 +96,12 @@ public class EgovBackupResultController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/sym/bak/getBackupResult.do")
+	@RequireAdmin
 	public String selectBackupResult(@ModelAttribute("searchVO")BackupResult backupResult, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", backupResult);
 		BackupResult result = egovBackupResultService.selectBackupResult(backupResult);
 		model.addAttribute("resultInfo", result);
@@ -133,6 +145,7 @@ public class EgovBackupResultController {
 
 		return "egovframework/com/sym/sym/bak/EgovBackupResultList";
 	}
+
 
 
 }

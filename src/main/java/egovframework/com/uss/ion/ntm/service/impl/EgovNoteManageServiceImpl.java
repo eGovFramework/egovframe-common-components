@@ -3,8 +3,6 @@ package egovframework.com.uss.ion.ntm.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.ion.ntm.service.EgovNoteManageService;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
+import javax.annotation.Resource;
 /**
  * 쪽지 관리(보내기)를 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -55,6 +54,16 @@ public class EgovNoteManageServiceImpl extends EgovAbstractServiceImpl
     @Override
 	public Map<?, ?> selectNoteManage(NoteManageVO noteManage) throws Exception {
     	return dao.selectNoteManage(noteManage);
+    }
+
+    /**
+     * 2026.07.30 보안 조치 - 현재 사용자가 해당 쪽지의 수신자인지 확인한다.
+     * @param noteManage -쪽지 관리(보내기) 정보가 담김 객체(noteId, rcverId 사용)
+     * @throws Exception
+     */
+    @Override
+	public int selectNoteRecptnCheck(NoteManageVO noteManage) throws Exception {
+        return dao.selectNoteRecptnCheck(noteManage);
     }
 
     /**

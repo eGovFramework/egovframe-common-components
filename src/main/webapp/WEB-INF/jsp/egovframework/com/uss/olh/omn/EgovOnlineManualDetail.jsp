@@ -10,7 +10,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -49,7 +49,8 @@ function fn_egov_list_OnlineManual(){
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!--  상단타이틀 -->
-<form name="OnlineManualForm" action="<c:url value=''/>" method="post">
+<form name="OnlineManualForm" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 <!-- ----------------- 상단 타이틀  영역 -->
 <table width="100%" cellpadding="8" class="table-search" border="0">
  <tr>
@@ -89,7 +90,7 @@ function fn_egov_list_OnlineManual(){
   <tr>
     <th width="20%" height="23" class="required_text" nowrap >온라인메뉴얼정의<img src="${ImgUrl}icon/required.gif" alt="필수입력" title="필수입력" width="15" height="15"></th>
     <td width="80%">
-		 <c:out value="${onlineManual.onlineMnlDf}" escapeXml="false" />
+		 <span style="white-space:pre-line"><c:out value="${onlineManual.onlineMnlDf}"/></span>
     </td>
   </tr>
 
@@ -100,7 +101,7 @@ function fn_egov_list_OnlineManual(){
 		<table width="500px" border="0" cellpadding="0" cellspacing="0" style="table-layout:fixed">
 		<tr>
 			<td>
-				<c:out value="${onlineManual.onlineMnlDc}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${onlineManual.onlineMnlDc}"/></span>
 		    </td>
 		  </tr>
 		</table>
@@ -126,7 +127,8 @@ function fn_egov_list_OnlineManual(){
 <table border="0" cellspacing="0" cellpadding="0" align="center">
 <tr>
 	<td>
-		<form name="formList" action="<c:url value='/uss/olh/omn/listOnlineManual.do'/>" method="post">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olh/omn/listOnlineManual.do" method="post">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<span class="button"><input type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_OnlineManual(); return false;"></span>
 		</form>
 	</td>

@@ -30,7 +30,7 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoSpecialistVO
 	 */
-	public List<KnoSpecialistVO> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception {
+	public List<KnoSpecialistVO> selectKnoSpecialistList(KnoSpecialistVO searchVO) {
 		return  selectList("KnoSpecialistDAO.selectKnoSpecialistList", searchVO);
 	}
 
@@ -41,7 +41,7 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoSpecialistVO
 	 */
-	public int selectKnoSpecialistTotCnt(KnoSpecialistVO searchVO) throws Exception {
+	public int selectKnoSpecialistTotCnt(KnoSpecialistVO searchVO) {
 		return  (Integer)selectOne("KnoSpecialistDAO.selectKnoSpecialistTotCnt", searchVO);
 	}
 
@@ -52,7 +52,7 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KonSpecialistVO
 	 */
-	public KnoSpecialist selectKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
+	public KnoSpecialist selectKnoSpecialist(KnoSpecialist knoSpecialist) {
 		return (KnoSpecialist)selectOne("KnoSpecialistDAO.selectKnoSpecialist", knoSpecialist);
 	}
 
@@ -62,7 +62,7 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param speNm
 	 */
-	public void insertKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
+	public void insertKnoSpecialist(KnoSpecialist knoSpecialist) {
 		insert("KnoSpecialistDAO.insertKnoSpecialist", knoSpecialist);
 	}
 
@@ -72,7 +72,7 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param speNm
 	 */
-	public void updateKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
+	public void updateKnoSpecialist(KnoSpecialist knoSpecialist) {
 		update("KnoSpecialistDAO.updateKnoSpecialist", knoSpecialist);
 	}
 
@@ -82,7 +82,7 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param speNm
 	 */
-	public void deleteKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
+	public void deleteKnoSpecialist(KnoSpecialist knoSpecialist) {
 		delete("KnoSpecialistDAO.deleteKnoSpecialist", knoSpecialist);
 	}
 

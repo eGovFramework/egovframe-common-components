@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssOlhQna.qnaAnswerVO.title"/></c:set>
 <!DOCTYPE html>
@@ -34,7 +33,8 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="qnaForm" action="<c:url value='/uss/olh/qna/updateQnaAnswerView.do'/>" method="post">
+<form name="qnaForm" action="${pageContext.request.contextPath}/uss/olh/qna/updateQnaAnswerView.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -92,7 +92,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhQna.qnaVO.qestnCn" /></th>
 			<td class="cnt" colspan="3">
-				<c:out value="${fn:replace(result.qestnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.qestnCn}"/></span>
 			</td>
 		</tr>
 
@@ -101,7 +101,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhQna.qnaVO.answerCn" /></th>
 			<td class="cnt" colspan="3">
-				<c:out value="${fn:replace(result.answerCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.answerCn}"/></span>
 			</td>
 		</tr>
 		</c:if>

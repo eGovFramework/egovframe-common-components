@@ -88,9 +88,7 @@ String sTodate = formatter.format(new java.util.Date());
 	******************************************************** */
 	function fn_egov_detail_DeptSchdulManage(schdulId){
 
-		gOpener.schdulId.value = schdulId;
-		gOpener.action = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />";
-		gOpener.submit();
+		parent.location.href = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId);
 	}
 
 
@@ -126,7 +124,7 @@ String sTodate = formatter.format(new java.util.Date());
 	
 	function fnEgovSchdulTodate() {
 
-		location.href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDailyList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&day=<%=sTodate.substring(6, 8)%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.deptSchdulManageVO.schdulSe.value;
+		location.href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&day=<%=sTodate.substring(6, 8)%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.deptSchdulManageVO.schdulSe.value;
 
 	}
 
@@ -164,6 +162,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY>
 <form name="deptSchdulManageVO" id="deptSchdulManageVO" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:712px;">
 
 
@@ -187,7 +186,7 @@ String sTodate = formatter.format(new java.util.Date());
 			<li class="date">&nbsp;</li>
 			
 			<%if(iNowMonth > 0 ){ %>
-			<li><a class="prev" href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;day=<%=iNowDay%>">prev</a></li>
+			<li><a class="prev" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;day=<%=iNowDay%>">prev</a></li>
 			<%}%>
 			<li class="date"><%=iNowMonth+1%> <spring:message code="comCopSmtSim.Navi.Month"/> </li> <!-- 월 -->
 			<%if(iNowMonth < 11 ){ %>
@@ -235,7 +234,7 @@ if(listResult != null){
     //out.print("<a href=\"JavaScript:fn_egov_detail_DeptSchdulManage('" + (String)egovMap.get("schdulId") + "')\">");
     //out.print("<a href=\"<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + (String)egovMap.get("schdulId") + "\" target=\"_top\">");
     %>
-	<a href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=<%=(String)egovMap.get("schdulId")%>" target="_parent">
+	<a href="#" onclick="fn_egov_detail_DeptSchdulManage('<%=(String)egovMap.get("schdulId")%>'); return false;">
 	<%
 	out.print( ((String)egovMap.get("schdulBgnde")).substring(8,10) +"시");
 	out.print( ((String)egovMap.get("schdulBgnde")).substring(10,12) +"분<br/>~");
@@ -249,7 +248,7 @@ if(listResult != null){
 	//out.print("<a href=\"JavaScript:fn_egov_detail_DeptSchdulManage('" + (String)egovMap.get("schdulId") + "')\">");
     //out.print("<a href=\"JavaScript:fn_egov_detail_DeptSchdulManage('" + (String)egovMap.get("schdulId") + "')\">");
     %>
-	<a href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=<%=(String)egovMap.get("schdulId")%>" target="_parent">
+	<a href="#" onclick="fn_egov_detail_DeptSchdulManage('<%=(String)egovMap.get("schdulId")%>'); return false;">
 	<%=(String)egovMap.get("schdulNm")%>
 	</a>
     </td>

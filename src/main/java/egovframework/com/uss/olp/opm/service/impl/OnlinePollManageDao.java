@@ -31,9 +31,8 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
      * 온라인POLL관리를(을) 목록을 한다.
      * @param onlinePollVO  온라인POLL관리 정보 담김 VO
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) {
         return selectList("OnlinePollManage.selectOnlinePollManage", searchVO);
     }
 
@@ -41,9 +40,8 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
      * 온라인POLL관리를(을) 상세조회 한다.
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
      * @return List
-     * @throws Exception
      */
-    public OnlinePollManage selectOnlinePollManageDetail(OnlinePollManage onlinePollManage) throws Exception {
+    public OnlinePollManage selectOnlinePollManageDetail(OnlinePollManage onlinePollManage) {
         return (OnlinePollManage)selectOne("OnlinePollManage.selectOnlinePollManageDetail", onlinePollManage);
     }
 
@@ -51,36 +49,32 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
      * 온라인POLL관리를(을) 목록 전체 건수를(을) 조회한다.
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
      * @return int
-     * @throws Exception
      */
-    public int selectOnlinePollManageListCnt(ComDefaultVO searchVO) throws Exception {
+    public int selectOnlinePollManageListCnt(ComDefaultVO searchVO) {
         return (Integer)selectOne("OnlinePollManage.selectOnlinePollManageCnt", searchVO);
     }
 
     /**
      * 온라인POLL관리를(을) 등록한다.
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
-     * @throws Exception
      */
-    public void insertOnlinePollManage(OnlinePollManage onlinePollManage) throws Exception {
+    public void insertOnlinePollManage(OnlinePollManage onlinePollManage) {
         insert("OnlinePollManage.insertOnlinePollManage", onlinePollManage);
     }
 
     /**
      * 온라인POLL관리를(을) 수정한다.
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
-     * @throws Exception
      */
-    public void updateOnlinePollManage(OnlinePollManage onlinePollManage) throws Exception {
+    public void updateOnlinePollManage(OnlinePollManage onlinePollManage) {
         update("OnlinePollManage.updateOnlinePollManage", onlinePollManage);
     }
 
     /**
      * 온라인POLL관리를(을) 삭제한다.
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
-     * @throws Exception
      */
-    public void deleteOnlinePollManage(OnlinePollManage onlinePollManage) throws Exception {
+    public void deleteOnlinePollManage(OnlinePollManage onlinePollManage) {
         //온라인POLL 결과 정보 삭제
         delete("OnlinePollManage.deleteOnlinePollResultAll", onlinePollManage);
         //온라인POLL 항목 정보 삭제
@@ -92,45 +86,40 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
     /**
      * 온라인POLL관리를(을) 통계를 조회 한다.
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
-     * @throws Exception
      */
-    public List<OnlinePollManage> selectOnlinePollManageStatistics(OnlinePollManage onlinePollManage) throws Exception {
+    public List<OnlinePollManage> selectOnlinePollManageStatistics(OnlinePollManage onlinePollManage) {
         return selectList("OnlinePollManage.selectOnlinePollManageDetail", onlinePollManage);
     }
 
     /**
      * 온라인POLL항목를(을) 조회한다.
      * @param onlinePollItem  온라인POLL항목 정보가 담김 VO
-     * @throws Exception
      */
-    public List<EgovMap> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception {
+    public List<EgovMap> selectOnlinePollItemList(OnlinePollItem onlinePollItem) {
         return selectList("OnlinePollManage.selectOnlinePollItem", onlinePollItem);
     }
 
     /**
      * 온라인POLL항목를(을) 등록한다.
      * @param onlinePollItem  온라인POLL항목 정보가 담김 VO
-     * @throws Exception
      */
-    public void insertOnlinePollItem(OnlinePollItem onlinePollItem) throws Exception {
+    public void insertOnlinePollItem(OnlinePollItem onlinePollItem) {
         insert("OnlinePollManage.insertOnlinePollItem", onlinePollItem);
     }
 
     /**
      * 온라인POLL항목를(을) 수정한다.
      * @param onlinePollItem  온라인POLL항목 정보가 담김 VO
-     * @throws Exception
      */
-    public void updateOnlinePollItem(OnlinePollItem onlinePollItem) throws Exception {
+    public void updateOnlinePollItem(OnlinePollItem onlinePollItem) {
         update("OnlinePollManage.updateOnlinePollIteme", onlinePollItem);
     }
 
     /**
      * 온라인POLL항목를(을) 삭제한다.
      * @param onlinePollItem  온라인POLL항목 정보가 담김 VO
-     * @throws Exception
      */
-    public void deleteOnlinePollItem(OnlinePollItem onlinePollItem) throws Exception {
+    public void deleteOnlinePollItem(OnlinePollItem onlinePollItem) {
         //온라인POLL 결과 삭제
         delete("OnlinePollManage.deleteOnlinePollResultIemid", onlinePollItem);
         //온라인POLL 항목 삭제

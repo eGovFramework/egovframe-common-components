@@ -1,0 +1,197 @@
+package egovframework.com.uss.ion.tir.service;
+
+import java.io.Serializable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Base64;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpSession;
+
+/**
+ * Twitter(X) OAuth 2.0 + PKCE 인증 URL 생성 및 토큰 발급을 처리하는 서비스.
+ */
+@Service
+public class EgovXOAuthService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EgovXOAuthService.class);
+
+    private static final String REDIRECT_URI = "http://localhost:8080/egovframe-template-common-components/twitter/callback.do";
+
+    private static final String AUTH_URL = "https://twitter.com/i/oauth2/authorize";
+    private static final String TOKEN_URL = "https://api.x.com/2/oauth2/token";
+    private static final String SESSION_OAUTH_CTX_PREFIX = "TWITTER_OAUTH_CTX_";
+    private static final Pattern ACCESS_TOKEN_PATTERN =
+            Pattern.compile("\"access_token\"\\s*:\\s*\"([^\"]+)\"");
+
+    // 안정성: 기본 RestTemplate 은 connect/read 타임아웃이 없어(무한 대기) 외부 X(Twitter)
+    // API 무응답 시 호출 스레드가 영구 블록될 수 있다(CWE-400). 타임아웃을 설정해 사용한다.
+    private static final int CONNECT_TIMEOUT_MS = 5000;
+    private static final int READ_TIMEOUT_MS = 30000;
+    private final RestTemplate restTemplate = createRestTemplate();
+
+    private static RestTemplate createRestTemplate() {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(CONNECT_TIMEOUT_MS);
+        factory.setReadTimeout(READ_TIMEOUT_MS);
+        return new RestTemplate(factory);
+    }
+
+    /**
+     * state별로 PKCE verifier와 client 인증정보를 함께 보관하기 위한 컨텍스트 객체.
+     * OAuth 콜백 완료 시 세션에서 즉시 제거한다.
+     */
+    private static class OAuthContext implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final String codeVerifier;
+        private final String clientId;
+        private final String clientSecret;
+
+        private OAuthContext(String codeVerifier, String clientId, String clientSecret) {
+            this.codeVerifier = codeVerifier;
+            this.clientId = clientId;
+            this.clientSecret = clientSecret;
+        }
+    }
+
+    /**
+     * PKCE 파라미터를 포함한 Twitter 인증 URL을 생성한다.
+     * OAuth 콜백에서 토큰 교환에 필요한 값은 세션에 임시 저장한다.
+     *
+     * @param session 현재 사용자 세션
+     * @param clientId Twitter OAuth Client ID (기존 ConsumerKey 컬럼 사용)
+     * @param clientSecret Twitter OAuth Client Secret (기존 ConsumerSecret 컬럼 사용)
+     * @return OAuth 인증 URL
+     * @throws Exception 해시 생성 등 URL 조합 중 오류
+     */
+    public String getAuthorizationUrl(HttpSession session, String clientId, String clientSecret) throws Exception {
+        if (session == null) {
+            throw new IllegalArgumentException("session is required");
+        }
+        if (clientId == null || clientId.trim().isEmpty()) {
+            throw new IllegalArgumentException("clientId is required");
+        }
+        if (clientSecret == null || clientSecret.trim().isEmpty()) {
+            throw new IllegalArgumentException("clientSecret is required");
+        }
+
+        String trimmedClientId = clientId.trim();
+        String trimmedClientSecret = clientSecret.trim();
+        String state = UUID.randomUUID().toString();
+        String codeVerifier = UUID.randomUUID().toString().replace("-", "");
+
+        session.setAttribute(SESSION_OAUTH_CTX_PREFIX + state,
+                new OAuthContext(codeVerifier, trimmedClientId, trimmedClientSecret));
+
+        String challenge = Base64.getUrlEncoder()
+                .withoutPadding()
+                .encodeToString(
+                        MessageDigest.getInstance("SHA-256")
+                                .digest(codeVerifier.getBytes(StandardCharsets.UTF_8))
+                );
+        //앱 권한 범위
+        String scope = URLEncoder.encode("tweet.read tweet.write users.read offline.access", StandardCharsets.UTF_8.name());
+
+        return AUTH_URL +
+                "?response_type=code" +
+                "&client_id=" + trimmedClientId +
+                "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8.name()) +
+                "&scope=" + scope +
+                "&state=" + state +
+                "&code_challenge=" + challenge +
+                "&code_challenge_method=S256";
+    }
+
+    /**
+     * OAuth 인가 코드와 state를 이용해 액세스 토큰을 발급받는다.
+     * 세션에 임시 저장된 OAuth 컨텍스트는 state 확인 직후 제거한다.
+     *
+     * @param session 현재 사용자 세션
+     * @param code OAuth 인가 코드
+     * @param state OAuth state 값(PKCE verifier 조회 키)
+     * @return 발급된 access token 문자열
+     */
+    public String requestAccessToken(HttpSession session, String code, String state) {
+        if (session == null) {
+            throw new IllegalArgumentException("session is required");
+        }
+
+        String attrKey = SESSION_OAUTH_CTX_PREFIX + state;
+        OAuthContext context = (OAuthContext) session.getAttribute(attrKey);
+
+        if (context == null) {
+            throw new IllegalStateException("Invalid or expired state, cannot find oauth context");
+        }
+
+        // state는 1회용이다. 토큰 발급 성공/실패와 무관하게 컨텍스트를 제거해 재사용을 막는다.
+        session.removeAttribute(attrKey);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setBasicAuth(context.clientId, context.clientSecret, StandardCharsets.UTF_8);
+
+        String body = "grant_type=authorization_code" +
+                "&client_id=" + context.clientId +
+                "&client_secret=" + urlEncode(context.clientSecret) +
+                "&redirect_uri=" + urlEncode(REDIRECT_URI) +
+                "&code=" + urlEncode(code) +
+                "&code_verifier=" + urlEncode(context.codeVerifier);
+
+        HttpEntity<String> entity = new HttpEntity<>(body, headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.postForEntity(TOKEN_URL, entity, String.class);
+            return extractAccessToken(response.getBody());
+        } catch (HttpStatusCodeException e) {
+            LOGGER.error("Token API failed. status={}, body={}", e.getStatusCode(), e.getResponseBodyAsString());
+            throw new IllegalStateException("토큰 발급 실패: " + e.getStatusCode());
+        } catch (ResourceAccessException e) {
+            // 타임아웃·DNS 실패·연결 거부 등 통신 오류. 콜백 화면이 처리하는 예외 타입으로 변환한다.
+            LOGGER.error("Token API 통신 실패", e);
+            throw new IllegalStateException("토큰 발급 통신 실패", e);
+        }
+    }
+
+    /**
+     * 토큰 응답 JSON 문자열에서 access_token 값을 추출한다.
+     *
+     * @param json 토큰 발급 응답 JSON 문자열
+     * @return access_token 값
+     */
+    private String extractAccessToken(String json) {
+        if (json == null || json.trim().isEmpty()) {
+            throw new IllegalStateException("토큰 응답이 비어 있습니다.");
+        }
+
+        Matcher matcher = ACCESS_TOKEN_PATTERN.matcher(json);
+        if (!matcher.find()) {
+            throw new IllegalStateException("토큰 응답에서 access_token을 찾을 수 없습니다. response=" + json);
+        }
+        return matcher.group(1);
+    }
+
+    /** URL 인코딩 (Java 8 : URLEncoder.encode(String, String) 의 UnsupportedEncodingException 처리) */
+    private static String urlEncode(String value) {
+        try {
+            return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
+        } catch (java.io.UnsupportedEncodingException e) {
+            throw new IllegalStateException("UTF-8 encoding is not supported", e);
+        }
+    }
+}

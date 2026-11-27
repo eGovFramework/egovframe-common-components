@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtDsm.title"/></c:set>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
@@ -95,7 +94,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="schdulCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-			   <c:out value="${fn:replace(diaryManageVO.schdulCn , crlf , '<br/>')}" escapeXml="false" />
+			   <span style="white-space:pre-line"><c:out value="${diaryManageVO.schdulCn}"/></span>
 			</td>
 		</tr>
 		<!-- 일지명 -->
@@ -103,7 +102,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="diaryNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(diaryManageVO.diaryNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.diaryNm}"/></span>
 			</td>
 		</tr>
 		<!-- 지시사항 -->
@@ -111,7 +110,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="drctMatter">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(diaryManageVO.drctMatter , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.drctMatter}"/></span>
 			</td>
 		</tr>
 		<!-- 특이사항 -->
@@ -119,7 +118,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="partclrMatter">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(diaryManageVO.partclrMatter , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.partclrMatter}"/></span>
 			</td>
 		</tr>
 		<!-- 진척률 -->
@@ -127,7 +126,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="diaryProcsPte">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-  				<c:out value="${fn:replace(diaryManageVO.diaryProcsPte , crlf , '<br/>')}" escapeXml="false" />%
+  				<span style="white-space:pre-line"><c:out value="${diaryManageVO.diaryProcsPte}"/></span>%
 			</td>
 		</tr>
 		<!-- 첨부파일 -->
@@ -144,19 +143,22 @@ function fn_egov_delete_DiaryManage(frm){
 	</table>
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="QustnrManageForm" action="<c:url value='/cop/smt/dsm/EgovDiaryManageModify.do'/>" method="post" style="float:left;">
+		<form name="QustnrManageForm" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageModify.do" method="post" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
 			<input name="diaryId" type="hidden" value="${diaryManageVO.diaryId}">
 			<input name="cmd" type="hidden" value="<c:out value=''/>"/>
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/cop/smt/dsm/EgovDiaryManageDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_DiaryManage(this.form); return false;"><!-- 삭제 -->
 			<input name="diaryId" type="hidden" value="${diaryManageVO.diaryId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 
-		<form name="formList" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />"><!-- 목록 -->
 		</form>
 

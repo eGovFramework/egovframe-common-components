@@ -1,5 +1,7 @@
 package egovframework.com.utl.sys.nsm.service;
 
+import egovframework.com.cmm.EgovWebUtil;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -42,11 +44,17 @@ public class NtwrkSvcMntrngChecker {
 		Socket clientSocket = null;
 
 		try {
+			// 2026.07.30 보안 조치 - SSRF/포트스캔 방지(사설망·루프백·링크로컬 접속 차단)
+			EgovWebUtil.validatePublicFtpHost(sysIp);
 			clientSocket = SSLSocketFactory.getDefault().createSocket(sysIp, sysPort);//2022.01. Unencrypted Socket 처리
 			return new NtwrkSvcMntrngResult(true, null);
 		} catch (IOException e) {
 			//log.error("네트워크서비스모니터링 에러 : " + e.getMessage());
 			//log.debug(e.getMessage(), e);
+			return new NtwrkSvcMntrngResult(false, e);
+		} catch (IllegalArgumentException e) {
+			// 사설망/루프백/링크로컬 대상 등 허용되지 않는 접속 시도
+			LOGGER.debug("disallowed target: {}", e.getMessage());
 			return new NtwrkSvcMntrngResult(false, e);
 		} finally {
 			if (clientSocket != null) {

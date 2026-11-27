@@ -3,6 +3,7 @@ package egovframework.com.cop.scp.service;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
 /**
  * 스크랩 서비스 데이터 처리 모델
@@ -32,6 +33,7 @@ public class Scrap implements Serializable {
     private long nttId = 0L;
     
     /** 스크랩명 */
+    @EgovNullCheck
     private String scrapNm = "";
     
     /** 사용 여부 */

@@ -156,6 +156,12 @@
     </insert>
 
     <select id="selectMntrngServerList" resultMap="mntrngServer">
+            <if test="recordCountPerPage != null">
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+            </if>
              SELECT A.SERVER_ID,
                     A.SERVER_EQPMN_ID, 
                     B.SERVER_EQPMN_NM, 
@@ -166,7 +172,16 @@
               WHERE A.SERVER_EQPMN_ID = B.SERVER_EQPMN_ID     
             <if test="strServerNm != null">AND
                     B.SERVER_EQPMN_NM LIKE '%'||#{strServerNm}||'%'
-            </if>                   
+            </if>
+              ORDER BY A.SERVER_EQPMN_ID, A.SERVER_ID
+            <if test="recordCountPerPage != null">
+            <![CDATA[
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+            ]]>
+            </if>
     </select>
 
     <select id="selectMntrngServerListTotCnt" parameterType="egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO" resultType="int">

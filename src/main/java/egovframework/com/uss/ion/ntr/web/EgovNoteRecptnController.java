@@ -3,32 +3,32 @@ package egovframework.com.uss.ion.ntr.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.resolver.EgovSecurityMap;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 받은쪽지함관리를 처리하는 Controller Class 구현
@@ -50,9 +50,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovNoteRecptnController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnController.class);
-
-//    @Autowired
-//    private DefaultBeanValidator beanValidator;
 
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
@@ -106,35 +103,56 @@ public class EgovNoteRecptnController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
         	LOGGER.debug("##### EgovNoteRecptnController EgovNoteRecptnList()  start");
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
         	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
         	LOGGER.debug("noteRecptnId > {}", commandMap.get("noteRecptnIdAll"));
-        	
+
         	String[] aNoteId = ((String) commandMap.get("noteIdAll")).split(",");
             String[] aNoteTrnsmitId = ((String)commandMap.get("noteTrnsmitIdAll")).split(",");
             String[] aNoteRecptnId = ((String)commandMap.get("noteRecptnIdAll")).split(",");
-        	
+
+            // 일괄 삭제: 모든 건의 수신자 본인 여부를 먼저 확인한 뒤 삭제한다.
+            for(int i=0; i < aNoteId.length; i++) {
+            	securitymap.put("noteId", aNoteId[i]);
+	            securitymap.put("noteTrnsmitId", aNoteTrnsmitId[i]);
+	            securitymap.put("noteRecptnId", aNoteRecptnId[i]);
+	            NoteRecptn ownerCheck = new NoteRecptn();
+	            ownerCheck.setNoteId(securitymap.get("noteId"));
+	            ownerCheck.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
+	            ownerCheck.setNoteRecptnId(securitymap.get("noteRecptnId"));
+	            ownerCheck.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	            Map<?, ?> stored = egovNoteRecptnService.selectNoteRecptnDetail(ownerCheck);
+	            EgovAuthorizationHelper.assertOwner(stored == null ? null : (String) stored.get("rcverId"));
+            }
+
             for(int i=0; i < aNoteId.length; i++) {
             	String sNoteId = aNoteId[i];
             	String sNoteTrnsmitId = aNoteTrnsmitId[i];
             	String sNoteRecptnId = aNoteRecptnId[i];
-            	
+
             	securitymap.put("noteId", sNoteId);
 	            securitymap.put("noteTrnsmitId", sNoteTrnsmitId);
 	            securitymap.put("noteRecptnId", sNoteRecptnId);
-            	
+
 	            LOGGER.debug("sArrCheckListValue[0] > {}", securitymap.get("noteId"));
 	            LOGGER.debug("sArrCheckListValue[1] > {}", securitymap.get("noteTrnsmitId"));
 	            LOGGER.debug("sArrCheckListValue[2] > {}", securitymap.get("noteRecptnId"));
-	            
+
 	            noteRecptn.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteRecptn.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteRecptn.setNoteId(securitymap.get("noteId"));
 	            noteRecptn.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
 	            noteRecptn.setNoteRecptnId(securitymap.get("noteRecptnId"));
 	            noteRecptn.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-	            
+
 	            egovNoteRecptnService.deleteNoteRecptn(noteRecptn);
 	        }
 	        //삭제후 페이지 인덱스 설정
@@ -180,23 +198,26 @@ public class EgovNoteRecptnController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do")
+	@PostMapping("/uss/ion/ntr/detailNoteRecptn.do")
+    @RequireAdmin
     public String EgovNoteRecptnDetail(
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
     		EgovSecurityMap securityMap,
             ModelMap model) throws Exception {
 
-		String sLocationUrl = "egovframework/com/uss/ion/nts/EgovNoteTrnsmitDetail";
-
         String sCmd = securityMap.get("cmd") == null ? "" : (String) securityMap.get("cmd");
 
         if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
         	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-            searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));      
+            searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         	egovNoteRecptnService.deleteNoteRecptn(searchVO);
-      
+
         	return "redirect:/uss/ion/ntr/listNoteRecptn.do";
         }else{
             //로그인 객체 선언/아이디설정
@@ -206,6 +227,8 @@ public class EgovNoteRecptnController {
             searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
         	Map<?, ?> noteRecptnMap = egovNoteRecptnService.selectNoteRecptnDetail(searchVO);
+        	// 받은 쪽지는 수신자 본인만 본다(조회 조건도 수신자를 로그인 사용자로 고정한다)
+        	EgovAuthorizationHelper.assertOwner(noteRecptnMap == null ? null : (String) noteRecptnMap.get("rcverId"));
         	model.addAttribute("noteRecptn", noteRecptnMap);
 
         	egovframework.com.uss.ion.nts.service.NoteTrnsmit noteTrnsmit = new egovframework.com.uss.ion.nts.service.NoteTrnsmit();

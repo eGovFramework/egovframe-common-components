@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpCnm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -31,9 +30,7 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="cnsltManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
-
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 /* ********************************************************
@@ -88,7 +85,7 @@ function fn_egov_inqire_qnaanswerlist() {
  ******************************************************** */
 function fn_egov_pop_mailform() {
 
-	var url 	= "<c:url value='/ems/insertSndngMailView.do'/>";
+	var url 	= "<c:url value='/cop/ems/insertSndngMailView.do'/>";
 	var	status 	= "width=640,height=480,top=200,left=200";
 
 	window.open(url,'popup', status);
@@ -106,8 +103,13 @@ function fn_egov_pop_mailform() {
 <!-- hidden 화일정의 -->
 <input name="cnsltId" type="hidden" value="<c:out value='${result.cnsltId}'/>">
 
-<input name="writngPassword" type="hidden" value="<c:out value='${result.writngPassword}'/>">
+<!-- 2026.07.13 KISA 보안취약점 조치: writngPassword(Base64로 인코딩된 비밀번호)는
+     본 수정 처리(updateCnsltDtlsAnswer)에서 전혀 사용되지 않는 값이며(UPDATE 쿼리에도 포함되지 않음),
+     hidden 필드에 실제 값을 그대로 노출하면 손쉽게 디코딩되어 평문 비밀번호가 유출될 수 있으므로
+     실제 값 대신 검증 통과용 마스킹 값만 전송한다. -->
+<input name="writngPassword" type="hidden" value="********">
 
+<input name="wrterNm" type="hidden" value="<c:out value='${result.wrterNm}'/>">
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.update" /></h2>
 
@@ -126,7 +128,7 @@ function fn_egov_pop_mailform() {
 		<tr>
 			<th><label for="wrterNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="70" value="${result.wrterNm}" />
+			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="70" value="${result.wrterNm}" disabled="true"/>
    				<div><form:errors path="wrterNm" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -139,9 +141,9 @@ function fn_egov_pop_mailform() {
 		<tr>
 			<th><label for="cnsltCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-		        <form:input path="areaNo" size="4" maxlength="4" title="${telNo1}" style="width:30px;" value="${result.areaNo}"/>-<!-- 전화번호(지역) -->
-		        <form:input path="middleTelno" size="4" maxlength="4" title="${telNo2}" style="width:30px;" value="${result.middleTelno}"/>-<!-- 전화번호(국번) -->
-		        <form:input path="endTelno" size="4" maxlength="4"  title="${telNo3}" style="width:30px;" value="${result.endTelno}"/><!-- 전화번호(지번) -->
+		        <form:input path="areaNo" size="4" maxlength="4" title="${telNo1}" style="width:30px;" value="${result.areaNo}"  />-<!-- 전화번호(지역) -->
+		        <form:input path="middleTelno" size="4" maxlength="4" title="${telNo2}" style="width:30px;" value="${result.middleTelno}"  />-<!-- 전화번호(국번) -->
+		        <form:input path="endTelno" size="4" maxlength="4"  title="${telNo3}" style="width:30px;" value="${result.endTelno}"  /><!-- 전화번호(지번) -->
 		    	<div><form:errors path="areaNo"/></div>
 		    	<div><form:errors path="middleTelno"/></div>
 		    	<div><form:errors path="endTelno"/></div>
@@ -152,9 +154,9 @@ function fn_egov_pop_mailform() {
 		<tr>
 			<th><label for="cnsltCn">${title}</label></th>
 			<td class="nopd">
-				<input name="firstMoblphonNo" 	value="<c:out value='${result.firstMoblphonNo}'/>"	type="text" size="5"  maxlength="5" title="<spring:message code="comUssOlpCns.regist.mobileNo1"/>" style="width:30px;">-<!-- 휴대폰전화번호(앞번) -->
-				<input name="middleMbtlnum" 	value="<c:out value='${result.middleMbtlnum}'/>" 	type="text" size="5"  maxlength="5" title="<spring:message code="comUssOlpCns.regist.mobileNo2"/>" style="width:30px;">-<!-- 휴대폰전화번호(국번) -->
-				<input name="endMbtlnum" 		value="<c:out value='${result.endMbtlnum}'/>"		type="text" size="5"  maxlength="5" title="<spring:message code="comUssOlpCns.regist.mobileNo3"/>" style="width:30px;"><!-- 휴대폰전화번호(지번) -->
+				<input name="firstMoblphonNo" 	value="<c:out value='${result.firstMoblphonNo}'/>"	type="text" size="5"  maxlength="5" title="<spring:message code="comUssOlpCns.regist.mobileNo1"/>" style="width:30px;"  >-<!-- 휴대폰전화번호(앞번) -->
+				<input name="middleMbtlnum" 	value="<c:out value='${result.middleMbtlnum}'/>" 	type="text" size="5"  maxlength="5" title="<spring:message code="comUssOlpCns.regist.mobileNo2"/>" style="width:30px;"  >-<!-- 휴대폰전화번호(국번) -->
+				<input name="endMbtlnum" 		value="<c:out value='${result.endMbtlnum}'/>"		type="text" size="5"  maxlength="5" title="<spring:message code="comUssOlpCns.regist.mobileNo3"/>" style="width:30px;"  ><!-- 휴대폰전화번호(지번) -->
 			</td>
 		</tr>
 		<!-- 이메일 -->
@@ -162,7 +164,7 @@ function fn_egov_pop_mailform() {
 		<tr>
 			<th><label for="cnsltCn">${title}</label> </th>
 			<td class="nopd">
-				<input name="emailAdres" 	type="text" size="30" value="<c:out value='${result.emailAdres}'/>" maxlength="30" title="${title} ${inputTxt}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input name="emailAdres" 	readonly type="text" size="30" value="<c:out value='${result.emailAdres}'/>" maxlength="30" title="${title} ${inputTxt}" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<input name="emailAnswerAt" type="checkbox" disabled value="Y" <c:if test="${result.emailAnswerAt == 'Y'}">checked</c:if> title="<spring:message code="comUssOlpCns.regist.emailAt"/>"><spring:message code="comUssOlpCns.regist.emailAt"/><!-- 이메일답변여부 -->
 				
 				
@@ -177,7 +179,7 @@ function fn_egov_pop_mailform() {
 		<tr>
 			<th><label for="cnsltCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-		        <form:input path="cnsltSj" size="70" maxlength="70" title="${title} ${inputTxt}" value="${result.cnsltSj}" />
+		        <form:input path="cnsltSj" size="70" maxlength="70" title="${title} ${inputTxt}" value="${result.cnsltSj}" readonly="true" />
 		    	<div><form:errors path="cnsltSj"/></div>
 			</td>
 		</tr>
@@ -186,7 +188,7 @@ function fn_egov_pop_mailform() {
 		<tr>
 			<th><label for="cnsltCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<form:textarea path="cnsltCn" title="${title} ${inputTxt}" cols="300" rows="30" style="height:200px;" value="${result.cnsltCn}"/>   
+				<form:textarea path="cnsltCn" title="${title} ${inputTxt}" cols="300" rows="30" style="height:200px;" value="${result.cnsltCn}" readonly="true"/>   
 				<div><form:errors path="cnsltCn" cssClass="error" /></div>  
 			</td>
 		</tr>
@@ -221,7 +223,7 @@ function fn_egov_pop_mailform() {
 <!-- 하단 버튼 -->
 <div class="btn">
 	<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
-	<span class="btn_s"><a href="<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do' />" onclick="fn_egov_inqire_qnaanswerlist(); return false;"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+	<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_inqire_qnaanswerlist(); return false;"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 </div><div style="clear:both;"></div>
 
 

@@ -14,7 +14,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
  --%>
 
@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comStsDst.dtaUseStats.title"/> <spring:message code="title.detail"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -34,10 +33,8 @@
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
 <title>보고서통계자료 등록</title>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="reprtStats" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 function fncSelectReprtStatsList() {
@@ -65,7 +62,7 @@ function fncReprtStatsUpdate() {
     varFrom.action = "<c:url value='/sts/rst/updtReprtStats.do'/>";
 
     if(confirm("저장 하시겠습니까?")){
-        if(!validateRoleManage(varFrom)){
+        if(!validateReprtStats(varFrom)){
             return;
         }else{
             varFrom.submit();
@@ -133,7 +130,7 @@ function fncReprtStatsDelete() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" onclick="fncReprtStatsInsert(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/sts/rst/selectReprtStatsList.do'/>?pageIndex=<c:out value='${reprtStatsVO.pageIndex}'/>&amp;pmReprtTy=<c:out value="${reprtStatsVO.pmReprtTy}"/>&amp;pmDateTy=<c:out value="${reprtStatsVO.pmDateTy}"/>&amp;pmFromDate=<c:out value="${reprtStatsVO.pmFromDate}"/>&amp;pmToDate=<c:out value="${reprtStatsVO.pmToDate}"/>" onclick="fncSelectReprtStatsList(); return false;"><spring:message code="button.list" /></a></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectReprtStatsList(); return false;"><spring:message code="button.list" /></a></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>

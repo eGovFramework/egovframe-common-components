@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle"><spring:message code="comSymLogUlg.userLog.title"/></c:set>
 <!DOCTYPE html>
@@ -126,7 +127,7 @@ function fn_egov_inquire_userLog(occrrncDe, rqesterId, srvcNm, methodNm) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="UserLogForm" action="<c:url value='/sym/log/ulg/SelectUserLogList.do'/>" method="post" onSubmit="fn_egov_search_userLog(); return false;"> 
+<form:form name="UserLogForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/log/ulg/SelectUserLogList.do" method="post" onSubmit="fn_egov_search_userLog(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -208,7 +209,7 @@ function fn_egov_inquire_userLog(occrrncDe, rqesterId, srvcNm, methodNm) {
 </div>
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

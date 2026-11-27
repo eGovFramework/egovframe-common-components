@@ -22,6 +22,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopCmy.commuUserVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -29,6 +30,7 @@
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <script type="text/javascript">
 /*********************************************************
  * 초기화
@@ -53,13 +55,17 @@ function fn_egov_search_user(){
 	document.CommuUserForm.pageIndex.value = 1;
 	document.CommuUserForm.submit();
 }
+
+function fn_egov_commuUserAction(url, cmmntyId, emplyrId) {
+	fn_egov_postNavigate(url, {cmmntyId: cmmntyId, emplyrId: emplyrId}, document.CommuUserForm);
+}
 </script>
 </head>
 <body onload="fn_egov_init()">
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="CommuUserForm" action="<c:url value='/cop/cmy/selectCommuUserList.do'/>" method="post" onSubmit="fn_egov_search_user(); return false;"> 
+<form:form name="CommuUserForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/cmy/selectCommuUserList.do" method="post" onSubmit="fn_egov_search_user(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -113,23 +119,23 @@ function fn_egov_search_user(){
 			<c:when test="${resultInfo.mberSttus == 'A' }">
 			<!-- 회원가입 신청상태일 경우 -->
 				<td>
-					<a class="btn02" href="<c:url value='/cop/cmy/insertCommuUser.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">가입승인</a>&nbsp;	
-					<a class="btn02" href="<c:url value='/cop/cmy/deleteCommuUser.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">가입거절</a>	
+					<button type="button" class="btn02" onclick="fn_egov_commuUserAction('<c:url value='/cop/cmy/insertCommuUser.do'/>', '<c:out value='${resultInfo.cmmntyId}'/>', '<c:out value='${resultInfo.emplyrId}'/>'); return false;">가입승인</button>&nbsp;	
+					<button type="button" class="btn02" onclick="fn_egov_commuUserAction('<c:url value='/cop/cmy/deleteCommuUser.do'/>', '<c:out value='${resultInfo.cmmntyId}'/>', '<c:out value='${resultInfo.emplyrId}'/>'); return false;">가입거절</button>	
 				</td>		
 			</c:when>
 
 			<c:when test="${resultInfo.mberSttus == 'P' && resultInfo.mngrAt == 'N'}">
 			<!-- 일반회원 상태일 경우 -->
 				<td>
-					<a class="btn02" href="<c:url value='/cop/cmy/insertCommuUserAdmin.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">관리자등록</a>&nbsp;	
-					<a class="btn02" href="<c:url value='/cop/cmy/deleteCommuUser.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">탈퇴</a>	
+					<button type="button" class="btn02" onclick="fn_egov_commuUserAction('<c:url value='/cop/cmy/insertCommuUserAdmin.do'/>', '<c:out value='${resultInfo.cmmntyId}'/>', '<c:out value='${resultInfo.emplyrId}'/>'); return false;">관리자등록</button>&nbsp;	
+					<button type="button" class="btn02" onclick="fn_egov_commuUserAction('<c:url value='/cop/cmy/deleteCommuUser.do'/>', '<c:out value='${resultInfo.cmmntyId}'/>', '<c:out value='${resultInfo.emplyrId}'/>'); return false;">탈퇴</button>	
 				</td>		
 			</c:when>
 			
 			<c:when test="${resultInfo.mngrAt == 'Y' }">
 			<!-- 관리자일 경우 -->
 				<td>
-					<a class="btn02" href="<c:url value='/cop/cmy/deleteCommuUserAdmin.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">관리자해제</a>
+					<button type="button" class="btn02" onclick="fn_egov_commuUserAction('<c:url value='/cop/cmy/deleteCommuUserAdmin.do'/>', '<c:out value='${resultInfo.cmmntyId}'/>', '<c:out value='${resultInfo.emplyrId}'/>'); return false;">관리자해제</button>
 				</td>		
 			</c:when>
 			
@@ -156,7 +162,7 @@ function fn_egov_search_user(){
 
 <input name="cmmntyId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

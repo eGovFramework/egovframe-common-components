@@ -21,7 +21,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/cop/smt/lsm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/cop/smt/lsm/"/>
 <!DOCTYPE html>
@@ -31,8 +30,7 @@
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="leaderSttusVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_LeaderSttus(){
 		
@@ -118,7 +116,7 @@
 	<tr>
 	  <td><span class="button"><input type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_update_leadersttus(); return false;"></span></td>
       <td>&nbsp;&nbsp;</td>
-      <td><span class="button"><a href="<c:url value='/cop/smt/lsm/mng/selectLeaderSttusList.do'/>?searchWrd=<c:out value='${leaderSttusVO.searchWrd}'/>&amp;searchCnd=<c:out value='${leaderSttusVO.searchCnd}'/>&amp;pageIndex=<c:out value='${leaderSttusVO.pageIndex}'/>" onclick="fn_egov_list_leadersttus(); return false;"><spring:message code="button.list" /></a></span></td>
+      <td><span class="button"><a href="javascript:void(0);" onclick="fn_egov_list_leadersttus(); return false;"><spring:message code="button.list" /></a></span></td>
 	</tr>
 	</table>
 	</div>

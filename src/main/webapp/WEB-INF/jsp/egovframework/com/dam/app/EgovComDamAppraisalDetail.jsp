@@ -14,7 +14,7 @@
   *  @version 1.0
   *  @see
   *  
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -65,7 +65,8 @@
 	<div class="wTableFrm">
 		<!-- 타이틀 -->
 		<h2><spring:message code="comDamApp.comDamAppraisalDetail.pageTop.title"/></h2><!-- 지식평가 상세조회 -->
-		<form name="Form" action="<c:url value='/dam/per/EgovComDamPersonalModify.do'/>" method="post">
+		<form name="Form" action="${pageContext.request.contextPath}/dam/per/EgovComDamPersonalModify.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="knoId" type="hidden">
 	
 		<!-- 등록폼 -->

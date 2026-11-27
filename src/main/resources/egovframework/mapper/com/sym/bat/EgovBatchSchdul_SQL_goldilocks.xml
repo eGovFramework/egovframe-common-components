@@ -139,6 +139,18 @@
         
     </select>
 
+    <select id="selectBatchSchdulDfkListByIds" parameterType="java.util.List" resultMap="batchSchdulDfkResult">
+            SELECT  A.BATCH_SCHDUL_ID, A.EXECUT_SCHDUL_DFK_SE, B.CODE_NM EXECUT_SCHDUL_DFK_SE_NM
+            FROM COMTNBATCHSCHDULDFK A, COMTCCMMNDETAILCODE B
+            WHERE A.BATCH_SCHDUL_ID IN
+            <foreach collection="list" item="batchSchdulId" open="(" separator="," close=")">
+                #{batchSchdulId}
+            </foreach>
+              AND A.EXECUT_SCHDUL_DFK_SE = B.CODE
+              AND B.CODE_ID = 'COM074'
+            ORDER BY A.BATCH_SCHDUL_ID, A.EXECUT_SCHDUL_DFK_SE
+    </select>
+
     <insert id="insertBatchSchdulDfk" parameterType="egovframework.com.sym.bat.service.BatchSchdulDfk">
         
             INSERT INTO COMTNBATCHSCHDULDFK (

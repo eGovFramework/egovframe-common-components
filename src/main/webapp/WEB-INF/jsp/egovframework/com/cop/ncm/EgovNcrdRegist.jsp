@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <% 
  /**
   * @Class Name : EgovNcrdRegist.jsp
@@ -31,8 +30,7 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/ccm/zip/EgovZipPopup.js' />" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="nameCard" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_regist_ncrdInf(){
 		if (!validateNameCard(document.nameCard)){
@@ -96,7 +94,7 @@
 		<tr>
 			<th><spring:message code="cop.ncrdNm" /> <span class="pilsu">*</span></th>
 			<td class="left" colspan="3">
-				<input id="ncrdNm" type="text" name="ncrdNm" value='<c:out value="${ncrdVO.ncrdNm}" />' maxlength="60" style="width:231px" />
+				<input id="ncrdNm" type="text" name="ncrdNm" value='<c:out value="${ncrdVO.ncrdNm}" />' maxlength="50" style="width:231px" />
 				<input type="hidden" name="ncrdTrgterId" value='<c:out value="${ncrdVO.ncrdTrgterId}" />' /><br />	      
 				<form:errors path="ncrdNm" />		
 			</td>
@@ -124,7 +122,7 @@
 		<tr>
 			<th><spring:message code="cop.emailAdres" />  <span class="pilsu">*</span></th>
 			<td class="left" colspan="3">
-				<input id="emailAdres" type="text" name="emailAdres" value="" maxlength="60" ><br />
+				<input id="emailAdres" type="text" name="emailAdres" value="" maxlength="50" ><br />
 	      		<form:errors path="emailAdres" />
 			</td>
 		</tr>
@@ -149,8 +147,8 @@
 					<option value="018">018</option>
 					<option value="019">019</option>
 				</select>  	   	    
-				<input id="middleMbtlNum" name="middleMbtlNum" type="text" value="" maxlength="5" style="width:50px" /> -
-				<input id="endMbtlNum" name="endMbtlNum" type="text" value="" maxlength="5" style="width:50px" />
+				<input id="middleMbtlNum" name="middleMbtlNum" type="text" value="" maxlength="4" style="width:50px" /> -
+				<input id="endMbtlNum" name="endMbtlNum" type="text" value="" maxlength="4" style="width:50px" />
 			</td>
 		</tr>
 		<tr>

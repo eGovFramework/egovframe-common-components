@@ -18,14 +18,14 @@
  */
 package egovframework.com.ext.msg.web;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import javax.servlet.http.HttpSession;
 
 /**
  * @Class Name : EgovWebSocketMessengerController.java
@@ -47,7 +47,7 @@ public class EgovWebSocketMessengerController {
 	 * @return view name
 	 */
 	@IncludedInfo(name="웹소켓 메신저", order = 3200, gid = 100)
-	@RequestMapping(value="/cop/msg/websocketMessengerView.do")
+	@RequestMapping(value = "/cop/msg/websocketMessengerView.do")
 	public String websocketMessengerView(HttpSession session, ModelMap model) {
 		model.addAttribute("loginVO", session.getAttribute("loginVO"));
 		return "egovframework/com/ext/msg/EgovMessenger";
@@ -59,7 +59,8 @@ public class EgovWebSocketMessengerController {
 	 * @param model 모델
 	 * @return view name
 	 */
-	@RequestMapping(value="/cop/msg/websocketMessengerMain.do")
+	@RequestMapping(value = "/cop/msg/websocketMessengerMain.do")
+	@RequireAdmin
 	public String websocketMessengerMain(HttpSession session, ModelMap model) {
 		model.addAttribute("loginVO", session.getAttribute("loginVO"));
 		return "egovframework/com/ext/msg/EgovMessengerMain";
@@ -73,9 +74,10 @@ public class EgovWebSocketMessengerController {
 	 * @param model 모델
 	 * @return view name
 	 */
-	@RequestMapping(value="/cop/msg/websocketMessengePopup.do")
-	public String websocketMessengePopup(@RequestParam(value="roomId") String roomId,
-										 @RequestParam(value="username") String username,
+	@RequestMapping(value = "/cop/msg/websocketMessengePopup.do")
+	@RequireAdmin
+	public String websocketMessengePopup(@RequestParam(value = "roomId") String roomId,
+										 @RequestParam(value = "username") String username,
 										 HttpSession session, ModelMap model) {
 		model.addAttribute("loginVO", session.getAttribute("loginVO"));
 		model.addAttribute("roomId", roomId);

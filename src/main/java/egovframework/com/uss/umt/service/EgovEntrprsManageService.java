@@ -64,7 +64,7 @@ public interface EgovEntrprsManageService {
 	 * @param entrprsManageVO 기업회원수정정보(비밀번호)
 	 * @throws Exception
 	 */
-	public void updatePassword(EntrprsManageVO entrprsManageVO) throws Exception;
+	public void updatePassword(EntrprsPasswordManageVO entrprsPasswordManageVO) throws Exception;
 
 	/**
 	 * 기업회원이 비밀번호를 기억하지 못할 때 비밀번호를 찾을 수 있도록 함
@@ -72,7 +72,7 @@ public interface EgovEntrprsManageService {
 	 * @return entrprsManageVO 기업회원암호정보
 	 * @throws Exception
 	 */
-	public EntrprsManageVO selectPassword(EntrprsManageVO passVO) throws Exception;
+	public EntrprsPasswordManageVO selectPassword(EntrprsPasswordManageVO passVO) throws Exception;
 
 	/**
 	 * 기 등록된기업 회원 중 검색조건에 맞는 회원들의 정보를 데이터베이스에서 읽어와 화면에 출력

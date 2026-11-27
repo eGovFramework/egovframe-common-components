@@ -45,7 +45,8 @@ var path = "http://" + "${pageContext.request.serverName}" + ":" + "${pageContex
     <td width="250" class="title_left" >
         <div style="width:0px; height:0px;">
 		<c:forEach var="result" items="${list_menulist}" varStatus="status" >
-		<input type="hidden" name="tmp_menuNm" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.relateImagePath}|${result.relateImageNm}|${pageContext.request.contextPath}${result.chkURL}|"/>
+		<%-- 2026.07.30 보안 조치 - 속성값 이스케이프(HTML 속성 breakout 저장형 XSS 차단) --%>
+		<input type="hidden" name="tmp_menuNm" value="<c:out value='${result.menuNo}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.relateImagePath}'/>|<c:out value='${result.relateImageNm}'/>|<c:out value='${pageContext.request.contextPath}${result.chkURL}'/>|"/>
 		</c:forEach>
 		</div>
 		<div class="tree" style="overflow: auto; position: relative; z-index: 5; padding: 0pt 0pt 0pt 0px; width: 300px;">

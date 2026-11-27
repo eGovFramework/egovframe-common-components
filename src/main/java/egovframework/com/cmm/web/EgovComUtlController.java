@@ -5,8 +5,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovWebUtil;
+import javax.annotation.Resource;
 
 /**
  * @Class Name : EgovComUtlController.java
@@ -44,10 +43,11 @@ public class EgovComUtlController {
     //@Resource(name = "egovUserManageService")
     //private EgovUserManageService egovUserManageService;
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovComUtlController.class);
-	
+	private static final String ERROR_VIEW = "egovframework/com/cmm/error/egovError";
+
 	/** 암호화서비스 */
 	private static EgovEnvCryptoService cryptoService;
-	
+
 
 	@Resource(name = "egovPageLinkWhitelist")
     protected List<String> egovWhitelist;
@@ -61,42 +61,46 @@ public class EgovComUtlController {
 		this.cryptoService = cryptoService;
 	}
 
-   
+
     /**
 	 * JSP 호출작업만 처리하는 공통 함수
 	 */
-	@RequestMapping(value="/EgovPageLink.do")
-	public String moveToPage(@RequestParam(value="linkIndex",required=true,defaultValue="0") Integer linkIndex){
+	@RequestMapping(value = "/EgovPageLink.do")
+	public String moveToPage(@RequestParam(value = "linkIndex",required=true,defaultValue="0") Integer linkIndex){
 
 		String link = "";
 		// 화이트 리스트가 비었는지 확인
-		if (egovWhitelist == null || egovWhitelist.isEmpty() || egovWhitelist.size() <= linkIndex) {
-			link="egovframework/com/cmm/egovError";
+		if (egovWhitelist == null || egovWhitelist.isEmpty()) {
+			link=ERROR_VIEW;
+			return link;
+		}
+
+		if (linkIndex == null || linkIndex < 0 || egovWhitelist.size() <= linkIndex) {
+			link=ERROR_VIEW;
 			return link;
 		}
 
 		link = egovWhitelist.get(linkIndex);
-		
+
 		link = link.replace(";", "");
 		link = link.replace("%", "");
 		link = link.replace(".", "");
 
 		// 안전한 경로 문자열로 조치
 		link = EgovWebUtil.filePathBlackList(link);
-		
+
 		return link;
 	}
-	
+
     /**
 	 * 모달조회
 	 * @return String
-	 * @exception Exception
 	 */
-    @RequestMapping(value="/EgovModal.do")
-    public String selectUtlJsonInquire()  throws Exception {
+    @RequestMapping(value = "/EgovModal.do")
+    public String selectUtlJsonInquire() {
         return "egovframework/com/cmm/EgovModal";
     }
-    
+
     /**
 	 * validato rule dynamic Javascript
 	 */
@@ -105,7 +109,7 @@ public class EgovComUtlController {
 		return "egovframework/com/cmm/validator";
 	}
 
-	
+
 	/**
 	 * 암호화 문자열을 복호화 하는 메서드.
 	 * @param source 암호화 문자열
@@ -114,15 +118,17 @@ public class EgovComUtlController {
 	public static String decryptId(String base64CipherId) {
 		String returnVal = "CIPHER_ID_DECRIPT_EXCEPTION_02";
 		if (base64CipherId!=null && !"".equals(base64CipherId)) {
+			//2026.02.28 KISA 취약점 조치
 			try {
+				// EgovEnvCryptoServiceImpl.decrypt()에서 IllegalArgumentException은 내부 처리
 				returnVal = cryptoService.decrypt(base64CipherId);
-			} catch (Exception e) {
-				LOGGER.debug(e.getMessage());
+			} catch (RuntimeException e) {
+					LOGGER.debug("decryptId failed: {}", e.getMessage());
 			}
 		}
 		return returnVal;
 	}
-	
+
 	/**
 	 * 원본 문자열을 암호화 하는 메서드.
 	 * @param source 원본 문자열

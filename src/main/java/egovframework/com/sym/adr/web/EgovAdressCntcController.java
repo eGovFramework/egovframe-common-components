@@ -5,15 +5,15 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 도로명 주소 연계를 위한 Controller
@@ -42,17 +42,26 @@ public class EgovAdressCntcController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/adr/getAdressCntcApi.do")
+	@RequireAdmin
 	public void getAddrApi(HttpServletRequest req, ModelMap model, HttpServletResponse response) throws Exception {
 
 		String currentPage = req.getParameter("currentPage");
 		String countPerPage = req.getParameter("countPerPage");
 		String confmKey = req.getParameter("confmKey");
 		String keyword = req.getParameter("keyword");
+		
+		// currentPage/countPerPage는 숫자만 허용한다. 비정상값 차단 및 쿼리 파라미터 인젝션 방어.
+		if (currentPage == null || !currentPage.matches("\\d+") || countPerPage == null || !countPerPage.matches("\\d+")) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
 		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=" + currentPage + "&countPerPage="
-			+ countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey=" + confmKey;
+			+ countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey="
+			+ URLEncoder.encode(confmKey, "UTF-8");
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));) {//2022.01 Resources should be closed
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String tempStr = null;
 			while (true) {
 				tempStr = br.readLine();
@@ -76,18 +85,26 @@ public class EgovAdressCntcController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/adr/getAdressCntcTestApi.do")
+	@RequireAdmin
 	public void getAddrApiTest(HttpServletRequest req, ModelMap model, HttpServletResponse response) throws Exception {
 
 		String currentPage = req.getParameter("currentPage");
 		String countPerPage = req.getParameter("countPerPage");
 		String confmKey = req.getParameter("confmKey");
 		String keyword = req.getParameter("keyword");
+		
+		// currentPage/countPerPage는 숫자만 허용한다. 비정상값 차단 및 쿼리 파라미터 인젝션 방어.
+		if (currentPage == null || !currentPage.matches("\\d+") || countPerPage == null || !countPerPage.matches("\\d+")) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
 		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApiTest.do?currentPage=" + currentPage
 			+ "&countPerPage=" + countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey="
 			+ URLEncoder.encode(confmKey, "UTF-8");
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));){//2022.01 Resources should be closed
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String tempStr = null;
 			while (true) {
 				tempStr = br.readLine();

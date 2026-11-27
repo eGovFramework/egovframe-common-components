@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="sym.cal.modify.title"/></c:set>
 <html lang="ko">
 <head>
@@ -33,8 +32,7 @@
 <title>${pageTitle}</title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="restde" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -102,6 +100,7 @@ function fn_egov_regist_Restde(form){
 			    <form:select path="restdeSeCode" title="<spring:message code='sym.cal.restCategory' />">
 				<form:options items="${restdeCode}" itemValue="code" itemLabel="codeNm"/>
 				</form:select>
+				<form:errors path="restdeSeCode"/>
 			</td>
 		</tr>
 	</table>

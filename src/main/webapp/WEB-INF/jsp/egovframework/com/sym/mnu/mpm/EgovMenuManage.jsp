@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovMenuManage.jsp
@@ -102,7 +103,6 @@ function fDeleteMenuList() {
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
-//	document.menuManageForm.searchKeyword.value =
 	document.menuManageForm.pageIndex.value = pageNo;
 	document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>";
    	document.menuManageForm.submit();
@@ -128,11 +128,6 @@ function insertMenuManage() {
 /* ********************************************************
  * 일괄처리 화면호출 함수
  ******************************************************** */
-/* function bndeInsertMenuManage() {
-	   	document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuRegistInsert.do'/>";
-	   	document.menuManageForm.submit();
-	}
- */
 function bndeInsertMenuManage() {
    	document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuBndeRegist.do'/>";
    	document.menuManageForm.submit();
@@ -161,7 +156,7 @@ function fMenuManageSelect(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="menuManageForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" method="post">
+<form:form name="menuManageForm" modelAttribute="searchVO" action ="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" method="post">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input name="checkedMenuNoForDel" type="hidden" />
 <input name="req_menuNo" type="hidden"  />
@@ -176,8 +171,8 @@ function fMenuManageSelect(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword }" size="25" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="selectMenuManageList(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/mnu/mpm/EgovMenuRegistInsert.do'/>" onclick="bndeInsertMenuManage(); return false;" title="<spring:message code="button.bulkUpload" />"><spring:message code="button.bulkUpload" /></a></span><!-- 일괄등록 -->
-				<span class="btn_b"><a href="<c:url value='/sym/mnu/mpm/EgovMenuRegistInsert.do'/>" onclick="insertMenuManage(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="bndeInsertMenuManage(); return false;" title="<spring:message code="button.bulkUpload" />"><spring:message code="button.bulkUpload" /></a></span><!-- 일괄등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="insertMenuManage(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 				<span class="btn_b"><a href="#" onclick="fDeleteMenuList(); return false;" title='<spring:message code="button.delete" />'><spring:message code="button.delete" /></a></span><!-- 삭제 -->
 			</li>
 		</ul>
@@ -212,7 +207,7 @@ function fMenuManageSelect(){
 			    </td>
 			    <td><c:out value="${result.menuNo}"/></td>
 			    <td style="cursor:hand;">
-			       <span class="link"><a href="<c:url value='/sym/mnu/mpm/EgovMenuManageListDetailSelect.do?req_menuNo='/>${result.menuNo}" onclick="selectUpdtMenuManageDetail('<c:out value="${result.menuNo}"/>'); return false;"><c:out value="${result.menuNm}"/></a></span>
+			       <span class="link"><a href="javascript:void(0);" onclick="selectUpdtMenuManageDetail('<c:out value="${result.menuNo}"/>'); return false;"><c:out value="${result.menuNm}"/></a></span>
 			    </td>
 			    <td><c:out value="${result.progrmFileNm}"/></td>
 			    <td><c:out value="${result.menuDc}"/></td>
@@ -229,7 +224,7 @@ function fMenuManageSelect(){
 		</ul>
 	</div>
 </div>
-</form>
+</form:form>
 </body>
 </html>
 

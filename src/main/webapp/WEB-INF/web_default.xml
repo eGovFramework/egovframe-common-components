@@ -2,6 +2,7 @@
 <web-app id="WebApp_ID" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
 <!--
     수정일          수성자                          수정내용
    ==========      ========      =================================================
@@ -25,8 +26,18 @@
     </session-config>
 
     <error-page>
+      <error-code>400</error-code>
+      <location>/code400.jsp</location>
+    </error-page>
+
+    <error-page>
       <error-code>404</error-code>
       <location>/code404.jsp</location>
+    </error-page>
+
+    <error-page>
+      <error-code>405</error-code>
+      <location>/code405.jsp</location>
     </error-page>
     
     <error-page>

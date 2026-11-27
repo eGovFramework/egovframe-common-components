@@ -22,10 +22,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtSdm.popup.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} </title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -43,22 +45,19 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_DeptSchdulManage(){
-	location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageRegist.do' />";
+	fn_egov_postNavigate("<c:url value='/cop/smt/sdm/EgovDeptSchdulManageRegist.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_DeptSchdulManage(){
-	location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/cop/smt/sdm/EgovDeptSchdulManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_DeptSchdulManage(schdulId){
-	var vFrom = document.listForm;
-	vFrom.schdulId.value = schdulId;
-	vFrom.action = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />";
-	vFrom.submit();
+	location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId);
 }
 
 /* ********************************************************
@@ -101,7 +100,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="StplatListForm" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageListPopup.do'/>" method="post"> 
+<form:form name="StplatListForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageListPopup.do" method="post"> 
 <div class="board">
 	<h1>${pageTitle}</h1>
 	<!-- 검색영역 -->
@@ -149,8 +148,8 @@ function fn_egov_open_Popup(cnt, schdulId){
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td>
-		 <c:if test="${resultInfo.schdulKindCode == '1'}"><spring:message code="comCopSmtSdm.popupList.diaryPersonal" /></c:if><!-- 개인일정 -->
-		 <c:if test="${resultInfo.schdulKindCode == '2'}"><spring:message code="comCopSmtSdm.popupList.diaryDept" /></c:if>    <!-- 부서일정 -->
+		 <c:if test="${resultInfo.schdulKindCode == '1'}"><spring:message code="comCopSmtSdm.popupList.diaryDept" /></c:if><!-- 부서일정 -->
+		 <c:if test="${resultInfo.schdulKindCode == '2'}"><spring:message code="comCopSmtSdm.popupList.diaryPersonal" /></c:if><!-- 개인일정 -->
 		</td>
 		<td>${resultInfo.schdulNm}</td>
 		<td><button class="btn_s2" onClick="fn_egov_open_Popup('${status.count}', '${resultInfo.schdulId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>
@@ -169,7 +168,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 
 <input name="schdulId" id="schdulId" type="hidden" value="">
 <input name="pageIndex" id="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>
+</form:form>
 
 
 </body>

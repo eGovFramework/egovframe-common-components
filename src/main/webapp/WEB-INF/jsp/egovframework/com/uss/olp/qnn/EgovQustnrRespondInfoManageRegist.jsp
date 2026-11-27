@@ -20,7 +20,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQnn.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -28,10 +27,8 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value='/validator.do'/>"></script>
-<validator:javascript formName="qustnrRespondInfoManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js'/>" ></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
@@ -49,44 +46,12 @@ function fn_egov_list_QustnrRespondInfo(){
  ******************************************************** */
 function fn_egov_save_QustnrRespondInfo(){
 
-	
-	//var varFrom = document.getElementsByName("qustnrRespondInfoManage");
 	var varFrom = document.getElementById("qustnrRespondInfoManage");
-	
-	//설문응답자  Validtation
-
-	/* if(document.getElementsByName("sexdstnCode").selectedIndex == 0){
-		alert('<spring:message code="comUssOlpQnn.alert.sexdstnCode"/>'); //설문응답자정보 성별을  택해주세요!
-		varFrom.getElementsByName("sexdstnCode").focus();
-		return;
-	}else if(document.getElementsByName("occpTyCode").selectedIndex == 0){
-		alert('<spring:message code="comUssOlpQnn.alert.occpTyCode"/>'); //설문응답자정보 직업을 선택해주세요!
-		varFrom.getElementsByName("occpTyCode").focus();
-		return;
-	}else if(document.getElementsByName("respondNm").value == ""){
-		alert('<spring:message code="comUssOlpQnn.alert.respondNm"/>'); //설문응답자정보 응답자명을 입력해주세요!
-		varFrom.getElementsByName("respondNm").focus();
-		return;
-	} */
-	
-	/* if(document.getElementsByName("sexdstnCode").selectedIndex == 0){
-		alert('<spring:message code="comUssOlpQnn.alert.sexdstnCode"/>'); //설문응답자정보 성별을  택해주세요!
-		document.getElementsByName("sexdstnCode").focus();
-		return;
-	}else if(document.getElementsByName("occpTyCode").selectedIndex == 0){
-		alert('<spring:message code="comUssOlpQnn.alert.occpTyCode"/>'); //설문응답자정보 직업을 선택해주세요!
-		document.getElementsByName("occpTyCode").focus();
-		return;
-	}else if(document.getElementsByName("respondNm").value == ""){
-		alert('<spring:message code="comUssOlpQnn.alert.respondNm"/>'); //설문응답자정보 응답자명을 입력해주세요!
-		document.getElementsByName("respondNm").focus();
-		return;
-	}  */
 
 	if(!validateQustnrRespondInfoManage(varFrom)){
 		return;
 	}
-	
+
 	//설문정보 Validtation
 	<c:forEach items="${Comtnqustnrqesitm}" var="QestmInfo" varStatus="status1">
 	<c:if test="${QestmInfo.qestnTyCode ==  '1'}">
@@ -117,7 +82,6 @@ function fn_egov_save_QustnrRespondInfo(){
 
 	<c:if test="${QestmInfo.qestnTyCode ==  '2'}">
 	if( document.getElementById("${QestmInfo.qestnrQesitmId}").value == "" ){
-		//alert('${status1.count}. ${QestmInfo.qestnCn}       \n\n설문문항을 작성해 주세요!');
 		alert('${status1.count}'+'<spring:message code="comUssOlpQnn.alert.qestnIem"/>'); //${status1.count}번 설문문항을 작성해 주세요!
 		document.getElementById("${QestmInfo.qestnrQesitmId}").focus();
 		return;
@@ -127,8 +91,6 @@ function fn_egov_save_QustnrRespondInfo(){
 
 	
 	if(confirm("<spring:message code='common.save.msg'/>")){
-		//varFrom.brth.value = fn_egov_SelectBoxValue('brthYYYY') + "" + fn_egov_SelectBoxValue('brthMM') + "" + fn_egov_SelectBoxValue('brthDD');
-		//varFrom.action =  "${pageContext.request.contextPath}/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do";
 		varFrom.action =  "<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do'/>";
 		varFrom.submit();
 		
@@ -140,7 +102,6 @@ function fn_egov_save_QustnrRespondInfo(){
 //라디오박스 : 몇개선택했는데 체크해주는함수
 ************************************************************************/
 function fn_egov_checkbox_amout_max( sbName){
-	debugger;
 	var FLength= document.getElementsByName(sbName).length;
 
 	var reuslt = false;
@@ -159,7 +120,6 @@ function fn_egov_checkbox_amout_max( sbName){
 //라디오박스 : 최대선택건수 체크
 ************************************************************************/
 function fn_egov_checkbox_amout( sbName, sbCount, sbObj){
-debugger;
 	var FLength= document.getElementsByName(sbName).length;
 
 	var reuslt = false;
@@ -233,7 +193,6 @@ function fn_egov_RadioBoxValue(sbName)
 
 </head>
 <body onLoad="fn_egov_init_QustnrRespondInfo();">
-
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
@@ -264,8 +223,6 @@ function fn_egov_RadioBoxValue(sbName)
 					<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
 					<c:forEach items="${comCode014}" var="comCodeList" varStatus="status">
 					<option value="${comCodeList.code}" >${comCodeList.codeNm}</option>
-					<!-- 선택 대신 '여자'가 select되어 있도록 할 때  -->
-					<%-- <option value="${comCodeList.code}" <c:if test="${comCodeList.code eq Emplyrinfo.sexdstnCode}">selected</c:if>>${comCodeList.codeNm}</option> --%>
 					</c:forEach>
 				</select>
 			</td>
@@ -310,7 +267,7 @@ function fn_egov_RadioBoxValue(sbName)
 		<tr>
 			<th>${title}<span class="pilsu"></span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrSj}"/></span>
 			</td>
 		</tr>
 		<!-- 설문목적 -->
@@ -318,7 +275,7 @@ function fn_egov_RadioBoxValue(sbName)
 		<tr>
 			<th>${title}<span class="pilsu"></span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrPurps , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrPurps}"/></span>
 			</td>
 		</tr>
 		<!-- 설문작성 안내내용 -->
@@ -326,7 +283,7 @@ function fn_egov_RadioBoxValue(sbName)
 		<tr>
 			<th>${title}<span class="pilsu"></span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrWritngGuidanceCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrWritngGuidanceCn}"/></span>
 			</td>
 		</tr>
 		<!-- 설문대상, 설문기간 -->
@@ -362,7 +319,6 @@ function fn_egov_RadioBoxValue(sbName)
 	<div class="btn">
 		<!-- 등록버튼 -->
 		<input type="submit" class="s_submit" value="<spring:message code='button.create' />" title="<spring:message code='button.create' /> <spring:message code='input.button' />"  onclick="fn_egov_save_QustnrRespondInfo(document.forms[0]); return false;"/>
-		<%-- <span class="button"><input type="submit" value="<spring:message code='input.button' />" onclick="fn_egov_save_QustnrRespondInfo(document.forms[0]); return false;"></span> --%>
 		<!-- 목록버튼 -->
 		<span class="btn_s"><a href="<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageList.do' />"  title="<spring:message code='button.list' />  <spring:message code='input.button' />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>

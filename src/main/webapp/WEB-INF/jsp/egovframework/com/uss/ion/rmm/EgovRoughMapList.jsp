@@ -24,6 +24,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" >
@@ -94,7 +95,7 @@
 	<span><spring:message code="comUssIonRmm.roughMapList.info"/></span><!-- 약도관리는 Kakao 지도 API 키를 발급받아야 합니다. -->
 	<span>(※ Guide Link : <a href="https://apis.map.kakao.com/web/guide/" target="_new"><spring:message code="comUssIonRmm.roughMapList.info2"/></a>)</span> <!-- Kakao 지도 API 가이드 -->
 
-	<form id="RoughMapForm" name="RoughMapForm" action="<c:url value='/com/uss/ion/rmm/selectRoughMapList.do'/>" method="post">
+	<form:form id="RoughMapForm" name="RoughMapForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/com/uss/ion/rmm/selectRoughMapList.do" method="post">
 
     	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
     		<ul>
@@ -107,13 +108,13 @@
     				<input class="s_input2 vat" id="searchKeyword" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="35" maxlength="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" /><!-- 검색어 입력 -->
     				
     				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fn_egov_search_roughmap(); return false;" />
-    				<span class="btn_b"><a href="<c:url value='/com/uss/ion/rmm/registRoughMap.do'/>" onclick="fn_egov_regist_roughmap(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+    				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_regist_roughmap(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
     			</li>
     		</ul>
     	</div>
 		<input id="roughMapId" name="roughMapId" type="hidden" value="" />
 		<input id="pageIndex" name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	
 
 	<table class="board_list">
 		<caption><spring:message code="comUssIonRmm.roughMapList.title" /></caption><!-- 약도목록 -->
@@ -144,13 +145,7 @@
 				<tr>
 					<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>	        
 					<td>
-						<form name="roughMap" method="post" action="<c:url value='/com/uss/ion/rmm/selectRoughMapDetail.do'/>">
-						<input id="roughMapId" name="roughMapId" type="hidden" value="${resultInfo.roughmapId}" />
-						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-						<span class="link">
-							<input type="submit"  value="<c:out value="${resultInfo.roughmapsj}"/>" onclick="fn_egov_inquire_roughmapdetail('<c:out value="${resultInfo.roughmapId}"/>'); return false;">
-						</span>
-			   			</form>
+						<a href="javascript:void(0);" onclick="fn_egov_inquire_roughmapdetail('<c:out value="${resultInfo.roughmapId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.roughmapsj}"/></span></a>
 					</td>		
 					<td><c:out value="${resultInfo.roughmapaddress}"/></td>		
 					<td><c:out value="${resultInfo.lastUpdtPnttm}"/></td>			
@@ -165,6 +160,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

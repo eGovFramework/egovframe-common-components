@@ -77,7 +77,6 @@ String sTodate = formatter.format(new java.util.Date());
 	* 주관 부서 팝업창열기
 	******************************************************** */
 	function fn_egov_regist_IndvdlSchdulManage(sDate){
-		//alert(sDate);
 
 		gOpener.schdulBgnde.value = sDate;
 		gOpener.schdulEndde.value = sDate;
@@ -91,9 +90,7 @@ String sTodate = formatter.format(new java.util.Date());
 	******************************************************** */
 	function fn_egov_detail_IndvdlSchdulManage(schdulId){
 
-		gOpener.schdulId.value = schdulId;
-		gOpener.action = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />";
-		gOpener.submit();
+		parent.location.href = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId);
 	}
 
 
@@ -129,7 +126,7 @@ String sTodate = formatter.format(new java.util.Date());
 	
 	function fnEgovSchdulTodate() {
 
-		location.href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageMonthList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.IndvdlSchdulManageVO.schdulSe.value;
+		location.href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageMonthList.do' />?year=<%=sTodate.substring(0, 4)%>&month=<%=Integer.valueOf(sTodate.substring(4, 6))-1%>&searchCondition=SCHDUL_SE&searchKeyword=" + document.IndvdlSchdulManageVO.schdulSe.value;
 
 	}
 	
@@ -196,6 +193,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY>
 <form name="IndvdlSchdulManageVO" id="IndvdlSchdulManageVO" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:712px;">
 
 <div class="sort_area">

@@ -3,6 +3,9 @@ package egovframework.com.uss.ion.evt.service;
 import java.io.Serializable;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 개요
  * - 행사참석자에 대한 Vo 클래스를 정의한다.
@@ -14,6 +17,8 @@ import java.util.List;
  * @created 06-15-2010 오후 2:08:56
  */
 
+@Getter
+@Setter
 public class EventAtdrnVO extends EventAtdrn implements Serializable {
 
 	/**
@@ -24,20 +29,5 @@ public class EventAtdrnVO extends EventAtdrn implements Serializable {
 	 * 배너 목록
 	 */
 	List<EventAtdrnVO> eventAtdrnList;
-
-	/**
-	 * @return the eventAtdrnList
-	 */
-	public List<EventAtdrnVO> getEventAtdrnList() {
-		return eventAtdrnList;
-	}
-	/**
-	 * @param eventManage the eventManage to set
-	 */
-	public void setEventAtdrnList(List<EventAtdrnVO> eventAtdrnList) {
-		this.eventAtdrnList = eventAtdrnList;
-	}
-
-
 
 }

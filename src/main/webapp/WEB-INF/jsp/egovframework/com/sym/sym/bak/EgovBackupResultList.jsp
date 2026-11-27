@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%
 /**
@@ -80,8 +81,6 @@ function fn_egov_init(){
 
     if (vForm.searchKeywordFrom.value == "") {
         // 조회일자에 현재날짜 세팅
-        //vForm.searchStartDate.value = fn_egov_getToday();
-        //vForm.searchEndDate.value = fn_egov_getToday();
         //vForm.searchEndHour.options[23].selected = true;
     } else {
         // 조회조건 지정된 것 설정하기.
@@ -195,7 +194,7 @@ function fn_egov_get_detail_view(backupResultId) {
 <div class="board">
 	<h1><spring:message code="comSymSymBak.backupResultList.pageTop.title"/></h1><!-- 백업결과 목록 -->
 
-	<form name="frm" id="frm" action="<c:url value='/sym/sym/bak/getBackupResultList.do'/>" method="post">
+	<form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/sym/sym/bak/getBackupResultList.do" method="post">
 	
 	<div class="search_box">
 		<ul>
@@ -228,7 +227,7 @@ function fn_egov_get_detail_view(backupResultId) {
     <input name="searchKeywordFrom" type="hidden" value="<c:out value='${searchVO.searchKeywordFrom}'/>">
     <input name="searchKeywordTo" type="hidden" value="<c:out value='${searchVO.searchKeywordTo}'/>">
     <input name="backupResultId" type="hidden" value="">
-    </form>
+    
 
 	<table class="board_list">
 		<caption><spring:message code="comSymSymBak.backupResultList.caption"/></caption><!-- 백업결과 목록 -->
@@ -255,13 +254,7 @@ function fn_egov_get_detail_view(backupResultId) {
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
 				<td>
-					<form name="item" method="post" action="<c:url value='/sym/sym/bak/getBackupResult.do'/>">
-						<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-						<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-						<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>">
-						<input type="hidden" name="backupResultId" value="<c:out value='${resultInfo.backupResultId}'/>">
-						<span class="link"><input type="submit" value="<c:out value='${resultInfo.backupResultId}'/>" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.backupResultId}"/>'); return false;"></span>
-					</form>
+					<a href="javascript:void(0);" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.backupResultId}"/>'); return false;"><span class="link"><c:out value='${resultInfo.backupResultId}'/></span></a>
 				</td>
 				<td>${resultInfo.backupOpertId}</td>
 				<td class="lt_text6">${resultInfo.backupOpertNm}</td>
@@ -294,6 +287,8 @@ function fn_egov_get_detail_view(backupResultId) {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_list"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

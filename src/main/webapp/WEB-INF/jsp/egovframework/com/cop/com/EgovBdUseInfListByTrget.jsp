@@ -5,6 +5,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovBdUseInfListByTrget.jsp
@@ -81,7 +82,7 @@
 
 </head>
 <body>
-<form name="frm" method="post" action="<c:url value='/cop/com/selectCmyBBSUseInfsByTrget.do'/>">
+<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/com/selectCmyBBSUseInfsByTrget.do">
 <input type="hidden" name="bbsId" />
 <input type="hidden" name="trgetId" value='<c:out value="${trgetId}"/>' />
 <input type="hidden" name="useAt" />
@@ -183,6 +184,6 @@
 	</div>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 </div>
-</form>
+</form:form>
 </body>
 </html>

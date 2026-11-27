@@ -3,29 +3,31 @@ package egovframework.com.uss.ion.nts.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.resolver.EgovSecurityMap;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+
 /**
  * 보낸쪽지함관리를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -41,12 +43,8 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  * </pre>
  */
-
 @Controller
 public class EgovNoteTrnsmitController {
-
-//    @Autowired
-//    private DefaultBeanValidator beanValidator;
 
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
@@ -83,9 +81,9 @@ public class EgovNoteTrnsmitController {
     	//변수 설정
     	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-    	
+
     	LOGGER.info("userMap>"+commandMap);
-    	
+
 		//Spring Security 사용자권한 처리
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
@@ -98,32 +96,46 @@ public class EgovNoteTrnsmitController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
-	        
+// 진입점은 개방, 삭제는 관리자 전용 유지
+EgovAuthorizationHelper.assertAdmin();
+
         	LOGGER.debug("##### EgovNoteTrnsmitController EgovNoteTrnsmitList()  start");
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
         	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
-        	
+
         	String[] aNoteId = ((String) commandMap.get("noteIdAll")).split(",");
             String[] aNoteTrnsmitId = ((String)commandMap.get("noteTrnsmitIdAll")).split(",");
-        	
+
+            // 일괄 삭제: 모든 건의 발신자 본인 여부를 먼저 확인한 뒤 삭제한다.
+            for(int i=0; i < aNoteId.length; i++) {
+            	securitymap.put("noteId", aNoteId[i]);
+	            securitymap.put("noteTrnsmitId", aNoteTrnsmitId[i]);
+	            NoteTrnsmit ownerCheck = new NoteTrnsmit();
+	            ownerCheck.setNoteId(securitymap.get("noteId"));
+	            ownerCheck.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
+	            ownerCheck.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	            Map<?, ?> stored = egovNoteTrnsmitService.selectNoteTrnsmitDetail(ownerCheck);
+	            EgovAuthorizationHelper.assertOwner(stored == null ? null : (String) stored.get("trnsmiterId"));
+            }
+
             for(int i=0; i < aNoteId.length; i++) {
             	String sNoteId = aNoteId[i];
             	String sNoteTrnsmitId = aNoteTrnsmitId[i];
-            	
+
             	securitymap.put("noteId", sNoteId);
 	            securitymap.put("noteTrnsmitId", sNoteTrnsmitId);
-            	
+
 	            LOGGER.debug("sArrCheckListValue[0] > {}", securitymap.get("noteId"));
 	            LOGGER.debug("sArrCheckListValue[1] > {}", securitymap.get("noteTrnsmitId"));
-	            
+
 	            noteTrnsmit.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteTrnsmit.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteTrnsmit.setNoteId(securitymap.get("noteId"));
 	            noteTrnsmit.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
 	            noteTrnsmit.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-	            
+
 	            egovNoteTrnsmitService.deleteNoteTrnsmit(noteTrnsmit);
-            	
+
             }
 
 	        //삭제후 페이지 인덱스 설정
@@ -169,7 +181,8 @@ public class EgovNoteTrnsmitController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/nts/detailNoteTrnsmit.do")
+    @PostMapping("/uss/ion/nts/detailNoteTrnsmit.do")
+    @RequireAdmin
     public String EgovNoteTrnsmitDetail(
     		@ModelAttribute("searchVO") NoteTrnsmit searchVO,
     		EgovSecurityMap securityMap,
@@ -188,7 +201,7 @@ public class EgovNoteTrnsmitController {
 
             //로그인 객체 선언
             LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-            
+
             securityMap.put("noteId",searchVO.getNoteId());
             securityMap.put("noteTrnsmitId", searchVO.getNoteTrnsmitId());
 
@@ -201,13 +214,15 @@ public class EgovNoteTrnsmitController {
             	sLocationUrl = "redirect:/uss/ion/nts/listNoteTrnsmit.do";
             }else{
             	searchVO.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-            	
+
             	Map<?, ?> noteTrnsmitMap = egovNoteTrnsmitService.selectNoteTrnsmitDetail(searchVO);
+            	// 보낸 쪽지는 발신자 본인만 본다(조회 조건도 발신자를 로그인 사용자로 고정한다)
+            	EgovAuthorizationHelper.assertOwner(noteTrnsmitMap == null ? null : (String) noteTrnsmitMap.get("trnsmiterId"));
             	model.addAttribute("noteTrnsmit", noteTrnsmitMap);
 
             	egovframework.com.uss.ion.nts.service.NoteTrnsmit noteTrnsmit = new egovframework.com.uss.ion.nts.service.NoteTrnsmit();
             	noteTrnsmit.setNoteId(searchVO.getNoteId());
-            	
+
                 List<EgovMap> resultRecptnEmp = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
             	model.addAttribute("resultRecptnEmp", resultRecptnEmp);
             }
@@ -224,15 +239,41 @@ public class EgovNoteTrnsmitController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/ion/nts/selectNoteTrnsmitCnfirm.do")
+    @RequireAdmin
     public String EgovNoteTrnsmitCnfirm(
     		NoteTrnsmit noteTrnsmit,
     		@RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
+
+    		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    		if (loginVO == null || loginVO.getUniqId() == null) {
+    			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+    		}
+    		noteTrnsmit.setTrnsmiterId(EgovStringUtil.isNullToString(loginVO.getUniqId()));
+    		Map<?, ?> noteTrnsmitMap = egovNoteTrnsmitService.selectNoteTrnsmitDetail(noteTrnsmit);
+    		if (noteTrnsmitMap == null || noteTrnsmitMap.isEmpty()) {
+    			throw new EgovAccessDeniedException("권한이 없습니다.");
+    		}
+    		Object trnsmiterId = noteTrnsmitMap.get("trnsmiterId");
+    		if (trnsmiterId == null) {
+    			trnsmiterId = noteTrnsmitMap.get("TRNSMITER_ID");
+    		}
+    		// 2026.07.13 KISA 보안취약점 조치
+    		if (!loginVO.getUniqId().equals(String.valueOf(trnsmiterId))) {
+    			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    				throw new EgovAccessDeniedException("권한이 없습니다.");
+    			}
+    		}
 
             List<EgovMap> resultList = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
         	model.addAttribute("resultList", resultList);
 
     		return "egovframework/com/uss/ion/nts/EgovNoteTrnsmitCnfirm";
     }
+
 
 }

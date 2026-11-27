@@ -2,30 +2,32 @@ package egovframework.com.sym.bat.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.bat.service.BatchOpert;
 import egovframework.com.sym.bat.service.EgovBatchOpertService;
 import egovframework.com.sym.bat.validation.BatchOpertValidator;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 배치작업관리에 대한 controller 클래스를 정의한다.
@@ -58,13 +60,9 @@ public class EgovBatchOpertController {
 	@Resource(name = "propertiesService")
 	private EgovPropertyService propertyService;
 
-	/* 메세지 서비스 */
+	/* 메시지 서비스 */
 	@Resource(name = "egovMessageSource")
 	private EgovMessageSource egovMessageSource;
-
-	/* common validator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/* batchOpert bean validator */
 	@Resource(name = "batchOpertValidator")
@@ -81,17 +79,19 @@ public class EgovBatchOpertController {
 	 * 배치작업을 삭제한다.
 	 * @return 리턴URL
 	 *
-	 * @param batchOpert 삭제대상 배치작업model
-	 * @param model		ModelMap
+	 * @param batchOpert 삭제대상 배치작업 model
+	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/deleteBatchOpert.do")
-	public String deleteBatchOpert(BatchOpert batchOpert, ModelMap model) throws Exception {
+	@PostMapping("/sym/bat/deleteBatchOpert.do")
+	@RequireAdmin
+	public String deleteBatchOpert(BatchOpert batchOpert, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
 
 		egovBatchOpertService.deleteBatchOpert(batchOpert);
 
@@ -105,21 +105,25 @@ public class EgovBatchOpertController {
 	 * @param batchOpert 등록대상 배치작업model
 	 * @param bindingResult	BindingResult
 	 * @param model			ModelMap
+	 * @param RedirectAttributes redirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/addBatchOpert.do")
-	public String insertBatchOpert(BatchOpert batchOpert, BindingResult bindingResult, ModelMap model) throws Exception {
+	@PostMapping("/sym/bat/addBatchOpert.do")
+	@RequireAdmin
+	public String insertBatchOpert(@ModelAttribute("searchVO") BatchOpert searchVO,
+			@Valid @ModelAttribute("batchOpert") BatchOpert batchOpert, BindingResult bindingResult,
+			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+		
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		beanValidator.validate(batchOpert, bindingResult);
 		batchOpertValidator.validate(batchOpert, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sym/bat/EgovBatchOpertRegist";
@@ -145,6 +149,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchOpert.do")
+	@RequireAdmin
 	public String selectBatchOpert(@ModelAttribute("searchVO") BatchOpert batchOpert, ModelMap model) throws Exception {
 		LOGGER.debug(" 조회조건 : {}", batchOpert);
 		BatchOpert result = egovBatchOpertService.selectBatchOpert(batchOpert);
@@ -162,7 +167,8 @@ public class EgovBatchOpertController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/getBatchOpertForRegist.do")
+	@PostMapping("/sym/bat/getBatchOpertForRegist.do")
+	@RequireAdmin
 	public String selectBatchOpertForRegist(@ModelAttribute("searchVO") BatchOpert batchOpert, ModelMap model) throws Exception {
 		model.addAttribute("batchOpert", batchOpert);
 
@@ -177,7 +183,8 @@ public class EgovBatchOpertController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/getBatchOpertForUpdate.do")
+	@PostMapping("/sym/bat/getBatchOpertForUpdate.do")
+	@RequireAdmin
 	public String selectBatchOpertForUpdate(@ModelAttribute("searchVO") BatchOpert batchOpert, ModelMap model) throws Exception {
 		LOGGER.debug(" 조회조건 : {}", batchOpert);
 		BatchOpert result = egovBatchOpertService.selectBatchOpert(batchOpert);
@@ -237,23 +244,27 @@ public class EgovBatchOpertController {
 	 * @param batchOpert 수정대상 배치작업model
 	 * @param bindingResult		BindingResult
 	 * @param model				ModelMap
+	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/updateBatchOpert.do")
-	public String updateBatchOpert(BatchOpert batchOpert, BindingResult bindingResult, ModelMap model) throws Exception {
+	@PostMapping("/sym/bat/updateBatchOpert.do")
+	@RequireAdmin
+	public String updateBatchOpert(@ModelAttribute("searchVO") BatchOpert searchVO,
+			@Valid @ModelAttribute("batchOpert") BatchOpert batchOpert, BindingResult bindingResult,
+			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+		
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		beanValidator.validate(batchOpert, bindingResult);
+
 		batchOpertValidator.validate(batchOpert, bindingResult);
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("batchOpert", batchOpert);
 			return "egovframework/com/sym/bat/EgovBatchOpertUpdt";
 		}
 
@@ -274,6 +285,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchOpertListPopup.do")
+	@RequireAdmin
 	public String openPopupWindow(@ModelAttribute("searchVO") BatchOpert searchVO, ModelMap model) throws Exception {
 		return "egovframework/com/sym/bat/EgovBatchOpertListPopupFrame";
 	}

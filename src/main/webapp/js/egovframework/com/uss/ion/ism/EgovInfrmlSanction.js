@@ -76,6 +76,35 @@ function fn_egov_sanctner(strTitle, frmUniqId, frmEmplNo, frmEmplyrNm, frmOrgnzt
 }
 
 function sanctionCallback(retVal) {
-	// no-op
+	if (!retVal || retVal.trim() === '' || retVal === ',' || retVal.match(/^,+$/)) {
+	    return;
+	}
+	
+	// retVal 파싱: uniqId,emplNo,emplyrNm,orgnztNm
+	var tmp = retVal.split(",");
+	
+	// dialogArguments에서 파라미터 가져오기
+	var arrParam = window.dialogArguments;
+	if (arrParam && arrParam.length >= 6) {
+		// sanctnerId 설정 (frmUniqId = arrParam[2])
+		if (arrParam[2] != '' && tmp[0] && document.getElementById(arrParam[2]) != null) {
+			document.getElementById(arrParam[2]).value = tmp[0];
+		}
+		
+		// 사원번호 설정 (frmEmplNo = arrParam[3])
+		if (arrParam[3] != '' && tmp[1] && document.getElementById(arrParam[3]) != null) {
+			document.getElementById(arrParam[3]).value = tmp[1];
+		}
+		
+		// 사원명 설정 (frmEmplyrNm = arrParam[4])
+		if (arrParam[4] != '' && tmp[2] && document.getElementById(arrParam[4]) != null) {
+			document.getElementById(arrParam[4]).value = tmp[2];
+		}
+		
+		// 부서명 설정 (frmOrgnztNm = arrParam[5])
+		if (arrParam[5] != '' && tmp[3] && document.getElementById(arrParam[5]) != null) {
+			document.getElementById(arrParam[5]).value = tmp[3];
+		}
+	}
 }
 

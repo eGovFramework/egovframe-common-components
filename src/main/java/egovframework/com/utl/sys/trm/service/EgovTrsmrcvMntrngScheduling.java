@@ -3,8 +3,6 @@ package egovframework.com.utl.sys.trm.service;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -15,10 +13,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 /**
  * @Class Name : EgovTrsmrcvMntrngScheduling.java
- * @Description : 송수신모니터링을 위한 스케쥴링 클래스
+ * @Description : 송수신모니터링을 위한 스케줄링 클래스
  * @Modification Information
  *
  *    수정일       수정자         수정내용

@@ -23,6 +23,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
@@ -87,7 +89,7 @@ function fn_egov_list(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="listForm" action="<c:url value='/sym/ccm/zip/EgovCcmZipSearchList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/zip/EgovCcmZipSearchList.do" method="post">
 
 <div class="board" style="width:680px">
 
@@ -145,17 +147,19 @@ function fn_egov_list(){
 			</c:if>
 			<c:if test="${searchList == '1'}">
 				<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-					<tr style="cursor:pointer;cursor:pointer;" onclick="fn_egov_return_Zip( '${resultInfo.zip}', '${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm}');">
+					<c:set var="addr1">${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm}</c:set>
+					<tr style="cursor:pointer;cursor:pointer;" data-zip="<c:out value='${resultInfo.zip}'/>" data-addr="<c:out value='${addr1}'/>" onclick="fn_egov_return_Zip(this.dataset.zip, this.dataset.addr);">
 						<td><c:out value='${fn:substring(resultInfo.zip, 0,3)}'/>-<c:out value='${fn:substring(resultInfo.zip, 3,6)}'/></td>
-						<td>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm} ${resultInfo.lnbrDongHo}</td>
+						<td><c:out value="${addr1}"/> <c:out value="${resultInfo.lnbrDongHo}"/></td>
 					</tr>
 				</c:forEach>
 			</c:if>
 			<c:if test="${searchList == '2'}">
 				<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-					<tr style="cursor:pointer;cursor:pointer;" onclick="fn_egov_return_Zip( '${resultInfo.zip}', '${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}');">
+					<c:set var="addr2"><c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if></c:set>
+					<tr style="cursor:pointer;cursor:pointer;" data-zip="<c:out value='${resultInfo.zip}'/>" data-addr="<c:out value='${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} ${addr2} ${resultInfo.buldNm} ${resultInfo.detailBuldNm}'/>" onclick="fn_egov_return_Zip(this.dataset.zip, this.dataset.addr);">
 						<td><c:out value='${fn:substring(resultInfo.zip, 0,3)}'/>-<c:out value='${fn:substring(resultInfo.zip, 3,6)}'/></td>
-						<td>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}</td>
+						<td><c:out value="${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} ${addr2} ${resultInfo.buldNm} ${resultInfo.detailBuldNm}"/></td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -171,6 +175,6 @@ function fn_egov_list(){
 </div>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 <input type=hidden name="searchList">
-</form>
+</form:form>
 </body>
 </html>

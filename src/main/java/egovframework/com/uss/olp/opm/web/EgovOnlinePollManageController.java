@@ -1,23 +1,23 @@
 package egovframework.com.uss.olp.opm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
@@ -26,131 +26,137 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.opm.service.EgovOnlinePollManageService;
 import egovframework.com.uss.olp.opm.service.OnlinePollItem;
 import egovframework.com.uss.olp.opm.service.OnlinePollManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 온라인POLL관리를 처리하는 Controller Class 구현
+ * 
  * @author 공통서비스 장동한
  * @since 2009.07.03
  * @version 1.0
- * @see <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.07.03  장동한       최초 생성
- *   2011.08.26  정진오       IncludedInfo annotation 추가
- *   2024.10.29  권태성     등록 화면과 데이터를 처리하는 method 분리
- * </pre>
+ *   2009.07.03  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리
+ *   2025.08.23  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
+ *      </pre>
  */
-
-
 @Controller
 public class EgovOnlinePollManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovOnlinePollManageController.class);
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+	/** EgovMessageSource */
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
-    /** EgovMessageSource */
-    @Resource(name = "egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	/** egovOnlinePollService */
+	@Resource(name = "egovOnlinePollManageService")
+	private EgovOnlinePollManageService egovOnlinePollManageService;
 
-    /** egovOnlinePollService */
-    @Resource(name = "egovOnlinePollManageService")
-    private EgovOnlinePollManageService egovOnlinePollManageService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	/** Egov Common Code Service */
+	@Resource(name = "EgovCmmUseService")
+	private EgovCmmUseService cmmUseService;
 
-    /** Egov Common Code Service */
-    @Resource(name="EgovCmmUseService")
-    private EgovCmmUseService cmmUseService;
+	/**
+	 * 온라인POLL관리 목록을 조회한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param onlinePollManage
+	 * @param model
+	 * @return "egovframework/com/uss/olp/opm/EgovOnlinePollList"
+	 * @throws Exception
+	 */
+	@IncludedInfo(name = "온라인poll관리", order = 660, gid = 50)
+	@RequestMapping("/uss/olp/opm/listOnlinePollManage.do")
+	public String egovOnlinePollManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, OnlinePollManage onlinePollManage, ModelMap model) throws Exception {
 
-    /**
-     * 온라인POLL관리 목록을 조회한다.
-     * @param searchVO
-     * @param commandMap
-     * @param onlinePollManage
-     * @param model
-     * @return "egovframework/com/uss/olp/opm/EgovOnlinePollList"
-     * @throws Exception
-     */
-	@IncludedInfo(name="온라인poll관리", order = 660 ,gid = 50)
-    @RequestMapping(value = "/uss/olp/opm/listOnlinePollManage.do")
-    public String egovOnlinePollManageList(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            OnlinePollManage onlinePollManage, ModelMap model)
-            throws Exception {
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-        /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		/** pageing */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
 
-        /** pageing */
-        PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollManageList(searchVO);
+		model.addAttribute("resultList", reusltList);
 
-        List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollManageList(searchVO);
-        model.addAttribute("resultList", reusltList);
+		model.addAttribute("searchKeyword",
+				commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
+		model.addAttribute("searchCondition",
+				commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+		int totCnt = egovOnlinePollManageService.selectOnlinePollManageListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        int totCnt = egovOnlinePollManageService.selectOnlinePollManageListCnt(searchVO);
-        paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		return "egovframework/com/uss/olp/opm/EgovOnlinePollManageList";
+	}
 
-        return "egovframework/com/uss/olp/opm/EgovOnlinePollManageList";
-    }
+	/**
+	 * 온라인POLL관리 목록을 상세조회 조회한다.
+	 * 
+	 * @param searchVO
+	 * @param onlinePollVO
+	 * @param commandMap
+	 * @param model
+	 * @return "/uss/olp/opm/EgovOnlinePollDetail"
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/opm/detailOnlinePollManage.do")
+	@RequireAdmin
+	public String egovOnlinePollManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			OnlinePollManage onlinePollManage, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-    /**
-     * 온라인POLL관리 목록을 상세조회 조회한다.
-     * @param searchVO
-     * @param onlinePollVO
-     * @param commandMap
-     * @param model
-     * @return
-     *         "/uss/olp/opm/EgovOnlinePollDetail"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/opm/detailOnlinePollManage.do")
-    public String egovOnlinePollManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, OnlinePollManage onlinePollManage, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		String sLocationUrl = "egovframework/com/uss/olp/opm/EgovOnlinePollManageDetail";
 
-        String sLocationUrl = "egovframework/com/uss/olp/opm/EgovOnlinePollManageDetail";
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		// 게시물 삭제
+		if (sCmd.equals("del")) {
+			egovOnlinePollManageService.deleteOnlinePollManage(onlinePollManage);
+			sLocationUrl = "redirect:/uss/olp/opm/listOnlinePollManage.do";
+		} else {
+			model.addAttribute("onlinePollManage",
+					egovOnlinePollManageService.selectOnlinePollManageDetail(onlinePollManage));
+		}
 
-        //게시물 삭제
-        if (sCmd.equals("del")) {
-            egovOnlinePollManageService.deleteOnlinePollManage(onlinePollManage);
-            sLocationUrl = "redirect:/uss/olp/opm/listOnlinePollManage.do";
-        } else {
-            model.addAttribute("onlinePollManage", egovOnlinePollManageService.selectOnlinePollManageDetail(onlinePollManage));
-        }
+		// POLL종류 설정
+		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+		voComCode = new ComDefaultCodeVO();
+		voComCode.setCodeId("COM039");
+		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+		model.addAttribute("pollKindCodeList", listComCode);
 
-        //POLL종류 설정
-        ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
-        voComCode = new ComDefaultCodeVO();
-        voComCode.setCodeId("COM039");
-        List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-        model.addAttribute("pollKindCodeList", listComCode );
-
-        return sLocationUrl;
-    }
+		return sLocationUrl;
+	}
 
 	/**
 	 * 온라인POLL관리 수정화면
@@ -161,20 +167,21 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/updtOnlinePollManageView.do")
+	@PostMapping("/uss/olp/opm/updtOnlinePollManageView.do")
+	@RequireAdmin
 	public String egovOnlinePollManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			OnlinePollManage onlinePollManage,
-			ModelMap model) throws Exception {
+			OnlinePollManage onlinePollManage, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 게시물 정보 설정
-		OnlinePollManage onlinePollManageVO = egovOnlinePollManageService.selectOnlinePollManageDetail(onlinePollManage);
+		OnlinePollManage onlinePollManageVO = EgovAuthorizationHelper.requireTarget(egovOnlinePollManageService
+				.selectOnlinePollManageDetail(onlinePollManage));
 		model.addAttribute("onlinePollManage", onlinePollManageVO);
 
 		// POLL종류 Select박스 설정
@@ -198,27 +205,35 @@ public class EgovOnlinePollManageController {
 	 * @return "redirect:/uss/olp/opm/listOnlinePollManage.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/updtOnlinePollManage.do")
+	@PostMapping("/uss/olp/opm/updtOnlinePollManage.do")
+	@RequireAdmin
 	public String egovOnlinePollManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, OnlinePollManage onlinePollManage, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, 
+			@Valid OnlinePollManage onlinePollManage, BindingResult bindingResult, RedirectAttributes redirectAttributes,
 			ModelMap model) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(onlinePollManage, bindingResult);
+		OnlinePollManage stored = egovOnlinePollManageService.selectOnlinePollManageDetail(onlinePollManage);
+
 		if (bindingResult.hasErrors()) {
+			// 재로딩
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM039");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("pollKindCodeList", listComCode);
 			return "egovframework/com/uss/olp/opm/EgovOnlinePollManageUpdt";
 		}
-		
+
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
 		onlinePollManage.setFrstRegisterId(uniqId);
 		onlinePollManage.setLastUpdusrId(uniqId);
@@ -227,7 +242,7 @@ public class EgovOnlinePollManageController {
 
 		return "redirect:/uss/olp/opm/listOnlinePollManage.do";
 	}
-	
+
 	/**
 	 * 온라인POLL관리 등록화면
 	 * 
@@ -237,14 +252,14 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollManageView.do")
+	@PostMapping("/uss/olp/opm/registOnlinePollManageView.do")
+	@RequireAdmin
 	public String egovOnlinePollManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage,
-			ModelMap model) throws Exception {
+			@ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -257,7 +272,7 @@ public class EgovOnlinePollManageController {
 
 		return "egovframework/com/uss/olp/opm/EgovOnlinePollManageRegist";
 	}
-	
+
 	/**
 	 * 온라인POLL관리를 등록한다.
 	 * 
@@ -269,25 +284,30 @@ public class EgovOnlinePollManageController {
 	 * @return "redirect:/uss/olp/opm/listOnlinePollManage.do";
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollManage.do")
+	@PostMapping("/uss/olp/opm/registOnlinePollManage.do")
+	@RequireAdmin
 	public String egovOnlinePollManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, @ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage,
+			BindingResult bindingResult,RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(onlinePollManage, bindingResult);
 		if (bindingResult.hasErrors()) {
+			// POLL종류 Select박스 설정 재로딩
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM039");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("pollKindCodeList", listComCode);
 			return "egovframework/com/uss/olp/opm/EgovOnlinePollManageRegist";
 		}
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId =(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())); 
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
 		onlinePollManage.setFrstRegisterId(uniqId);
 		onlinePollManage.setLastUpdusrId(uniqId);
@@ -297,133 +317,162 @@ public class EgovOnlinePollManageController {
 		return "redirect:/uss/olp/opm/listOnlinePollManage.do";
 	}
 
-    /**
-     * 온라인POLL항목을조회한다.
-     * @param searchVO
-     * @param commandMap
-     * @param onlinePollItem
-     * @param bindingResult
-     * @param model
-     * @return
-     *         "/uss/olp/opm/EgovOnlinePollRegist"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/opm/listOnlinePollItem.do")
-    public String egovOnlinePollItemList(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("onlinePollItem") OnlinePollItem onlinePollItem,
-            ModelMap model)
-            throws Exception {
+	/**
+	 * 온라인POLL항목을조회한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param onlinePollItem
+	 * @param bindingResult
+	 * @param model
+	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/opm/listOnlinePollItem.do")
+	@RequireAdmin
+	public String egovOnlinePollItemList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, @ModelAttribute("onlinePollItem") OnlinePollItem onlinePollItem,
+			ModelMap model) throws Exception {
 
-        List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem);
-        model.addAttribute("resultList", reusltList);
+		List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem);
+		model.addAttribute("resultList", reusltList);
 
-        return "egovframework/com/uss/olp/opm/EgovOnlinePollItemList";
-    }
+		return "egovframework/com/uss/olp/opm/EgovOnlinePollItemList";
+	}
 
-    /**
-     * 온라인POLL항목을 등록한다.
-     * @param searchVO
-     * @param commandMap
-     * @param olinePollItem
-     * @param bindingResult
-     * @param model
-     * @return
-     *         "/uss/olp/opm/EgovOnlinePollRegist"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/opm/registOnlinePollItem.do")
-    public String egovOnlinePollItemRegist(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            OnlinePollItem onlinePollItem,
-            BindingResult bindingResult, ModelMap model) throws Exception {
+	/**
+	 * 온라인POLL항목을 등록한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param olinePollItem
+	 * @param bindingResult
+	 * @param model
+	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/opm/registOnlinePollItem.do")
+	@RequireAdmin
+	public String egovOnlinePollItemRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, 
+			@Valid OnlinePollItem onlinePollItem, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
+		LOGGER.info("####온라인POLL항목 등록 컨트롤러진입 ");
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		if (bindingResult.hasErrors()) {
+			LOGGER.info("####온라인POLL항목 등록 에러 :{} ", bindingResult.getErrorCount());
+			List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem);
+			model.addAttribute("resultList", reusltList);
+			return "egovframework/com/uss/olp/opm/EgovOnlinePollItemList";
+		}
+		
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+		// 아이디 설정
+		onlinePollItem.setFrstRegisterId(uniqId);
+		onlinePollItem.setLastUpdusrId(uniqId);
 
-        // 0. Spring Security 사용자권한 처리
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		egovOnlinePollManageService.insertOnlinePollItem(onlinePollItem);
 
-        // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		return "forward:/uss/olp/opm/listOnlinePollItem.do";
+	}
 
-        //아이디 설정
-        onlinePollItem.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-        onlinePollItem.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	/**
+	 * 온라인POLL항목을 수정한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param olinePollItem
+	 * @param bindingResult
+	 * @param model
+	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/opm/updtOnlinePollItem.do")
+	@RequireAdmin
+	public String egovOnlinePollItemModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap,@Valid OnlinePollItem onlinePollItem, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
+		LOGGER.info("####온라인POLL항목 수정 컨트롤러진입 ");
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        egovOnlinePollManageService.insertOnlinePollItem(onlinePollItem);
+		// 단건 조회가 없어 같은 POLL 의 항목 목록에서 찾는다 (POLL_ID 가 다르면 못 찾아 차단된다)
+		Object ownerId = null;
+		for (EgovMap item : egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem)) {
+			if (onlinePollItem.getPollIemId() != null && onlinePollItem.getPollIemId().equals(item.get("pollIemId"))) {
+				ownerId = item.get("frstRegisterId");
+				break;
+			}
+		}
 
-        return "forward:/uss/olp/opm/listOnlinePollItem.do";
-    }
+		if (bindingResult.hasErrors()) {
+			LOGGER.info("####온라인POLL항목 수정 에러 :{} ", bindingResult.getErrorCount());
+			List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem);
+			model.addAttribute("resultList", reusltList);
+			return "egovframework/com/uss/olp/opm/EgovOnlinePollItemList";
+		}
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+		// 아이디 설정
+		onlinePollItem.setFrstRegisterId(uniqId);
+		onlinePollItem.setLastUpdusrId(uniqId);
 
-    /**
-     * 온라인POLL항목을 수정한다.
-     * @param searchVO
-     * @param commandMap
-     * @param olinePollItem
-     * @param bindingResult
-     * @param model
-     * @return
-     *         "/uss/olp/opm/EgovOnlinePollRegist"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/opm/updtOnlinePollItem.do")
-    public String egovOnlinePollItemModify(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            OnlinePollItem onlinePollItem,
-            BindingResult bindingResult, ModelMap model) throws Exception {
+		egovOnlinePollManageService.updateOnlinePollItem(onlinePollItem);
 
-        // 0. Spring Security 사용자권한 처리
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		return "forward:/uss/olp/opm/listOnlinePollItem.do";
+	}
 
-        // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+	/**
+	 * 온라인POLL항목을 삭제한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param olinePollItem
+	 * @param bindingResult
+	 * @param model
+	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/opm/delOnlinePollItem.do")
+	@RequireAdmin
+	public String egovOnlinePollItemDelete(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, OnlinePollItem onlinePollItem, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 
-        //아이디 설정
-        onlinePollItem.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-        onlinePollItem.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        egovOnlinePollManageService.updateOnlinePollItem(onlinePollItem);
+		// 단건 조회가 없어 같은 POLL 의 항목 목록에서 찾는다 (POLL_ID 가 다르면 못 찾아 차단된다)
+		Object ownerId = null;
+		for (EgovMap item : egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem)) {
+			if (onlinePollItem.getPollIemId() != null && onlinePollItem.getPollIemId().equals(item.get("pollIemId"))) {
+				ownerId = item.get("frstRegisterId");
+				break;
+			}
+		}
 
-        return "forward:/uss/olp/opm/listOnlinePollItem.do";
-    }
+		egovOnlinePollManageService.deleteOnlinePollItem(onlinePollItem);
 
-    /**
-     * 온라인POLL항목을 삭제한다.
-     * @param searchVO
-     * @param commandMap
-     * @param olinePollItem
-     * @param bindingResult
-     * @param model
-     * @return
-     *         "/uss/olp/opm/EgovOnlinePollRegist"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/opm/delOnlinePollItem.do")
-    public String egovOnlinePollItemDelete(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            OnlinePollItem onlinePollItem,
-            BindingResult bindingResult, ModelMap model) throws Exception {
-
-        // 0. Spring Security 사용자권한 처리
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
-
-        egovOnlinePollManageService.deleteOnlinePollItem(onlinePollItem);
-
-        return "forward:/uss/olp/opm/listOnlinePollItem.do";
-    }
-
+		return "forward:/uss/olp/opm/listOnlinePollItem.do";
+	}
 
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 개요
  * - HTTP모니터링 로그에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 웹서비스종류, HTTP상태, 관리자명, 관리자이메일주소, 최종수정자ID, 최종수정시점 항목을 관리한다.
  * @author 박종선
@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class HttpMonLog implements Serializable {
-	
+
 	/**
 	 * 로그ID
 	 */
@@ -23,7 +23,7 @@ public class HttpMonLog implements Serializable {
 	/**
 	 * 로그정보
 	 */
-	private String logInfo;		
+	private String logInfo;
 	/**
 	 * 사이트URL
 	 */
@@ -43,7 +43,7 @@ public class HttpMonLog implements Serializable {
 	/**
 	 * 생성일시
 	 */
-	private String creatDt;	
+	private String creatDt;
 	/**
 	 * 관리자명
 	 */
@@ -55,11 +55,11 @@ public class HttpMonLog implements Serializable {
     /*
      * 최초등록자ID
      */
-    private String frstRegisterId = "";	
-	/** 
+    private String frstRegisterId = "";
+	/**
 	 * 최초등록시점
 	 */
-	private String frstRegisterPnttm = "";    
+	private String frstRegisterPnttm = "";
 	/**
 	 * 최종수정자ID
 	 */

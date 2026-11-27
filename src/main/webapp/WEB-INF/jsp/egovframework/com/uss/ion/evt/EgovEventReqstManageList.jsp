@@ -16,7 +16,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -25,17 +25,29 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonEvt.eventReqstManageList.title"/></title><!-- 행사신청관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 <!--
+/* ********************************************************
+ * 초기화 함수
+ ******************************************************** */
+function fn_egov_init_evt(){
+	if("${eventAtdrnExist}" == "true"){
+		alert("<spring:message code="comUssIonEvt.eventReqstManageList.eventAtdrnExist" />");/* 참가신청자가 있는 행사는 삭제할 수 없습니다. */
+	}
+}
+
 /* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -77,7 +89,7 @@
  * 등록 화면 호출 함수 
  ******************************************************** */
 function fncEventReqstRegist(){
-	location.href = "<c:url value='/uss/ion/evt/EgovEventReqstRegist.do'/>";
+	fn_egov_postNavigate("<c:url value='/uss/ion/evt/EgovEventReqstRegist.do'/>");
 }
 
 /* ********************************************************
@@ -108,13 +120,13 @@ function fncEventReqstAtdrnList(eventId){
 -->
 </script>
 </head>
-<body>
+<body onLoad="fn_egov_init_evt()">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
 	<h1><spring:message code="comUssIonEvt.eventReqstManageList.title"/></h1><!-- 행사신청관리 목록 -->
 	
-	<form name="listForm" action="<c:url value='/uss/ion/evt/EgovEventReqstManageList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/evt/EgovEventReqstManageList.do" method="post">
 
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="eventId">
@@ -157,11 +169,11 @@ function fncEventReqstAtdrnList(eventId){
 				<label for="" style="margin-left:10px"><spring:message code="comUssIonEvt.common.eventNm"/> : </label><!-- 행사명 -->
 				<input name="searchNm" type="text" value="${eventManageVO.searchNm}"  maxlength="100" title="<spring:message code="comUssIonEvt.common.eventNm"/>" style="width:128px" /><!-- 행사명 -->		
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectEventManageList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/evt/EgovEventReqstRegist.do'/>?searchCondition=1" onclick="fncEventReqstRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncEventReqstRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
-	</form>
+	
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -191,20 +203,14 @@ function fncEventReqstAtdrnList(eventId){
 			<tr>
 				<td><c:out value="${(eventManageVO.pageIndex - 1) * eventManageVO.pageSize + status.count}"/></td>
 				<td>
-		        <form name="item" method="post" action="<c:url value='/uss/ion/evt/EgovEventReqstDetail.do'/>">
-		        	<input type="hidden" name="eventId" value="<c:out value="${resultInfo.eventId}"/>">
-		            <span class="link"><input type="submit" value="<c:out value="${resultInfo.eventNm}"/>" onclick="fncEventManageDetail('<c:out value="${resultInfo.eventId}"/>'); return false;" style="text-align : left;"></span>
-		        </form>
+		        <a href="javascript:void(0);" onclick="fncEventManageDetail('<c:out value="${resultInfo.eventId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.eventNm}"/></span></a>
 				</td>
 				<td><c:out value="${resultInfo.eventPlace}"/></td>
 				<td><c:out value="${resultInfo.eventTemp3}"/></td>
 				<td class="lt_textL" nowrap><c:out value="${resultInfo.eventBeginDe}"/> ~ <br><c:out value="${resultInfo.eventEndDe}"/></td>
 				<td><c:out value="${resultInfo.eventTemp1}"/><spring:message code="comUssIonEvt.common.days"/></td><!-- 일간 -->
 				<td>
-		        <form name="item" method="post" action="<c:url value='/uss/ion/evt/EgovEventReqstAtdrnList.do'/>"  target="_blank">
-		        	<input type=hidden name="eventId" value="<c:out value="${resultInfo.eventId      }"/>">
-		            <span class="link"><input type="submit" value="<c:out value="${resultInfo.eventTemp2}"/>" onclick="fncEventReqstAtdrnList('<c:out value="${resultInfo.eventId}"/>'); return false;" style="width:20px; text-align:left;"></span> / <c:out value="${resultInfo.psncpa}"/>
-		        </form></td>
+		        <a href="javascript:void(0);" onclick="fncEventReqstAtdrnList('<c:out value="${resultInfo.eventId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.eventTemp2}"/></span></a></td>
 				<td class="lt_textL" nowrap><c:out value="${resultInfo.rceptBeginDe}"/> ~ <br><c:out value="${resultInfo.rceptEndDe}"/></td>
 			</tr>    
 			</c:forEach>
@@ -225,6 +231,8 @@ function fncEventReqstAtdrnList(eventId){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

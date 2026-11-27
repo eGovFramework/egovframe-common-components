@@ -3,8 +3,6 @@ package egovframework.com.uss.olp.qtm.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.olp.qtm.service.EgovQustnrTmplatManageService;
 import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
+import javax.annotation.Resource;
 
 /**
  * 설문템플릿 ServiceImpl Class 구현
@@ -49,8 +48,6 @@ public class EgovQustnrTmplatManageServiceImpl extends EgovAbstractServiceImpl i
 	 */
 	@Override
 	public Map<?,?> selectQustnrTmplatManageTmplatImagepathnm(QustnrTmplatManageVO qustnrTmplatManageVO) throws Exception{
-		//System.out.println("EgovQustnrTmplatManageServiceImpl QestnrTmplatId >>> "+ qustnrTmplatManageVO.getQestnrTmplatId());
-		
 		return dao.selectQustnrTmplatManageTmplatImagepathnm(qustnrTmplatManageVO);
 	}
 
@@ -119,5 +116,10 @@ public class EgovQustnrTmplatManageServiceImpl extends EgovAbstractServiceImpl i
 	@Override
 	public void deleteQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO){
 		dao.deleteQustnrTmplatManage(qustnrTmplatManageVO);
+	}
+
+	@Override
+	public int selectQustnrTmplatOtherUseCnt(QustnrTmplatManageVO qustnrTmplatManageVO){
+		return dao.selectQustnrTmplatOtherUseCnt(qustnrTmplatManageVO);
 	}
 }

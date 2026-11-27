@@ -1,11 +1,15 @@
 package egovframework.com.uss.olp.qtm.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
+import egovframework.com.cmm.service.EgovFileMngUtil;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -13,26 +17,33 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qtm.service.EgovQustnrTmplatManageService;
 import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * 설문템플릿 Controller Class 구현
@@ -59,9 +70,6 @@ public class EgovQustnrTmplatManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrTmplatManageController.class);
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
@@ -74,11 +82,13 @@ public class EgovQustnrTmplatManageController {
 	protected EgovPropertyService propertiesService;
 
 	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageMain.do")
+	@RequireAdmin
 	public String egovQustnrTmplatManageMain(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageMain";
 	}
 
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageLeft.do")
+	@RequestMapping("/uss/olp/qtm/EgovQustnrTmplatManageLeft.do")
+	@RequireAdmin
 	public String egovQustnrTmplatManageLeft(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageLeft";
 	}
@@ -90,6 +100,7 @@ public class EgovQustnrTmplatManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/EgovMain.do")
+	@RequireAdmin
 	public String egovMain(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/qtm/EgovMain";
 	}
@@ -101,6 +112,7 @@ public class EgovQustnrTmplatManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/EgovLeft.do")
+	@RequireAdmin
 	public String egovLeft(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/qtm/EgovLeft";
 	}
@@ -126,6 +138,24 @@ public class EgovQustnrTmplatManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			// 소유권 검증 - 등록자 본인만 삭제할 수 있다.
+			List<EgovMap> storedList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
+			// 삭제는 설문·문항·응답까지 연쇄하므로, 다른 사용자의 설문이 쓰는 템플릿은 지우지 않는다
+			QustnrTmplatManageVO useKey = new QustnrTmplatManageVO();
+			useKey.setQestnrTmplatId(qustnrTmplatManageVO.getQestnrTmplatId());
+			useKey.setFrstRegisterId(ownerId.toString());
+			if (egovQustnrTmplatManageService.selectQustnrTmplatOtherUseCnt(useKey) > 0) {
+				throw new EgovAccessDeniedException("다른 사용자의 설문이 사용 중인 템플릿은 삭제할 수 없습니다.");
+			}
 			egovQustnrTmplatManageService.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 		}
 
@@ -167,7 +197,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageImg"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
+	@GetMapping("/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
 	public void egovQustnrTmplatManageImg(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -179,13 +209,83 @@ public class EgovQustnrTmplatManageController {
 
 		byte[] img = (byte[])mapResult.get("QUSTNR_TMPLAT_IMAGE_INFOPATHNM");
 
-		String imgtype = "jpeg";
-		// 2022.11.11 시큐어코딩 처리
+		// 2026.07.13 KISA 보안취약점 조치 - 저장된 바이트의 실제 이미지 시그니처를 검사하여
+		// 올바른 Content-Type을 설정하고, 이미지가 아닌 경우 octet-stream으로 강제하여
+		// 브라우저의 MIME 스니핑으로 인한 저장형 XSS를 차단한다.
+		String imgtype = detectImageContentType(img);
 		response.setHeader("Content-Type", imgtype);
-		response.setHeader("Content-Length", "" + img.length);
-		response.getOutputStream().write(img);
+		response.setHeader("X-Content-Type-Options", "nosniff");
+		response.setHeader("Content-Length", "" + (img == null ? 0 : img.length));
+		if (img != null) {
+			response.getOutputStream().write(img);
+		}
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 파일 시그니처(매직바이트)를 검사하여 실제 이미지 포맷의
+	 * Content-Type을 반환한다. 알 수 없는 포맷은 application/octet-stream 으로 응답하여
+	 * 브라우저가 HTML/JS로 스니핑/렌더링하지 못하도록 한다.
+	 *
+	 * @param bytes 응답으로 내려줄 원본 바이트
+	 * @return 검증된 이미지 Content-Type 또는 application/octet-stream
+	 */
+	private String detectImageContentType(byte[] bytes) {
+		if (bytes != null && bytes.length >= 4) {
+			if ((bytes[0] & 0xFF) == 0xFF && (bytes[1] & 0xFF) == 0xD8 && (bytes[2] & 0xFF) == 0xFF) {
+				return "image/jpeg";
+			}
+			if (bytes.length >= 8 && (bytes[0] & 0xFF) == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E
+					&& bytes[3] == 0x47) {
+				return "image/png";
+			}
+			if (bytes[0] == 0x47 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x38) {
+				return "image/gif";
+			}
+			if (bytes[0] == 0x42 && bytes[1] == 0x4D) {
+				return "image/bmp";
+			}
+		}
+		return "application/octet-stream";
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 업로드된 바이트가 실제 유효한 래스터 이미지인지 검증한다.
+	 * 파일 시그니처(매직바이트)를 우선 확인하고, 추가로 ImageIO 디코딩이 가능한지 재검증하여
+	 * 확장자만 이미지로 위장한 HTML/JS 등 임의 바이트의 업로드를 차단한다.
+	 *
+	 * @param bytes 업로드된 파일의 원본 바이트
+	 * @return 유효한 이미지이면 true
+	 */
+	/**
+	 * 템플릿 이미지 검사 — 크기 초과·이미지 아님이면 오류 문구, 통과면 null.
+	 */
+	private String templateImageError(MultipartFile file, byte[] fileBytes) {
+		long maxSize = EgovFileMngUtil.getImageUploadMaxSize();
+		if (file.getSize() > maxSize) {
+			return "이미지 크기는 " + (maxSize / 1024 / 1024) + "MB 이하만 가능합니다.";
+		}
+		if (!EgovFileMngUtil.isAllowedImageExtension(file.getOriginalFilename()) || !isValidImageBytes(fileBytes)) {
+			return "유효한 이미지 파일이 아닙니다.";
+		}
+		return null;
+	}
+
+	private boolean isValidImageBytes(byte[] bytes) {
+		if (bytes == null || bytes.length == 0) {
+			return false;
+		}
+		String detected = detectImageContentType(bytes);
+		if ("application/octet-stream".equals(detected)) {
+			return false;
+		}
+		try {
+			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+			return image != null;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -197,7 +297,8 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageDetail.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageDetail.do")
+	@RequireAdmin
 	public String egovQustnrTmplatManageDetail(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		QustnrTmplatManageVO qustnrTmplatManageVO,
@@ -210,6 +311,22 @@ public class EgovQustnrTmplatManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			// 소유권 검증 - 등록자 본인만 삭제할 수 있다.
+			List<EgovMap> storedList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
+			// 삭제는 설문·문항·응답까지 연쇄하므로, 다른 사용자의 설문이 쓰는 템플릿은 지우지 않는다
+			QustnrTmplatManageVO useKey = new QustnrTmplatManageVO();
+			useKey.setQestnrTmplatId(qustnrTmplatManageVO.getQestnrTmplatId());
+			useKey.setFrstRegisterId(ownerId.toString());
+			if (egovQustnrTmplatManageService.selectQustnrTmplatOtherUseCnt(useKey) > 0) {
+				throw new EgovAccessDeniedException("다른 사용자의 설문이 사용 중인 템플릿은 삭제할 수 없습니다.");
+			}
 			egovQustnrTmplatManageService.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 			sLocationUrl = "redirect:/uss/olp/qtm/EgovQustnrTmplatManageList.do";
 		} else {
@@ -229,7 +346,8 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageModify.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageModify.do")
+	@RequireAdmin
 	public String qustnrTmplatManageModify(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		@RequestParam Map<?, ?> commandMap,
@@ -241,11 +359,14 @@ public class EgovQustnrTmplatManageController {
 //		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		List<EgovMap> resultList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
+		// 소유권 검증 - 등록자 본인만 수정할 수 있다.
+		Object ownerId = (resultList == null || resultList.isEmpty()) ? null : resultList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
         model.addAttribute("resultList", resultList);
 
 		// 파일업로드 제한
-		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+		String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
 
 		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
 		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
@@ -264,35 +385,40 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModifyActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageModifyActor.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageModifyActor.do")
+	@RequireAdmin
 	public String qustnrTmplatManageModifyActor(
 		final MultipartHttpServletRequest multiRequest,
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		@RequestParam Map<?, ?> commandMap,
-		@ModelAttribute("qustnrTmplatManageVO") QustnrTmplatManageVO qustnrTmplatManageVO,
+		@Valid @ModelAttribute("qustnrTmplatManageVO") QustnrTmplatManageVO qustnrTmplatManageVO,
 		BindingResult bindingResult,
+		RedirectAttributes redirectAttributes,
 		ModelMap model)
 		throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		//서버  validate 체크
-		beanValidator.validate(qustnrTmplatManageVO, bindingResult);
+		// 소유권 검증 - 등록자 본인만 수정할 수 있다.
+		List<EgovMap> storedList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
+		Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
+
 		if (bindingResult.hasErrors()) {
 			List<EgovMap> resultList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
             model.addAttribute("resultList", resultList);
 
 			// 파일업로드 제한
-			String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-			String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+			String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+			String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
 
 			model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
 			model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
@@ -312,9 +438,25 @@ public class EgovQustnrTmplatManageController {
 				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename());
 
 				// 파일 수정여부 확인
-				if (file.getOriginalFilename() != "") {
+				if (file.getOriginalFilename() != null && !file.getOriginalFilename().isEmpty()) {
 					if (file.getName().equals("qestnrTmplatImage")) {
-						qustnrTmplatManageVO.setQestnrTmplatImagepathnm(file.getBytes());
+						byte[] fileBytes = file.getBytes();
+						// 2026.07.13 KISA 보안취약점 조치 - 서버측 실제 이미지(매직바이트+디코딩) 검증
+						String imageError = templateImageError(file, fileBytes);
+						if (imageError != null) {
+							bindingResult.rejectValue("qestnrTmplatImagepathnm", "file.invalid", imageError);
+							List<EgovMap> resultList = egovQustnrTmplatManageService
+								.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
+							model.addAttribute("resultList", resultList);
+
+							String whiteListFileUploadExtensions = EgovProperties
+								.getProperty("Globals.fileUpload.Extensions.Image");
+							String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
+							model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+							model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+							return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModify";
+						}
+						qustnrTmplatManageVO.setQestnrTmplatImagepathnm(fileBytes);
 					}
 				}
 			}
@@ -333,18 +475,20 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageRegist.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageRegist.do")
+	@RequireAdmin
 	public String qustnrTmplatManageRegist(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		@RequestParam Map<?, ?> commandMap,
 		@ModelAttribute("qustnrTmplatManageVO") QustnrTmplatManageVO qustnrTmplatManageVO,
+		RedirectAttributes redirectAttributes,
 		ModelMap model)
 		throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -362,8 +506,8 @@ public class EgovQustnrTmplatManageController {
 		qustnrTmplatManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		// 파일업로드 제한
-		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Images");
-		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+		String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
 
 		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
 		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
@@ -380,20 +524,31 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegistActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do")
+	@RequireAdmin
 	public String qustnrTmplatManageRegistActor(
 		final MultipartHttpServletRequest multiRequest,
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
-		QustnrTmplatManageVO qustnrTmplatManageVO,
+		@Valid QustnrTmplatManageVO qustnrTmplatManageVO,BindingResult bindingResult,
+		RedirectAttributes redirectAttributes,
 		ModelMap model)
 		throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+		// 유효성 검증, 실패시 포워딩
+				if(bindingResult.hasErrors()) {
+					String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+					String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
 
+					model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+					model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+					return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
+				}
+				
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -402,6 +557,8 @@ public class EgovQustnrTmplatManageController {
 		qustnrTmplatManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		boolean fileExists = false;
+		
 
 		if (files != null && !files.isEmpty()) {
 			for (MultipartFile file : files.values()) {
@@ -409,12 +566,42 @@ public class EgovQustnrTmplatManageController {
 				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename()); // 파일의 실제 이름
 
 				// 2022.11.11 시큐어코딩 처리
-				if (ObjectUtils.isNotEmpty(file.getName()) && ObjectUtils.isNotEmpty(file.getOriginalFilename())) {
-					qustnrTmplatManageVO.setQestnrTmplatImagepathnm(file.getBytes());
+				if (ObjectUtils.isNotEmpty(file.getName()) && ObjectUtils.isNotEmpty(file.getOriginalFilename())
+						&& !file.isEmpty()) {
+					byte[] fileBytes = file.getBytes();
+					// 2026.07.13 KISA 보안취약점 조치 - 서버측 실제 이미지(매직바이트+디코딩) 검증
+					String imageError = templateImageError(file, fileBytes);
+					if (imageError != null) {
+						bindingResult.rejectValue(
+								"qestnrTmplatImagepathnm",
+								"file.invalid",
+								imageError);
+						String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+						String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
+
+						model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+						model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+						return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
+					}
+					qustnrTmplatManageVO.setQestnrTmplatImagepathnm(fileBytes);
+					fileExists = true;
+					break;
 				}
 			}
 		}
+		if(!fileExists) {
+			bindingResult.rejectValue(
+					"qestnrTmplatImagepathnm",
+					"file.empty",// 메세지 파일에 해당 태그는 없지만 채워놓음
+					"템플릿 이미지를 선택해주세요.");
+			String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Image");
+			String fileUploadMaxSize = String.valueOf(EgovFileMngUtil.getImageUploadMaxSize());
 
+			model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+			model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+			return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
+		}
+		
 		egovQustnrTmplatManageService.insertQustnrTmplatManage(qustnrTmplatManageVO);
 
 		return "redirect:/uss/olp/qtm/EgovQustnrTmplatManageList.do";

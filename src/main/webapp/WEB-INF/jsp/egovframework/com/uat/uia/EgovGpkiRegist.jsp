@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovLoginUsr.jsp
@@ -49,7 +50,7 @@ function sendDn() {
 </head>
 <body>
   <!--인증서등록 테이블 시작-->
-  <form name="GpkiLoginForm" action ="<c:url value='/uat/uia/actionGpkiRegist.do'/>" method="post">
+  <form:form name="GpkiLoginForm" modelAttribute="gpkiRegist" action="${pageContext.request.contextPath}/uat/uia/actionGpkiRegist.do" method="post">
 <table width="303" border="0" cellspacing="8" cellpadding="0">
      <tr height="10">
      </tr>
@@ -104,7 +105,7 @@ function sendDn() {
 	</td>
      </tr>
    </table>
-  </form>
+  </form:form>
   <!--인증서등록 테이블 끝-->
 </body>
 </body>

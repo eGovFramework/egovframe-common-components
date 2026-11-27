@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 --%>
 
@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,8 +32,7 @@
 <title><spring:message code="utlSysRsc.loginSessionCheck.loginSessionCheck"/></title><!-- 로그인 세션정보 체크 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="proxySvc" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 
@@ -90,16 +88,18 @@ function fncgetLoginSessionView(url) {
 		<tr>
 			<th><spring:message code="utlSysRsc.loginSessionCheck.sessionURL"/> <span class="pilsu">*</span></th><!-- 세션 URL -->
 			<td class="left">
-			    <label for="sessionUrl"><input name="sessionUrl" id="sessionUrl" value="<%=(user == null || user.getUrl() == null) ? "" : user.getUrl() %>" type="text" maxLength="1000" size="80" readonly="readonly" class="readOnlyClass"></label>
+			    <%-- 2026.07.30 보안 조치 - 속성값 이스케이프 --%>
+			    <label for="sessionUrl"><input name="sessionUrl" id="sessionUrl" value="<%=egovframework.com.cmm.EgovWebUtil.escapeXml((user == null || user.getUrl() == null) ? "" : user.getUrl()) %>" type="text" maxLength="1000" size="80" readonly="readonly" class="readOnlyClass"></label>
 			</td>
 		</tr>
 	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/utl/sys/rsc/loginSessionView.do'/>" onclick="fncSelectLoginSession(); return false;"><spring:message code="button.inquire" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectLoginSession(); return false;"><spring:message code="button.inquire" /></a></span>
 		<input class="s_submit" type="submit" value="<spring:message code="utlSysRsc.loginSessionCheck.set"/>" onclick="fncSetLoginSession(); return false;" /><!-- 설정 -->
-		<span class="btn_s"><a href="<%=user.getUrl() %>" onclick="" target=“_blank” title="새창" onclick="fncgetLoginSessionView('<%=(user == null || user.getUrl() == null) ? "" : user.getUrl() %>'); return false;"><spring:message code="utlSysRsc.loginSessionCheck.sessionView"/></a></span><!-- 이동 -->
+		<%-- 2026.07.30 보안 조치 - href 속성 및 JS 문자열 컨텍스트 이스케이프 --%>
+		<span class="btn_s"><a href="<%=egovframework.com.cmm.EgovWebUtil.escapeXml((user == null || user.getUrl() == null) ? "" : user.getUrl()) %>" target=“_blank” title="새창" onclick="fncgetLoginSessionView('<%=egovframework.com.cmm.EgovWebUtil.escapeXml(egovframework.com.cmm.EgovWebUtil.escapeJavaScript((user == null || user.getUrl() == null) ? "" : user.getUrl())) %>'); return false;"><spring:message code="utlSysRsc.loginSessionCheck.sessionView"/></a></span><!-- 이동 -->
 	</div>
 	<div style="clear:both;"></div>
 </form:form>

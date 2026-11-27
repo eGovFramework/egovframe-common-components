@@ -51,6 +51,7 @@ function fn_egov_select_sysHist(){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 <form name="frm" action ="<c:url value='/sym/log/slg/SelectSysHistoryList.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input name="pageIndex" type="hidden" value="1" />
 <input type="hidden" name="histId" value="<c:out value='${result.histId}'/>" />
 

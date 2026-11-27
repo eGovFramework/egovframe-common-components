@@ -55,6 +55,7 @@ function fn_egov_change_Calendar(form){
 <DIV id="content">
 <!-- ------------------------------------------------------------------ 상단타이틀 -->
 <form name="administYearCalendar" action ="<c:url value='/sym/cal/EgovAdministYearCalendar.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="init" value="${init}" />
 	<input type="hidden" name="day" />
 	<table width="700" cellpadding="8" class="table-search" border="0">
@@ -114,8 +115,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_1.year eq restde_1.year && result_1.month eq restde_1.month && result_1.day eq restde_1.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_1.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_1.day}
@@ -177,8 +178,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_2.year eq restde_2.year && result_2.month eq restde_2.month && result_2.day eq restde_2.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_2.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_2.day}
@@ -239,8 +240,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_3.year eq restde_3.year && result_3.month eq restde_3.month && result_3.day eq restde_3.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_3.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_3.day}
@@ -301,8 +302,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_4.year eq restde_4.year && result_4.month eq restde_4.month && result_4.day eq restde_4.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_4.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_4.day}
@@ -363,8 +364,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_5.year eq restde_5.year && result_5.month eq restde_5.month && result_5.day eq restde_5.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_5.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_5.day}
@@ -425,8 +426,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_6.year eq restde_6.year && result_6.month eq restde_6.month && result_6.day eq restde_6.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_6.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_6.day}
@@ -487,8 +488,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_7.year eq restde_7.year && result_7.month eq restde_7.month && result_7.day eq restde_7.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_7.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_7.day}
@@ -549,8 +550,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_8.year eq restde_8.year && result_8.month eq restde_8.month && result_8.day eq restde_8.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_8.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_8.day}
@@ -611,8 +612,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_9.year eq restde_9.year && result_9.month eq restde_9.month && result_9.day eq restde_9.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_9.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_9.day}
@@ -673,8 +674,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_10.year eq restde_10.year && result_10.month eq restde_10.month && result_10.day eq restde_10.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_10.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_10.day}
@@ -735,8 +736,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_11.year eq restde_11.year && result_11.month eq restde_11.month && result_11.day eq restde_11.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_11.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_11.day}
@@ -797,8 +798,8 @@ function fn_egov_change_Calendar(form){
 	    	<c:if test="${result_12.year eq restde_12.year && result_12.month eq restde_12.month && result_12.day eq restde_12.day}"><table><tr><td style={text-decoration:none;} nowrap><div style='width:70px;border:solid 0px;'>${restde_12.restdeNm}</div></td></tr></table></c:if>
 	    </c:forEach>
 	    </td>
-    <c:out value="</tr>" escapeXml="false"/>
-    <c:out value="<tr>" escapeXml="false"/>
+    </tr>
+    <tr>
 									</c:when>
 									<c:otherwise>
 	    <td style={height:50px;text-align:left;vertical-align:top;color:red;} nowrap >${result_12.day}

@@ -5,6 +5,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovSysHistList.jsp
@@ -63,7 +64,7 @@ function press(event) {
 <div class="board">
 	<h1><spring:message code="comSymLogSlg.sysHistList.pageTop.title"/></h1><!-- 시스템이력 조회 -->
 
-	<form name="frm" action ="<c:url value='/sym/log/slg/SelectSysHistoryList.do'/>" method="post">
+	<form:form name="frm" modelAttribute="searchVO" action ="<c:url value='/sym/log/slg/SelectSysHistoryList.do'/>" method="post">
 	<input name="histId" type="hidden" />
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
@@ -138,7 +139,7 @@ function press(event) {
 	</div>
 	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	</form:form>
 	
 </div>
 

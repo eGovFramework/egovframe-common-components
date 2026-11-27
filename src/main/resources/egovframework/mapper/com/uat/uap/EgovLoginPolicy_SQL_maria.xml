@@ -11,6 +11,7 @@
         <result property="dplctPermAt" column="DPLCT_PERM_AT"/>
         <result property="lmttAt" column="LMTT_AT"/>
         <result property="userId" column="LAST_UPDUSR_ID"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
         <result property="regDate" column="LAST_UPDT_PNTTM"/>
         <result property="regYn" column="REG_YN"/>
 	</resultMap>
@@ -56,6 +57,7 @@
                    B.DPLCT_PERM_AT,
                    IF(B.LMTT_AT IS NULL, 'N', B.LMTT_AT) AS LMTT_AT,
                    B.LAST_UPDUSR_ID,
+                   B.FRST_REGISTER_ID,
                    DATE_FORMAT(B.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
                    IF(B.EMPLYR_ID IS NULL, 'N', 'Y') AS REG_YN                   
               FROM COMVNUSERMASTER A LEFT OUTER JOIN COMTNLOGINPOLICY B

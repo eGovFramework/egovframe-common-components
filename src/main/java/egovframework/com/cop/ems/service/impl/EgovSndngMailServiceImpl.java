@@ -1,19 +1,16 @@
 package egovframework.com.cop.ems.service.impl;
 
-import javax.annotation.Resource;
-
+import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.EmailAttachment;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.mail.MailAuthenticationException;
-import org.springframework.mail.MailParseException;
-import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.ems.service.EgovMultiPartEmail;
 import egovframework.com.cop.ems.service.EgovSndngMailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
+import javax.annotation.Resource;
 
 /**
  * 메일 솔루션과 연동해서 이용해서 메일을 보내는 서비스 구현 클래스
@@ -48,11 +45,9 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 	 * 메일을 발송한다
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	@SuppressWarnings("unused")
-	public boolean sndngMail(SndngMailVO sndngMailVO) throws Exception {
+	public boolean sndngMail(SndngMailVO sndngMailVO) {
 
 		String recptnPerson = (sndngMailVO.getRecptnPerson() == null) ? "" : sndngMailVO.getRecptnPerson(); // 수신자
 		String subject = (sndngMailVO.getSj() == null) ? "" : sndngMailVO.getSj(); // 메일제목
@@ -63,7 +58,7 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 		try {
 			EmailAttachment attachment = new EmailAttachment();
 			// 첨부파일이 있을 때
-			if (atchmnFileNm != "" && atchmnFileNm != null && atchmnFilePath != "" && atchmnFilePath != null) {
+			if (atchmnFileNm != null && !atchmnFileNm.isEmpty() && atchmnFilePath != null && !atchmnFilePath.isEmpty()) {
 				// 첨부할 attachment 정보를 생성합니다
 				attachment.setPath(atchmnFilePath);
 				attachment.setDisposition(EmailAttachment.ATTACHMENT);
@@ -71,7 +66,7 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 				//attachment.setName(new String(atchmnFileNm.getBytes("UTF-8"),"latin1")); // 구버전의 경우 필요
 				attachment.setName(atchmnFileNm);
 
-				// 2015.05.08 주석수정 - 첨부파일 정보를 포함한 메일을 전송합니다 
+				// 2015.05.08 주석수정 - 첨부파일 정보를 포함한 메일을 전송합니다
 				egovMultiPartEmail.send(recptnPerson, subject, emailCn, attachment);
 			}
 			else
@@ -79,23 +74,10 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 				// 메일을 전송합니다
 				egovMultiPartEmail.send(recptnPerson, subject, emailCn);
 			}
-
-			Throwable t = new Throwable();
-
-		} catch (MailParseException ex) {
+		} catch (EmailException ex) {
 			sndngMailVO.setSndngResultCode("F"); // 발송결과 실패
 			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.
-			LOGGER.error("Sending Mail Exception : {} [failure when parsing the message]", ex.getCause());
-			return false;
-		} catch (MailAuthenticationException ex) {
-			sndngMailVO.setSndngResultCode("F"); // 발송결과 실패
-			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.
-			LOGGER.error("Sending Mail Exception : {} [authentication failure]", ex.getCause());
-			return false;
-		} catch (MailSendException ex) {
-			sndngMailVO.setSndngResultCode("F"); // 발송결과 실패
-			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.
-			LOGGER.error("Sending Mail Exception : {} [failure when sending the message]", ex.getCause());
+			LOGGER.error("Sending Mail Exception : {} [failure when sending the message]", ex.getMessage(), ex);
 			return false;
 		}
 

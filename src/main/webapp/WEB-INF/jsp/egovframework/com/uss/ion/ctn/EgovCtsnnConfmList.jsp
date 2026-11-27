@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -120,17 +122,17 @@
 <div class="board">
 	<h1><spring:message code="comUssIonCtn.ctsnnConfmList.titleList"/></h1><!-- 경조사승인관리 목록 -->
 
-	<form name="listForm" action="<c:url value='/uss/ion/ctn/EgovCtsnnConfmList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/ctn/EgovCtsnnConfmList.do" method="post">
     <input type="hidden" name="searchCondition">
 	<input type="hidden" name="ctsnnId">
     <input type="hidden" name="infrmlSanctnId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty ctsnnManageVO.pageIndex }">1</c:if><c:if test="${!empty ctsnnManageVO.pageIndex }"><c:out value='${ctsnnManageVO.pageIndex}'/></c:if>">
 
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+	<div class="search_box" title='<spring:message code="common.searchCondition.msg" />'><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnConfmList.searchKeyword"/> : </label><!-- 경조구분 -->
-			<select name="searchKeyword" title="<spring:message code="comUssIonCtn.ctsnnConfmList.searchKeyword"/>"><!-- 경조구분 -->
+			<select name="searchKeyword" title='<spring:message code="comUssIonCtn.ctsnnConfmList.searchKeyword"/>'><!-- 경조구분 -->
 	        	<option value="" <c:if test="${ctsnnManageVO.searchKeyword eq '' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.selectedAll"/></option><!-- 전체 -->
 	            <c:forEach items="${ctsnnCodeList}" var="result" varStatus="status">
 		       	   <option value="<c:out value="${result.code }"/>" <c:if test="${ctsnnManageVO.searchKeyword eq result.code }">selected</c:if>><c:out value="${result.codeNm }"/></option>
@@ -152,11 +154,11 @@
 		</div>
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnConfmList.searchNm"/> : </label><!-- 신청자 -->
-			<input name="searchNm" type="text" value="${ctsnnManageVO.searchNm}"  maxlength="100" title="<spring:message code="comUssIonCtn.ctsnnConfmList.searchNm"/>" /><!-- 신청자 -->
+			<input name="searchNm" type="text" value="${ctsnnManageVO.searchNm}"  maxlength="100" title='<spring:message code="comUssIonCtn.ctsnnConfmList.searchNm"/>' /><!-- 신청자 -->
 		</div>
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt"/> : </label><!-- 진행구분 -->
-			<select name="searchConfmAt" title="<spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt"/>"><!-- 진행구분 -->
+			<select name="searchConfmAt" title='<spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt"/>'><!-- 진행구분 -->
 		       	<option value=""  <c:if test="${ctsnnManageVO.searchConfmAt eq '' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.selectedAll"/></option><!-- 전체 -->
 		       	<option value="A" <c:if test="${ctsnnManageVO.searchConfmAt eq 'A' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.A"/></option><!-- 신청중 -->
 		       	<option value="C" <c:if test="${ctsnnManageVO.searchConfmAt eq 'C' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.C"/></option><!-- 승인 -->
@@ -168,7 +170,7 @@
 			<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectCtsnnConfmList(); return false;" />
 		</div>
 	</div>
-	</form>
+	</form:form>
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -211,7 +213,8 @@
 				</td>
 				<td><c:out value="${resultInfo.sanctnDt   }"/></td>
 				<td>
-				<form name="item" method="post" action="<c:url value='/uss/ion/ctn/EgovCtsnnConfm.do'/>">
+				<form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/ctn/EgovCtsnnConfm.do">
+		           	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		           	<input type="hidden" name="ctsnnId"    value="<c:out value="${resultInfo.ctsnnId    }"/>">
 		            <input class="btn01" type="submit" style="padding:6px 10px 6px 10px; background-color:#4688d2; color:#fff; font-size:11px; border-radius:1px;"
 		                  value="<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.agree"/></c:if><c:if test="${resultInfo.confmAt ne 'A'}"><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.detail"/> </c:if>"

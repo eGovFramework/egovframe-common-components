@@ -22,6 +22,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpCnm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -91,7 +92,7 @@ function fn_egov_inquire_cnsltanswerdetail(cnsltId) {
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
-	<form name="CnsltAnswerListForm" action="<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do'/>" method="post" onSubmit="fn_egov_search_cnsltdtlsanswer(); return false;">
+	<form:form name="CnsltAnswerListForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/cnm/CnsltAnswerListInqire.do" method="post" onSubmit="fn_egov_search_cnsltdtlsanswer(); return false;">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -111,7 +112,7 @@ function fn_egov_inquire_cnsltanswerdetail(cnsltId) {
 	<input name="cnsltId" type="hidden" value="">
 	<input name="passwordConfirmAt" type="hidden" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
@@ -147,11 +148,7 @@ function fn_egov_inquire_cnsltanswerdetail(cnsltId) {
 	  <tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-		<form name="linkForm" method="post" action="<c:url value='/uss/olp/cnm/CnsltAnswerDetailInqire.do'/>">
-    	<input name="cnsltId" type="hidden" value="${resultInfo.cnsltId}">
-		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-    	<span class="link"><input type="submit" value="<c:out value="${resultInfo.cnsltSj}"/>"></span>
-	    </form>
+		<a href="javascript:void(0);" onclick="fn_egov_inquire_cnsltanswerdetail('<c:out value="${resultInfo.cnsltId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.cnsltSj}"/></span></a>
 	    
 		</td>
 		<td><c:out value="${resultInfo.wrterNm}"/></td>
@@ -167,6 +164,8 @@ function fn_egov_inquire_cnsltanswerdetail(cnsltId) {
 	<div class="pagination">
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/></ul>
 	</div>
+</form:form>
+
 	
 	
 </div><!-- end div board -->

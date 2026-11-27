@@ -14,7 +14,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comUssIonBnt.bndtDiaryDetail.title"/></title><!-- 당직일지 상세 -->
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="bndtDiary" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -82,9 +80,9 @@ function fncDeleteBndtDiary() {
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnt/selectBndtDiary.do'/>?cmd=updt&bndtId=<c:out value='${bndtDiaryVO.bndtId}'/>&bndtDe=<c:out value='${bndtCeckManageVO.bndtDe}'/>" onclick="fncEgovBndtDiary(); return false;"><spring:message code="button.update" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnt/deleteBndtDiary.do'/>?bndtId=<c:out value='${bndtDiaryVO.bndtId}'/>&bndtDe=<c:out value='${bndtDiaryVO.bndtDe}'/>" onclick="fncDeleteBndtDiary(); return false;"><spring:message code="button.delete" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncEgovBndtDiary(); return false;"><spring:message code="button.update" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncDeleteBndtDiary(); return false;"><spring:message code="button.delete" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
 			</li>
 		</ul>
 	</div>

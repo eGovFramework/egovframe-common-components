@@ -69,7 +69,7 @@ public class EgovBBSMasterDAO extends EgovComAbstractDAO {
 		return (BlogVO) selectOne("BBSMaster.selectBlogDetail", blogVO);
 	}
 
-	public List<BlogVO> selectBlogListPortlet(BlogVO blogVO) throws Exception{
+	public List<BlogVO> selectBlogListPortlet(BlogVO blogVO) {
 		return selectList("BBSMaster.selectBlogListPortlet", blogVO);
 	}
 

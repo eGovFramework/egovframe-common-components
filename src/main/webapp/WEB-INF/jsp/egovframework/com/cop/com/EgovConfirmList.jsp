@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/cop/com/"/>
 <%
  /**
@@ -75,7 +76,7 @@
 <body>
 
 <div id="border" style="width:730px">
-<form name="frm" action ="<c:url value='/cop/com/forUpdateConfirmRequest.do' />" method="post">
+<form:form name="frm" modelAttribute="searchVO" action ="<c:url value='/cop/com/forUpdateConfirmRequest.do' />" method="post">
 	<input type="hidden" name="confmNumber" value="0" />
 	<input type="hidden" name="confmerId" value='<c:out value="${searchVO.confmerId}"/>' />
 
@@ -111,7 +112,7 @@
 	  </th>
 	 </tr>
 	</table>
-</form>
+</form:form>
 	<table width="100%" cellpadding="8" class="table-line">
 	 <thead>
 	  <tr>

@@ -12,13 +12,15 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -79,12 +81,13 @@ function fn_egov_search_RecentSrchwrd(){
 </script>
 </head>
 
-<sic id="content" style="width:712px">
+<body>
+
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-	<form name="listForm" action="<c:url value=''/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="" method="post">
 	
 	<h1><spring:message code="ussIonRsm.recentSrchwrdResultList.recentSrchwrdResultList"/></h1><!-- 최근검색어결과 목록 -->
 	
@@ -135,7 +138,7 @@ function fn_egov_search_RecentSrchwrd(){
 			 <%-- 데이터를 화면에 출력해준다 --%>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
-				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+				<td><c:out value="${(recentSrchwrd.pageIndex-1) * recentSrchwrd.pageSize + status.count}"/></td>
 				<td>
 					<c:out value="${resultInfo.srchwrdNm}"/>
 				</td>
@@ -161,6 +164,7 @@ function fn_egov_search_RecentSrchwrd(){
 <input name="srchwrdId" type="hidden" value="">
 <input name="searchMode" type="hidden" value="">
 <input name="cmd" type="hidden" value="">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-
-</form>
+<input name="pageIndex" type="hidden" value="<c:out value='${recentSrchwrd.pageIndex}'/>"/>
+</form:form>
+</body>
+</html>

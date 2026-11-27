@@ -21,10 +21,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpCns.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -200,7 +202,6 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 
 	// 사이트 키값(siteId) 셋팅.
 	document.CnsltListForm.cnsltId.value = cnsltId;
-//	document.CnsltListForm.action = "<c:url value='/uss/olp/cns/CnsltDetailInqire.do'/>";
 	document.CnsltListForm.action = "<c:url value='/uss/olp/cns/CnsltInqireCoUpdt.do'/>";
   	document.CnsltListForm.submit();
 
@@ -211,7 +212,7 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 <body onLoad="fn_egov_initl_cnsltlist();">
 
 <div class="board">
-<form name="CnsltListForm" action="<c:url value='/uss/olp/cns/CnsltListInqire.do'/>" method="post" onSubmit="fn_egov_search_cnsltdtls(); return false;">
+<form:form name="CnsltListForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/cns/CnsltListInqire.do" method="post" onSubmit="fn_egov_search_cnsltdtls(); return false;">
 
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -228,7 +229,7 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/olp/cns/CnsltDtlsRegistView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/cns/CnsltDtlsRegistView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -247,7 +248,7 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 <input name="cnsltId" type="hidden" value="">
 <input name="passwordConfirmAt" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>
+
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -284,13 +285,8 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 	  <tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-		<form name="linkForm" method="post" action="<c:url value='/uss/olp/cns/CnsltInqireCoUpdt.do'/>">
-	    	<input name="cnsltId" type="hidden" value="${resultInfo.cnsltId}">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			<input name="passwordConfirmAt" type="hidden" value="">
-	    	<span class="link"><input type="submit" value="<c:out value="${resultInfo.cnsltSj}"/>"></span>
-	    </form>
-		<%-- <a href="<c:url value='/uss/olp/cns/CnsltInqireCoUpdt.do'/>?pageIndex=${searchVO.pageIndex}&cnsltId=${resultInfo.cnsltId}&passwordConfirmAt="><c:out value="${resultInfo.cnsltSj}"/></a> --%>
+		<a href="javascript:void(0);" onclick="fn_egov_inquire_cnsltdetail('<c:out value="${resultInfo.cnsltId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.cnsltSj}"/></span></a>
+		<%-- <a href="#" onclick="fn_egov_postNavigate("<c:url value='/uss/olp/cns/CnsltInqireCoUpdt.do' />", {"pageIndex": "${searchVO.pageIndex}"}); return false;"><c:out value="${resultInfo.cnsltSj}"/></a> --%>
 		</td>
 		<td><c:out value="${resultInfo.wrterNm}"/></td>
 		<td><c:out value="${fn:substring(resultInfo.writngDe, 0, 10)}"/></td>
@@ -305,6 +301,8 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 	<div class="pagination">
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/></ul>
 	</div>
+</form:form>
+
 	
 	
 </div><!-- end div board -->

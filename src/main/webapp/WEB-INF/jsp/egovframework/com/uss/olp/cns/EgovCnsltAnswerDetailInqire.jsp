@@ -27,6 +27,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.detail" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -60,7 +61,8 @@ function fn_egov_updt_cnsltdtlsanswer(cnsltId){
 <body>
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form name="CnsltManageForm" action="<c:url value='/uss/olp/cnm/CnsltDtlsAnswerUpdtView.do'/>" method="post"  onsubmit="fn_egov_updt_cnsltdtlsanswer('<c:out value="${result.cnsltId}"/>'); return false;">
+<form name="CnsltManageForm" action="${pageContext.request.contextPath}/uss/olp/cnm/CnsltDtlsAnswerUpdtView.do" method="post"  onsubmit="fn_egov_updt_cnsltdtlsanswer('<c:out value="${result.cnsltId}"/>'); return false;">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -153,7 +155,7 @@ function fn_egov_updt_cnsltdtlsanswer(cnsltId){
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
 				<textarea name="cnsltCn" cols="300" rows="15" style="height:100px;" readonly title="${title}"><c:out value="${result.cnsltCn}"/></textarea>
- 				<%--c:out value="${fn:replace(result.cnsltCn , crlf , '<br/>')}" escapeXml="false" --%>
+ 				<%--c:out value="${fn:replace(result.cnsltCn , crlf , '<br/>')}" --%>
 			</td>
 		</tr>
 		<!-- 파일첨부 -->
@@ -226,7 +228,7 @@ function fn_egov_updt_cnsltdtlsanswer(cnsltId){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.answer" />" title="<spring:message code="button.answer" /> <spring:message code="input.button" />" /><!-- 답변 -->
-		<span class="btn_s"><a href="<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do' />'); return false;"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div><div style="clear:both;"></div>
 	
 </div>

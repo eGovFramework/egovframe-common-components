@@ -116,14 +116,14 @@
 	<update id="updateKnoSpecialist">
 		
             UPDATE  COMTNDAMPRO 
-               SET  EXPERT_GRAD       = #{appTypeNm}
+               SET  EXPERT_GRAD       = #{appTypeCd}
                  ,  EXPERT_DC	      = #{speExpCn} 
                  ,  EXPERT_CONFM_DE	  = #{speConfmDe}                            
                  ,  LAST_UPDUSR_ID    = #{lastUpdusrId}               
                  ,  LAST_UPDT_PNTTM = sysdate()
             WHERE  EXPERT_ID       	  = #{speId}
             AND    KNWLDG_TY_CODE 	  = #{knoTypeCd}
-            AND    EXPERT_GRAD		  = #{appTypeCd}
+            <!-- AND    EXPERT_GRAD		  = #{appTypeCd} -->
 		
 	</update>
 

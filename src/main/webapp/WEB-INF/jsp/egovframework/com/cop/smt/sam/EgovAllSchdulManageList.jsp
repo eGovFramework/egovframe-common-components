@@ -24,10 +24,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtSam.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -44,27 +47,24 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_AllSchdulManage(){
-	location.href = "<c:url value='/cop/smt/sam/EgovAllSchdulManageRegist.do' />";
+	fn_egov_postNavigate("<c:url value='/cop/smt/sam/EgovAllSchdulManageRegist.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_AllSchdulManage(){
-	location.href = "<c:url value='/cop/smt/sam/EgovAllSchdulManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/cop/smt/sam/EgovAllSchdulManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_AllSchdulManage(schdulKindCode, schdulId){
-	var vFrom = document.listForm;
-	vFrom.schdulId.value = schdulId;
-
 	if(schdulKindCode == "1"){
-		vFrom.action = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />";
-	}else{
-		vFrom.action = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />";
+		location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId) + "&linkType=asm";
+		return;
 	}
-	vFrom.submit();
+
+	location.href = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId) + "&linkType=asm";
 }
 
 /* ********************************************************
@@ -83,7 +83,6 @@ function fn_egov_search_AllSchdulManage(){
 ******************************************************** */
 function fn_egov_open_Popup(cnt, schdulId){
 
-	/* var opener = window.dialogArguments */
 	var opener;
  
 	if (window.dialogArguments) {
@@ -102,7 +101,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 </head>
 <body>
 
-<form name="listForm" action="<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do'/>" method="post"> 
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/smt/sam/EgovAllSchdulManageList.do" method="post"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -175,7 +174,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 
 <input type="hidden" id="pageIndex" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
 <input type="hidden" id="schdulId" name="schdulId" value="">
-</form>
+</form:form>
  
 </body>
 </html>

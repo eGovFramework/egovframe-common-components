@@ -35,26 +35,28 @@ import egovframework.com.ext.ldapumt.service.LdapObject;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
-*
-* LDAP에서 조회된 결과를 vo에 맵핑해주는 클래 
-* @author 전우성
-* @since 2014.10.12
-* @version 1.0
-* @see
-*
-* <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2014.10.12  전우성          최초 생성
-*   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-*
-* </pre>
-*/
+ *
+ * LDAP에서 조회된 결과를 vo에 맵핑해주는 클래
+ * 
+ * @author 전우성
+ * @since 2014.10.12
+ * @version 1.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.10.12  전우성          최초 생성
+ *   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2025.06.21  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드), UselessParentheses(쓸모없는 괄호)
+ *
+ *      </pre>
+ */
 public class ObjectMapper<T> implements ContextMapper<Object> {
 
-	private Class<T> type;
+	private final Class<T> type;
 
 	public ObjectMapper(Class<T> class1) {
 		this.type = class1;
@@ -63,15 +65,16 @@ public class ObjectMapper<T> implements ContextMapper<Object> {
 	/**
 	 * ContextAdapter에서 받아온 객체를 vo로 변환한다.
 	 */
+	@Override
 	public Object mapFromContext(Object arg0) throws NamingException {
-		DirContextAdapter adapter = (DirContextAdapter)arg0;
+		DirContextAdapter adapter = (DirContextAdapter) arg0;
 		Attributes attrs = adapter.getAttributes();
-		
+
 		LdapObject vo = null;
-		
+
 		try {
 			vo = (LdapObject) type.newInstance();
-		//2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			// 2017-02-13 이정은 시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 		} catch (InstantiationException e2) {
 			throw new RuntimeException(e2);
 		} catch (IllegalAccessException e2) {
@@ -79,7 +82,7 @@ public class ObjectMapper<T> implements ContextMapper<Object> {
 		}
 
 		vo.setDn(adapter.getDn().toString());
-		
+
 		BeanInfo beanInfo;
 		try {
 			beanInfo = Introspector.getBeanInfo(type);
@@ -91,19 +94,26 @@ public class ObjectMapper<T> implements ContextMapper<Object> {
 
 		if (propertyDescriptors != null) {
 			for (PropertyDescriptor descriptor : propertyDescriptors) {
-				if (attrs.get(descriptor.getName()) != null)
+				if (attrs.get(descriptor.getName()) != null) {
 					try {
 						Class<?> o = descriptor.getPropertyType();
-						if (o == int.class)
+						if (o == int.class) {
+							// KISA 보안약점 조치 (2018-10-29, 윤창원)
+							PropertyUtils.setProperty(vo, descriptor.getName(), Integer
+									.valueOf(EgovStringUtil.isNullToString(attrs.get(descriptor.getName()).get())));
+						}
+						if (o == String.class) {
+							// KISA 보안약점 조치 (2018-10-29, 윤창원)
 							PropertyUtils.setProperty(vo, descriptor.getName(),
-									Integer.valueOf(EgovStringUtil.isNullToString((String) attrs.get(descriptor.getName()).get())));//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						if (o == String.class)
-							PropertyUtils.setProperty(vo, descriptor.getName(), (String) attrs.get(EgovStringUtil.isNullToString(descriptor.getName())).get());//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						if (o == Boolean.class)
+									attrs.get(EgovStringUtil.isNullToString(descriptor.getName())).get());
+						}
+						if (o == Boolean.class) {
+							// KISA 보안약점 조치 (2018-10-29, 윤창원)
 							PropertyUtils.setProperty(vo, descriptor.getName(),
-									"Y".equals(((String) attrs.get(descriptor.getName()).get())));//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		
-					//2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]	
+									"Y".equals(attrs.get(descriptor.getName()).get()));
+						}
+
+						// 2017-02-13 이정은 시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e);
 					} catch (InvocationTargetException e) {
@@ -111,10 +121,10 @@ public class ObjectMapper<T> implements ContextMapper<Object> {
 					} catch (NoSuchMethodException e) {
 						throw new RuntimeException(e);
 					}
-				
+				}
+
 			}
 		}
-
 
 		return vo;
 	}

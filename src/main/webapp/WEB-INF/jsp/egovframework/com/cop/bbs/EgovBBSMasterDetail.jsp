@@ -46,7 +46,8 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="BBSMasterForm" action="<c:url value='/cop/bbs/updateBBSMasterView.do'/>" method="post">
+<form name="BBSMasterForm" action="${pageContext.request.contextPath}/cop/bbs/updateBBSMasterView.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2><!-- 게시판 상세조회 -->
@@ -92,7 +93,7 @@
 		<tr>
 			<th><spring:message code="comCopBbs.boardMasterVO.detail.bbsIntrcn" /></th>
 			<td colspan="5" class="cnt">
-				<c:out value="${fn:replace(result.bbsIntrcn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.bbsIntrcn}"/></span>
 			</td>
 		</tr>
 		

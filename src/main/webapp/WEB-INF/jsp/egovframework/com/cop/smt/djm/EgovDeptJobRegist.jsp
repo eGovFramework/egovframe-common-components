@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,11 +31,9 @@
 <title><spring:message code="comCopSmtDjm.deptJobRegist.title" /></title><!-- 부서업무 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="deptJobVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_DeptJob(){
 		var maxFileNum = document.getElementById('posblAtchFileNumber').value;
@@ -89,28 +86,13 @@
 
 
 	
-	/* ********************************************************
-	* 아이디  팝업창열기
-	******************************************************** */
-	function fn_egov_charger_DeptJob(strTitle, frmUniqId, frmEmplNo, frmEmplyrNm, frmOrgnztNm){
-		var arrParam = new Array(6);
-		arrParam[0] = window;
-		arrParam[1] = strTitle;
-		arrParam[2] = frmUniqId;
-		arrParam[3] = frmEmplNo;
-		arrParam[4] = frmEmplyrNm;
-		arrParam[5] = frmOrgnztNm;
-
-	 	window.showModalDialog("<c:url value='/cop/smt/djm/selectChargerListPopup.do' />", arrParam,"dialogWidth=800px;dialogHeight=500px;resizable=yes;center=yes");
-	}
-
 </script>
 </head>
 <body onLoad="fn_egov_init_DeptJob()" style="margin-top:0">
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="deptJobVO" name="deptJobVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/insertDeptJob.do' />" enctype="multipart/form-data">
+<form:form modelAttribute="deptJobVO" name="deptJobVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/insertDeptJob.do" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -134,7 +116,7 @@
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobBxNm" /> <span class="pilsu">*</span></th><!-- 부서업무함명 -->
 			<td class="left">
 			    <form:input path="deptJobBxNm" size="30" readonly="true" maxlength="255" title="부서업무함명" cssStyle="width:188px"/>
-				<a href="<c:url value='/cop/smt/djm/selectDeptJobBxListPopup.do' />" target="_blank"  title="새 창으로 이동" onclick="fn_egov_dept_DeptJobBx('typeDeptJobBx'); return false;">
+				<a href="javascript:void(0);" onclick="fn_egov_dept_DeptJobBx('typeDeptJobBx'); return false;">
 					<img alt="부서업무함" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="부서업무함">
 				</a>
 				<div><form:errors path="deptJobBxNm" cssClass="error"/></div>
@@ -159,9 +141,6 @@
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.chargerNm" /> <span class="pilsu">*</span></th>
 			<td class="left">
 			    <form:input path="chargerNm" size="73" cssClass="txaIpt" readonly="true" maxlength="10" title="담당자" cssStyle="width:188px"/>
-				<a href="<c:url value='/cop/smt/djm/selectChargerListPopup.do' />" target="_blank" title="새 창으로 이동" onclick="fn_egov_charger_DeptJob('담당자', 'chargerId', '', 'chargerNm', '');return false;">
-					<img alt="담당자" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="담당자" />
-				</a>
 				<div><form:errors path="chargerNm" cssClass="error"/></div>
 		       <form:hidden path="chargerId" />       
 			</td>
@@ -195,7 +174,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_insert_deptjob(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/djm/selectDeptJobList.do'/>?searchWrd=<c:out value='${deptJobVO.searchWrd}'/>&amp;searchCnd=<c:out value='${deptJobVO.searchCnd}'/>&amp;pageIndex=<c:out value='${deptJobVO.pageIndex}'/>&amp;searchDeptId=<c:out value='${deptJobVO.searchDeptId}'/>&amp;searchDeptJobBxId=<c:out value='${deptJobVO.searchDeptJobBxId}'/>" onclick="fn_egov_list_deptjob(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_deptjob(); return false;"><spring:message code="button.list" /></a></span>
 	</div>	
 </div>
 

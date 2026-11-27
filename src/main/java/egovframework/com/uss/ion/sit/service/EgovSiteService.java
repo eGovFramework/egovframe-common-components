@@ -6,9 +6,9 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovSiteService {
 
-	List<SiteVO> selectSiteList(SiteVO searchVO);
+	List<SiteVO> selectSiteList(SiteVO siteVO);
 
-	int selectSiteListCnt(SiteVO searchVO);
+	int selectSiteListCnt(SiteVO siteVO);
 
 	SiteVO selectSiteDetail(SiteVO siteVO) throws Exception;
 

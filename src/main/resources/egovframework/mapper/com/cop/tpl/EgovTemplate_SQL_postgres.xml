@@ -149,7 +149,7 @@
 			 
  	<update id="deleteTemplateInf" parameterType="egovframework.com.cop.tpl.service.TemplateInf">
  		
-			UPDATE COMTNBBSMASTER SET 
+			UPDATE COMTNTMPLATINFO SET 
 				USE_AT = 'N',
 				LAST_UPDUSR_ID = #{lastUpdusrId},
 				LAST_UPDT_PNTTM = NOW()

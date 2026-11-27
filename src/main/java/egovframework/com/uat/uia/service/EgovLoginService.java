@@ -93,9 +93,8 @@ public interface EgovLoginService {
 	 * 비밀번호를 수정한후 경과한 날짜를 조회한다.
 	 * @param vo LoginVO
 	 * @return int
-	 * @exception Exception
 	 */    
-    int selectPassedDayChangePWD(LoginVO vo) throws Exception;
+    int selectPassedDayChangePWD(LoginVO vo);
 
 	/**
 	 * 디지털원패스 인증 회원 조회한다.

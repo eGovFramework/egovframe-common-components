@@ -23,10 +23,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssSamStp.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -72,7 +74,7 @@ function fn_egov_inquire_stplatdetail(useStplatId) {
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="StplatListForm" action="<c:url value='/uss/sam/stp/StplatListInqire.do'/>" method="post" onSubmit="fn_egov_search_stplatcn(); return false;"> 
+	<form:form name="StplatListForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/sam/stp/StplatListInqire.do" method="post" onSubmit="fn_egov_search_stplatcn(); return false;"> 
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
@@ -87,13 +89,13 @@ function fn_egov_inquire_stplatdetail(useStplatId) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/sam/stp/StplatCnRegistView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/sam/stp/StplatCnRegistView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 	<input name="useStplatId" type="hidden" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
+	
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -124,11 +126,7 @@ function fn_egov_inquire_stplatdetail(useStplatId) {
 		<td><c:out value="${resultInfo.useStplatNm}"/></td>
 		<td class="left">
 
-		<form name="subForm" method="post" action="<c:url value='/uss/sam/stp/StplatDetailInqire.do'/>">
-			<input name="useStplatId" type="hidden" value="<c:out value="${resultInfo.useStplatId}"/>">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	    	<span class="link"><input type="submit" value="<c:out value='${fn:substring(resultInfo.useStplatCn, 0, 50)}'/>"></span>
-	    </form>
+		<a href="javascript:void(0);" onclick="fn_egov_inquire_stplatdetail('<c:out value="${resultInfo.useStplatId}"/>'); return false;"><span class="link"><c:out value='${fn:substring(resultInfo.useStplatCn, 0, 50)}'/></span></a>
 	    
 		</td>
 		<td><c:out value='${resultInfo.frstRegistPnttm}'/></td>	
@@ -141,11 +139,13 @@ function fn_egov_inquire_stplatdetail(useStplatId) {
 	<div class="pagination">
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/></ul>
 	</div>
+</form:form>
+
 	
 	<!-- 등록버튼 -->
 	<!-- 
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/sam/stp/StplatCnRegistView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/sam/stp/StplatCnRegistView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 	</div>
 	 -->
 	

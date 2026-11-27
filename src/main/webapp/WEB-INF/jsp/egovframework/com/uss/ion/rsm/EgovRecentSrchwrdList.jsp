@@ -14,7 +14,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -22,10 +22,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="ajax" uri="http://ajaxtags.sourceforge.net/tags/ajaxtags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="ussIonRsm.recentSrchwrdList.recentSrchwrdList"/></title><!-- 최근검색어 관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -34,7 +37,9 @@
 
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/uss/ion/rsm/recentSrchwrd.js' />"></script>
 <script type="text/javaScript" language="javascript">
+
 /* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -57,41 +62,53 @@ function fn_egov_detail_RecentSrchwrd(srchwrdManageId){
  * 검색 함수
  ******************************************************** */
 function fn_egov_search_RecentSrchwrd(){
-	var vFrom = document.listForm;
-
-	vFrom.action = "<c:url value='/uss/ion/rsm/listRecentSrchwrd.do' />";
-	vFrom.submit();
-
+	var searchKeyword = document.listForm.searchKeyword.value;
+	var srchwrdManageId = "SRCMGR_0000000000001"; // 기본값, 실제로는 동적으로 설정 필요
+	
+	document.listForm.pageIndex.value = 1;
+	
+	// 검색어가 있을 경우 최근검색어로 저장 (비동기 처리)
+	if(searchKeyword && searchKeyword.trim() !== '') {
+		// 검색 폼 제출과 동시에 검색어 저장 (비동기이므로 제출을 막지 않음)
+		fn_egov_regist_RecentSrchwrdResult(srchwrdManageId, searchKeyword, '', document.listForm);
+	}
+	
+	document.listForm.submit();
 }
 
 $(document).ready(function(){
 	
 	var ajaxUrl = "<c:url value='/uss/ion/rsm/listRecentSrchwrdResultSerach.do' />";
-	var ajaxParam = {
-		srchwrdManageId: "SRCMGR_0000000000001"
-		,searchKeyword: ""
-	};
+	var defaultSrchwrdManageId = "SRCMGR_0000000000001"; // 기본값, 실제로는 동적으로 설정 필요
 	
     $("#searchKeyword").autocomplete({
 		source: function(request, response){
 			$.ajax({
 				url: ajaxUrl
-				,contentType: "application/x-www-form-urlennocoded; charset=UTF-8" //
-				,data: ajaxParam //after the input event
+				,contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+				,data: {
+					srchwrdManageId: defaultSrchwrdManageId
+					,searchKeyword: request.term
+				}
 				,dataType: 'xml'
 				,success: function(returnData, status) {
 					var items = [];
 					$(returnData).find("name").each(function(idx,data) {
-						console.log($(data).text())
-						items.push($(data).text());
+						var text = $(data).text();
+						if(text && text.trim() !== '') {
+							items.push(text);
+						}
 					});
 					response(items);
+				}
+				,error: function(xhr, status, error) {
+					response([]);
 				}
 			});
 		},
 		minLength : 1,
 		select: function(event, ui){
-		   $("#searchKeyword").val(this.value);
+		   $("#searchKeyword").val(ui.item.value);
 		}
     });
     
@@ -103,29 +120,31 @@ $(document).ready(function(){
 
 <div class="board">
 	<h1><spring:message code="ussIonRsm.recentSrchwrdList.recentSrchwrdList"/></h1><!-- 최근검색어관리 목록 -->
-	<form name="listForm" action="<c:url value=''/>" method="post">
-	<div class="search_box" title="<spring:message code="common.noScriptTitle.msg"/>"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/rsm/listRecentSrchwrd.do" method="post" onSubmit="fn_egov_search_RecentSrchwrd(); return false;">
+	<div class="search_box" title="<spring:message code="common.searchCondition.msg"/>"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
 				<select name="searchCondition" id="searchCondition" class="select" title="<spring:message code="title.searchCondition"/>"><!-- 검색조건선택 -->
 					<option value=''><spring:message code="input.select"/></option><!-- --선택하세요-- -->
-					<option value='SRCHWRD_MANAGE_NM' <c:if test="${searchCondition == 'SRCHWRD_MANAGE_NM'}">selected</c:if>><spring:message code="ussIonRsm.recentSrchwrdList.srchwrdManageNm"/></option><!-- 최근검색어관리명 -->
-					<option value='SRCHWRD_CONECT_URL' <c:if test="${searchCondition == 'SRCHWRD_CONECT_URL'}">selected</c:if>><spring:message code="ussIonRsm.recentSrchwrdList.srchwrdManageUrl"/></option><!-- 최근검색어관리URL -->
+					<option value='SRCHWRD_MANAGE_NM' <c:if test="${recentSrchwrd.searchCondition == 'SRCHWRD_MANAGE_NM'}">selected="selected"</c:if>><spring:message code="ussIonRsm.recentSrchwrdList.srchwrdManageNm"/></option><!-- 최근검색어관리명 -->
+					<option value='SRCHWRD_CONECT_URL' <c:if test="${recentSrchwrd.searchCondition == 'SRCHWRD_CONECT_URL'}">selected="selected"</c:if>><spring:message code="ussIonRsm.recentSrchwrdList.srchwrdManageUrl"/></option><!-- 최근검색어관리URL -->
 				</select>
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${searchVO.searchKeyword}"/>" maxlength="35" size="10" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 검색단어입력 -->
-
-				<!--Ajax Tags 등록 -->				
-				<input type="hidden" name="rsm_url" id="rsm_url" value="<c:url value='/uss/ion/rsm/registRecentSrchwrdResult.do'/>" >
-				<span class="btn_b"><a id="btnInquire" href="" onclick="fn_egov_regist_RecentSrchwrdResult('SRCMGR_0000000000001',$('searchKeyword').value,'fn_egov_search_RecentSrchwrd()', document.listForm); return false;" title='<spring:message code="button.inquire" />'><spring:message code="button.inquire" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rsm/registRecentSrchwrdView.do' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-				<!--Ajax Tags 끝 -->
+			</li>
+			<!-- 검색키워드 및 조회버튼 -->
+			<li>
+				<input id="searchKeyword" class="s_input" name="searchKeyword" type="text" value="<c:out value="${recentSrchwrd.searchKeyword}"/>" maxlength="35" size="35" title="<spring:message code="title.search"/> <spring:message code="input.input"/>" /><!-- 검색단어입력 -->
+				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/rsm/registRecentSrchwrdView.do' />'); return false;" title='<spring:message code="button.create" /> <spring:message code="input.button" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 		<input name="srchwrdManageId" type="hidden" value="">
 		<input name="searchMode" type="hidden" value="">
-		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+		<input name="pageIndex" type="hidden" value="<c:out value='${recentSrchwrd.pageIndex}'/>"/>
+		<!--Ajax Tags 등록 -->
+		<input type="hidden" name="rsm_url" id="rsm_url" value="<c:url value='/uss/ion/rsm/registRecentSrchwrdResult.do'/>" >
+		<!--Ajax Tags 끝 -->
+	
 
 	<table class="board_list">
 		<caption></caption>
@@ -151,20 +170,13 @@ $(document).ready(function(){
 			<%-- 데이터를 화면에 출력해준다 --%>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
-				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+				<td><c:out value="${(recentSrchwrd.pageIndex-1) * recentSrchwrd.pageSize + status.count}"/></td>
 				<td>
-					<form name="subForm" method="post" action="<c:url value='/uss/ion/rsm/detailRecentSrchwrd.do'/>">
-						<input name="srchwrdManageId" type="hidden" value="${resultInfo.srchwrdManageId}">
-						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-						<input class="link" type="submit" value="<c:out value="${resultInfo.srchwrdManageNm}"/>" onclick="fn_egov_detail_RecentSrchwrd('${resultInfo.srchwrdManageId}'); return false;">
-					</form>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_RecentSrchwrd('${resultInfo.srchwrdManageId}'); return false;"><span class="link"><c:out value="${resultInfo.srchwrdManageNm}"/></span></a>
 				</td>
 				<td><c:out value="${resultInfo.srchwrdManageUrl}"/></td>
 				<td>
-					<form name="subFormSrchwrdResult" method="post" action="<c:url value='/uss/ion/rsm/listRecentSrchwrdResult.do'/>">
-						<input name="srchwrdManageId" type="hidden" value="${resultInfo.srchwrdManageId}">
-						<input class="btn01" type="submit" value="<spring:message code="ussIonRsm.recentSrchwrdList.view"/>" /><!-- 보기 -->
-					</form>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_RecentSrchwrd('${resultInfo.srchwrdManageId}'); return false;"><span class="link"><spring:message code="ussIonRsm.recentSrchwrdList.view"/></span></a>
 				</td>
 				<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 				<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
@@ -188,6 +200,8 @@ $(document).ready(function(){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

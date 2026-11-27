@@ -62,6 +62,7 @@ public class BackupJobListener implements JobListener {
 	 * Job Listener 이름을 리턴한다.
 	 * @see org.quartz.JobListener#getName()
 	 */
+	@Override
 	public String getName() {
 		return this.getClass().getName();
 	}
@@ -72,10 +73,17 @@ public class BackupJobListener implements JobListener {
 	 * @param jobContext JobExecutionContext
 	 * @see org.quartz.JobListener#jobToBeExecuted(JobExecutionContext jobContext)
 	 */
+	@Override
 	public void jobToBeExecuted(JobExecutionContext jobContext) {
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+
+		// 백업 작업이 아니면 처리하지 않음
+		if (!dataMap.containsKey("backupOpertId")) {
+			return;
+		}
+
 		LOGGER.debug("job[{}] jobToBeExecuted", jobContext.getJobDetail().getKey().getName());
 		BackupResult backupResult = new BackupResult();
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		try {
 			// 결과 값 세팅.
 			backupResult.setBackupResultId(idgenService.getNextStringId());
@@ -92,7 +100,7 @@ public class BackupJobListener implements JobListener {
 
 			backupResult.setLastUpdusrId("SYSTEM");
 			backupResult.setFrstRegisterId("SYSTEM");
-			
+
 			if (backupResult.getBackupOpertId() != null && !backupResult.getBackupOpertId().equals("")) {	// TODO
 				egovBackupOpertService.insertBackupResult(backupResult);
 			} else {
@@ -118,13 +126,20 @@ public class BackupJobListener implements JobListener {
 	 * @param jobContext JobExecutionContext
 	 * @see org.quartz.JobListener#jobWasExecuted(JobExecutionContext jobContext)
 	 */
+	@Override
 	public void jobWasExecuted(JobExecutionContext jobContext, JobExecutionException jee) {
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+
+		// 백업 작업이 아니면 처리하지 않음
+		if (!dataMap.containsKey("backupOpertId")) {
+			return;
+		}
+
 		LOGGER.debug("job[{}] jobWasExecuted", jobContext.getJobDetail().getKey().getName());
 		LOGGER.debug("job[{}] 수행시간 : {}, {}", jobContext.getJobDetail().getKey().getName(), jobContext.getFireTime(), jobContext.getJobRunTime());
 
 		boolean jobResult = false;
 		BackupResult backupResult = new BackupResult();
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		try {
 			// 결과 값 세팅.
 			backupResult.setBackupResultId(dataMap.getString("backupResultId"));
@@ -181,11 +196,18 @@ public class BackupJobListener implements JobListener {
 	 *
 	 * @see org.quartz.JobListener#jobExecutionVetoed(JobExecutionContext jobContext)
 	 */
+	@Override
 	public void jobExecutionVetoed(JobExecutionContext jobContext) {
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+
+		// 백업 작업이 아니면 처리하지 않음
+		if (!dataMap.containsKey("backupOpertId")) {
+			return;
+		}
+
 		LOGGER.debug("job[{}] jobExecutionVetoed", jobContext.getJobDetail().getKey().getName());
 
 		BackupResult backupResult = new BackupResult();
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		try {
 			// 결과 값 세팅.
 			backupResult.setBackupResultId(dataMap.getString("backupResultId"));

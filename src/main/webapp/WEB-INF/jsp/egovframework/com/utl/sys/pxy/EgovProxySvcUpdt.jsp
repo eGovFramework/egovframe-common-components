@@ -13,7 +13,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 --%>
 
@@ -23,7 +23,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPxy.proxySvc.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,8 +32,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css' />">
 <title>${pageTitle} <spring:message code="title.update" /></title>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="proxySvc" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 function fncSelectProxySvcList() {
@@ -124,6 +123,7 @@ function ipValidate(ipValue) {
 	<h2><spring:message code="comUtlSysPxy.proxySvcUpdtl.title" /></h2><!-- 프록시설정 수정 -->
 
     <form:form modelAttribute="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/updtProxySvc.do">
+    <input type="hidden" name="proxyId" value="<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>">
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -132,15 +132,9 @@ function ipValidate(ipValue) {
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUtlSysPxy.proxySvc.proxyId.label" /> <span class="pilsu">*</span></th>
-			<td class="left">
-			    <input name="proxyId" id="proxyId" type="text" value="<c:out value='${proxySvc.proxyId}'/>" size="30" class="readOnlyClass" readOnly>
-			</td>
-		</tr>
-		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.proxyNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="proxyNm" id="proxyNm" type="text" value="<c:out value='${proxySvc.proxyNm}'/>" maxLength="60" size="60" >&nbsp;<form:errors path="proxyNm" />
+			    <input name="proxyNm" id="proxyNm" type="text" value="<c:out value='${proxySvc.proxyNm}'/>" maxLength="30" size="30" >&nbsp;<form:errors path="proxyNm" />
 			</td>
 		</tr>
 		<tr>
@@ -162,7 +156,7 @@ function ipValidate(ipValue) {
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUtlSysPxy.proxySvc.svcDc.label" /> <span class="pilsu">*</span></th>
+			<th><spring:message code="comUtlSysPxy.proxySvc.svcDc.label" /></th>
 			<td class="left">
 			    <input name="svcDc" id="svcDc" type="text" value="<c:out value='${proxySvc.svcDc}'/>" maxLength="255" size="60" >
 			</td>
@@ -192,15 +186,15 @@ function ipValidate(ipValue) {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncProxySvcUpdate()" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>?pageIndex=<c:out value='${proxySvcVO.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvcVO.strProxyNm}"/>" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
+		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncProxySvcUpdate(); return false;" />
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	
     <input type="hidden" name="strPreSvcSttus" value="<c:out value='${proxySvc.svcSttus}'/>" />
     <!-- 검색조건 유지 -->
-    <input type="hidden" name="strProxyNm" value="<c:out value='${proxySvcVO.strProxyNm}'/>" />
-    <input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>" >
+    <input type="hidden" name="strProxyNm" value="<c:out value='${proxySvc.strProxyNm}'/>" />
+    <input type="hidden" name="pageIndex" value="<c:out value='${proxySvc.pageIndex}'/>" >
 </form:form>
 </div>
 </body>

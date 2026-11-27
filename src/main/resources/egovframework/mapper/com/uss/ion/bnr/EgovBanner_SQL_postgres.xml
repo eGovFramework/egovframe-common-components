@@ -51,6 +51,9 @@
                    FRST_REGIST_PNTTM     
               FROM COMTNBANNER   
              WHERE 1=1
+            <if test="userId != null and userId != ''">AND
+                FRST_REGISTER_ID = #{userId}
+            </if>
             <if test="searchCondition == 1">AND
                 BANNER_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
             </if>
@@ -63,6 +66,9 @@
             SELECT COUNT(*) totcnt
             FROM COMTNBANNER
             WHERE 1=1
+            <if test="userId != null and userId != ''">AND
+                FRST_REGISTER_ID = #{userId}
+            </if>
             <if test="searchCondition == 1">AND
                 BANNER_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
             </if>
@@ -85,7 +91,7 @@
         
     </select>
 
-    <insert id="insertBanner" parameterType="egovframework.com.uss.ion.bnr.service.Banner">
+    <insert id="insertBanner" parameterType="egovframework.com.uss.ion.bnr.service.BannerVO">
         
             INSERT INTO COMTNBANNER
                    (BANNER_ID,
@@ -111,7 +117,7 @@
         
     </insert>     
 
-    <update id="updateBanner" parameterType="egovframework.com.uss.ion.bnr.service.Banner">
+    <update id="updateBanner" parameterType="egovframework.com.uss.ion.bnr.service.BannerVO">
             UPDATE COMTNBANNER
                SET BANNER_NM = #{bannerNm},
                    LINK_URL = #{linkUrl},
@@ -127,7 +133,7 @@
              WHERE BANNER_ID = #{bannerId}    
     </update>    
     
-    <delete id="deleteBanner" parameterType="egovframework.com.uss.ion.bnr.service.Banner">
+    <delete id="deleteBanner" parameterType="egovframework.com.uss.ion.bnr.service.BannerVO">
         
             DELETE FROM COMTNBANNER
              WHERE BANNER_ID = #{bannerId}    
@@ -144,7 +150,7 @@
         
     </select>
 
-    <select id="selectBannerFile" parameterType="egovframework.com.uss.ion.bnr.service.Banner" resultMap="bannerImageFile">
+    <select id="selectBannerFile" parameterType="egovframework.com.uss.ion.bnr.service.BannerVO" resultMap="bannerImageFile">
         
             SELECT B.FILE_STRE_COURS AS FILE_STRE_COURS,
                    B.STRE_FILE_NM AS STRE_FILE_NM

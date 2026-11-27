@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssIonSit.siteVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -28,27 +27,19 @@
 <title>${pageTitle } <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="siteVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
-/* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.getElementById("siteVO").siteNm.focus();
-}
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_updt_site(form){
+	//input item Client-Side validate
 	if (!validateSiteVO(form)) {		 			
 		return false;		
-	} else {
-		
-		if(confirm("<spring:message code="common.update.msg" />")){	
-			form.submit();	
-		}					
+	}
+
+	if(confirm("<spring:message code="common.update.msg" />")){	
+		form.submit();	
 	}	
 }
 /* ********************************************************
@@ -60,7 +51,7 @@ function fn_egov_inqire_list() {
 }
 </script>
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>

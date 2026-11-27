@@ -45,7 +45,7 @@ function fn_egov_list_MeetingManage(){
 function fn_egov_modify_MeetingManage(){
 	var varFrom = document.getElementById("MeetingManageForm");
 
-	varFrom.action = "<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do' />";;
+	varFrom.action = "<c:url value='/uss/olp/mgt/EgovMeetingManageModifyView.do' />";;
 	varFrom.submit();
 }
 /* ********************************************************
@@ -65,7 +65,8 @@ function fn_egov_modify_MeetingManage(){
 </head>
 <body onLoad="fn_egov_init_MeetingManage();">
 
-<form name="MeetingManageForm"  id="MeetingManageForm" action="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do' />" method="post">
+<form name="MeetingManageForm"  id="MeetingManageForm" action="${pageContext.request.contextPath}/uss/olp/mgt/EgovMeetingManageDetail.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -189,18 +190,21 @@ function fn_egov_modify_MeetingManage(){
 	
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do'/>" method="post" style="display:inline">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/mgt/EgovMeetingManageModifyView.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_MeetingManage(); return false;" />
 		<input name="mtgId" type="hidden" value="${resultList[0].mtgId}">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>" method="post" style="display:inline">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/mgt/EgovMeetingManageDetail.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_MeetingManage(); return false;">
 		<input name="mtgId" type="hidden" value="${resultList[0].mtgId}">
 		<input name="cmd" type="hidden" value="del">
 		</form>
 		
-		<form name="formList" action="<c:url value='/uss/olp/mgt/EgovMeetingManageList.do'/>" method="post" style="display:inline">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olp/mgt/EgovMeetingManageList.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit"type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_MeetingManage(); return false;">
 		</form>
 	</div>

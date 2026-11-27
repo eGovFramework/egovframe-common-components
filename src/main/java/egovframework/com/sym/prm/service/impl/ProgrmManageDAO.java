@@ -21,6 +21,7 @@ import egovframework.com.sym.prm.service.ProgrmManageVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이  용          최초 생성
+ *   2026.06.17  이백행           [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -35,7 +36,7 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
      * @return List
      * @exception Exception
      */
-    public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception {
+    public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) {
         return selectList("progrmManageDAO.selectProgrmList_D", vo);
     }
 
@@ -43,7 +44,6 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * 프로그램목록 총건수를 조회한다.
 	 * @param vo ComDefaultVO
 	 * @return int
-	 * @exception Exception
 	 */
     public int selectProgrmListTotCnt(ComDefaultVO vo) {
         return (Integer)selectOne("progrmManageDAO.selectProgrmListTotCnt_S", vo);
@@ -53,9 +53,8 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * 프로그램 기본정보를 조회
 	 * @param vo ComDefaultVO
 	 * @return ProgrmManageVO
-	 * @exception Exception
 	 */
-	public ProgrmManageVO selectProgrm(ProgrmManageVO vo)throws Exception{
+	public ProgrmManageVO selectProgrm(ProgrmManageVO vo) {
 		return (ProgrmManageVO)selectOne("progrmManageDAO.selectProgrm_D", vo);
 	}
 
@@ -92,7 +91,7 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * @return int
 	 * @exception Exception
 	 */
-	public int selectProgrmNMTotCnt(ComDefaultVO vo) throws Exception{
+	public int selectProgrmNMTotCnt(ComDefaultVO vo) {
 		return (Integer)selectOne("progrmManageDAO.selectProgrmNMTotCnt", vo);
 	}
 
@@ -104,7 +103,7 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 
-	public List<ProgrmManageDtlVO> selectProgrmChangeRequstList(ComDefaultVO vo) throws Exception{
+	public List<ProgrmManageDtlVO> selectProgrmChangeRequstList(ComDefaultVO vo) {
 		return selectList("progrmManageDAO.selectProgrmChangeRequstList_D", vo);
 	}
 
@@ -124,14 +123,13 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * @return ProgrmManageDtlVO
 	 * @exception Exception
 	 */
-	public ProgrmManageDtlVO selectProgrmChangeRequst(ProgrmManageDtlVO vo)throws Exception{
+	public ProgrmManageDtlVO selectProgrmChangeRequst(ProgrmManageDtlVO vo) {
 		return (ProgrmManageDtlVO)selectOne("progrmManageDAO.selectProgrmChangeRequst_D", vo);
 	}
 
 	/**
 	 * 프로그램변경요청을 등록
 	 * @param vo ProgrmManageDtlVO
-	 * @exception Exception
 	 */
 	public void insertProgrmChangeRequst(ProgrmManageDtlVO vo){
 		insert("progrmManageDAO.insertProgrmChangeRequst_S", vo);
@@ -140,7 +138,6 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 프로그램변경요청을 수정
 	 * @param vo ProgrmManageDtlVO
-	 * @exception Exception
 	 */
 	public void updateProgrmChangeRequst(ProgrmManageDtlVO vo){
 		update("progrmManageDAO.updateProgrmChangeRequst_S", vo);
@@ -149,7 +146,6 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 프로그램변경요청을 삭제
 	 * @param vo ProgrmManageDtlVO
-	 * @exception Exception
 	 */
 	public void deleteProgrmChangeRequst(ProgrmManageDtlVO vo){
 		delete("progrmManageDAO.deleteProgrmChangeRequst_S", vo);
@@ -159,7 +155,6 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * 프로그램변경요청 요청번호MAX 정보를 조회
 	 * @param vo ProgrmManageDtlVO
 	 * @return ProgrmManageDtlVO
-	 * @exception Exception
 	 */
 	public ProgrmManageDtlVO selectProgrmChangeRequstNo(ProgrmManageDtlVO vo){
 		return (ProgrmManageDtlVO)selectOne("progrmManageDAO.selectProgrmChangeRequstNo_D", vo);
@@ -169,9 +164,8 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * 프로그램변경요청 목록을 조회
 	 * @param vo ComDefaultVO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<?> selectChangeRequstProcessList(ComDefaultVO vo) throws Exception{
+	public List<?> selectChangeRequstProcessList(ComDefaultVO vo) {
 		return selectList("progrmManageDAO.selectChangeRequstProcessList_D", vo);
 	}
 

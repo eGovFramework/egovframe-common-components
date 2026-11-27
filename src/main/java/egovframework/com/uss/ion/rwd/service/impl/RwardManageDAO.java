@@ -30,7 +30,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return List - 포상관리 목록
 	 */
-	public List<RwardManageVO> selectRwardManageList(RwardManageVO rwardManageVO) throws Exception {
+	public List<RwardManageVO> selectRwardManageList(RwardManageVO rwardManageVO) {
 		return selectList("rwardManageDAO.selectRwardManageList", rwardManageVO);
 	}
 
@@ -38,9 +38,8 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * 포상관리목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectRwardManageListTotCnt(RwardManageVO rwardManageVO) throws Exception {
+    public int selectRwardManageListTotCnt(RwardManageVO rwardManageVO) {
         return (Integer)selectOne("rwardManageDAO.selectRwardManageListTotCnt", rwardManageVO);
     }
 
@@ -49,7 +48,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return RwardManageVO - 포상관리 VO
 	 */
-	public RwardManageVO selectRwardManage(RwardManageVO rwardManageVO)  throws Exception {
+	public RwardManageVO selectRwardManage(RwardManageVO rwardManageVO) {
 		return (RwardManageVO) selectOne("rwardManageDAO.selectRwardManage", rwardManageVO);
 	}
 
@@ -57,7 +56,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * 포상관리정보를 신규로 등록한다.
 	 * @param rwardManage - 포상관리 model
 	 */
-	public void insertRwardManage(RwardManage rwardManage) throws Exception {
+	public void insertRwardManage(RwardManage rwardManage) {
 		insert("rwardManageDAO.insertRwardManage", rwardManage);
 	}
 
@@ -65,7 +64,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 포상관리정보를 수정한다.
 	 * @param rwardManage - 포상관리 model
 	 */
-	public void updtRwardManage(RwardManage rwardManage) throws Exception {
+	public void updtRwardManage(RwardManage rwardManage) {
 		update("rwardManageDAO.updtRwardManage", rwardManage);
 	}
 
@@ -73,7 +72,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 포상관리정보를 삭제한다.
 	 * @param rwardManage - 포상관리 model
 	 */
-	public void deleteRwardManage(RwardManage rwardManage) throws Exception {
+	public void deleteRwardManage(RwardManage rwardManage) {
         delete("rwardManageDAO.deleteRwardManage",rwardManage);
 	}
 
@@ -83,7 +82,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return List - 포상관리 목록
 	 */
-	public List<RwardManageVO> selectRwardManageConfmList(RwardManageVO rwardManageVO) throws Exception {
+	public List<RwardManageVO> selectRwardManageConfmList(RwardManageVO rwardManageVO) {
 		return selectList("rwardManageDAO.selectRwardManageConfmList", rwardManageVO);
 	}
 
@@ -91,9 +90,8 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectRwardManageConfmListTotCnt(RwardManageVO rwardManageVO) throws Exception {
+    public int selectRwardManageConfmListTotCnt(RwardManageVO rwardManageVO) {
         return (Integer)selectOne("rwardManageDAO.selectRwardManageConfmListTotCnt", rwardManageVO);
     }
 	
@@ -101,7 +99,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	 *포상정보를 승인/반려처리 한다.
 	 * @param rwardManage - 포상관리 model
 	 */
-	public void updtRwardManageConfm(RwardManage rwardManage) throws Exception {
+	public void updtRwardManageConfm(RwardManage rwardManage) {
 		update("rwardManageDAO.updtRwardManageConfm", rwardManage);
 	}
 }

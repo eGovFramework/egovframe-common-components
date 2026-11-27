@@ -2,15 +2,15 @@ package egovframework.com.sym.prm.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.sym.prm.service.EgovProgrmManageService;
 import egovframework.com.sym.prm.service.ProgrmManageDtlVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
+import javax.annotation.Resource;
 
 /**
  * 프로그램목록관리 및 프로그램변경관리에 관한 비즈니스 구현 클래스를 정의한다.
@@ -75,7 +75,11 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 */
 	@Override
 	public void insertProgrm(ProgrmManageVO vo) throws Exception {
-    	progrmManageDAO.insertProgrm(vo);
+    	try {
+			progrmManageDAO.insertProgrm(vo);
+		} catch (DuplicateKeyException e) {
+			throw new DuplicateKeyException("이미 등록된 프로그램파일명입니다.", e);
+		}
 	}
 
 	/**
@@ -224,9 +228,9 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
 	public void deleteProgrmManageList(String checkedProgrmFileNmForDel) throws Exception {
 		ProgrmManageVO vo = null;
 		String [] delProgrmFileNm = checkedProgrmFileNmForDel.split(",");
-		for (int i=0; i<delProgrmFileNm.length ; i++){
+		for (String element : delProgrmFileNm) {
 			vo = new ProgrmManageVO();
-			vo.setProgrmFileNm(delProgrmFileNm[i]);
+			vo.setProgrmFileNm(element);
 			progrmManageDAO.deleteProgrm(vo);
 		}
 	}

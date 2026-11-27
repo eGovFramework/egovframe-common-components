@@ -160,6 +160,7 @@
 	<h2><spring:message code="comUssIonRmm.roughMapInfoDetail.title" /></h2><!-- 약도 상세 -->
 	
 <form id="roughMap" name="roughMap" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" id="searchCondition" name="searchCondition" value="${searchVO.searchCondition}" />
 <input type="hidden" id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
 <input type="hidden" id="pageIndex" name="pageIndex" value="${searchVO.pageIndex}" />

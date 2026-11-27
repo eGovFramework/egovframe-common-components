@@ -11,7 +11,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -66,6 +66,7 @@ function fn_egov_SelectBoxValue(sbName)
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form name="formUnityLink" action="" method="post" target="_blank">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 <div class="wTableFrm" style="width:310px">
 	<!-- 타이틀 -->
@@ -83,7 +84,10 @@ function fn_egov_SelectBoxValue(sbName)
 				<select name="selUnityLink" id="selUnityLink" class="select" title="<spring:message code="input.cSelect"/>"><!-- 선택 -->
 				   <option value=''>--<spring:message code="input.select"/>--</option><!-- 선택하세요 -->
 				   <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-				   <option value='${resultInfo.unityLinkUrl}'>${resultInfo.unityLinkNm}</option>
+				   <%-- 2026.07.30 보안 조치 - javascript:/data: 등 위험 스킴 및 open redirect 차단(http/https만 허용), 속성값 이스케이프 --%>
+				   <c:if test="${fn:startsWith(fn:toLowerCase(resultInfo.unityLinkUrl), 'http://') or fn:startsWith(fn:toLowerCase(resultInfo.unityLinkUrl), 'https://')}">
+				   <option value='<c:out value="${resultInfo.unityLinkUrl}"/>'><c:out value="${resultInfo.unityLinkNm}"/></option>
+				   </c:if>
 				   </c:forEach>
 			   </select>
 			   <input class="btn01" type="submit" value="<spring:message code="uss.ion.ulm.unityLinkSample.moveButton"/>" onclick="fn_egov_link_UnityLink();" /><!-- 이동 -->

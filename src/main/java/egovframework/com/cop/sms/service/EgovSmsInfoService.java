@@ -24,40 +24,36 @@ public interface EgovSmsInfoService {
      * 
      * @param SmsVO
      */
-    public Map<String, Object> selectSmsInfs(SmsVO searchVO) throws Exception;
+    public Map<String, Object> selectSmsInfs(SmsVO searchVO);
     
     /**
      * 문자메시지를 전송(등록)한다.
      * 
      * @param sms
-     * @throws Exception
      */
-    public void insertSmsInf(Sms sms) throws Exception;
+    public void insertSmsInf(Sms sms);
     
     /**
      * 문자메시지에 대한 상세정보를 조회한다.
      * 
      * @param searchVO
      * @return
-     * @throws Exception
      */
-    public SmsVO selectSmsInf(SmsVO searchVO) throws Exception;
+    public SmsVO selectSmsInf(SmsVO searchVO);
     
     /**
      * 문자메시지 실 전송을 요청한다.
      * 
      * @param smsConn
      * @return
-     * @throws Exception
      */
-    public SmsConnection sendRequsest(SmsConnection smsConn) throws Exception;
+    public SmsConnection sendRequsest(SmsConnection smsConn);
     
     /**
      * 여러 건의 문자메시지 실 전송을 요청한다.
      * 
      * @param smsConn
      * @return
-     * @throws Exception
      */
-    public SmsConnection[] sendRequsest(SmsConnection[] smsConn) throws Exception;
+    public SmsConnection[] sendRequsest(SmsConnection[] smsConn);
 }

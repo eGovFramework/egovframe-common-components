@@ -15,6 +15,7 @@
  *  ----------   --------   ---------------------------
  *  2009.08.03   이문준            최초 생성
  *  2021.02.18   신용호            selectLoginPolicyResult() 삭제
+ *  2026.06.17   이백행            [2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
@@ -36,7 +37,7 @@ public class LoginPolicyDAO extends EgovComAbstractDAO {
 	 * @param loginPolicyVO - 로그인정책 VO
 	 * @return List - 로그인정책 목록
 	 */	
-	public List<LoginPolicyVO> selectLoginPolicyList(LoginPolicyVO loginPolicyVO) throws Exception {
+	public List<LoginPolicyVO> selectLoginPolicyList(LoginPolicyVO loginPolicyVO) {
 		return selectList("loginPolicyDAO.selectLoginPolicyList", loginPolicyVO);
 	}
 
@@ -45,7 +46,7 @@ public class LoginPolicyDAO extends EgovComAbstractDAO {
 	 * @param loginPolicyVO - 로그인정책 VO
 	 * @return int
 	 */
-	public int selectLoginPolicyListTotCnt(LoginPolicyVO loginPolicyVO) throws Exception {
+	public int selectLoginPolicyListTotCnt(LoginPolicyVO loginPolicyVO) {
 		return (Integer)selectOne("loginPolicyDAO.selectLoginPolicyListTotCnt", loginPolicyVO);
 	}
 
@@ -54,7 +55,7 @@ public class LoginPolicyDAO extends EgovComAbstractDAO {
 	 * @param loginPolicyVO - 로그인정책 VO
 	 * @return LoginPolicyVO - 로그인정책 VO
 	 */
-	public LoginPolicyVO selectLoginPolicy(LoginPolicyVO loginPolicyVO) throws Exception {
+	public LoginPolicyVO selectLoginPolicy(LoginPolicyVO loginPolicyVO) {
 		return (LoginPolicyVO)selectOne("loginPolicyDAO.selectLoginPolicy", loginPolicyVO);
 	}
 
@@ -62,7 +63,7 @@ public class LoginPolicyDAO extends EgovComAbstractDAO {
 	 * 로그인정책 정보를 신규로 등록한다.
 	 * @param loginPolicy - 로그인정책 model
 	 */
-	public void insertLoginPolicy(LoginPolicy loginPolicy) throws Exception {
+	public void insertLoginPolicy(LoginPolicy loginPolicy) {
         insert("loginPolicyDAO.insertLoginPolicy", loginPolicy);
 	}
 
@@ -70,7 +71,7 @@ public class LoginPolicyDAO extends EgovComAbstractDAO {
 	 * 기 등록된 로그인정책 정보를 수정한다.
 	 * @param loginPolicy - 로그인정책 model
 	 */
-	public void updateLoginPolicy(LoginPolicy loginPolicy) throws Exception {
+	public void updateLoginPolicy(LoginPolicy loginPolicy) {
 		update("loginPolicyDAO.updateLoginPolicy", loginPolicy);
 	}
 
@@ -78,7 +79,7 @@ public class LoginPolicyDAO extends EgovComAbstractDAO {
 	 * 기 등록된 로그인정책 정보를 삭제한다.
 	 * @param loginPolicy - 로그인정책 model
 	 */
-	public void deleteLoginPolicy(LoginPolicy loginPolicy) throws Exception {
+	public void deleteLoginPolicy(LoginPolicy loginPolicy) {
 		delete("loginPolicyDAO.deleteLoginPolicy", loginPolicy);
 	}
 

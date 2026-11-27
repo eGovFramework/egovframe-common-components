@@ -79,6 +79,12 @@
 		
 	</select>
 
+	<select id="selectKnoAppraisalExpertCnt" parameterType="egovframework.com.dam.app.service.KnoAppraisal" resultType="int">
+		SELECT COUNT(*) FROM COMTNDAMPRO
+		WHERE KNWLDG_TY_CODE = #{knoTypeCd}
+		AND   EXPERT_ID = #{speId}
+	</select>
+
 	<update id="updateKnoAppraisal">
 		
             UPDATE  COMTNDAMKNOIFM 

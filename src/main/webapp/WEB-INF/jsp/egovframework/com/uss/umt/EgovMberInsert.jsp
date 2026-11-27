@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.userManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -31,11 +30,18 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="mberManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/ccm/zip/EgovZipPopup.js' />" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 /*********************************************************
  * 초기화
  ******************************************************** */
@@ -65,8 +71,10 @@ function fn_modal_setting(){
 	var footer = "";
 	//footer += "<div class='modal-btn'><button class='btn_s2' id='btnModalOk' onclick='fn_id_checkOk()'>확인</button></div>";
 	//footer += "<div class='modal-btn'><button class='btn_s2' id='btnModalSelect' onclick='fn_id_check()'>조회</button></div>";
-	footer += "<span class='btn_style1 blue' id='btnModalOk' onclick='fn_id_checkOk()'><a href='#'>확인</a></span>&nbsp;";
-	footer += "<span class='btn_style1 blue' id='btnModalSelect' onclick='fn_id_check()'><a href='#'>조회</a></span>&nbsp;";
+	
+	footer += "<span class='btn_style1 blue' id='btnModalOk' onclick='fn_id_checkOk()'><a href='#'><spring:message code="button.confirm" /></a></span>&nbsp;";//확인
+	footer += "<span class='btn_style1 blue' id='btnModalSelect' onclick='fn_id_check()'><a href='#'><spring:message code="button.inquire" /></a></span>&nbsp;";//조회
+
 	//모달 footer 설정
 	$("#egovModal").setEgovModalfooter(footer);
 	
@@ -84,6 +92,7 @@ function fn_modal_setting(){
  ******************************************************** */
 function fn_id_check(){	
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		type:"POST",
 		url:"<c:url value='/uss/umt/EgovIdDplctCnfirmAjax.do' />",
 		data:{
@@ -111,6 +120,7 @@ function fn_id_check(){
  ******************************************************** */
 function fn_id_checkOk(){
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		type:"POST",
 		url:"<c:url value='/uss/umt/EgovIdDplctCnfirmAjax.do' />",
 		data:{
@@ -140,9 +150,6 @@ function fnIdCheck1(){
     var varParam = new Object();
     varParam.checkId = document.mberManageVO.mberId.value;
     var openParam = "dialogWidth:303px;dialogHeight:250px;scroll:no;status:no;center:yes;resizable:yes;";
-        
-//    alert(1);
-    return false;
     retVal = window.showModalDialog(url, varParam, openParam);
     if(retVal) {
     	document.mberManageVO.mberId.value = retVal;
@@ -161,7 +168,6 @@ function fnListPage(){
 }
 
 function fnInsert(form){
-	
 	if(confirm("<spring:message code="common.regist.msg" />")){	
 		if(validateMberManageVO(form)){
 			if(form.password.value != form.password2.value){
@@ -172,9 +178,6 @@ function fnInsert(form){
 			return true;
 	    }
 	}
-
-	
-
 }
 </script>
 <style>
@@ -182,6 +185,7 @@ function fnInsert(form){
 </style>
 </head>
 <body onload="fn_egov_init()">
+
 <form:form modelAttribute="mberManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovMberInsert.do" name="mberManageVO"  method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
 
 <div class="wTableFrm">
@@ -372,11 +376,11 @@ function fnInsert(form){
 
 	<!-- 하단 버튼 --> 
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/umt/EgovMberManage.do' />"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
-		<input type="submit" class="s_submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" />
+		<span class="btn_s"><a href="<c:url value='/uss/umt/EgovMberManage.do' />"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<input type="submit" class="s_submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" /><!-- 등록 -->
 	</div><div style="clear:both;"></div>
 
-</div><!-- div end(wTableFrm)  -->
+</div>
 
 <input name="checkedIdForDel" type="hidden" />
 <!-- 검색조건 유지 -->
@@ -384,8 +388,9 @@ function fnInsert(form){
 <input type="hidden" name="searchKeyword" value="<c:out value='${userSearchVO.searchKeyword}'/>"/>
 <input type="hidden" name="sbscrbSttus" value="<c:out value='${userSearchVO.sbscrbSttus}'/>"/>
 <input type="hidden" name="pageIndex" value="<c:out value='${userSearchVO.pageIndex}'/>"/>
- <!-- 우편번호검색 -->
- <input type="hidden" name="zip_url" value="<c:url value='/sym/ccm/zip/EgovCcmZipSearchPopup.do'/>" />
+
+<!-- 우편번호검색 -->
+<input type="hidden" name="zip_url" value="<c:url value='/sym/ccm/zip/EgovCcmZipSearchPopup.do'/>" />
 </form:form>
 
 <!-- Egov Modal include  -->

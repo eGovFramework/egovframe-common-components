@@ -5,7 +5,7 @@ import egovframework.com.cmm.ComDefaultVO;
 /**
  * 개요
  * - 서버자원모니터링에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 서버자원모니터링의 ID, 서버 명, 서버 IP, 서버자원종류, 현황정보 등의 항목을 관리한다.
  * @author lee.m.j
@@ -51,7 +51,7 @@ public class ServerResrceMntrng extends ComDefaultVO {
 	/**
 	 * 서비스상태명
 	 */
-	private String svcSttusNm;	
+	private String svcSttusNm;
 	/**
 	 * 로그정보
 	 */
@@ -66,12 +66,12 @@ public class ServerResrceMntrng extends ComDefaultVO {
 	private String creatDt;
     /**
 	 * 최초등록시점
-	 */   
+	 */
     private String frstRegisterPnttm;
     /**
 	 * 최초등록자ID
-	 */        
-    private String frstRegisterId;	
+	 */
+    private String frstRegisterId;
 	/**
 	 * 최종수정시점
 	 */

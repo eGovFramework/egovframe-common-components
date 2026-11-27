@@ -12,7 +12,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.09.16
    
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -29,12 +29,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_PopupManage(){
-
-}
-/* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_PopupManage(){
@@ -45,10 +39,8 @@ function fn_egov_list_PopupManage(){
  ******************************************************** */
 function fn_egov_modify_PopupManage(){
 	var vFrom = document.formUpdt;
-	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/pwm/updtPopup.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/pwm/updatePopupView.do' />";
 	vFrom.submit();
-
 }
 /* ********************************************************
  * 삭제처리
@@ -65,13 +57,14 @@ function fn_egov_delete_PopupManage(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_PopupManage();">
+<body>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="ussIonPwm.popupDetail.popupDetail"/></h2><!-- 팝업창관리 상세보기 -->
 
-	<form name="PopupManageForm" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>" method="post">
+	<form name="PopupManageForm" action="${pageContext.request.contextPath}/uss/ion/pwm/detailPopup.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -94,13 +87,13 @@ function fn_egov_delete_PopupManage(){
 		<tr>
 			<th><spring:message code="ussIonPwm.popupDetail.popupLoca"/> <span class="pilsu">*</span></th><!-- 팝업창위치 -->
 			<td class="left">
-			    <spring:message code="ussIonPwm.popupDetail.popupWlce"/><c:out value="${popupManageVO.popupWlc}" />  <spring:message code="ussIonPwm.popupDetail.popupHlc"/><c:out value="${popupManageVO.popupHlc}" escapeXml="false" />
+			    <spring:message code="ussIonPwm.popupDetail.popupWlce"/><c:out value="${popupManageVO.popupWlc}" />  <spring:message code="ussIonPwm.popupDetail.popupHlc"/><c:out value="${popupManageVO.popupHlc}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonPwm.popupDetail.popupSize"/> <span class="pilsu">*</span></th><!-- 팝업창사이즈 -->
 			<td class="left">
-			    <spring:message code="ussIonPwm.popupDetail.popupWSize"/> : <c:out value="${popupManageVO.popupWSize}" />  <spring:message code="ussIonPwm.popupDetail.popupHSize"/> : <c:out value="${popupManageVO.popupHSize}" escapeXml="false" />
+			    <spring:message code="ussIonPwm.popupDetail.popupWSize"/> : <c:out value="${popupManageVO.popupWSize}" />  <spring:message code="ussIonPwm.popupDetail.popupHSize"/> : <c:out value="${popupManageVO.popupHSize}"/>
 			</td>
 		</tr>
 		<tr>
@@ -129,19 +122,21 @@ function fn_egov_delete_PopupManage(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">		
-		<form name="formUpdt" action="<c:url value='/uss/ion/pwm/updtPopup.do'/>" method="post" style="display:inline">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/pwm/updatePopupView.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
-			<input name="cmd" type="hidden" value="<c:out value=''/>">
 			</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>" method="post" style="display:inline">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/pwm/detailPopup.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		 
-		<form name="formList" action="<c:url value='/uss/ion/pwm/listPopup.do'/>" method="post" style="display:inline">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/pwm/listPopup.do" method="post" style="display:inline">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_PopupManage(); return false;" />
 		</form>
 	</div>

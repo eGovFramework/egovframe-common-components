@@ -1,27 +1,31 @@
 package egovframework.com.uss.umt.web;
 
-import javax.annotation.Resource;
+import egovframework.com.cmm.LoginVO;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.umt.service.DeptManageVO;
 import egovframework.com.uss.umt.service.EgovDeptManageService;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
- * 부서관련 처리를  비지니스 클래스로 전달하고 처리된결과를  해당   웹 화면으로 전달하는  Controller를 정의한다
+ * 부서관련 처리를  비즈니스 클래스로 전달하고 처리된결과를  해당   웹 화면으로 전달하는  Controller를 정의한다
  * @author 공통서비스 개발팀 조재영
  * @since 2009.00.00
  * @version 1.0
@@ -37,7 +41,6 @@ import egovframework.com.uss.umt.service.EgovDeptManageService;
  *   2021.05.30  정진오      로그인인증제한
  * </pre>
  */
-
 @Controller
 public class EgovDeptManageController {
 
@@ -50,9 +53,6 @@ public class EgovDeptManageController {
 	/** Message ID Generation */
 	@Resource(name = "egovDeptManageIdGnrService")
 	private EgovIdGnrService egovDeptManageIdGnrService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 부서 목록화면 이동
@@ -81,6 +81,8 @@ public class EgovDeptManageController {
 
 	@RequestMapping(value = "/uss/umt/dpt/selectDeptManageList.do")
 	public String selectDeptManageList(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치 - 세션 제외(/uss/umt/**)로 인해 인증 없이 접근 가능했던 실제 목록 핸들러에 인증/권한 체크 추가
+		EgovAuthorizationHelper.assertLoginUser();
 
 		/** paging */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -108,7 +110,11 @@ public class EgovDeptManageController {
 	 */
 
 	@RequestMapping(value = "/uss/umt/dpt/getDeptManage.do")
+	@RequireAdmin
 	public String selectDeptManage(@RequestParam("orgnztId") String orgnztId, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
 
 		deptManageVO.setOrgnztId(orgnztId);
 
@@ -122,7 +128,8 @@ public class EgovDeptManageController {
 	 * @param banner - 부서 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/addViewDeptManage.do")
+	@PostMapping("/uss/umt/dpt/addViewDeptManage.do")
+	@RequireAdmin
 	public String insertViewDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
 
 		model.addAttribute("deptManage", deptManageVO);
@@ -134,10 +141,14 @@ public class EgovDeptManageController {
 	 * @param banner - 부서 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/addDeptManage.do")
-	public String insertDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, BindingResult bindingResult,  ModelMap model) throws Exception {
+	@PostMapping("/uss/umt/dpt/addDeptManage.do")
+	@RequireAdmin
+	public String insertDeptManage(
+		@Valid @ModelAttribute("deptManageVO") DeptManageVO deptManageVO,
+		BindingResult bindingResult,  ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
-		beanValidator.validate(deptManageVO, bindingResult); //validation 수행
 
 		deptManageVO.setOrgnztId(egovDeptManageIdGnrService.getNextStringId());
 
@@ -155,9 +166,13 @@ public class EgovDeptManageController {
 	 * @param banner - 부서 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/updtDeptManage.do")
-	public String updateDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, BindingResult bindingResult, ModelMap model) throws Exception {
-		beanValidator.validate(deptManageVO, bindingResult); //validation 수행
+	@PostMapping("/uss/umt/dpt/updtDeptManage.do")
+	@RequireAdmin
+	public String updateDeptManage(
+		@Valid @ModelAttribute("deptManageVO") DeptManageVO deptManageVO,
+		BindingResult bindingResult, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치 - 세션 제외(/uss/umt/**)로 인해 인증 없이 접근 가능했던 수정 핸들러에 인증/권한 체크 추가
+		EgovAuthorizationHelper.assertLoginUser();
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/umt/EgovDeptManageUpdt";
@@ -174,8 +189,12 @@ public class EgovDeptManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/removeDeptManage.do")
+	@PostMapping("/uss/umt/dpt/removeDeptManage.do")
+	@RequireAdmin
 	public String deleteDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, Model model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
 
 		egovDeptManageService.deleteDeptManage(deptManageVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -189,17 +208,28 @@ public class EgovDeptManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/removeDeptManageList.do")
+	@PostMapping("/uss/umt/dpt/removeDeptManageList.do")
+	@RequireAdmin
 	public String deleteDeptManageList(@RequestParam("deptManages") String deptManages, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
+
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (ObjectUtils.isEmpty(deptManages)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+			return "forward:/uss/umt/dpt/selectDeptManageList.do";
+		}
 
 		String[] strDeptManages = deptManages.split(";");
-		for (int i = 0; i < strDeptManages.length; i++) {
-			deptManageVO.setOrgnztId(strDeptManages[i]);
+		for (String strDeptManage : strDeptManages) {
+			deptManageVO.setOrgnztId(strDeptManage);
 			egovDeptManageService.deleteDeptManage(deptManageVO);
 		}
-		
+
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/umt/dpt/selectDeptManageList.do";
 	}
+
 
 }

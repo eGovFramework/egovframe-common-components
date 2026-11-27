@@ -16,7 +16,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -25,6 +25,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -40,7 +42,6 @@
 	 ******************************************************** */
 	function fncBndtManageBndeRegist(){
 		var varForm = document.getElementById("listForm");
-		//var checkField = varForm.bndtCheck;
 		var bndtId = varForm.bndtId;
 		var bndtDe = varForm.bndtDe;
 		var searchKeyword  = varForm.searchKeyword;
@@ -54,7 +55,6 @@
 				checkedCount++;
 			}
 		} else {
-			//
 			checkBndtManage = bndtDe.value+","+bndtId.value;
 		}
 	
@@ -69,7 +69,13 @@
 		formData.append("bndtDe", varForm.bndtDe.value);
 		formData.append("bndtId", varForm.bndtId.value);
 	
-		if(confirm("<spring:message code="common.save.msg" />")) {/* 저장 하시겠습니까? */
+		if(confirm('<spring:message code="common.save.msg" />')) {/* 저장 하시겠습니까? */
+			var csrfHeaderName = "${_csrf.headerName}";
+			var csrfToken = "${_csrf.token}";
+			var csrfParamName = "${_csrf.parameterName}";
+			if (csrfParamName && csrfToken) {
+				formData.append(csrfParamName, csrfToken);
+			}
 			$.ajax({
 				type : "post",
 				enctype : "multipart/form-data",
@@ -77,6 +83,11 @@
 				data : formData,
 				processData : false,
 				contentType : false,
+				beforeSend: function(xhr) {
+					if (csrfHeaderName && csrfToken) {
+						xhr.setRequestHeader(csrfHeaderName, csrfToken);
+					}
+				},
 				success : function(data) {
 					opener.window.fncPageReload();
 					self.close();
@@ -104,7 +115,7 @@
 	******************************************************** */
 	function checkFile(){ 
 		if(document.listForm.file.value==""){
-		   alert("<spring:message code="comUssIonBnt.common.validate.fileNull"/>");/* 업로드 할 파일을 지정해 주세요. */
+		   alert('<spring:message code="comUssIonBnt.common.validate.fileNull"/>'); /* 업로드 할 파일을 지정해 주세요. */
 		   return false;
 		}
 	
@@ -120,7 +131,7 @@
 			 return true; 
 		     break;
 		  default:
-		     alert("<spring:message code="comUssIonBnt.common.validate.formNotMatch"/>");/* 파일 형식이 맞지 않습니다.\\n xls,XLS,xlsx,XLSX 만\\n 업로드가 가능합니다! */
+		     alert('<spring:message code="comUssIonBnt.common.validate.formNotMatch"/>');/* 파일 형식이 맞지 않습니다.\\n xls,XLS,xlsx,XLSX 만\\n 업로드가 가능합니다! */
 		     return false;
 		}
 	}
@@ -134,7 +145,13 @@
 	
 	<span>※Excel example files Location : ../WEB-INF/jsp/egovframework/com/uss/ion/bnt/example</span>
 	
-	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/bnt/EgovBndtManageListPopAction.do'/>" method="post" enctype="multipart/form-data">
+	<c:if test="${not empty resultMsg}">
+		<div class="error_msg" style="color: red; padding: 10px; margin: 10px 0; border: 1px solid red; background-color: #ffe6e6;">
+			<c:out value="${resultMsg}"/>
+		</div>
+	</c:if>
+	
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/ion/bnt/EgovBndtManageListPopAction.do" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="checkedBndtManageForInsert">
 	<input type="hidden" name="searchKeyword">
@@ -150,8 +167,8 @@
 	
 	<table class="wTable mb10">
 		<colgroup>
-			<col style="width:16%" />
-			<col style="" />
+			<col style="width:20%" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
 			<th><spring:message code="comUssIonBnt.bndtManageBndeListPop.bndtExcelFile"/></th><!-- 당직자 엑셀파일 -->
@@ -167,7 +184,7 @@
 		<colgroup>
 			<col style="width:30%" />
 			<col style="width:30%" />
-			<col style="" />
+			<col style="width:40%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -188,7 +205,7 @@
 				</td>
 				<td>${resultInfo.tempBndtNm}</td>
 				<td>${resultInfo.tempOrgnztNm}</td>
-			</tr>   
+			</tr>
 			</c:forEach>
 			
 			<c:if test="${fn:length(bndtManageList) == 0}">
@@ -196,11 +213,12 @@
 					<td class="lt_text3" colspan="3">
 						<spring:message code="common.nodata.msg" />
 					</td>
-				</tr>   	          				 			   
+				</tr>
 			</c:if>
 		</tbody>
 	</table>
-</form>
+	</form:form>
+
 </div>
 </body>
 </html>

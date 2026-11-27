@@ -3,21 +3,21 @@ package egovframework.com.utl.pao.web;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.utl.pao.service.EgovPrntngOutpt;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
+import javax.annotation.Resource;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -51,6 +51,7 @@ public class EgovErncslController extends HttpServlet {
 	/**
 	 * 서블릿 초기화
 	 */
+	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 	}
@@ -64,6 +65,7 @@ public class EgovErncslController extends HttpServlet {
 	 * @see
 	*/
 	@RequestMapping(value = "/utl/pao/EgovErncsl.do")
+	@RequireAdmin
 	public void doGet(@RequestParam("sOrgCode") String orgCode, @RequestParam("sErncslSe") String erncslSe, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 

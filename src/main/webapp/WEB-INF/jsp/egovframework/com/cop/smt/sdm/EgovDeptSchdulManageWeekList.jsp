@@ -89,9 +89,7 @@ String sTodate = formatter.format(new java.util.Date());
 	******************************************************** */
 	function fn_egov_detail_DeptSchdulManage(schdulId){
 
-		gOpener.schdulId.value = schdulId;
-		gOpener.action = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />";
-		gOpener.submit();
+		parent.location.href = "<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do' />?schdulId=" + encodeURIComponent(schdulId);
 	}
 
 
@@ -161,6 +159,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY>
 <form name="deptSchdulManageVO" id="deptSchdulManageVO" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:712px;">
 
 <!-- 날짜 네비게이션  -->

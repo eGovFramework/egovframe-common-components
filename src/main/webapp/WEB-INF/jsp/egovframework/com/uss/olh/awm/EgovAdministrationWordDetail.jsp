@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssOlhAwm.administrationWordVO.title"/></c:set>
 <!DOCTYPE html>
@@ -35,6 +34,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="administrationWordForm" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -83,14 +83,14 @@
 		<tr>
 			<th><spring:message code="comUssOlhAwm.administrationWordVO.administWordDf" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.administWordDf , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.administWordDf}"/></span>
 			</td>
 		</tr>
 		<!-- 행정용어 설명 -->
 		<tr>
 			<th><spring:message code="comUssOlhAwm.administrationWordVO.administWordDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.administWordDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.administWordDc}"/></span>
 			</td>
 		</tr>
 		

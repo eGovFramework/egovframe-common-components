@@ -89,6 +89,9 @@
 			<if test="searchCondition == 2">AND
 					A.MNGR_NM LIKE CONCAT ('%', #{searchKeyword},'%') 		
 			</if>
+			<if test="searchCondition == 3">AND
+					C.CODE_NM LIKE CONCAT(#{searchKeyword},'%') 		
+			</if>
 	</select>
 	
 	<select id="selectDbMntrng" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng" resultMap="dbMntrngResult">

@@ -22,7 +22,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,8 +30,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="ntwrkSvcMntrngLogVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_NtwrkSvcMntrngLog(){
 	
@@ -66,45 +64,45 @@
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.logId.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngLog.logId}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngLog.logId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.sysIp.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngLog.sysIp}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngLog.sysIp}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.sysPort.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngLog.sysPort}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngLog.sysPort}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.sysNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngLog.sysNm}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngLog.sysNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.mntrngSttus.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngLog.mntrngSttus}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngLog.mntrngSttus}"/>
 			</td>
 		</tr>
 		<c:if test="${ntwrkSvcMntrngLog.mntrngSttus} ne '정상'">
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.logInfo.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <textarea id="logInfo" name="logInfo" rows="10" cols="75" title="로그정보"><c:out value="${ntwrkSvcMntrngLog.logInfo}" escapeXml="false" /></textarea>
+			    <textarea id="logInfo" name="logInfo" rows="10" cols="75" title="로그정보"><c:out value="${ntwrkSvcMntrngLog.logInfo}"/></textarea>
 			</td>
 		</tr>
 		</c:if>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrngLog.creatDt.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngLog.creatDt}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngLog.creatDt}"/>
 			</td>
 		</tr>
 	</table>

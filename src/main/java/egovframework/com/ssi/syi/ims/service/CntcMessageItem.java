@@ -2,6 +2,10 @@ package egovframework.com.ssi.syi.ims.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 /**
  * 연계메시지항목 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -16,7 +20,7 @@ import java.io.Serializable;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 public class CntcMessageItem implements Serializable {
@@ -25,6 +29,8 @@ public class CntcMessageItem implements Serializable {
 	/*
 	 * 연계메시지ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String cntcMessageId     = "";
 
 	/*
@@ -35,16 +41,20 @@ public class CntcMessageItem implements Serializable {
 	/*
 	 * 항목명
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String itemNm            = "";
 
 	/*
 	 * 항목타입
 	 */
+	@Size(max=20)
 	private String itemType          = "";
 
 	/*
 	 * 항목길이
 	 */
+	@Min(0)
 	private int    itemLt            = 0 ;
 
 	/*

@@ -2,32 +2,34 @@ package egovframework.com.utl.sys.dbm.web;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.dbm.service.DbMntrng;
 import egovframework.com.utl.sys.dbm.service.DbMntrngLog;
 import egovframework.com.utl.sys.dbm.service.EgovDbMntrngService;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * DB서비스모니터링관리에 대한 controller 클래스를 정의한다.
@@ -47,10 +49,9 @@ import egovframework.com.utl.sys.dbm.service.EgovDbMntrngService;
  *  2010.06.21   김진만            최초 생성
  *  2011.08.26	 정진오             IncludedInfo annotation 추가
  *  2019-12-06   신용호            KISA 보안약점 조치 (부적절한 예외처리)
- *  
+ *
  * </pre>
  */
-
 @Controller
 public class EgovDbMntrngController {
 
@@ -63,9 +64,6 @@ public class EgovDbMntrngController {
 
     @Resource(name="egovMessageSource")
     private EgovMessageSource egovMessageSource;
-
-    @Autowired
-    private DefaultBeanValidator beanValidator;
 
     /** cmmUseService */
     @Resource(name="EgovCmmUseService")
@@ -82,14 +80,17 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/dbm/deleteDbMntrng.do")
-	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model)
+    @PostMapping("/utl/sys/dbm/deleteDbMntrng.do")
+	@RequireAdmin
+	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+
 
 		egovDbMntrngService.deleteDbMntrng(dbMntrng);
 
@@ -105,24 +106,27 @@ public class EgovDbMntrngController {
 	 * @param model			ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/addDbMntrng.do")
-	public String insertDbMntrng(DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model)
+	@PostMapping("/utl/sys/dbm/addDbMntrng.do")
+	@RequireAdmin
+	public String insertDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
+			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-        beanValidator.validate(dbMntrng, bindingResult);
         checkDuplication(dbMntrng, bindingResult);
     	if (bindingResult.hasErrors()){
     		referenceData(model);
     		model.addAttribute("dbMntrng", dbMntrng);
+			// 형제 selectDbMntrngForRegist·updateDbMntrng와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("searchVO", searchVO);
     		return "egovframework/com/utl/sys/dbm/EgovDbMntrngRegist";
 		}else{
     		//아이디 설정
@@ -144,9 +148,13 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/getDbMntrng.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrng.do")
+	@RequireAdmin
 	public String selectDbMntrng(@ModelAttribute("searchVO")DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", dbMntrng);
         DbMntrng result = egovDbMntrngService.selectDbMntrng(dbMntrng);
         model.addAttribute("resultInfo", result);
@@ -164,9 +172,13 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 
-	@RequestMapping("/utl/sys/dbm/getDbMntrngLog.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrngLog.do")
+	@RequireAdmin
 	public String selectDbMntrngLog(@ModelAttribute("searchVO")DbMntrngLog dbMntrngLog, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", dbMntrngLog);
         DbMntrngLog result = egovDbMntrngService.selectDbMntrngLog(dbMntrngLog);
         model.addAttribute("resultInfo", result);
@@ -183,7 +195,8 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/getDbMntrngForRegist.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrngForRegist.do")
+	@RequireAdmin
 	public String selectDbMntrngForRegist(@ModelAttribute("searchVO")DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
         referenceData(model);
@@ -214,7 +227,8 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/getDbMntrngForUpdate.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrngForUpdate.do")
+	@RequireAdmin
 	public String selectDbMntrngForUpdate(@ModelAttribute("searchVO") DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
         referenceData(model);
@@ -236,12 +250,12 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="DB서비스모니터링", order = 2090 ,gid = 90)
 	@RequestMapping("/utl/sys/dbm/getDbMntrngList.do")
 	public String selectDbMntrngList(@ModelAttribute("searchVO") DbMntrng searchVO, ModelMap model)
 	  throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
 
 		//searchVO.setUniqId(user.getUniqId());
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -276,11 +290,12 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping("/utl/sys/dbm/getDbMntrngLogList.do")
+	@RequireAdmin
 	public String selectDbMntrngLogList(@ModelAttribute("searchVO") DbMntrngLog searchVO, ModelMap model)
 	  throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectDbMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
 
 		//searchVO.setUniqId(user.getUniqId());
         // DB서비스모니터링 정보 조회.
@@ -320,20 +335,21 @@ public class EgovDbMntrngController {
 	 * @param model				ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/updateDbMntrng.do")
-	public String updateDbMntrng(DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model)
+	@PostMapping("/utl/sys/dbm/updateDbMntrng.do")
+	@RequireAdmin
+	public String updateDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
+			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
 
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-		beanValidator.validate(dbMntrng, bindingResult);
 		if (bindingResult.hasErrors()) {
 			referenceData(model);
 			model.addAttribute("dbMntrng", dbMntrng);
@@ -371,5 +387,6 @@ public class EgovDbMntrngController {
 		}
 
 	}
+
 
 }

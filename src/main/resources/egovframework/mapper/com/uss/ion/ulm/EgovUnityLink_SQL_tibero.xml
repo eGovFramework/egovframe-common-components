@@ -8,7 +8,7 @@
 <mapper namespace="UnityLink">
 
 	<!-- ::ResultMap 선언 -->
-	<resultMap id="UnityLinkVO" type="egovframework.com.uss.ion.ulm.service.UnityLink">
+	<resultMap id="UnityLink" type="egovframework.com.uss.ion.ulm.service.UnityLink">
 		<result property="unityLinkId" column="UNITY_LINK_ID"/>
 		<result property="unityLinkSeCode" column="UNITY_LINK_SE_CODE"/>
 		<result property="unityLinkNm" column="UNITY_LINK_NM"/>
@@ -118,7 +118,7 @@ WHERE UNITY_LINK_ID=#{unityLinkId}
 	</update>
 
 	<!-- 통합링크::상세보기 -->
-	<select id="selectUnityLinkDetail" resultMap="UnityLinkVO">
+	<select id="selectUnityLinkDetail" resultMap="UnityLink">
 	SELECT
 		A.UNITY_LINK_ID,
 		A.UNITY_LINK_SE_CODE,

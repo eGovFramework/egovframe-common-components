@@ -199,7 +199,7 @@
 	<delete id="deleteNoteTrnsmit">
 		
 			UPDATE COMTNNOTETRNSMIT SET DELETE_AT='Y',
-			LAST_UPDT_PNTTM=sysdate,
+			LAST_UPDT_PNTTM=SYSDATE,
 			LAST_UPDUSR_ID=#{lastUpdusrId}
 			WHERE 1=1 
 			AND NOTE_ID=#{noteId}

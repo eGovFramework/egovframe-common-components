@@ -13,6 +13,37 @@
 	<script src="<c:url value='/html/egovframework/com/ext/ldapumt/libs/jquery.js' />"></script>
 	<script src="<c:url value='/html/egovframework/com/ext/ldapumt/jstree.js' />"></script>
 	<script type="text/javascript">
+	  var csrfHeaderName = "${_csrf.headerName}";
+	  var csrfToken = "${_csrf.token}";
+
+	  function ldapCsrfBeforeSend(xhr) {
+		if (csrfHeaderName && csrfToken) {
+			xhr.setRequestHeader(csrfHeaderName, csrfToken);
+		}
+	  }
+
+	  // 2026.07.30 보안 조치 - LDAP OU/CN 등 저장된 값을 allowHtml 트리 라벨에 쓰기 전 이스케이프
+	  function escapeHtml(value) {
+		if (value == null) {
+			return '';
+		}
+		return String(value)
+			.replace(/&/g, '&amp;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;');
+	  }
+
+	  function ldapPost(url, data) {
+		return $.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+			beforeSend: ldapCsrfBeforeSend
+		});
+	  }
+
 	  google.load("visualization", "1", {packages:["orgchart"]});
 	  google.setOnLoadCallback(init);
 	  
@@ -31,7 +62,7 @@
 		data.addColumn('string', 'ToolTip');
 
 		var dn="<c:out value='${param.baseDn}'/>";
-		
+
 		drawChart(dn);
 	  }
 	  
@@ -39,15 +70,15 @@
 		  
 		var url = "<c:url value='/ext/ldapumt/dpt/getDeptManageSublist.do' />";							
   		
-  		$.get(url, { 'dn' : dn}).done(function (d) {
+  		ldapPost(url, { 'dn' : dn}).done(function (d) {
   			d = d.deptManage;
-  			if(obj==null) {
-  				obj = [[ {v:d.id, f:d.text+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
+  			if(!obj) {
+                  obj = [[ {v:d.id, f:escapeHtml(d.text)+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
   			}
   			
   			var objLength = obj.length;
   			for(var i=0; i < d.children.length;i++) {
-  				obj[i+objLength] = [ {v:d.children[i].id, f:'<div id="'+ d.children[i].id +'">'+d.children[i].text+'</div>'},d.id, 'child'];
+                  obj[i+objLength] = [ {v:d.children[i].id, f:'<div id="'+ escapeHtml(d.children[i].id) +'">'+escapeHtml(d.children[i].text)+'</div>'},d.id, 'child'];
   			}
 
 
@@ -114,7 +145,8 @@
 				htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/user_html.jsp' />";
 			}
 			
-			$.get(url+"?dn="+dn, function (d) {
+			ldapPost(url, { dn: dn }).done(function (d) {
+					d = getDataBody(d);
 				 $("#detail_div").load(htmlfile, function() {
 						$.each($("input"), function(i,v) {
 						    $(v).val(d[v.name]);
@@ -128,6 +160,17 @@
 
 	}
 	
+	function getDataBody(data) {
+		var body;
+		if ( typeof data.deptManage != "undefined" ) {
+			body = data.deptManage
+		}
+		if ( typeof data.userManage != "undefined" ) {
+			body = data.userManage
+		}
+		return body;
+	}
+	
 	function modifyOrgManage(str){
 		var url="";
 		if(str=='dept') {
@@ -136,14 +179,7 @@
 			url = '<c:url value="/ext/ldapumt/dpt/modifyUserManage.do" />';					
 		}
 		
-		$.ajax({
-	           type: "POST",
-	           url: url,
-	           data: $("#form1").serialize(), // serializes the form's elements.
-	           success: function(data)
-	           {
-	           }
-	         });
+		ldapPost(url, $("#form1").serialize()); // serializes the form's elements.
 		return;
 	}
 

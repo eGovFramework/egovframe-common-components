@@ -1,75 +1,114 @@
-/**
- * 개요
- * - 배너에 대한 Vo 클래스를 정의한다.
- * 
- * 상세내용
- * - 배너의 목록 항목을 관리한다.
- * @author 이문준
- * @version 1.0
- * @created 03-8-2009 오후 2:07:13
- */
-
 package egovframework.com.uss.ion.bnr.service;
 
 import java.util.List;
 
-public class BannerVO extends Banner {
+import egovframework.com.cmm.ComDefaultVO;
+import lombok.Getter;
+import lombok.Setter;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+/**
+ * <pre>
+ * 개요
+ * - 배너에 대한 Vo 클래스를 정의한다.
+ *
+ * 상세내용
+ * - 배너의 일련번호, 배너명, 링크URL, 배너설명, 반영여부 및 목록 항목을 관리한다.
+ * </pre>
+ *
+ * @author 이문준
+ * @since 2009.08.03
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.08.03  이문준          최초 생성
+ *   2025.08.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-MethodReturnsInternalArray(Private 배열에 Public 데이터 할당)
+ *   2025.08.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-ArrayIsStoredDirectly(Public 메소드부터 반환된 Private 배열)
+ *
+ *      </pre>
+ */
+@Getter
+@Setter
+public class BannerVO extends ComDefaultVO {
 
 	/**
 	 * serialVersionUID
 	 */
-	private static final long serialVersionUID = 1L;	
-	/**
-	 * 배너 목록
-	 */	
-	List<BannerVO> bannerList;
-	/**
-	 * 삭제대상 목록
-	 */		
-    String[] delYn;
-	/**
-	 * 결과 반영 타입
-	 * vertical : 세로
-	 * horizontal : 가로
-	 */		
-    String resultType = "horizontal";
+	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @return the bannerList
+	 * 배너 ID
 	 */
-	public List<BannerVO> getBannerList() {
-		return bannerList;
-	}
+	private String bannerId;
 	/**
-	 * @param bannerList the bannerList to set
+	 * 배너 명
 	 */
-	public void setBannerList(List<BannerVO> bannerList) {
-		this.bannerList = bannerList;
-	}
+	@EgovNullCheck
+	@Size(max = 30)
+	private String bannerNm;
 	/**
-	 * @return the delYn
+	 * 링크 URL
 	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
+	@EgovNullCheck
+	private String linkUrl;
 	/**
-	 * @param delYn the delYn to set
+	 * 배너 이미지 (필수)
 	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
-	}
+	@NotBlank(message = "{ussIonBnr.bannerRegist.ImageReq}")
+	private String bannerImage;
 	/**
-	 * @return the resultType
+	 * 배너 이미지 파일
 	 */
-	public String getResultType() {
-		return resultType;
-	}
+	private String bannerImageFile;
 	/**
-	 * @param resultType the resultType to set
+	 * 배너 설명
 	 */
-	public void setResultType(String resultType) {
-		this.resultType = resultType;
-	}
-    
-    
+	private String bannerDc;
+	/**
+	 * 정렬 순서
+	 */
+	@EgovNullCheck
+	@Size(max = 100)
+	@Pattern(regexp = "^[0-9]*$", message = "{validation.pattern.integer}")
+	private String sortOrdr;
+	/**
+	 * 반영여부
+	 */
+	private String reflctAt;
+	/**
+	 * 사용자 ID
+	 */
+	private String userId;
+	/**
+	 * 등록일자
+	 */
+	private String regDate;
+	/**
+	 * 파일첨부여부
+	 */
+	private boolean isAtchFile;
+
+	/**
+	 * 배너 목록
+	 */
+	private List<BannerVO> bannerList;
+
+	/**
+	 * 삭제대상 목록
+	 */
+	private String[] delYn;
+
+	/**
+	 * 결과 반영 타입 vertical : 세로 horizontal : 가로
+	 */
+	private String resultType = "horizontal";
+
 }

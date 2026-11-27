@@ -16,7 +16,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
  --%>
 <%@ page contentType="text/html; charset=utf-8"%>
@@ -26,7 +26,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <html lang="ko">
 <head>
@@ -34,10 +33,8 @@
 <title><spring:message code="comUatUap.loginPolicyUpdt.title"/></title><!-- 로그인정책 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="loginPolicy" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 
@@ -123,7 +120,7 @@ function ipValidate() {
 <body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/updtLoginPolicy.do' />">
+<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/updtLoginPolicy.do">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUatUap.loginPolicyUpdt.pageTop.title"/></h2><!-- 로그인정책 수정 -->
@@ -135,7 +132,7 @@ function ipValidate() {
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/> <span class="pilsu">*</span></th><!-- 사용자ID -->
+			<th><spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/> </th><!-- 사용자ID -->
 			<td class="left">
 			    <input name="emplyrId" id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" <c:if test="${registerFlag == 'UPDATE'}">disabled</c:if> value="<c:out value='${loginPolicy.emplyrId}'/>" disabled="disabled" style="width:180px" />
 			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
@@ -173,8 +170,8 @@ function ipValidate() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncLoginPolicyUpdate();return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/uat/uap/removeLoginPolicy.do'/>?emplyrId=&emplyrIdEncrypt=<c:out value='${egovc:encrypt(loginPolicy.emplyrId)}'/>" onclick="fncLoginPolicyDelete(); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/uat/uap/selectLoginPolicyList.do'/>?pageIndex=<c:out value='${loginPolicyVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginPolicyVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncSelectLoginPolicyList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncLoginPolicyDelete(); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectLoginPolicyList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

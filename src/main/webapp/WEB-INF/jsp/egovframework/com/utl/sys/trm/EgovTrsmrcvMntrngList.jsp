@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysTrm.trsmrcvMntrngList.title"/></c:set>
 <% 
 /**
@@ -75,7 +76,7 @@
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-    <form name="frm" id="frm" action="<c:url value='/utl/sys/trm/getTrsmrcvMntrngList.do'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/utl/sys/trm/getTrsmrcvMntrngList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -88,8 +89,8 @@
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' maxlength="35" size="25" onkeypress="press(event);" title="검색키워드" />
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_get_list('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/trm/getTrsmrcvMntrngForRegist.do'/>" onclick="fn_egov_get_regist_view(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/utl/sys/trm/getTrsmrcvMntrngLogList.do'/>" onclick="fn_egov_log_mntrng_list(); return false;" title="<spring:message code="button.log" />"><spring:message code="button.log" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_get_regist_view(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_log_mntrng_list(); return false;" title="<spring:message code="button.log" />"><spring:message code="button.log" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -97,7 +98,7 @@
     <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1' />">
     <input name="cntcId" type="hidden" value="">
 
-    </form>
+    
 
 	<table class="board_list">
 		<caption></caption>
@@ -141,13 +142,7 @@
 	          <tr>
 	                <td>${resultInfo.cntcId}</td>
 	                <td>
-	                    <form name="item" method="post" action="/utl/sys/trm/getTrsmrcvMntrng.do">
-	                        <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-	                        <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-	                        <input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
-	                        <input type="hidden" name="dataSourcNm" value="">
-	                    <span class="link"><input type="submit" value="<c:out value="${resultInfo.cntcNm}"/>" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.cntcId}"/>'); return false;"></span>
-	                    </form>
+	                    <a href="javascript:void(0);" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.cntcId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.cntcNm}"/></span></a>
 	                </td>
 	                <td>${resultInfo.testClassNm}</td>
 	                <td>${resultInfo.mngrNm}</td>
@@ -172,6 +167,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_list"/>
 		</ul>
 	</div>
+</form:form>
+
 
 </div>
 

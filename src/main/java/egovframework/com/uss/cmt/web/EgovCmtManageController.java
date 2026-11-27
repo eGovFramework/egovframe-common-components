@@ -2,8 +2,6 @@ package egovframework.com.uss.cmt.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Controller;
@@ -11,8 +9,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -21,9 +21,10 @@ import egovframework.com.uss.cmt.service.CmtDefaultVO;
 import egovframework.com.uss.cmt.service.CmtManageVO;
 import egovframework.com.uss.cmt.service.EgovCmtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
+import javax.annotation.Resource;
 
 /**
- * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된 결과를  해당
+ * 업무사용자관련 요청을  비즈니스 클래스로 전달하고 처리된 결과를  해당
  * 웹 화면으로 전달하는  Controller를 정의한다
  * @author 표준프레임워크 개발팀
  * @since 2014.08.29
@@ -40,7 +41,6 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
  *
  * </pre>
  */
-
 @Controller
 public class EgovCmtManageController {
 
@@ -51,10 +51,6 @@ public class EgovCmtManageController {
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-
-    /** DefaultBeanValidator beanValidator */
-    //	@Autowired
-    //	private DefaultBeanValidator beanValidator;
 
     /** egovCmtManageIdGnrService */
     @Resource(name = "egovCmtManageIdGnrService")
@@ -72,7 +68,8 @@ public class EgovCmtManageController {
      * @return forward:/uss/cmt/EgovCmtMange.do
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/cmt/EgovCmtWrkStartInsert.do")
+    @PostMapping("/uss/cmt/EgovCmtWrkStartInsert.do")
+    @RequireAdmin
     public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -104,7 +101,8 @@ public class EgovCmtManageController {
      * @return forward:/uss/cmt/EgovCmtMange.do
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/cmt/EgovCmtWrkEndInsert.do")
+    @PostMapping("/uss/cmt/EgovCmtWrkEndInsert.do")
+    @RequireAdmin
     public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

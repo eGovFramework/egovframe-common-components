@@ -1,12 +1,11 @@
 package egovframework.com.cmm.web;
 
+
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,30 +13,36 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 파일 조회, 삭제, 다운로드 처리를 위한 컨트롤러 클래스
- * 
+ *
  * @author 공통서비스개발팀 이삼섭
  * @since 2009.06.01
  * @version 1.0
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일          수정자        수정내용
- *  ----------     --------    ---------------------------
- *  2009.03.25     이삼섭        최초 생성
- *  2016.10.13     장동한        deleteFileInf 메소드 return 방식 수정
- *  2022.12.02     윤창원        File ID 암호화 처리
- *  2022.12.22     신용호        JSTL 커스텀 태그 추가 및 기능 보완
- *  2024.10.29		LeeBaekHaeng	정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.25  이삼섭          최초 생성
+ *   2016.10.13  장동한          deleteFileInf 메소드 return 방식 수정
+ *   2022.12.02  윤창원          File ID 암호화 처리
+ *   2022.12.22  신용호          JSTL 커스텀 태그 추가 및 기능 보완
+ *   2024.10.29  이백행          정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
+ *   2025.05.31  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
  *      </pre>
  */
@@ -45,7 +50,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 public class EgovFileMngController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileMngController.class);
-	
+
 	/** 암호화서비스 */
 	private static EgovEnvCryptoService cryptoService;
 
@@ -56,7 +61,7 @@ public class EgovFileMngController {
 	public void setEgovEnvCryptoService(EgovEnvCryptoService cryptoService) {
 		EgovFileMngController.cryptoService = cryptoService;
 	}
-	
+
 	/**
 	 * 첨부파일에 대한 목록을 조회한다.
 	 *
@@ -65,34 +70,41 @@ public class EgovFileMngController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/selectFileInfs.do")
-	public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO,
-			HttpServletRequest request,
-			@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-		
+	public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO, HttpServletRequest request,
+			@RequestParam Map<String, Object> commandMap, ModelMap model) {
+
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+		}
+
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
-		
-		if (param_atchFileId != null && !"".equals(param_atchFileId) ) {
+
+		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
+			if (decodedAtchFileId == null || decodedAtchFileId.startsWith("FILE_ID_DECRIPT_EXCEPTION")) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
 		}
-		
+
 		fileVO.setAtchFileId(decodedAtchFileId);
 		List<FileVO> result = fileService.selectFileInfs(fileVO);
 
 		// FileId를 유추하지 못하도록 세션ID와 함께 암호화하여 표시한다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
 		for (FileVO file : result) {
 			String sessionId = request.getSession().getId();
-			String toEncrypt = sessionId + "|" + file.atchFileId;
+			// 2026.11.25 KVE-2026-3293 조치 - 토큰을 발급한 첨부만 이 세션에서 다운로드할 수 있다
+			EgovAttachmentGrants.allowDownload(request, file.getAtchFileId());
+			String toEncrypt = sessionId + "|" + file.getAtchFileId();
 			file.setAtchFileId(Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes()));
 		}
 
 		model.addAttribute("fileList", result);
 		model.addAttribute("updateFlag", "N");
 		model.addAttribute("fileListCnt", result.size());
-		model.addAttribute("atchFileId", param_atchFileId);
 
 		return "egovframework/com/cmm/fms/EgovFileList";
 	}
@@ -105,20 +117,26 @@ public class EgovFileMngController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/selectFileInfsForUpdate.do")
 	public String selectFileInfsForUpdate(@ModelAttribute("searchVO") FileVO fileVO,
 			@RequestParam Map<String, Object> commandMap,
 			// SessionVO sessionVO,
-			HttpServletRequest request,
-			ModelMap model) throws Exception {
+			HttpServletRequest request, ModelMap model) {
+
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+		}
 
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
-		
-		if (param_atchFileId != null && !"".equals(param_atchFileId) ) {
+
+		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
+			if (decodedAtchFileId == null || decodedAtchFileId.startsWith("FILE_ID_DECRIPT_EXCEPTION")) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
 		}
 
 		fileVO.setAtchFileId(decodedAtchFileId);
@@ -128,7 +146,9 @@ public class EgovFileMngController {
 		// FileId를 유추하지 못하도록 세션ID와 함께 암호화하여 표시한다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
 		for (FileVO file : result) {
 			String sessionId = request.getSession().getId();
-			String toEncrypt = sessionId + "|" + file.atchFileId;
+			// 2026.11.25 KVE-2026-3293 조치 - 토큰을 발급한 첨부만 이 세션에서 다운로드할 수 있다
+			EgovAttachmentGrants.allowDownload(request, file.getAtchFileId());
+			String toEncrypt = sessionId + "|" + file.getAtchFileId();
 			file.setAtchFileId(Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes()));
 		}
 
@@ -148,83 +168,88 @@ public class EgovFileMngController {
 	 * @param sessionVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
-	@RequestMapping("/cmm/fms/deleteFileInfs.do")
+	@RequestMapping(value = "/cmm/fms/deleteFileInfs.do", method = RequestMethod.POST)
 	public String deleteFileInf(@ModelAttribute("searchVO") FileVO fileVO,
 			// SessionVO sessionVO,
-			HttpServletRequest request, ModelMap model) throws Exception {
+			HttpServletRequest request, ModelMap model) {
 
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
-		if (isAuthenticated) {
-			fileService.deleteFileInf(fileVO);
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
 		}
+
+		// 삭제 식별자는 수정 목록이 발급한 세션 결합 암호문(sessionId|atchFileId)만 받는다.
+		// 파일 테이블에 소유자가 없어 소유권은 부모를 아는 업무 컨트롤러가 판정하고 삭제 허가를 발급한다.
+		String decodedString = "";
+		try {
+			String token = request.getParameter("atchFileId").replaceAll(" ", "+");
+			decodedString = cryptoService.decrypt(new String(Base64.getDecoder().decode(token)));
+		} catch (RuntimeException e) {
+			LOGGER.debug("delete token decrypt failed: {}", e.getMessage());
+		}
+		String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
+		String decodedFileId = StringUtils.substringAfter(decodedString, "|");
+		if (StringUtils.isEmpty(decodedFileId) || !StringUtils.equals(decodedSessionId, request.getSession().getId())) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
+		EgovAttachmentGrants.assertDeleteAllowed(request, decodedFileId);
+
+		fileVO.setAtchFileId(decodedFileId);
+		fileService.deleteFileInf(fileVO);
 
 		return "blank";
 
-		// --------------------------------------------
-		// contextRoot가 있는 경우 제외 시켜야 함
-		// --------------------------------------------
-		//// return "forward:/cmm/fms/selectFileInfs.do";
-		// return "forward:" + returnUrl;
-		/*
-		 * ******************************************************* modify by jdh
-		 *******************************************************
-		 * if ("".equals(request.getContextPath()) ||
-		 * "/".equals(request.getContextPath())) { return "forward:" + returnUrl; }
-		 * 
-		 * if (returnUrl.startsWith(request.getContextPath())) { return "forward:" +
-		 * returnUrl.substring(returnUrl.indexOf("/", 1)); } else { return "forward:" +
-		 * returnUrl; }
-		 */
-		//// ------------------------------------------
 	}
 
 	/**
 	 * 원본 문자열을 암호화 하는 메서드.
+	 *
 	 * @param source 원본 문자열
 	 * @return 암호화 문자열
 	 */
 	public static String encrypt(String atchFileId) {
 		String returnVal = "";
-		if (atchFileId!=null && !"".equals(atchFileId)) {
+		if (atchFileId != null && !"".equals(atchFileId)) {
 			returnVal = cryptoService.encrypt(atchFileId);
 		}
 		return returnVal;
 	}
 
-	
 	/**
 	 * 원본 문자열을 암호화 하는 메서드.
+	 *
 	 * @param source 원본 문자열
 	 * @return 암호화 문자열
 	 */
 	public static String encryptSession(String atchFileId, String sessionId) {
 		String returnVal = "";
-		if (atchFileId!=null && !"".equals(atchFileId)) {
+		if (atchFileId != null && !"".equals(atchFileId)) {
 			String toEncrypt = sessionId + "|" + atchFileId;
 			returnVal = Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes());
 		}
 		return returnVal;
 	}
 
-	
 	/**
 	 * 암호화 문자열을 복호화 하는 메서드.
+	 *
 	 * @param source 암호화 문자열
 	 * @return 원본 문자열
 	 */
 	public static String decrypt(String base64AtchFileId) {
 		String returnVal = "FILE_ID_DECRIPT_EXCEPTION_02";
-		if (base64AtchFileId!=null && !"".equals(base64AtchFileId)) {
+		if (base64AtchFileId != null && !"".equals(base64AtchFileId)) {
+			//2026.02.28 KISA 취약점 조치
 			try {
+				// EgovEnvCryptoServiceImpl.decrypt()에서 IllegalArgumentException은 내부 처리
 				returnVal = cryptoService.decrypt(base64AtchFileId);
-			} catch (Exception e) {
-				LOGGER.debug(e.getMessage());
+			} catch (RuntimeException e) {
+					LOGGER.debug("decrypt failed: {}", e.getMessage());
 			}
 		}
 		return returnVal;
 	}
+
 
 }

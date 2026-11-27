@@ -44,6 +44,16 @@ public interface EgovAuthorRoleManageService {
 	 */
 	public void deleteAuthorRole(AuthorRoleManage authorRoleManage) throws Exception;
 
+	/**
+	 * 여러 롤코드에 대한 권한 배정을 배정여부(regYn)에 따라 일괄 처리한다.
+	 * 항목마다 기존 배정을 삭제하고, 배정(Y)이면 다시 등록하며, 전체 목록을 하나의 트랜잭션으로 처리한다.
+	 * @param authorRoleManage AuthorRoleManage(공통 필드가 채워진 커맨드 객체)
+	 * @param roleCodes 처리할 롤코드 배열
+	 * @param regYns roleCodes 와 같은 순서의 배정여부(Y/N) 배열
+	 * @exception Exception
+	 */
+	public void updateAuthorRoleList(AuthorRoleManage authorRoleManage, String[] roleCodes, String[] regYns) throws Exception;
+
     /**
 	 * 목록조회 카운트를 반환한다
 	 * @param authorRoleManageVO AuthorRoleManageVO

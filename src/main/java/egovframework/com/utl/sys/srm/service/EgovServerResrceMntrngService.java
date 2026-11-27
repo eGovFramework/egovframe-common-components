@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 개요
  * - 서버자원모니터링에 대한 Service Interface를 정의한다.
- * 
+ *
  * 상세내용
  * - 서버자원모니터링에 대한 등록, 조회 기능을 제공한다.
  * @author lee.m.j
@@ -47,11 +47,11 @@ public interface EgovServerResrceMntrngService {
 	 * @return ServerResrceMntrngVO - 서버자원모니터링 Vo
 	 */
 	public List<ServerResrceMntrngVO> selectMntrngServerList(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception;
-	
+
 	/**
 	 * 서버자원모티너링 대상서버 목록 총 개수를 조회한다.
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return int - 서버자원모니터링 대상서버의 카운트 수
 	 */
-	public int selectMntrngServerListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception;	
+	public int selectMntrngServerListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception;
 }

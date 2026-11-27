@@ -2,18 +2,19 @@ package egovframework.com.sym.log.plg.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.plg.service.EgovPrivacyLogService;
 import egovframework.com.sym.log.plg.service.PrivacyLog;
+import javax.annotation.Resource;
 
 /**
  * @Class Name : EgovPrivacyLogController.java
@@ -44,7 +45,8 @@ public class EgovPrivacyLogController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name="개인정보조회로그관리", listUrl="/sym/log/plg/SelectPrivacyLogList.do", order = 1085 ,gid = 60)
-	@RequestMapping(value="/sym/log/plg/SelectPrivacyLogList.do")
+	@RequestMapping(value = "/sym/log/plg/SelectPrivacyLogList.do")
+	@RequireAdmin // 2026.11.25 KVE-2026-3294 조치
 	public String selectPrivacyLogList(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 
@@ -80,7 +82,8 @@ public class EgovPrivacyLogController {
 	 * @return sym/log/plg/EgovPrivacyLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/log/plg/SelectPrivacyLogDetail.do")
+	@GetMapping("/sym/log/plg/SelectPrivacyLogDetail.do")
+	@RequireAdmin
 	public String selectWebLog(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 

@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovMenuCreatManage.jsp
@@ -77,7 +78,7 @@ function selectMenuCreat(vAuthorCode) {
 <div class="board">
 	<h1><spring:message code="comSymMnuMpm.menuCreatManage.pageTop.title" /></h1><!-- 메뉴생성관리 -->
 
-	<form name="menuCreatManageForm" action ="<c:url value='/sym/mnu/mcm/EgovMenuCreatManageSelect.do'/>" method="post">
+	<form:form name="menuCreatManageForm" modelAttribute="searchVO" action ="<c:url value='/sym/mnu/mcm/EgovMenuCreatManageSelect.do'/>" method="post">
 	<input name="checkedMenuNoForDel" type="hidden" />
 	<input name="authorCode"          type="hidden" />
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
@@ -122,7 +123,7 @@ function selectMenuCreat(vAuthorCode) {
 		          <c:if test="${result.chkYeoBu == 0}">N</c:if>
 			    </td>
 			    <td>
-			       <a class="btn02" href="<c:url value='/sym/mnu/mcm/EgovMenuCreatSelect.do'/>?authorCode='<c:out value="${result.authorCode}"/>'"  onclick="selectMenuCreat('<c:out value="${result.authorCode}"/>'); return false;">메뉴생성</a>
+			       <a class="btn02" href="javascript:void(0);"  onclick="selectMenuCreat('<c:out value="${result.authorCode}"/>'); return false;">메뉴생성</a>
 			    </td>
 			  </tr>
 			 </c:forEach>
@@ -137,7 +138,7 @@ function selectMenuCreat(vAuthorCode) {
 	</div>
 	
 	<input type="hidden" name="req_menuNo">
-	</form>
+	</form:form>
 	
 </div>
 

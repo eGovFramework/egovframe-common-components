@@ -22,7 +22,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
@@ -32,10 +31,8 @@
 <title><spring:message code="comCopSmtMrm.memoReprtDetail.title"/></title><!-- 메모보고 상세보기 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="memoReprtVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_MemoReprt(){
 	
@@ -106,37 +103,37 @@
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reprtDe"/> <span class="pilsu">*</span></th><!-- 보고일자 -->
 			<td class="left">
-			    <c:out value="${memoReprt.reprtDe}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.reprtDe}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${memoReprt.wrterClsfNm}" escapeXml="false" />
-	      		<c:out value="${memoReprt.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.wrterClsfNm}"/></span>
+	      		<span style="white-space:pre-line"><c:out value="${memoReprt.wrterNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reportrNm"/> <span class="pilsu">*</span></th><!-- 보고 대상자 -->
 			<td class="left">
-			    <c:out value="${memoReprt.reportrClsfNm}" escapeXml="false" />
-				<c:out value="${memoReprt.reportrNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.reportrClsfNm}"/></span>
+				<span style="white-space:pre-line"><c:out value="${memoReprt.reportrNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reprtSj"/> <span class="pilsu">*</span></th><!-- 보고제목 -->
 			<td class="left">
-			    <c:out value="${memoReprt.reprtSj}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.reprtSj}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtRegist.reprtCn"/><span class="pilsu">*</span></th><!-- 보고내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(memoReprt.reprtCn , crlf , '<br>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(memoReprt.reprtCn , crlf , '<br>')}"/></span>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/><span class="pilsu">*</span></th><!--  파일첨부-->
+			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/></th><!--  파일첨부-->
 			<td class="left">
 			    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
 				<c:param name="param_atchFileId" value="${egovc:encrypt(memoReprt.atchFileId)}" />
@@ -146,7 +143,7 @@
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtList.searchSttus"/> <span class="pilsu">*</span></th><!-- 보고서 상태 -->
 			<td class="left">
-				<c:out value="${memoReprt.reprtSttus}" escapeXml="false" />			    
+				<span style="white-space:pre-line"><c:out value="${memoReprt.reprtSttus}"/></span>			    
 			</td>
 		</tr>
 		
@@ -154,7 +151,7 @@
 		<tr>
 	        <th><spring:message code="comCopSmtMrm.memoReprtDetail.drctMatter"/> <span class="pilsu">*</span></th><!-- 의견/지시사항 -->
 	        <td class="left">
-	            <textarea id="drctMatter" name="drctMatter" rows="5" cols="75" title="<spring:message code='comCopSmtMrm.memoReprtDetail.drctMatter'/>"><c:out value="${memoReprt.drctMatter}" escapeXml="false" /></textarea><!-- 의견/지시사항 -->
+	            <textarea id="drctMatter" name="drctMatter" rows="5" cols="75" title="<spring:message code='comCopSmtMrm.memoReprtDetail.drctMatter'/>"><c:out value="${memoReprt.drctMatter}"/></textarea><!-- 의견/지시사항 -->
 	            <div><form:errors path="drctMatter" cssClass="error"/></div>
 	        </td>
 	    </tr>
@@ -163,7 +160,7 @@
 	    <tr>
 	        <th><spring:message code="comCopSmtMrm.memoReprtDetail.drctMatter"/> <span class="pilsu">*</span></th><!-- 의견/지시사항 -->
 	        <td class="left">
-        	    <c:out value="${memoReprt.drctMatter}" escapeXml="false" />
+        	    <span style="white-space:pre-line"><c:out value="${memoReprt.drctMatter}"/></span>
 	        </td>
 	    </tr>
 		</c:if>
@@ -173,11 +170,11 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${memoReprt.reportrId eq uniqId}">
-			<span class="btn_s" style="width:64px !important"><a href="<c:url value='/cop/smt/mrm/updateMemoReprtDrctMatter.do'/>?searchWrd=<c:out value='${memoReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${memoReprtVO.searchSttus}'/>&amp;searchDrctMatter=<c:out value='${memoReprtVO.searchDrctMatter}'/>&amp;searchBgnDe=<c:out value='${memoReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoReprtVO.searchEndDe}'/>" onclick="fn_egov_confirm_memoreprt(); return false;"><spring:message code="comCopSmtMrm.memoReprtDetail.memoreprt"/></a></span><!-- 의견등록 -->
+			<span class="btn_s" style="width:64px !important"><a href="javascript:void(0);" onclick="fn_egov_confirm_memoreprt(); return false;"><spring:message code="comCopSmtMrm.memoReprtDetail.memoreprt"/></a></span><!-- 의견등록 -->
 		</c:if>
 		<c:if test="${(memoReprt.reprtSttus eq '미확인' or memoReprt.reprtSttus eq 'Unidentified') && memoReprt.wrterId eq uniqId}">
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_memoreprt(); return false;" />
-			<span class="btn_s"><a href="<c:url value='/cop/smt/mrm/deleteMemoReprt.do'/>?reprtId=<c:out value='${egovc:encryptId(memoReprtVO.reprtId)}'/>" onclick="fn_egov_delete_memoreprt(); return false;"><spring:message code="button.delete" /></a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_memoreprt(); return false;"><spring:message code="button.delete" /></a></span>
 		</c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_memoreprt(); return false;" />
 	</div>

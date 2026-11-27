@@ -6,9 +6,9 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovEventCmpgnService {
 
-	List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO searchVO);
+	List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO eventCmpgnVO);
 
-	int selectEventCmpgnListCnt(EventCmpgnVO searchVO);
+	int selectEventCmpgnListCnt(EventCmpgnVO eventCmpgnVO);
 
 	void insertEventCmpgn(EventCmpgnVO eventCmpgnVO) throws FdlException;
 
@@ -18,9 +18,9 @@ public interface EgovEventCmpgnService {
 
 	void deleteEventCmpgn(EventCmpgnVO eventCmpgnVO);
 
-	List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO searchVO);
+	List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO tnextrlHrVO);
 
-	int selectTnextrlHrListCnt(TnextrlHrVO searchVO);
+	int selectTnextrlHrListCnt(TnextrlHrVO tnextrlHrVO);
 
 	void insertTnextrlHr(TnextrlHrVO tnextrlHrVO) throws FdlException;
 

@@ -12,7 +12,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -29,12 +29,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_UnityLink(){
-
-}
-/* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_UnityLink(){
@@ -46,7 +40,7 @@ function fn_egov_list_UnityLink(){
 function fn_egov_modify_UnityLink(){
 	var vFrom = document.UnityLinkForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLinkView.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLinkView.do' />";
 	vFrom.submit();
 
 }
@@ -65,12 +59,13 @@ function fn_egov_delete_UnityLink(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_UnityLink();">
+<body>
 
 <%-- noscript 태그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="UnityLinkForm" action="<c:url value=''/>" method="post">
+<form name="UnityLinkForm" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -87,7 +82,7 @@ function fn_egov_delete_UnityLink(){
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkDetail.unityLinkNm" /><span class="pilsu">*</span></th><!-- 통합링크명 -->
 			<td class="left">
-			    <c:out value="${unityLink.unityLinkNm}" escapeXml="false" />
+			    <c:out value="${unityLink.unityLinkNm}"/>
 			</td>
 		</tr>
 		<tr>
@@ -95,7 +90,7 @@ function fn_egov_delete_UnityLink(){
 			<td class="left">
 			    <c:forEach items="${unityLinkSeCodeList}" var="resultInfo1" varStatus="pollKindStatus">
 					<c:if test="${resultInfo1.code eq unityLink.unityLinkSeCode}">
-					<c:out value="${resultInfo1.codeNm}" escapeXml="false" />
+					<c:out value="${resultInfo1.codeNm}"/>
 					</c:if>
 				</c:forEach>
 			</td>
@@ -103,31 +98,34 @@ function fn_egov_delete_UnityLink(){
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkDetail.unityLinkUrl" /> <span class="pilsu">*</span></th><!-- 통합링크URL -->
 			<td class="left">
-			    <c:out value="${unityLink.unityLinkUrl}" escapeXml="false" />
+			    <c:out value="${unityLink.unityLinkUrl}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkDetail.unityLinkDc" /><span class="pilsu">*</span></th><!-- 통합링크설명  -->
 			<td class="left">
-			    <c:out value="${unityLink.unityLinkDc}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${unityLink.unityLinkDc}"/></span>
 			</td>
 		</tr>
 	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/ulm/updtUnityLinkView.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/ulm/updtUnityLinkView.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input name="unityLinkId" type="hidden" value="${unityLink.unityLinkId}">
 			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_UnityLink(); return false;">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/ion/ulm/detailUnityLink.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/ulm/detailUnityLink.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="unityLinkId" type="hidden" value="${unityLink.unityLinkId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_UnityLink(); return false;">
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/ulm/listUnityLink.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/ulm/listUnityLink.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_UnityLink(); return false;">
 		</form>
 	</div>

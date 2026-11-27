@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * Q&A를 처리하는 DefaultVO 클래스
@@ -18,9 +21,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  박정규          최초 생성
+ *   2025.05.25  장동한          Lombok @Getter/@Setter 적용
  *
  * </pre>
  */
+@Getter
+@Setter
 public class QnaDefaultVO implements Serializable {
 
 	private static final long serialVersionUID = -6690473803320520100L;
@@ -52,150 +58,6 @@ public class QnaDefaultVO implements Serializable {
 	/** recordCountPerPage */
 	private int recordCountPerPage = 10;
 
-	/**
-	 * searchCnd attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getSearchCnd() {
-		return searchCnd;
-	}
-
-	/**
-	 * searchCnd attribute 값을 설정한다.
-	 * @return searchCnd String
-	 */
-	public void setSearchCnd(String searchCnd) {
-		this.searchCnd = searchCnd;
-	}
-
-	/**
-	 * searchWrd attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getSearchWrd() {
-		return searchWrd;
-	}
-
-	/**
-	 * searchWrd attribute 값을 설정한다.
-	 * @return searchWrd String
-	 */
-	public void setSearchWrd(String searchWrd) {
-		this.searchWrd = searchWrd;
-	}
-
-	/**
-	 * searchUseYn attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getSearchUseYn() {
-		return searchUseYn;
-	}
-
-	/**
-	 * searchUseYn attribute 값을 설정한다.
-	 * @return searchUseYn String
-	 */
-	public void setSearchUseYn(String searchUseYn) {
-		this.searchUseYn = searchUseYn;
-	}
-
-	/**
-	 * pageIndex attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getPageIndex() {
-		return pageIndex;
-	}
-
-	/**
-	 * pageIndex attribute 값을 설정한다.
-	 * @return pageIndex int
-	 */
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
-	}
-
-	/**
-	 * pageUnit attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getPageUnit() {
-		return pageUnit;
-	}
-
-	/**
-	 * pageUnit attribute 값을 설정한다.
-	 * @return pageUnit int
-	 */
-	public void setPageUnit(int pageUnit) {
-		this.pageUnit = pageUnit;
-	}
-
-	/**
-	 * pageSize attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getPageSize() {
-		return pageSize;
-	}
-
-	/**
-	 * pageSize attribute 값을 설정한다.
-	 * @return pageSize int
-	 */
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	/**
-	 * firstIndex attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getFirstIndex() {
-		return firstIndex;
-	}
-
-	/**
-	 * firstIndex attribute 값을 설정한다.
-	 * @return firstIndex int
-	 */
-	public void setFirstIndex(int firstIndex) {
-		this.firstIndex = firstIndex;
-	}
-
-	/**
-	 * lastIndex attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getLastIndex() {
-		return lastIndex;
-	}
-
-	/**
-	 * lastIndex attribute 값을 설정한다.
-	 * @return lastIndex int
-	 */
-	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
-	}
-
-	/**
-	 * recordCountPerPage attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getRecordCountPerPage() {
-		return recordCountPerPage;
-	}
-
-	/**
-	 * recordCountPerPage attribute 값을 설정한다.
-	 * @return recordCountPerPage int
-	 */
-	public void setRecordCountPerPage(int recordCountPerPage) {
-		this.recordCountPerPage = recordCountPerPage;
-	}
-	
 	/**
 	 * toString 메소드를 대치한다.
 	 */

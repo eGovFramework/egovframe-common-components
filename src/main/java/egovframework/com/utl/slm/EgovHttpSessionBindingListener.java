@@ -1,5 +1,6 @@
 package egovframework.com.utl.slm;
 
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
@@ -23,15 +24,15 @@ public class EgovHttpSessionBindingListener implements HttpSessionBindingListene
 	 * */
 	@Override
 	public void valueBound(HttpSessionBindingEvent event) {
-		if (EgovMultiLoginPreventor.findByLoginId(event.getName())) {
-			EgovMultiLoginPreventor.invalidateByLoginId(event.getName());
+		HttpSession previousSession = EgovMultiLoginPreventor.loginUsers.put(event.getName(), event.getSession());
+		if (previousSession != null && previousSession != event.getSession()) {
+			previousSession.invalidate();
 		}
-		EgovMultiLoginPreventor.loginUsers.put(event.getName(), event.getSession());
 	}
 
 	/**
-	 * 
-	 * 로그아웃 혹은 세션타임아웃 설정에 따라 사용자 세션으로부터 
+	 *
+	 * 로그아웃 혹은 세션타임아웃 설정에 따라 사용자 세션으로부터
 	 * EgovHttpSessionBindingListener가 제거될 때 자동 호출되는 메소드로,
 	 * 사용자의 로그인 아이디에 해당하는 세션을 ConcurrentHashMap에서 모두 제거한다
 	 * */

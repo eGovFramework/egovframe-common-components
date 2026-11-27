@@ -2,8 +2,6 @@ package egovframework.com.sec.pki.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 import org.slf4j.Logger;
@@ -15,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import javax.annotation.Resource;
 
 /**
  * 암호화/복호화 관한 controller 클래스를 정의한다.
@@ -26,7 +26,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *  수정일               수정자              수정내용
  *  ----------   --------    ---------------------------
  *  2018.12.03   신용호              최초 생성
@@ -38,25 +38,26 @@ public class EgovCryptoController {
 
     /** 로그설정 */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCryptoController.class);
-	
+
 	/** 암호화서비스 */
 	@Resource(name = "egovEnvCryptoService")
 	EgovEnvCryptoService cryptoService;
-	
+
 	@Resource(name = "egovEnvPasswordEncoderService")
 	EgovPasswordEncoder egovPasswordEncoder;
-	
+
 	/** EgovMessageSource */
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
-	
+
     /**
      * 암호화/복호화 입력 및 요청 페이지를 호출한다.
-     * 
+     *
      * @return
      */
 	@IncludedInfo(name="암호화/복호화", listUrl="/sec/pki/EgovCryptoInfo.do", order = 2200 ,gid = 90)
-    @RequestMapping(value="/sec/pki/EgovCryptoInfo.do")
+    @RequestMapping(value = "/sec/pki/EgovCryptoInfo.do")
+    @RequireAdmin // 2026.11.25 KVE-2026-3293 조치 - 임의 평문 암호화는 관리자만
     public String displayCryptoInfo( @RequestParam Map<?, ?> commandMap,
 							    		ModelMap model) throws Exception {
         // 0. Spring Security 사용자권한 처리
@@ -65,26 +66,26 @@ public class EgovCryptoController {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-    	
+
     	String plainText = (String)commandMap.get("plainText");
 
     	if ( plainText != null ) {
-    	
-	    	int plainTextLen = plainText.length(); 
+
+	    	int plainTextLen = plainText.length();
 	    	String cryptText = encrypt(plainText);
 	    	String decryptText = decrypt(cryptText);
 	    	int decryptTextLen = decryptText.length();
-	    	
+
 	    	model.addAttribute("plainText", plainText);
 	    	model.addAttribute("plainTextLen", plainTextLen);
 	    	model.addAttribute("cryptText", cryptText);
 	    	model.addAttribute("decryptText", decryptText);
 	    	model.addAttribute("decryptTextLen", decryptTextLen);
     	}
-    	
+
     	return "egovframework/com/sec/pki/EgovCryptoInfo";
     }
-	
+
     /**
      * 암호화
      *
@@ -100,7 +101,7 @@ public class EgovCryptoController {
         }
 		return encrypt;
     }
-    
+
     /**
      * 복호화
      *

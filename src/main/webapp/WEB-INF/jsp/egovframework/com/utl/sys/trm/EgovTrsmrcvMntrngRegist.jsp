@@ -18,7 +18,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysTrm.trsmrcvMntrngRegist.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -27,9 +26,8 @@
 <title>${pageTitle}</title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<validator:javascript formName="trsmrcvMntrng" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 
 
@@ -116,31 +114,31 @@ function showModalDialogCallback(retVal) {
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.provider" /></th><!-- 제공기관 -->
 			<td class="left">
-			    <label id="provdInsttNm"><c:out value="${resultInfo.provdInsttNm}" escapeXml="false" /></label>
+			    <label id="provdInsttNm"><c:out value="${resultInfo.provdInsttNm}"/></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.provideSystem" /></th><!-- 제공시스템 -->
 			<td class="left">
-			    <label id="provdSysNm"><c:out value="${resultInfo.provdSysNm}" escapeXml="false" /></label>
+			    <label id="provdSysNm"><c:out value="${resultInfo.provdSysNm}"/></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.service" /></th><!-- 제공서비스 -->
 			<td class="left">
-			    <label id="provdSvcNm"><c:out value="${resultInfo.provdSvcNm}" escapeXml="false" /></label>
+			    <label id="provdSvcNm"><span style="white-space:pre-line"><c:out value="${resultInfo.provdSvcNm}"/></span></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.requester" /></th><!-- 요청기관 -->
 			<td class="left">
-			    <label id="requstInsttNm"><c:out value="${resultInfo.requstInsttNm}" escapeXml="false" /></label>
+			    <label id="requstInsttNm"><c:out value="${resultInfo.requstInsttNm}"/></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.requestSystem" /></th><!-- 요청시스템 -->
 			<td class="left">
-			    <label id="requstSysNm"><c:out value="${resultInfo.requstSysNm}" escapeXml="false" /></label>
+			    <label id="requstSysNm"><c:out value="${resultInfo.requstSysNm}"/></label>
 			</td>
 		</tr>
 		<tr>
@@ -169,7 +167,7 @@ function showModalDialogCallback(retVal) {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_save(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/trm/getTrsmrcvMntrngList.do'/>" onclick="fn_egov_get_list(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_get_list(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

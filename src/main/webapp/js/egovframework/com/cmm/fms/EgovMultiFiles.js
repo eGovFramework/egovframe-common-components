@@ -99,8 +99,13 @@ function MultiSelector(list_target, max, file_label) {
 		// Row div
 		var new_row = document.createElement('div');
 		new_row.className = "file_add_" + i;
-		new_row.innerHTML = "<span>" + element.files[i].name
-				+ "</span>&nbsp;&nbsp;";
+		// 2026.07.13 KISA 보안취약점 조치: 선택한 파일명(element.files[i].name)에 HTML 태그가
+		// 포함될 수 있어 innerHTML로 직접 대입하면 DOM XSS로 이어질 수 있으므로,
+		// span 요소를 생성하고 textContent로 파일명을 안전하게 대입한다.
+		var new_row_span = document.createElement('span');
+		new_row_span.textContent = element.files[i].name;
+		new_row.appendChild(new_row_span);
+		new_row.appendChild(document.createTextNode('  '));
 
 		// Add it to the list
 		this.list_target.appendChild(new_row);
@@ -135,11 +140,10 @@ var EgovMultiFilesChecker = {
 	    if ( __filelen == 0 ) return true;
 	    for(var i=0; i<__fileObjs.length; i++) {
 	    	var __fileObj = __fileObjs[i];
-	    	console.log(__fileObj.name);
-	    	console.log(this.getFileExtension(__fileObj.name));
+	    	// 2026.03.23 kisa 보안취약점 조치 디버그 코드 삭제
 
 	    	var __fileExt = this.getFileExtension(__fileObj.name);
-	    	if ( __fileExt == "" || (allowTypes+".").indexOf(__fileExt+".") < 0 ) {
+	    	if ( __fileExt == "" || ("," + allowTypes + ",").indexOf("," + __fileExt + ",") < 0 ) {
 	    		alert("허용되지 않는 확장자 입니다.["+__fileExt+"]");
 	    		return false;
 	    	}
@@ -149,11 +153,10 @@ var EgovMultiFilesChecker = {
 	}
 	,checkExtensionsOldIE: function(fileObjId, allowTypes) {
 		var __filelPath = document.getElementById( fileObjId ).value;
-	    console.log(__filelPath);
-	    console.log(this.getFileExtension(__filelPath));
+	    // 2026.03.23 kisa 보안취약점 조치 디버그 코드 삭제
 
 	    var __fileExt = this.getFileExtension(__filelPath);
-    	if ( __fileExt == "" || (allowTypes+".").indexOf(__fileExt+".") < 0 ) {
+    	if ( __fileExt == "" || ("," + allowTypes + ",").indexOf("," + __fileExt + ",") < 0 ) {
     		alert("2.허용되지 않는 확장자 입니다.["+__fileExt+"]");
     		return false;
     	}
@@ -176,9 +179,7 @@ var EgovMultiFilesChecker = {
 	    if ( __filelen == 0 ) return true;
 	    for(var i=0; i<__fileObjs.length; i++) {
 	    	var __fileObj = __fileObjs[i];
-	    	console.log(__fileObj.name);
-	    	console.log(this.getFileExtension(__fileObj.name));
-	    	console.log(__fileObj.size);
+			// 2026.03.23 kisa 보안취약점 조치 디버그 코드 삭제
 	    	
 	    	if ( __fileObj.size > allowSize ) {
 	    		alert("허용되지 않는 파일 사이즈 입니다.["+__fileObj.name+" : "+__fileObj.size+" bytes / "+allowSize+" bytes]");
@@ -192,7 +193,7 @@ var EgovMultiFilesChecker = {
 	,checkFileSizeOldIE: function(fileObjId, allowSize) {
 		
 		var __filelPath = document.getElementById( fileObjId ).value;
-	    console.log(__filelPath);
+	    // 2026.03.23 kisa 보안취약점 조치 디버그 코드 삭제
 
     	alert("구형 브라우저에서는 파일 사이즈 체크를 할수 없습니다.");
 	    

@@ -16,7 +16,7 @@
   *  @version 1.0
   *  @see
   *
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -25,8 +25,11 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comSsiSyiIis.cntcInsttList.title"/></title><!-- 연계기관 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -53,7 +56,7 @@ function fn_egov_search_CntcInstt(){
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_CntcInstt(){
-	location.href = "<c:url value='/ssi/syi/iis/updateCntcInstt.do'/>";
+	fn_egov_postNavigate("<c:url value='/ssi/syi/iis/updateCntcInstt.do'/>");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -62,6 +65,14 @@ function fn_egov_detail_CntcInstt(insttId){
 	var varForm				 = document.all["listForm"];
 	varForm.action           = "<c:url value='/ssi/syi/iis/getCntcInsttDetail.do'/>";
 	varForm.insttId.value    = insttId;
+	varForm.submit();
+}
+/* ********************************************************
+ * 등록화면 처리 함수
+ ******************************************************** */
+function fn_egov_regist_CntcInstt(){
+	var varForm				 = document.all["listForm"];
+	varForm.action           = "<c:url value='/ssi/syi/iis/addCntcInstt.do'/>";
 	varForm.submit();
 }
 
@@ -82,24 +93,24 @@ function press(event) {
 <div class="board">
 	<h1><spring:message code="comSsiSyiIis.cntcInsttList.pageTop.title"/></h1><!-- 연계기관 목록 -->
 
-	<form name="listForm" action="<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/ssi/syi/iis/getCntcInsttList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
 				<select name="searchCondition" class="select" title="<spring:message code="title.searchCondition"/>">
-				<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
-				<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiIis.cntcInsttList.insttNm"/></option><!-- 기관명 -->
+					<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
+					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiIis.cntcInsttList.insttNm"/></option><!-- 기관명 -->
 				</select>
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_CntcInstt(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/ssi/syi/iis/addCntcInstt.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="#" onclick="fn_egov_regist_CntcInstt(); return false;" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
 	<input type="hidden" name="insttId">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>" >
-	</form>
+	</form:form>
 	
 	<table class="board_list">
 		<caption></caption>
@@ -129,7 +140,8 @@ function press(event) {
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
 			
-			    	<form name="subForm" method="post" action="<c:url value='/ssi/syi/iis/getCntcInsttDetail.do'/>">
+			    	<form name="subForm" method="post" action="${pageContext.request.contextPath}/ssi/syi/iis/getCntcInsttDetail.do">
+			    	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			    	<input name="insttId"     type="hidden" value="<c:out value='${resultInfo.insttId}'/>">
 			    	<input name="pageIndex"   type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 			    	<span class="link"><input type="submit" value="<c:out value='${resultInfo.insttId}'/>" onclick="fn_egov_detail_CntcInstt('<c:out value="${resultInfo.insttId}"/>'); return false;"></span>

@@ -70,6 +70,7 @@
 	
 		<DIV class="wTableFrm">
 			<form name="Form" action="" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<input name="sysId" type="hidden">
 
 				    <!-- 상단 타이틀  영역 -->

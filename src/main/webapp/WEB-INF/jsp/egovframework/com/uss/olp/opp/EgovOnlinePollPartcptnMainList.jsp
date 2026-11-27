@@ -15,6 +15,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--  자마스크립트 메세지 출력 --%>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,7 +32,7 @@ function fncSelectPoll(pollId) {
 </script>
 </head>
 <body>
-<form name="pollForm" method="post" action="<c:url value='/uss/olp/opp/registOnlinePollPartcptn.do'/>">
+<form:form name="pollForm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/uss/olp/opp/registOnlinePollPartcptn.do">
 <table width="200" cellpadding="0" class="table-line" border="0">
 <tbody>
 <%-- 데이터를 없을때 화면에 메세지를 출력해준다 --%>
@@ -59,6 +60,6 @@ function fncSelectPoll(pollId) {
 </table>
 <input name="pollId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="1"/>
-</form>
+</form:form>
 </body>
 </html>

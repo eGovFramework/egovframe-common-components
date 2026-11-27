@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysDbm.dbMntrngList.title"/></c:set>
 <%
 /**
@@ -76,7 +77,7 @@
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-    <form name="frm" id="frm" action="<c:url value='/utl/sys/dbm/getDbMntrngList.do'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/utl/sys/dbm/getDbMntrngList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -90,14 +91,14 @@
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' maxlength="35" size="25" onkeypress="press(event);" title="검색키워드" />
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_get_db_mntrng_list('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/dbm/getDbMntrngForRegist.do'></c:url>" onclick="fn_egov_regist_db_mntrng(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/utl/sys/dbm/getDbMntrngLogList.do'/>" onclick="fn_egov_log_db_mntrng_list(); return false;" title="로그">로그</a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_regist_db_mntrng(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_log_db_mntrng_list(); return false;" title="로그">로그</a></span>
 			</li>
 		</ul>
 	</div>
     <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default="1"/>">
     <input name="dataSourcNm" type="hidden" value="">
-    </form>
+    
 
 	<table class="board_list">
 		<caption></caption>
@@ -137,13 +138,7 @@
 	          <tr>
 	          		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 	          		<td>
-	                    <form name="item" method="post" action="<c:url value='/utl/sys/dbm/getDbMntrng.do'/>">
-	                        <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-	                        <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-	                        <input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
-	                        <input type="hidden" name="dataSourcNm" value="">
-	                    <span class="link"><input type="submit" value="<c:out value="${resultInfo.dataSourcNm}"/>" onclick="fn_egov_get_db_mntrng('<c:out value="${resultInfo.dataSourcNm}"/>'); return false;"  style="text-align : left;"></span>
-	                    </form>
+	                    <a href="javascript:void(0);" onclick="fn_egov_get_db_mntrng('<c:out value="${resultInfo.dataSourcNm}"/>'); return false;"><span class="link"><c:out value="${resultInfo.dataSourcNm}"/></span></a>
 	                </td>
 	                <td>${resultInfo.serverNm}</td>
 	                <td>${resultInfo.dbmsKindNm}</td>
@@ -162,6 +157,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_db_mntrng_list"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

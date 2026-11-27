@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,8 +32,7 @@
 <title><spring:message code="comUssIonRmm.roughMapInfoRegist.title" /></title><!-- 약도 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="roughMapVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <!-- services 라이브러리 불러오기 -->
 <c:set var="appkey"><spring:message code="roughMap.appkey" /></c:set>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${appkey}&libraries=services"></script>
@@ -193,7 +191,8 @@
 		<tr>
 			<th><spring:message code="comUssIonRmm.roughMapList.roughMapAddress" /> <span class="pilsu">*</span></th><!-- 약도 주소 -->
 			<td class="left">
-			    <input name="roughMapAddress" id="roughMapAddress" type="text" value="" maxlength="100" title="<spring:message code="comUssIonRmm.roughMapList.roughMapAddress" />" style="width:547px" />
+			    <spring:message code="comUssIonRmm.roughMapList.roughMapAddress" var="roughMapAddressTitle" />
+			    <form:input path="roughMapAddress" id="roughMapAddress" maxlength="100" title="${roughMapAddressTitle}" cssStyle="width:547px" />
 				<span class="btn_s"><input type="submit" value="<spring:message code="button.search" />" onclick="fn_Address_Search(); return false;" style="padding:6px 12px 6px 12px; background-color:#4688d2; color:#fff; font-size:11px;"></span>
 			</td>
 		</tr>
@@ -216,16 +215,16 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_regist_roughmap(document.forms[0]); return false;" />
-		<span class="btn_s"><a href="<c:url value='/com/uss/ion/rmm/selectRoughMapList.do'/>" onclick="fn_egov_inqire_roughmaplist(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_inqire_roughmaplist(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>
 
-	<input name="la" id="la" type="hidden" />
-	<input name="lo" id="lo" type="hidden" />
-	<input name="markerLa" id="markerLa" type="hidden" />
-	<input name="markerLo" id="markerLo" type="hidden" />
-	<input name="zoomLevel" id="zoomLevel" type="hidden" />
+	<form:hidden path="la" />
+	<form:hidden path="lo" />
+	<form:hidden path="markerLa" />
+	<form:hidden path="markerLo" />
+	<form:hidden path="zoomLevel" />
 	
 </form:form>	
 </body>

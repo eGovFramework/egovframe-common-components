@@ -22,6 +22,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpm.result.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -84,11 +86,7 @@
 		<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 		<td><c:out value="${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}"/></td>
 		<td>
-		<form name="subForm" method="post" action="<c:url value='/uss/olp/opr/delOnlinePollResult.do'/>">
-			<input name="pollId" type="hidden" value="<c:out value="${resultInfo.pollId}"/>">
-			<input name="pollResultId" type="hidden" value="<c:out value="${resultInfo.pollResultId}"/>">
-	    	<input type="submit" class="btn_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_del_OnlinePollResult('<c:out value="${resultInfo.pollResultId}"/>'); return false;" />
-	    </form>
+		<a href="javascript:void(0);" onclick="fn_egov_del_OnlinePollResult('<c:out value="${resultInfo.pollResultId}"/>'); return false;"><span class="link"><spring:message code="button.delete" /></span></a>
 		</td>		
 	</tr>
 	</c:forEach>
@@ -97,10 +95,10 @@
 	
 	
 	<!--  목록버튼  -->
-	<form name="listForm" action="<c:url value='/uss/olp/opr/delOnlinePollResult.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/opr/delOnlinePollResult.do" method="post">
 		<input name="pollId" type="hidden" value="${resultList[0].pollId}">
 		<input name="pollResultId" type="hidden" value="">
-	</form>
+	</form:form>
 
 
 	<div class="btn">

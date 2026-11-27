@@ -23,6 +23,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpp.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -94,7 +96,7 @@ String.prototype.replaceAll = function(src, repl){
 <body>
 <div class="board">
 
-<form name="listForm" action="<c:url value='/uss/olp/opp/listOnlinePollPartcptn.do'/>" method="post"> 
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/opp/listOnlinePollPartcptn.do" method="post"> 
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -115,7 +117,7 @@ String.prototype.replaceAll = function(src, repl){
 <input name="pollId" type="hidden" value="">
 <input name="searchMode" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>
+
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -150,20 +152,12 @@ String.prototype.replaceAll = function(src, repl){
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="leftElli"> 
-		<form name="subForm" method="post" action="<c:url value='/uss/olp/opp/registOnlinePollPartcptn.do'/>">
-			<input name="pollId" type="hidden" value="<c:out value="${resultInfo.pollId}"/>">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	    	<span class="link"><input type="submit" value="<c:out value="${resultInfo.pollNm}"/>"></span>
-	    </form>
+		<a href="javascript:void(0);" onclick="fn_egov_regist_OnlinePollPartcptn('<c:out value="${resultInfo.pollId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.pollNm}"/></span></a>
 		</td>
 		<td><c:out value="${resultInfo.pollBeginDe}"/></td>
 		<td><c:out value="${resultInfo.pollEndDe}"/></td>
 		<td>
-		<form name="subFormStatistics" method="post" action="<c:url value='/uss/olp/opp/statisticsOnlinePollPartcptn.do'/>">
-			<input name="pollId" type="hidden" value="<c:out value="${resultInfo.pollId}"/>">
-			<input name="linkType" type="hidden" value="2">
-	    	<input type="submit" class="btn_submit" value="<spring:message code="comUssOlpOpm.btn.view" />" />
-	    </form>
+		<a href="javascript:void(0);" onclick="fn_egov_regist_OnlinePollPartcptn('<c:out value="${resultInfo.pollId}"/>'); return false;"><span class="link"><spring:message code="comUssOlpOpm.btn.view" /></span></a>
 		</td>
 		<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 		<td><c:out value="${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}"/></td>
@@ -176,6 +170,8 @@ String.prototype.replaceAll = function(src, repl){
 	<div class="pagination">
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
 	</div>
+</form:form>
+
 
 
 </DIV>

@@ -21,6 +21,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -48,11 +50,19 @@ function linkPage(pageNo){
 /* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
-function fn_egov_detail_RequestOffer(noteId,noteTrnsmitId){
+function fn_egov_detail_RequestOffer(knoId){
 	var vFrom = document.listForm;
-	vFrom.noteId.value = noteId;
-	vFrom.noteTrnsmitId.value = noteTrnsmitId;
+	vFrom.knoId.value = knoId;
 	vFrom.action = "<c:url value='/dam/spe/req/detailRequestOffer.do' />";
+	vFrom.submit();
+}
+
+/* ********************************************************
+ * 등록화면 이동 함수 (등록화면이 POST 전용)
+ ******************************************************** */
+function fn_egov_regist_RequestOffer(){
+	var vFrom = document.listForm;
+	vFrom.action = "<c:url value='/dam/spe/req/registRequestOffer.do' />";
 	vFrom.submit();
 }
 
@@ -77,7 +87,7 @@ function fn_egov_search_RequestOffer(){
 <div class="board">
 	<h1><spring:message code="comDamSpeReq.comDamRequestOfferList.pageTop.title"/></h1><!-- 지식 정보제공/정보요청 목록 -->
 
-	<form name="listForm" action="<c:url value='/dam/spe/req/listRequestOffer.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/spe/req/listRequestOffer.do" method="post">
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -90,7 +100,7 @@ function fn_egov_search_RequestOffer(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${searchKeyword}'/>" maxlength="35" size="10" onkeyup="if(window.event.keyCode==13){fn_egov_search_RequestOffer(); return false;}" title="<spring:message code="title.search"/>" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_RequestOffer(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/dam/spe/req/registRequestOffer.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="<c:url value='/dam/spe/req/registRequestOffer.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="fn_egov_regist_RequestOffer(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -135,7 +145,7 @@ function fn_egov_search_RequestOffer(){
 					<c:forEach var="i" begin="1" end="${resultInfo.ansDepth}" step="1">
 					<c:if test="${i != resultInfo.ansDepth}">&nbsp;&nbsp;&nbsp;</c:if><c:if test="${i == resultInfo.ansDepth}">┗RE:&nbsp;</c:if>
 					</c:forEach>
-					<a href="<c:url value='/dam/spe/req/detailRequestOffer.do'/>?pageIndex=${searchVO.pageIndex}&amp;knoId=${resultInfo.knoId}"><c:out value="${resultInfo.knoNm}"/></a>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_RequestOffer('<c:out value="${resultInfo.knoId}"/>'); return false;"><c:out value="${resultInfo.knoNm}"/></a>
 				</td>
 				<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 			    <td><c:out value="${resultInfo.frstRegistPnttm}"/></td>
@@ -151,9 +161,9 @@ function fn_egov_search_RequestOffer(){
 		</ul>
 	</div>
 
-	<input name="cmd" type="hidden" value="">
+	<input type="hidden" name="knoId" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
+	</form:form>
 
 </div>
 

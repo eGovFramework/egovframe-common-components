@@ -27,12 +27,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_RssTagManage(){
-
-}
-/* ********************************************************
  * 수정처리화면
  ******************************************************** */
 function fn_egov_modify_RssTagManage(){
@@ -56,12 +50,13 @@ function fn_egov_delete_RssTagManage(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_RssTagManage();">
+<body>
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="RssTagManageForm" action="<c:url value='/uss/ion/rss/detailRssTagManage.do'/>" method="post">
+<form name="RssTagManageForm" action="${pageContext.request.contextPath}/uss/ion/rss/detailRssTagManage.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -120,7 +115,7 @@ function fn_egov_delete_RssTagManage(){
 			<td class="left">
 			    <c:set var="hderEtc" value="${fn:escapeXml(rssManage.hderEtc)}"/>
 				<c:set var="hderEtc" value="${fn:replace(hderEtc , crlf , '<br>')}"/>
-				<c:out value="${hderEtc}" escapeXml="false" />&nbsp;
+				<span style="white-space:pre-line"><c:out value="${hderEtc}"/></span>&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -152,25 +147,27 @@ function fn_egov_delete_RssTagManage(){
 			<td class="left">
 			    <c:set var="bdtEtc" value="${fn:escapeXml(rssManage.bdtEtc)}"/>
 				<c:set var="bdtEtc" value="${fn:replace(bdtEtc , crlf , '<br>')}"/>
-				<c:out value="${bdtEtc}" escapeXml="false" />&nbsp;
+				<span style="white-space:pre-line"><c:out value="${bdtEtc}"/></span>&nbsp;
 			</td>
 		</tr>
 	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/rss/updtRssTagManage.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/rss/updtRssTagManage.do" method="post" style="display:inline-block; vertical-align:top">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_RssTagManage(); return false;">
 		<input name="rssId" type="hidden" value="${rssManage.rssId}">
 		</form>
 			
-		<form name="formDelete" action="<c:url value='/uss/ion/rss/detailRssTagManage.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/rss/detailRssTagManage.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_RssTagManage(); return false;" />
 		<input name="rssId" type="hidden" value="${rssManage.rssId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/rss/listRssTagManage.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/rss/listRssTagManage.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="" />
 		</form>
 	</div>

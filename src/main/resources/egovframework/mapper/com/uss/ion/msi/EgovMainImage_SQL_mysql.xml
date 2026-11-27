@@ -66,7 +66,7 @@
         
     </select>
 
-    <insert id="insertMainImage" parameterType="egovframework.com.uss.ion.msi.service.MainImage">
+    <insert id="insertMainImage" parameterType="egovframework.com.uss.ion.msi.service.MainImageVO">
         
             INSERT INTO COMTNMAINIMAGE  
                        (IMAGE_ID,
@@ -88,7 +88,7 @@
         
     </insert>    
 
-    <update id="updateMainImage" parameterType="egovframework.com.uss.ion.msi.service.MainImage">
+    <update id="updateMainImage" parameterType="egovframework.com.uss.ion.msi.service.MainImageVO">
             UPDATE COMTNMAINIMAGE
                SET IMAGE_NM = #{imageNm},
                    <if test="isAtchFile == true">
@@ -102,7 +102,7 @@
              WHERE IMAGE_ID = #{imageId}    
     </update>   
     
-    <delete id="deleteMainImage" parameterType="egovframework.com.uss.ion.msi.service.MainImage">
+    <delete id="deleteMainImage" parameterType="egovframework.com.uss.ion.msi.service.MainImageVO">
         
             DELETE FROM COMTNMAINIMAGE 
              WHERE IMAGE_ID = #{imageId}  
@@ -117,7 +117,7 @@
         
     </select>
 
-    <select id="selectMainImageFile" parameterType="egovframework.com.uss.ion.msi.service.MainImage" resultMap="mainImageFile">
+    <select id="selectMainImageFile" parameterType="egovframework.com.uss.ion.msi.service.MainImageVO" resultMap="mainImageFile">
         
             SELECT B.FILE_STRE_COURS AS FILE_STRE_COURS,
                    B.STRE_FILE_NM AS STRE_FILE_NM

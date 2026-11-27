@@ -3,8 +3,6 @@ package egovframework.com.cop.smt.sam.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -18,6 +16,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cop.smt.sam.service.EgovAllSchdulManageService;
+import javax.annotation.Resource;
 /**
  * 전체일정을 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -56,16 +55,11 @@ public class EgovAllSchdulManageController {
 	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/uss/olp/qrm/EgovAllSchdulManageList"
-	 * @throws Exception
 	 */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="전체일정관리", order = 350 ,gid = 40)
-	@RequestMapping(value="/cop/smt/sam/EgovAllSchdulManageList.do")
+	@RequestMapping(value = "/cop/smt/sam/EgovAllSchdulManageList.do")
 	public String egovAllSchdulManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model)
-    throws Exception {
-
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
+			@RequestParam Map<?, ?> commandMap, ModelMap model) {
 
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -87,7 +81,7 @@ public class EgovAllSchdulManageController {
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
         model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
 
-        int totCnt = (Integer)egovAllSchdulManageService.selectAllSchdulManageListCnt(searchVO);
+        int totCnt = egovAllSchdulManageService.selectAllSchdulManageListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 

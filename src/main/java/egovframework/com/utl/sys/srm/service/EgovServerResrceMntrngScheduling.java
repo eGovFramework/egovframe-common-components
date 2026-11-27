@@ -3,11 +3,9 @@ package egovframework.com.utl.sys.srm.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.annotation.Resource;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServerConnection;
@@ -29,9 +27,10 @@ import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 /**
- * 개요 
+ * 개요
  * - 서버자원모니터링 Service Interface를 invoke 할 수 있는 클래스를 정의한다.
  *
  * 상세내용
@@ -39,7 +38,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @author lee.m.j
  * @version 1.0
  * @created 06-9-2010 오전 11:23:59
- * 
+ *
  * <pre>
  * << 개정이력(Modification Information) >>
  *
@@ -47,6 +46,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  ----------   ---------   ---------------------------
  *  2020.11.02   신용호              불필요한 멤버변수 지역변수로 변경
  *  2022.11.11   김혜준              시큐어코딩 처리
+ *  2026.07.10   EricSeokgon         이메일 본문 생성 시 문자열 연결(+=)을 StringBuilder로 변경(불필요한 중간 String 생성 제거)
  *
  * </pre>
  */
@@ -70,7 +70,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	private MailSender mntrngMailSender;
 
 	private ServerResrceMntrngVO serverResrceMntrngVO = null;
-	
+
 	/**
 	 * 서버자원 모니터링를 수행한다.
 	 * @param
@@ -86,7 +86,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		MBeanInfo mBeanInfo = null;
 		MBeanAttributeInfo[] attrInfos = null;
 		ServerResrceMntrng serverResrceMntrng = null;
-		
+
 		String serverId = serverResrceMntrngVO.getServerId();
 		String serverEqpmnId = serverResrceMntrngVO.getServerEqpmnId();
 		String serverNm = serverResrceMntrngVO.getServerNm();
@@ -112,10 +112,11 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			attrInfos = mBeanInfo.getAttributes();
 
 			for (MBeanAttributeInfo attrInfo : attrInfos) {
-				if (attrInfo.getName().equals("CpuUsage"))
+				if (attrInfo.getName().equals("CpuUsage")) {
 					serverResrceMntrng.setCpuUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
-				else if (attrInfo.getName().equals("MemoryUsage"))
+				} else if (attrInfo.getName().equals("MemoryUsage")) {
 					serverResrceMntrng.setMoryUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
+				}
 				LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
 			}
 			serverResrceMntrng.setSvcSttus("01");
@@ -140,15 +141,16 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			String logInfo = out.toString();
 			byte[] btLogInfo = logInfo.getBytes();
 
-			if (btLogInfo.length > 2000)
+			if (btLogInfo.length > 2000) {
 				logInfo = new String(btLogInfo, 0, 2000);
+			}
 
 			serverResrceMntrng.setLogInfo(logInfo);
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
 			serverResrceMntrng.setLastUpdusrId("SYSTEM");
 
 			egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
-			
+
 		} catch (Exception e) {
 
 			serverResrceMntrng.setSvcSttus("02");
@@ -160,8 +162,9 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			String logInfo = out.toString();
 			byte[] btLogInfo = logInfo.getBytes();
 
-			if (btLogInfo.length > 2000)
+			if (btLogInfo.length > 2000) {
 				logInfo = new String(btLogInfo, 0, 2000);
+			}
 
 			serverResrceMntrng.setLogInfo(logInfo);
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
@@ -183,10 +186,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 		try {
 			List<ServerResrceMntrngVO> result = egovServerResrceMntrngService.selectMntrngServerList(serverResrceMntrngVO);
-			Iterator<ServerResrceMntrngVO> iter = result.iterator();
-
-			while (iter.hasNext()) {
-				ServerResrceMntrngVO serverResrceMntrngVO = (ServerResrceMntrngVO) iter.next();
+			for (ServerResrceMntrngVO serverResrceMntrngVO : result) {
 				init(serverResrceMntrngVO);
 			}
 		} catch (NoSuchElementException e) { //KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -199,10 +199,8 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 	/**
 	 * 이메일을 전송한다.
-	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
+	 * @param serverResrceMntrng - 서버자원모니터링 정보
 	 * @return
-	 *
-	 * @param serverResrceMntrngVO
 	 */
 	public void sendEmail(ServerResrceMntrng serverResrceMntrng) {
 		String subject = "";
@@ -224,27 +222,29 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		// 2022.11.11 시큐어코딩 처리
 		if (StringUtils.isNotEmpty(text)) {
 			text = EgovStringUtil.replace(text, "{모니터링종류}", "서버자원서비스모니터링");
-			errorContents = "서버명 : ";
-			errorContents += serverResrceMntrngVO.getServerNm();
-			errorContents += "\n";
-			errorContents += "서버IP : ";
-			errorContents += serverResrceMntrngVO.getServerEqpmnIp();
-			errorContents += "\n";
-			errorContents += "CPU사용률 : ";
-			errorContents += serverResrceMntrngVO.getCpuUseRt();
-			errorContents += "\n";
-			errorContents += "메모리사용률 : ";
-			errorContents += serverResrceMntrngVO.getMoryUseRt();
-			errorContents += "\n";
-			errorContents += "서비스상태 : 비정상";
-			errorContents += "\n";
-			errorContents += "내용 : ";
-			errorContents += serverResrceMntrngVO.getLogInfo();
-			errorContents += "\n";
-			errorContents += "생성일시 : ";
-			errorContents += EgovDateUtil.convertDate(serverResrceMntrngVO.getCreatDt(), "", "", "");
-			errorContents += "\n";
-			errorContents += serverResrceMntrngVO.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
+			StringBuilder errorContentsBuilder = new StringBuilder();
+			errorContentsBuilder.append("서버명 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getServerNm());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("서버IP : ");
+			errorContentsBuilder.append(serverResrceMntrng.getServerEqpmnIp());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("CPU사용률 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getCpuUseRt());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("메모리사용률 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getMoryUseRt());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("서비스상태 : 비정상");
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("내용 : ");
+			errorContentsBuilder.append(serverResrceMntrng.getLogInfo());
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append("생성일시 : ");
+			errorContentsBuilder.append(EgovDateUtil.convertDate(serverResrceMntrng.getCreatDt(), "", "", ""));
+			errorContentsBuilder.append("\n");
+			errorContentsBuilder.append(serverResrceMntrng.getServerNm()).append(" 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.");
+			errorContents = errorContentsBuilder.toString();
 			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
 			msg.setText(text);
 		}

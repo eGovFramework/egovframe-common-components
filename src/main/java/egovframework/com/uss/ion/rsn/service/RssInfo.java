@@ -1,7 +1,5 @@
 package egovframework.com.uss.ion.rsn.service;
 
-import java.io.Serializable;
-
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -18,9 +16,10 @@ import egovframework.com.cmm.ComDefaultVO;
  * 
  * </pre>
  */
-@SuppressWarnings("serial")
-public class RssInfo extends ComDefaultVO implements Serializable{
-	
+public class RssInfo extends ComDefaultVO {
+
+	private static final long serialVersionUID = 1L;
+
 	/** RSS태그관리 아이디 */
 	private String rssId;
 	

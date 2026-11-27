@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovLoginUsr.jsp
@@ -24,7 +25,7 @@
   *  @version 1.0
   *  @see
   *
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -66,20 +67,18 @@ function actionLogin() {
     } else if (document.loginForm.password.value =="") {
         alert("<spring:message code="comUatUia.validate.passCheck" />"); <%-- 비밀번호를 입력하세요 --%>
     } else {
-        document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
-        //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
-        //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
+        document.loginForm.action="${pageContext.request.contextPath}/uat/uia/actionLogin.do";
         document.loginForm.submit();
     }
 }
 
 function actionCrtfctLogin() {
-    document.defaultForm.action="<c:url value='/uat/uia/actionCrtfctLogin.do'/>";
+    document.defaultForm.action="${pageContext.request.contextPath}/uat/uia/actionCrtfctLogin.do";
     document.defaultForm.submit();
 }
 
 function goFindId() {
-    document.defaultForm.action="<c:url value='/uat/uia/egovIdPasswordSearch.do'/>";
+    document.defaultForm.action="${pageContext.request.contextPath}/uat/uia/egovIdPasswordSearch.do";
     document.defaultForm.submit();
 }
 
@@ -97,11 +96,11 @@ function goRegiUsr() {
 
     // 일반회원
     if (userSe == "GNR") {
-        document.loginForm.action="<c:url value='/uss/umt/EgovStplatCnfirmMber.do'/>";
+        document.loginForm.action="${pageContext.request.contextPath}/uss/umt/EgovStplatCnfirmMber.do";
         document.loginForm.submit();
     // 기업회원
     } else if (userSe == "ENT") {
-        document.loginForm.action="<c:url value='/uss/umt/EgovStplatCnfirmEntrprs.do'/>";
+        document.loginForm.action="${pageContext.request.contextPath}/uss/umt/EgovStplatCnfirmEntrprs.do";
         document.loginForm.submit();
     // 업무사용자
     } else if (userSe == "USR") {
@@ -111,7 +110,7 @@ function goRegiUsr() {
 }
 
 function goGpkiIssu() {
-    document.defaultForm.action="<c:url value='/uat/uia/egovGpkiIssu.do'/>";
+    document.defaultForm.action="${pageContext.request.contextPath}/uat/uia/egovGpkiIssu.do";
     document.defaultForm.submit();
 }
 
@@ -151,26 +150,8 @@ function getid(form) {
 }
 
 function fnInit() {
-	/* if (document.getElementById('loginForm').message.value != null) {
-	    var message = document.getElementById('loginForm').message.value;
-	} */
-    /* if ("<c:out value='${message}'/>" != "") {
-        alert("<c:out value='${message}'/>");
-    } */
-
-    /* *************************
-    document.loginForm.rdoSlctUsr[0].checked = false;
-    document.loginForm.rdoSlctUsr[1].checked = false;
-    document.loginForm.rdoSlctUsr[2].checked = true;
-    document.loginForm.userSe.value = "USR";
-    document.loginForm.id.value="TEST1";
-    document.loginForm.password.value="rhdxhd12";
-    **************************** */
-
-    //getid(document.loginForm);
     // 포커스
-    //document.loginForm.rdoSlctUsr.focus();
-    
+
     getid(document.loginForm);
     
     fnLoginTypeSelect("typeGnr");
@@ -179,10 +160,12 @@ function fnInit() {
     alert("loginMessage:<c:out value='${loginMessage}'/>");
     </c:if>
     
-    // reload "_top" frame page
+    // reload "_top", "_left" frame page after login
     if (parent.frames["_top"] == undefined)
-    	console.log("'_top' frame is not exist!");
     parent.frames["_top"].location.reload();
+    if (parent.frames["_left"] != undefined) {
+    	parent.frames["_left"].location.reload();
+    }
 }
 
 function fnLoginTypeSelect(objName){
@@ -213,18 +196,6 @@ function fnShowLogin(stat) {
 		$(".login_input").eq(1).show();
 	}
 }
-
-// 2021.05.30, 정진오, 디지털원패스 로그인 추가
-function fnOnepassLogin() {
-	if ('${authType}' == 'session') {
-		document.onepassForm.serviceType.value = 'LOGIN';
-		document.onepassForm.target = '_top';
-		document.onepassForm.action = '<c:url value="/uat/uia/onepass/onepassLogin.do"/>';
-		document.onepassForm.submit();
-	} else {
-		alert('디지털원패스는 Session 권한인증일때만 사용하실 수 있습니다.');
-	}
-}
 </script>
 </head>
 <body onLoad="fnInit();">
@@ -234,7 +205,8 @@ function fnOnepassLogin() {
 
 <!-- 일반로그인 -->
 <div class="login_form">
-	<form name="loginForm" id="loginForm" action="<c:url value='/uat/uia/actionLogin.do'/>" method="post">
+	<form:form name="loginForm" id="loginForm" modelAttribute="loginRequestVO" action="${pageContext.request.contextPath}/uat/uia/actionLogin.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" id="message" name="message" value="<c:out value='${message}'/>">
 	
 	<fieldset>
@@ -255,12 +227,25 @@ function fnOnepassLogin() {
 				<li>
 					<label for="id">${title}</label>
 					<input type="text" name="id" id="id" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+					<!-- 아이디 validation 에러 메시지 -->
+					<c:set var="errors" value="${requestScope['org.springframework.validation.BindingResult.loginRequestVO']}"/>
+					<c:if test="${not empty errors && errors.hasFieldErrors('id')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${errors.getFieldError('id').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<!-- 비밀번호 -->
 				<c:set var="title"><spring:message code="comUatUia.loginForm.pw"/></c:set>
 				<li>
 					<label for="password">${title}</label>
 					<input type="password" name="password" id="password" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+					<!-- 비밀번호 validation 에러 메시지 -->
+					<c:if test="${not empty errors && errors.hasFieldErrors('password')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${errors.getFieldError('password').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<!-- 아이디 저장 -->
 				<c:set var="title"><spring:message code="comUatUia.loginForm.idSave"/></c:set>
@@ -310,29 +295,16 @@ function fnOnepassLogin() {
 
 	<input name="userSe" type="hidden" value="GNR"/>
 	<input name="j_username" type="hidden"/>
-	</form>
-
-	<!-- 2021.05.30, 정진오, 디지털원패스 로그인 추가 -->
-	<div style="border:2px solid #e6e6e6; margin-top:20px;">
-		<form id="onepassForm" name="onepassForm" method="post">
-		<input type="hidden" id="serviceType" name="serviceType"/>
-		</form>
-		<ul style="margin:10px 0px 10px;">
-			<li style="text-align:center;">
-				하나의 아이디로 간편하게
-				<a href="#" onclick="javascript:fnOnepassLogin();"><img src="<c:url value='/images/egovframework/com/uat/uia/onepass.png'/>" alt="디지털원패스 로그인" title="디지털원패스 로그인"></a>
-			</li>
-		</ul>
-	</div>
+	</form:form>
 
 </div>
 
 <!-- 팝업 폼 -->
-<form name="defaultForm" action ="" method="post" target="_blank">
+<form:form name="defaultForm" modelAttribute="defaultForm" action="" method="post" target="_blank">
 <div style="visibility:hidden;display:none;">
 <input name="iptSubmit3" type="submit" value="<spring:message code="comUatUia.loginForm.submit"/>" title="<spring:message code="comUatUia.loginForm.submit"/>">
 </div>
-</form>
+</form:form>
 <!-- login영역 //-->
 
 </body>

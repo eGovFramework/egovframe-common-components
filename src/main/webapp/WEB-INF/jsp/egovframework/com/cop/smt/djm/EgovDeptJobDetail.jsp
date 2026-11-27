@@ -23,7 +23,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
@@ -33,12 +32,10 @@
 <title><spring:message code="comCopSmtDjm.deptJobDetail.title"/></title><!-- 부서업무 상세보기 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <!-- showmodal 대체처리  -->
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<validator:javascript formName="deptJobVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 	function fn_egov_init_DeptJob(){
 
@@ -119,31 +116,31 @@
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptNm"/> <span class="pilsu">*</span></th><!-- 부서 -->
 			<td class="left">
-			    <c:out value="${deptJob.deptNm}" escapeXml="false" />
+			    <c:out value="${deptJob.deptNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobBxNm" /> <span class="pilsu">*</span></th><!-- 부서업무함명 -->
 			<td class="left">
-			    <c:out value="${deptJob.deptJobBxNm}" escapeXml="false" />
+			    <c:out value="${deptJob.deptJobBxNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobNm" /> <span class="pilsu">*</span></th><!-- 부서업무명 -->
 			<td class="left">
-			    <c:out value="${deptJob.deptJobNm}" escapeXml="false" />
+			    <c:out value="${deptJob.deptJobNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobCn" /> <span class="pilsu">*</span></th><!-- 부서업무내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(deptJob.deptJobCn , crlf , '<br>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(deptJob.deptJobCn , crlf , '<br>')}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.chargerNm" /> <span class="pilsu">*</span></th><!-- 업무담당자 -->
 			<td class="left">
-			    <c:out value="${deptJob.chargerNm}" escapeXml="false" />
+			    <c:out value="${deptJob.chargerNm}"/>
 			</td>
 		</tr>
 		<tr>
@@ -151,7 +148,7 @@
 			<td class="left">
 				<c:forEach items="${priort}" var="priortInfo" varStatus="status">
 					<c:if test="${priortInfo.code eq deptJob.priort}">
-						<c:out value="${priortInfo.codeNm}" escapeXml="false" />
+						<c:out value="${priortInfo.codeNm}"/>
 					</c:if>
 				</c:forEach>
 			</td>
@@ -168,9 +165,11 @@
 	
 	<!-- 하단 버튼 -->
 	<div class="btn">
+		<c:if test="${canModify}">
 		<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_deptjob(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/djm/deleteDeptJob.do'/>?deptJobId=<c:out value='${deptJobVO.deptJobId}'/>" onclick="fn_egov_delete_deptjob(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/cop/smt/djm/selectDeptJobList.do'/>?searchWrd=<c:out value='${deptJobVO.searchWrd}'/>&amp;searchCnd=<c:out value='${deptJobVO.searchCnd}'/>&amp;pageIndex=<c:out value='${deptJobVO.pageIndex}'/>&amp;searchDeptId=<c:out value='${deptJobVO.searchDeptId}'/>&amp;searchDeptJobBxId=<c:out value='${deptJobVO.searchDeptJobBxId}'/>" onclick="fn_egov_list_deptjob(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_deptjob(); return false;"><spring:message code="button.delete" /></a></span>
+		</c:if>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_deptjob(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	
 	<form:hidden path="deptJobId" />

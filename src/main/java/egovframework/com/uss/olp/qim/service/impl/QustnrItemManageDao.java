@@ -33,9 +33,8 @@ public class QustnrItemManageDao extends EgovComAbstractDAO {
 	 * 설문템플릿(을)를  목록을 조회한다.
 	 * @param qustnrItemManageVO - 설문항목 정보 담김 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectQustnrTmplatManageList(QustnrItemManageVO qustnrItemManageVO) throws Exception{
+	public List<EgovMap> selectQustnrTmplatManageList(QustnrItemManageVO qustnrItemManageVO) {
 		return selectList("QustnrItemManage.selectQustnrTmplatManage", qustnrItemManageVO);
 	}
 
@@ -43,9 +42,8 @@ public class QustnrItemManageDao extends EgovComAbstractDAO {
 	 * 설문항목 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectQustnrItemManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectQustnrItemManageList(ComDefaultVO searchVO) {
 		return selectList("QustnrItemManage.selectQustnrItemManage", searchVO);
 	}
 
@@ -53,9 +51,8 @@ public class QustnrItemManageDao extends EgovComAbstractDAO {
 	 * 설문항목를(을) 상세조회 한다.
 	 * @param qustnrItemManageVO - 설문항목 정보 담김 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectQustnrItemManageDetail(QustnrItemManageVO qustnrItemManageVO) throws Exception{
+	public List<EgovMap> selectQustnrItemManageDetail(QustnrItemManageVO qustnrItemManageVO) {
 		return selectList("QustnrItemManage.selectQustnrItemManageDetail", qustnrItemManageVO);
 	}
 
@@ -63,36 +60,32 @@ public class QustnrItemManageDao extends EgovComAbstractDAO {
 	 * 설문항목를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectQustnrItemManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectQustnrItemManageListCnt(ComDefaultVO searchVO) {
 		return (Integer)selectOne("QustnrItemManage.selectQustnrItemManageCnt", searchVO);
 	}
 
     /**
 	 * 설문항목를(을) 등록한다.
 	 * @param qqustnrItemManageVO - 설문항목 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void insertQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) throws Exception{
+	public void insertQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) {
 		insert("QustnrItemManage.insertQustnrItemManage", qustnrItemManageVO);
 	}
 
     /**
 	 * 설문항목를(을) 수정한다.
 	 * @param qustnrItemManageVO - 설문항목 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void updateQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) throws Exception{
+	public void updateQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) {
 		insert("QustnrItemManage.updateQustnrItemManage", qustnrItemManageVO);
 	}
 
     /**
 	 * 설문항목를(을) 삭제한다.
 	 * @param qustnrItemManageVO - 설문항목 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void deleteQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) throws Exception{
+	public void deleteQustnrItemManage(QustnrItemManageVO qustnrItemManageVO) {
 		//설문조사(설문결과) 삭제
 		delete("QustnrItemManage.deleteQustnrRespondInfo", qustnrItemManageVO);
 

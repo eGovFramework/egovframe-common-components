@@ -20,6 +20,35 @@ var openNodes	    = new Array();
 var icons			= new Array(6);
 //var imgpath         = "./../../../../../images/egovframework/com/cmm/utl/"
 
+/*
+ * 2026.07.30 보안 조치 - 저장형 XSS 차단(document.write에 사용되는 메뉴명 등 HTML/JS 이스케이프)
+ */
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
+function escapeJsString(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/\\/g, '\\\\')
+		.replace(/'/g, "\\'")
+		.replace(/"/g, '\\"')
+		.replace(/\r/g, '\\r')
+		.replace(/\n/g, '\\n')
+		.replace(/</g, '\\x3c')
+		.replace(/>/g, '\\x3e');
+}
+
 // Loads all icons that are used in the tree
 function preloadIcons() {
 	icons[0] = new Image();
@@ -131,7 +160,7 @@ function addNode(parentNode, recursedNodes) {
 				else document.write("<img src='"+imgpath+"menu_join.gif' border='0' align='absbottom' alt='' >");
 			}
 			// Start link
-			document.write("<a href='" + nodeValues[3] + "' onmouseover=\"window.status='" + nodeValues[2] + "';return true;\" onmouseout=\"window.status=' ';return true;\">");
+			document.write("<a href='" + escapeHtml(nodeValues[3]) + "' onmouseover=\"window.status='" + escapeHtml(escapeJsString(nodeValues[2])) + "';return true;\" onmouseout=\"window.status=' ';return true;\">");
 			// Write out folder & page icons
 			if (hcn) {
 				document.write("<img id='icon" + nodeValues[0] + "' src='"+imgpath+"menu_folder")
@@ -139,7 +168,7 @@ function addNode(parentNode, recursedNodes) {
 				document.write(".gif' border='0' alt='Folder' >");
 			} else document.write("<img id='icon" + nodeValues[0] + "' src='"+imgpath+"menu_page.gif' border='0' align='absbottom' alt='Page'>");
 			// Write out node name
-			document.write(nodeValues[2]);
+			document.write(escapeHtml(nodeValues[2]));
 			// End link
 			document.write("</a><br>");
 			// If node has children write out divs and go deeper

@@ -20,6 +20,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -55,7 +56,7 @@
 
 <div id="border" style="width:730px">
 
-	<form name="frm" method="post" action="<c:url value='/cop/smt/lsm/usr/selectLeaderSttusList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/lsm/usr/selectLeaderSttusList.do">
 
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="leaderId">
@@ -86,7 +87,7 @@
 	</tbody>
 	</table>
 	
-	</form>
+	</form:form>
 	<table width="100%" cellpadding="8" class="table-list" summary="이 표는 간부상태 정보를 제공하며, 간부명, 간부상태, 최종수정자, 최종수정일자 정보로 구성되어 있습니다 .">
 	<caption>간부상태 목록</caption>
 	 <thead>

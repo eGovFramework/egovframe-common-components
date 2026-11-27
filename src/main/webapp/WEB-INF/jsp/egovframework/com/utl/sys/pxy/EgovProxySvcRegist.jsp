@@ -13,7 +13,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 --%>
 
@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPxy.proxySvc.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,8 +31,7 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="proxySvc" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 function fncSelectProxySvcList() {
@@ -123,43 +121,57 @@ function ipValidate(ipValue) {
 		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.proxyNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="proxyNm"><input name="proxyNm" id="proxyNm" type="text" maxLength="60" size="60" >&nbsp;<form:errors path="proxyNm" /></label>
+			    <label for="proxyNm">
+			    	<input name="proxyNm" id="proxyNm" type="text" maxLength="30" size="30" value="<c:out value='${proxySvc.proxyNm}'/>">&nbsp;<form:errors path="proxyNm" />
+			    </label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.proxyIp.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="proxyIp"><input name="proxyIp" id="proxyIp" type="text" maxLength="23" style="width:128px" />&nbsp;<form:errors path="proxyIp" /></label>
+			    <label for="proxyIp">
+			    	<input name="proxyIp" id="proxyIp" type="text" maxLength="23" style="width:128px" value="<c:out value='${proxySvc.proxyIp}'/>">&nbsp;<form:errors path="proxyIp" />
+			    </label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.proxyPort.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="proxyPort"><input name="proxyPort" id="proxyPort" type="text" maxLength="10" style="width:50px" />&nbsp;<form:errors path="proxyPort" /></label>
+			    <label for="proxyPort">
+			    	<input name="proxyPort" id="proxyPort" type="text" maxLength="10" style="width:50px" value="<c:out value='${proxySvc.proxyPort}'/>">&nbsp;<form:errors path="proxyPort" />
+			    </label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.trgetSvcNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="trgetSvcNm"><input name="trgetSvcNm" id="trgetSvcNm" type="text" maxLength="30" size="30" >&nbsp;<form:errors path="trgetSvcNm" /></label>
+			    <label for="trgetSvcNm">
+			    	<input name="trgetSvcNm" id="trgetSvcNm" type="text" maxLength="30" size="30" value="<c:out value='${proxySvc.trgetSvcNm}'/>">&nbsp;<form:errors path="trgetSvcNm" />
+			    </label>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUtlSysPxy.proxySvc.svcDc.label" /> <span class="pilsu">*</span></th>
+			<th><spring:message code="comUtlSysPxy.proxySvc.svcDc.label" /></th>
 			<td class="left">
-			    <label for="svcDc"><input name="svcDc" id="svcDc" type="text" maxLength="255" size="60" ></label>
+			    <label for="svcDc">
+			    	<input name="svcDc" id="svcDc" type="text" maxLength="255" size="60" value="<c:out value='${proxySvc.svcDc}'/>">
+			    </label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.svcIp.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="svcDc"><input name="svcIp" id="svcIp" type="text" maxLength="23" style="width:128px" />&nbsp;<form:errors path="svcIp" /></label>
+			    <label for="svcIp">
+			    	<input name="svcIp" id="svcIp" type="text" maxLength="23" style="width:128px" value="<c:out value='${proxySvc.svcIp}'/>">&nbsp;<form:errors path="svcIp" />
+			    </label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.svcPort.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="svcDc"><input name="svcPort" id="svcPort" type="text" maxLength="10" style="width:50px" />&nbsp;<form:errors path="svcPort" /></label>
+			    <label for="svcPort">
+			    	<input name="svcPort" id="svcPort" type="text" maxLength="10" style="width:50px" value="<c:out value='${proxySvc.svcPort}'/>">&nbsp;<form:errors path="svcPort" />
+			    </label>
 			</td>
 		</tr>
 		<tr>
@@ -176,12 +188,12 @@ function ipValidate(ipValue) {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncProxySvcInsert(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>?pageIndex=<c:out value='${proxySvcVO.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvcVO.strProxyNm}"/>" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	
-	<input type="hidden" name="strProxyNm" value="<c:out value='${proxySvcVO.strProxyNm}'/>" />
-    <input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>" >
+	<input type="hidden" name="strProxyNm" value="<c:out value='${proxySvc.strProxyNm}'/>" />
+    <input type="hidden" name="pageIndex" value="<c:out value='${proxySvc.pageIndex}'/>" >
 	</form:form>
 </div>
 </body>

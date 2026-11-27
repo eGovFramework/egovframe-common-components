@@ -23,7 +23,6 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.BasicAttribute;
@@ -40,6 +39,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.ext.ldapumt.service.UcorgVO;
+import javax.annotation.Resource;
 
 /**
 *
@@ -57,6 +57,7 @@ import egovframework.com.ext.ldapumt.service.UcorgVO;
 *  2014.10.12   전우성            최초 생성
 *  2017-02-13   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 *  2020.08.28   정진오            표준프레임워크 v3.10 개선
+*  2026.06.15   이백행            [2026년 컨트리뷰션] 불필요한 예외 제거
 *
 * </pre>
 */
@@ -70,15 +71,14 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * DN의 하위부서 목록을 조회
 	 * @param dn 조회할 객체의 Distinguished Name
 	 * @return
-	 * @throws Exception
 	 */
-	public List<Object> selectDeptManageSubList(String dn) throws Exception {
+	public List<Object> selectDeptManageSubList(String dn) {
 		List<Object> ucorgList = null;
 		String filter = "objectclass=ucorg2";
 
 		try {
 			ucorgList = ldapTemplate.search(EgovWebUtil.removeLDAPInjectionRisk(dn), filter,
-				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UcorgVO>(
+				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<>(
 					UcorgVO.class));
 		} catch (NameNotFoundException e) {
 			logger.error("[NameNotFoundException] : search fail");//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -91,12 +91,11 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * ouCode를 활용하여 하위 부서를 조
 	 * @param ouCode
 	 * @return
-	 * @throws Exception
 	 */
-	public List<Object> selectDeptManageSubListByOuCode(String ouCode) throws Exception {
+	public List<Object> selectDeptManageSubListByOuCode(String ouCode) {
 		ContainerCriteria criteria = query().where("objectclass").is("ucorg2").and("parentoucode").is(ouCode);
 
-		List<Object> list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
+		List<Object> list = ldapTemplate.search(criteria, new ObjectMapper<>(UcorgVO.class));
 
 		return list;
 	}
@@ -107,23 +106,24 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * @return deptManageVO 부서 Vo
 	 * @param bannerVO
 	 */
-	public UcorgVO selectDeptManage(UcorgVO vo) throws Exception {
+	public UcorgVO selectDeptManage(UcorgVO vo) {
 		final ContainerCriteria criteria = query().where("objectclass").is("ucorg2");
 
 		Map<Object, Object> introspected = new BeanMap(vo);
 
-		for (Object key : introspected.keySet()) {
-			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
-				|| introspected.get(key).equals("")) {
+		for (Map.Entry<Object, Object> entry : introspected.entrySet()) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			if (key.equals("dn") || key.equals("class") || value == null || value.equals("")) {
 				continue;
 			}
 
-			ContainerCriteria c = query().where((String)key).is(String.valueOf(introspected.get(key)));
+			ContainerCriteria c = query().where((String)key).is(String.valueOf(value));
 			criteria.and(c);
 		}
 
 		List<Object> list = null;
-		list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
+		list = ldapTemplate.search(criteria, new ObjectMapper<>(UcorgVO.class));
 
 		return list == null ? null : (UcorgVO)list.get(0);
 	}
@@ -141,7 +141,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * 기 등록된 부서정보를 수정한다.
 	 * @param vo 부서 vo
 	 */
-	public void updateDeptManage(UcorgVO vo) throws Exception {
+	public void updateDeptManage(UcorgVO vo) {
 		updateOrg(vo);
 	}
 
@@ -149,7 +149,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * 부서정보를 등한다.
 	 * @param vo 부서 vo
 	 */
-	public void insertDeptManage(UcorgVO vo) throws Exception {
+	public void insertDeptManage(UcorgVO vo) {
 		BasicAttribute ocattr = new BasicAttribute("objectclass");
 		ocattr.add("top");
 		ocattr.add("ucorg2");

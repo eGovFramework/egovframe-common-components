@@ -21,7 +21,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator"%>
 <c:set var="pageTitle"><spring:message code="comCopScp.articleScrapVO.title" /></c:set>
 <!DOCTYPE html>
 <html>
@@ -29,8 +28,7 @@
 <title>${pageTitle }<spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="articleScrapVO" staticJavascript="false"	xhtml="true" cdata="false" />
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	/* ********************************************************
 	 * 초기화
@@ -103,7 +101,7 @@
 					<tr>
 						<th>${title } </th>
 						<td class="left" colspan="5">
-						<c:out value="${articleVO.nttSj}" escapeXml="false" />
+						<c:out value="${articleVO.nttSj}"/>
 						</td>
 					</tr>
 					
@@ -112,17 +110,17 @@
 					<tr>
 						<th>${title}</th>
 						<td>
-						<c:out value="${articleVO.frstRegisterNm}" escapeXml="false" />
+						<c:out value="${articleVO.frstRegisterNm}"/>
 						</td>
 						<c:set var="title"><spring:message code="table.regdate"/> </c:set>
 						<th>${title}</th>
 						<td>
-						<c:out value="${articleVO.frstRegisterPnttm}" escapeXml="false" />
+						<c:out value="${articleVO.frstRegisterPnttm}"/>
 						</td>
 						<c:set var="title"><spring:message code="comCopScp.articleScrapVO.updt.inqireCo"/> </c:set>
 						<th>${title}</th>
 						<td>
-						<c:out value="${articleVO.inqireCo}" escapeXml="false" />
+						<c:out value="${articleVO.inqireCo}"/>
 						</td>
 					</tr>
 					
@@ -131,7 +129,7 @@
 					<tr>
 						<th>${title } </th>
 						<td class="nopd" colspan="5">
-						<c:out value="${fn:replace(articleVO.nttCn , crlf , '<br/>')}" escapeXml="false" />
+						<span style="white-space:pre-line"><c:out value="${articleVO.nttCn}"/></span>
 						</td>
 					</tr>
 

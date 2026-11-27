@@ -1,12 +1,11 @@
 package egovframework.com.cmm.util;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.exception.EgovXssException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * EgovXssChecker 클래스
@@ -35,9 +34,8 @@ public class EgovXssChecker {
 	 * 수정, 상세조회, 삭제시 사용
 	 * @param uniqId Stirng
 	 * @return boolean
-	 * @exception IllegalArgumentException
 	 */
-	public static boolean checkerUserXss(HttpServletRequest request, String sUniqId) throws Exception {
+	public static boolean checkerUserXss(HttpServletRequest request, String sUniqId) {
 
 		//@ 공통모듈을 이용한 권한체크
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

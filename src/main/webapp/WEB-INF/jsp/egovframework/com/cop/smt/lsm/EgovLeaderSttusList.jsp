@@ -20,6 +20,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -65,7 +66,7 @@
 
 <div id="border" style="width:730px">
 
-	<form name="frm" method="post" action="<c:url value='/cop/smt/lsm/mng/selectLeaderSttusList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/lsm/mng/selectLeaderSttusList.do">
 
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="leaderId">
@@ -89,7 +90,7 @@
 	   <table border="0" cellspacing="0" cellpadding="0">
 	    <tr>
 	      <td><span class="button"><input type="submit" value="조회" onclick="fn_egov_select_leadersttus('1'); return false;"></span></td>
-	      <td><span class="button"><a href="<c:url value='/cop/smt/lsm/mng/addLeaderSttus.do'/>" onclick="fn_egov_insert_leadersttus('1'); return false;"><spring:message code="button.create" /></a></span></td>
+	      <td><span class="button"><a href="javascript:void(0);" onclick="fn_egov_insert_leadersttus('1'); return false;"><spring:message code="button.create" /></a></span></td>
 	    </tr>
 	   </table>
 	  </th>  
@@ -97,7 +98,6 @@
 	</tbody>
 	</table>
 	
-	</form>
 	<table width="100%" cellpadding="8" class="table-list" summary="이 표는 간부상태 정보를 제공하며, 간부명, 간부상태, 최종수정자, 최종수정일자 정보로 구성되어 있습니다 .">
 	<caption>간부상태 목록</caption>
 	 <thead>
@@ -116,13 +116,7 @@
 		    <td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>	
 		    <td class="lt_text3" nowrap><c:out value="${result.orgnztNm}"/></td>
 		    <td class="lt_text3" nowrap>
-		     <form name="fileSysMntrngVO" method="post" action="<c:url value='/cop/smt/lsm/mng/modifyLeaderSttus.do'/>">
-		    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-		    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-		    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-				<input type="hidden" name="leaderId" value="<c:out value="${result.leaderId}"/>">
-				<span class="link"><input type="submit" value="<c:out value="${result.leaderNm}"/>" onclick="javascript:fn_egov_inqire_leadersttus('<c:out value="${result.leaderId}"/>'); return false;" style="text-align : left;"></span>
-			 </form>
+				<a href="javascript:void(0);" onclick="fn_egov_inqire_leadersttus('<c:out value="${result.leaderId}"/>'); return false;"><c:out value="${result.leaderNm}"/></a>
 			</td>
 			<td class="lt_text3" nowrap><c:out value="${result.leaderSttusNm}"/></td>
 		    <td class="lt_text3" nowrap><c:out value="${fn:substring(result.lastUpdusrPnttm, 0, 16)}"/></td>
@@ -143,6 +137,7 @@
 	<div align="center">
 		<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_leadersttus" />
 	</div>
+	</form:form>
 </div>
 
 </body>

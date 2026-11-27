@@ -16,7 +16,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -26,7 +26,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <html lang="ko">
 <head>
@@ -58,6 +57,7 @@
 		<h2><spring:message code="comUssIonMtg.mtgPlaceResveRegist.image" /></h2><!-- 회의실 이미지 -->
 	
 		<form name="imageForm" method="post">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonMtg.mtgPlaceResveDetail.submit" />" title="<spring:message code="comUssIonMtg.mtgPlaceResveDetail.submit" />"></div>
 		</form>
 	

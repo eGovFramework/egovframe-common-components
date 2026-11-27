@@ -20,10 +20,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQrm.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -41,7 +44,7 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_QustnrRespondManage(){
-	location.href = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegistView.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegistView.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -63,12 +66,12 @@ function fn_egov_search_QustnrRespondManage(){
 </head>
 <body>
 
-<div class="wTableFrm">
+<div class="board">
 
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" id="listForm" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageList.do" method="post">
 
 	<!-- 응답자관리 목록 -->
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
@@ -88,10 +91,13 @@ function fn_egov_search_QustnrRespondManage(){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchKeyword}'/>" maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrRespondManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"><a href="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegistView.do' />"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegistView.do' />'); return false;"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
+
+	<input name="qestnrRespondId" type="hidden" value="">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">
@@ -130,7 +136,7 @@ function fn_egov_search_QustnrRespondManage(){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 설문지정보(제목) -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageDetail.do'/>?qestnrRespondId=${resultInfo.qestnrRespondId}" onClick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrRespondId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a>
+			<a href="javascript:void(0);" onClick="fn_egov_detail_QustnrRespondManage('<c:out value="${resultInfo.qestnrRespondId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a>
 		</td>
 		<!-- 응답자명 -->
 		<td class="lt_text3">${resultInfo.respondNm}</td>
@@ -152,7 +158,7 @@ function fn_egov_search_QustnrRespondManage(){
 
 
 
-</form>
+</form:form>
 	
 </div><!-- end div wTableFrm -->
 

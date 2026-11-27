@@ -2,21 +2,21 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
+import egovframework.com.uss.umt.service.MberPasswordManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import javax.annotation.Resource;
 
 /**
- * 일반회원관리에 관한비지니스클래스를 정의한다.
+ * 일반회원관리에 관한비즈니스클래스를 정의한다.
  * @author 공통서비스 개발팀 조재영
  * @since 2009.04.10
  * @version 1.0
@@ -36,9 +36,9 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
 @Service("mberManageService")
 public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implements EgovMberManageService {
 
-	/** userManageDAO */
-	@Resource(name="userManageDAO")
-	private UserManageDAO userManageDAO;
+	/** emplyrManageDAO */
+	@Resource(name="emplyrManageDAO")
+	private EmplyrManageDAO emplyrManageDAO;
 
 	/** mberManageDAO */
 	@Resource(name="mberManageDAO")
@@ -124,11 +124,11 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 	@Override
 	public void deleteMber(String checkedIdForDel)  {
 		String [] delId = checkedIdForDel.split(",");
-		for (int i=0; i<delId.length ; i++){
-			String [] id = delId[i].split(":");
+		for (String element : delId) {
+			String [] id = element.split(":");
 			if (id[0].equals("USR03")){
 		        //업무사용자(직원)삭제
-				userManageDAO.deleteUser(id[1]);
+				emplyrManageDAO.deleteEmplyr(id[1]);
 			}else if(id[0].equals("USR01")){
 				//일반회원삭제
 				mberManageDAO.deleteMber(id[1]);
@@ -152,29 +152,31 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 일반회원암호수정
-	 * @param mberManageVO 일반회원수정정보(비밀번호)
+	 * @param mberPasswordManageVO 일반회원 비밀번호 수정정보
 	 * @throws Exception
 	 */
 	@Override
-	public void updatePassword(MberManageVO mberManageVO) {
-		mberManageDAO.updatePassword(mberManageVO);
+	public void updatePassword(MberPasswordManageVO mberPasswordManageVO) throws Exception {
+		String newPassword = EgovFileScrty.encryptPassword(mberPasswordManageVO.getPassword(), mberPasswordManageVO.getMberId());
+		mberPasswordManageVO.setPassword(newPassword);
+		mberManageDAO.updatePassword(mberPasswordManageVO);
 	}
 
 	/**
 	 * 일반회원이 비밀번호를 기억하지 못할 때 비밀번호를 찾을 수 있도록 함
-	 * @param passVO 일반회원암호 조회조건정보
-	 * @return mberManageVO 일반회원암호정보
+	 * @param mberPasswordManageVO 일반회원 암호 조회조건정보
+	 * @return mberPasswordManageVO 일반회원 암호정보
 	 * @throws Exception
 	 */
 	@Override
-	public MberManageVO selectPassword(MberManageVO passVO) {
-		MberManageVO mberManageVO = mberManageDAO.selectPassword(passVO);
-		return mberManageVO;
+	public MberPasswordManageVO selectPassword(MberPasswordManageVO mberPasswordManageVO) {
+		MberPasswordManageVO result = mberManageDAO.selectPassword(mberPasswordManageVO);
+		return result;
 	}
-	
-	
+
+
 	/**
-	 * 로그인인증제한 해제 
+	 * 로그인인증제한 해제
 	 * @param mberManageVO 일반회원정보
 	 * @return void
 	 * @throws Exception

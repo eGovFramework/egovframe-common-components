@@ -254,7 +254,7 @@
 			ATCH_FILE_ID=#{atchFileId},
 			LAST_UPDT_PNTTM = NOW(),
 			LAST_UPDUSR_ID = #{lastUpdusrId}
-		WHERE FRST_REGISTER_ID = #{lastUpdusrId}
+		WHERE FRST_REGISTER_ID = #{frstRegisterId}
 			AND REPRT_ID = #{reprtId}
 	</update>
 	
@@ -279,7 +279,7 @@
 	<delete id="deleteMemoReprt" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO"> 
 		
 			DELETE FROM COMTNMEMOREPRT 
-			WHERE FRST_REGISTER_ID = #{searchId}
+			WHERE FRST_REGISTER_ID = #{frstRegisterId}
 				AND REPRT_ID = #{reprtId}
 		
 	</delete>

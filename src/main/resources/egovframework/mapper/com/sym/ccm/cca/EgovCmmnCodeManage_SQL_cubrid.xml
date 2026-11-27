@@ -74,6 +74,7 @@
 			     ,  A.CODE_ID_NM codeIdNm
                  ,  A.CODE_ID_DC codeIdDc
                  ,  A.USE_AT     useAt
+                 ,  A.FRST_REGISTER_ID  frstRegisterId
 			  FROM  COMTCCMMNCODE   A
 			     ,  COMTCCMMNCLCODE B
 			 WHERE  A.CL_CODE = B.CL_CODE

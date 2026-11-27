@@ -40,21 +40,21 @@ public interface EgovBndtManageService {
 
 	/**
 	 * 당직관리 정보를 신규로 등록한다.
-	 * @param bndtManage - 당직관리 model
+	 * @param bndtManageVO - 당직관리 VO
 	 */
-	public void insertBndtManage(BndtManage bndtManage) throws Exception;
+	public void insertBndtManage(BndtManageVO bndtManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 당직관리 정보를 수정한다.
-	 * @param bndtManage - 당직관리 model
+	 * @param bndtManageVO - 당직관리 VO
 	 */
-	public void updtBndtManage(BndtManage bndtManage) throws Exception;
+	public void updtBndtManage(BndtManageVO bndtManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 당직관리 정보를 삭제한다.
-	 * @param bndtManage - 당직관리 model
+	 * @param bndtManageVO - 당직관리 VO
 	 */
-	public void deleteBndtManage(BndtManage bndtManage) throws Exception;
+	public void deleteBndtManage(BndtManageVO bndtManageVO) throws Exception;
 
     /**
 	 * 당직일지 개수를 조회한다.
@@ -62,7 +62,15 @@ public interface EgovBndtManageService {
 	 * @return int
 	 * @exception Exception
 	 */
-    public int selectBndtDiaryTotCnt(BndtManage bndtManage) throws Exception;
+    public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) throws Exception;
+
+    /**
+	 * 당직일지 등록자를 조회한다. 일지는 한 번에 점검항목 행을 같은 등록자로 넣는다.
+	 * @param bndtDiaryVO - bndtId(당직자), bndtDe(당직일자)
+	 * @return String - 등록자 고유ID, 일지가 없으면 null
+	 * @exception Exception
+	 */
+    public String selectBndtDiaryRegisterId(BndtDiaryVO bndtDiaryVO) throws Exception;
 
     /***** 당직 체크관리 *****/
 	/**
@@ -88,21 +96,21 @@ public interface EgovBndtManageService {
 
 	/**
 	 * 당직체크관리 정보를 신규로 등록한다.
-	 * @param bndtCeckManage - 당직체크관리 model
+	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
-	public void insertBndtCeckManage(BndtCeckManage bndtCeckManage) throws Exception;
+	public void insertBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 당직체크관리 정보를 수정한다.
-	 * @param bndtCeckManage - 당직체크관리 model
+	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
-	public void updtBndtCeckManage(BndtCeckManage bndtCeckManage) throws Exception;
+	public void updtBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 당직체크관리 정보를 삭제한다.
-	 * @param bndtCeckManage - 당직체크관리 model
+	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
-	public void deleteBndtCeckManage(BndtCeckManage bndtCeckManage) throws Exception;
+	public void deleteBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception;
 
 
     /**
@@ -111,7 +119,7 @@ public interface EgovBndtManageService {
 	 * @return int
 	 * @exception Exception
 	 */
-	public int selectBndtCeckManageDplctAt(BndtCeckManage bndtCeckManage) throws Exception ;
+	public int selectBndtCeckManageDplctAt(BndtCeckManageVO bndtCeckManageVO) throws Exception ;
 
 
     /***** 당직 일지 *****/
@@ -125,21 +133,21 @@ public interface EgovBndtManageService {
 
 	/**
 	 * 당직일지관리 정보를 신규로 등록한다.
-	 * @param bndtDiary - 당직일지관리 model
+	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
-	public void insertBndtDiary(BndtDiary bndtDiary, String diaryForInsert) throws Exception;
+	public void insertBndtDiary(BndtDiaryVO bndtDiaryVO, String diaryForInsert) throws Exception;
 
 	/**
 	 * 기 등록된 당직일지관리 정보를 수정한다.
-	 * @param bndtDiary - 당직일지관리 model
+	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
-	public void updtBndtDiary(BndtDiary bndtDiary, String diaryForUpdt) throws Exception;
+	public void updtBndtDiary(BndtDiaryVO bndtDiaryVO, String diaryForUpdt) throws Exception;
 
 	/**
 	 * 기 등록된 당직일지관리 정보를 삭제한다.
-	 * @param bndtDiary - 당직일지관리 model
+	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
-	public void deleteBndtDiary(BndtDiary bndtDiary) throws Exception;
+	public void deleteBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception;
 
 	/**
 	 * 당직자 excel생성

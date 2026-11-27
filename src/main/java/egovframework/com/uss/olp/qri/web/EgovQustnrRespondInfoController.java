@@ -1,26 +1,24 @@
 package egovframework.com.uss.olp.qri.web;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -29,43 +27,45 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qri.service.EgovQustnrRespondInfoService;
 import egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO;
 import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * 설문조사 Controller Class 구현
+ *
  * @author 공통서비스 장동한
  * @since 2009.03.20
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일               수정자             수정내용
- *  ----------   --------   ---------------------------
- *  2009.03.20   장동한            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2019.05.16 	 신용호             egovQustnrRespondInfoManageTemplate() 메소드 삭제 (보안취약점 대응)
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.05.16  신용호          egovQustnrRespondInfoManageTemplate() 메소드 삭제 (보안취약점 대응)
+ *   2025.08.25  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *
- * </pre>
+ *      </pre>
  */
-
-
 @Controller
 public class EgovQustnrRespondInfoController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrRespondInfoController.class);
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/** EgovMessageSource */
-    @Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
 	@Resource(name = "egovQustnrRespondInfoService")
 	private EgovQustnrRespondInfoService egovQustnrRespondInfoService;
@@ -73,78 +73,145 @@ public class EgovQustnrRespondInfoController {
 	@Resource(name = "egovQustnrRespondManageService")
 	private EgovQustnrRespondManageService egovQustnrRespondManageService;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
-	@Resource(name="EgovCmmUseService")
+	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - Referer 기반 오픈 리다이렉트(CWE-601) 방지
+	 * 신뢰할 수 없는 HTTP Referer 헤더를 그대로 리다이렉트 대상으로 사용하지 않도록,
+	 * 같은 오리진(scheme/host/port)이거나 안전한 상대경로("/"로 시작하고 "//" 로 시작하지 않는 경우)인
+	 * 경우에만 값을 허용하고, 그 외(외부 도메인, 스킴 상대 URL 등)에는 빈 문자열을 반환한다.
+	 *
+	 * @param request 현재 요청
+	 * @return 검증된 안전한 returnUrl (허용되지 않는 경우 빈 문자열)
+	 */
+	private String safeReturnUrl(HttpServletRequest request) {
+		String referer = request.getHeader("REFERER");
+		if (referer == null || referer.isEmpty()) {
+			return "";
+		}
+
+		// 스킴 상대(protocol-relative) URL("//evil.com")은 외부 리다이렉트이므로 차단
+		if (referer.startsWith("//") || referer.startsWith("/\\") || referer.startsWith("\\\\")) {
+			LOGGER.debug("Referer가 스킴 상대 URL 형태여서 차단되었습니다.");
+			return "";
+		}
+
+		// 같은 서버 내 상대경로("/"로 시작)는 안전한 것으로 간주
+		if (referer.startsWith("/")) {
+			return referer;
+		}
+
+		// 절대 URL인 경우 요청과 동일한 오리진(scheme, host, port)인지 검증
+		try {
+			java.net.URI refererUri = new java.net.URI(referer);
+			String refererScheme = refererUri.getScheme();
+			String refererHost = refererUri.getHost();
+
+			if (refererScheme == null || refererHost == null) {
+				return "";
+			}
+
+			int refererPort = refererUri.getPort();
+			if (refererPort == -1) {
+				refererPort = "https".equalsIgnoreCase(refererScheme) ? 443 : 80;
+			}
+			int serverPort = request.getServerPort();
+
+			boolean sameOrigin = refererScheme.equalsIgnoreCase(request.getScheme())
+					&& refererHost.equalsIgnoreCase(request.getServerName())
+					&& refererPort == serverPort;
+
+			if (sameOrigin) {
+				return referer;
+			}
+		} catch (Exception e) {
+			LOGGER.debug("Referer 파싱 실패로 인해 차단되었습니다: {}", e.getMessage());
+		}
+
+		// 외부 도메인 등 화이트리스트를 벗어나는 경우 안전한 기본값(빈 문자열) 반환
+		return "";
+	}
 
 	/**
-     * 설문템플릿을 적용한다.
-     *
-     * @param searchVO
-     * @param request
-     * @param commandMap
-     * @param model
-     * @return "egovframework/com/uss/olp/template/template"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/qri/template/template.do")
-    public String egovQustnrRespondInfoManageTemplate(@ModelAttribute("searchVO") ComDefaultVO searchVO, HttpServletRequest request, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	 * 설문템플릿을 적용한다.
+	 *
+	 * @param searchVO
+	 * @param request
+	 * @param commandMap
+	 * @param model
+	 * @return "egovframework/com/uss/olp/template/template"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/olp/qri/template/template.do")
+	@RequireAdmin
+	public String egovQustnrRespondInfoManageTemplate(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			HttpServletRequest request, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-        String sTemplateUrl = (String) commandMap.get("templateUrl");
+		String sTemplateUrl = (String) commandMap.get("templateUrl");
 
-        LOGGER.debug("qestnrId=> {}", commandMap.get("qestnrId"));
-        LOGGER.debug("qestnrTmplatId=> {}", commandMap.get("qestnrTmplatId"));
-        LOGGER.debug("templateUrl=> {}", commandMap.get("templateUrl"));
+		LOGGER.debug("qestnrId=> {}", commandMap.get("qestnrId"));
+		LOGGER.debug("qestnrTmplatId=> {}", commandMap.get("qestnrTmplatId"));
+		LOGGER.debug("templateUrl=> {}", commandMap.get("templateUrl"));
 
-        // 설문템플릿정보
-        model.addAttribute("QustnrTmplatManage", egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
+		// 설문템플릿정보
+		model.addAttribute("QustnrTmplatManage", egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
 
-        // 설문정보
-        model.addAttribute("Comtnqestnrinfo", egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
-        // 문항정보
-        model.addAttribute("Comtnqustnrqesitm", egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
-        // 항목정보
-        model.addAttribute("Comtnqustnriem", egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
-        // 설문템플릿ID 설정
-        model.addAttribute("qestnrTmplatId", commandMap.get("qestnrTmplatId") == null ? "" : (String) commandMap.get("qestnrTmplatId"));
-        // 설문지정보ID 설정
-        model.addAttribute("qestnrId", commandMap.get("qestnrId") == null ? "" : (String) commandMap.get("qestnrId"));
+		// 설문정보
+		model.addAttribute("Comtnqestnrinfo",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
+		// 문항정보
+		model.addAttribute("Comtnqustnrqesitm",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
+		// 항목정보
+		model.addAttribute("Comtnqustnriem",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
+		// 설문템플릿ID 설정
+		model.addAttribute("qestnrTmplatId",
+				commandMap.get("qestnrTmplatId") == null ? "" : (String) commandMap.get("qestnrTmplatId"));
+		// 설문지정보ID 설정
+		model.addAttribute("qestnrId", commandMap.get("qestnrId") == null ? "" : (String) commandMap.get("qestnrId"));
 
-        // 객관식통계 답안
-        model.addAttribute("qestnrStatistic1", egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics1(commandMap));
+		// 객관식통계 답안
+		model.addAttribute("qestnrStatistic1",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics1(commandMap));
 
-        // 주관식통계 답안
-        model.addAttribute("qestnrStatistic2", egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics2(commandMap));
+		// 주관식통계 답안
+		model.addAttribute("qestnrStatistic2",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics2(commandMap));
 
-        // 이전 주소
-        model.addAttribute("returnUrl", request.getHeader("REFERER"));
+		// 이전 주소
+		// 2026.07.13 KISA 보안취약점 조치 - Referer 오픈 리다이렉트 방지(같은 오리진/상대경로만 허용)
+		model.addAttribute("returnUrl", safeReturnUrl(request));
 
-        // 안전한 경로 문자열로 조치
-        sTemplateUrl = EgovWebUtil.filePathBlackList(sTemplateUrl);
+		// 안전한 경로 문자열로 조치
+		sTemplateUrl = EgovWebUtil.filePathBlackList(sTemplateUrl);
 
-        // 화이트 리스트 체크
-        List<EgovMap> popupWhiteList = egovQustnrRespondInfoService.selectQustnrTmplatWhiteList();
-        LOGGER.debug("QustnrTmplat > WhiteList Count = {}", popupWhiteList.size());
-        if (sTemplateUrl == null)
-            sTemplateUrl = "";
-        for (Object obj : popupWhiteList) {
-            EgovMap map = (EgovMap) obj;
-            LOGGER.debug("QustnrTmplat > whiteList fileUrl = " + map.get("qestnrTmplatCours"));
-            if (sTemplateUrl.equals(map.get("qestnrTmplatCours"))) {
-                return sTemplateUrl;
-            }
-        }
-		
+		// 화이트 리스트 체크
+		List<EgovMap> popupWhiteList = egovQustnrRespondInfoService.selectQustnrTmplatWhiteList();
+		LOGGER.debug("QustnrTmplat > WhiteList Count = {}", popupWhiteList.size());
+		if (sTemplateUrl == null) {
+			sTemplateUrl = "";
+		}
+		for (Object obj : popupWhiteList) {
+			EgovMap map = (EgovMap) obj;
+			LOGGER.debug("QustnrTmplat > whiteList fileUrl = " + map.get("qestnrTmplatCours"));
+			if (sTemplateUrl.equals(map.get("qestnrTmplatCours"))) {
+				return sTemplateUrl;
+			}
+		}
+
 		LOGGER.debug("QustnrTmplat > WhiteList mismatch! Please check Admin page!");
-		return "egovframework/com/cmm/egovError";
+		return "egovframework/com/cmm/error/egovError";
 	}
 
 	/**
 	 * 설문조사 전체 통계를 조회한다.
+	 *
 	 * @param searchVO
 	 * @param request
 	 * @param commandMap
@@ -152,413 +219,518 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageStatistics"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qnn/EgovQustnrRespondInfoManageStatistics.do")
-	public String egovQustnrRespondInfoManageStatistics(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			HttpServletRequest request,
-			@RequestParam Map<?, ?> commandMap,
-    		ModelMap model)
-    throws Exception {
+	@RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageStatistics.do")
+	@RequireAdmin
+	public String egovQustnrRespondInfoManageStatistics(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			HttpServletRequest request, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageStatistics";
 
-    	 //설문정보
-    	 model.addAttribute("Comtnqestnrinfo",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
-    	 //문항정보
-    	 model.addAttribute("Comtnqustnrqesitm",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
-    	 //항목정보
-    	 model.addAttribute("Comtnqustnriem",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
-    	 //설문템플릿ID 설정
-    	 model.addAttribute("qestnrTmplatId",  commandMap.get("qestnrTmplatId") == null ? "" : (String)commandMap.get("qestnrTmplatId") );
-       	 //설문지정보ID 설정
-    	 model.addAttribute("qestnrId",  commandMap.get("qestnrId") == null ? "" : (String)commandMap.get("qestnrId"));
+		// 설문정보
+		model.addAttribute("Comtnqestnrinfo",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
+		// 문항정보
+		model.addAttribute("Comtnqustnrqesitm",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
+		// 항목정보
+		model.addAttribute("Comtnqustnriem",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
+		// 설문템플릿ID 설정
+		model.addAttribute("qestnrTmplatId",
+				commandMap.get("qestnrTmplatId") == null ? "" : (String) commandMap.get("qestnrTmplatId"));
+		// 설문지정보ID 설정
+		model.addAttribute("qestnrId", commandMap.get("qestnrId") == null ? "" : (String) commandMap.get("qestnrId"));
 
-         //객관식통계 답안
-    	 model.addAttribute("qestnrStatistic1", egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics1(commandMap));
+		// 객관식통계 답안
+		model.addAttribute("qestnrStatistic1",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics1(commandMap));
 
-         //주관식통계 답안
-    	 model.addAttribute("qestnrStatistic2", egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics2(commandMap));
+		// 주관식통계 답안
+		model.addAttribute("qestnrStatistic2",
+				egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics2(commandMap));
 
-    	 //이전 주소
-    	 model.addAttribute("returnUrl", request.getHeader("REFERER"));
-
-
+		// 이전 주소
+		// 2026.07.13 KISA 보안취약점 조치 - Referer 오픈 리다이렉트 방지(같은 오리진/상대경로만 허용)
+		model.addAttribute("returnUrl", safeReturnUrl(request));
 
 		return sLocationUrl;
 	}
 
 	/**
-     * 설문조사(설문등록) 목록을 조회한다.
-     *
-     * @param searchVO
-     * @param request
-     * @param response
-     * @param commandMap
-     * @param model
-     * @return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageList"
-     * @throws Exception
-     */
-    @IncludedInfo(name = "설문조사", order = 600, gid = 50)
-    @RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageList.do")
-    public String egovQustnrRespondInfoManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO, HttpServletRequest request, HttpServletResponse response, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	 * 설문조사(설문등록) 목록을 조회한다.
+	 *
+	 * @param searchVO
+	 * @param request
+	 * @param response
+	 * @param commandMap
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageList"
+	 * @throws Exception
+	 */
+	@IncludedInfo(name = "설문조사", order = 600, gid = 50)
+	@RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageList.do")
+	public String egovQustnrRespondInfoManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			HttpServletRequest request, HttpServletResponse response, @RequestParam Map<?, ?> commandMap,
+			ModelMap model) throws Exception {
 
-        /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-        /** pageing */
-        PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+		/** pageing */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoManageList(searchVO);
-        model.addAttribute("resultList", resultList);
+		List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoManageList(searchVO);
+		model.addAttribute("resultList", resultList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+		model.addAttribute("searchKeyword",
+				commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
+		model.addAttribute("searchCondition",
+				commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
 
-        int totCnt = egovQustnrRespondInfoService.selectQustnrRespondInfoManageListCnt(searchVO);
-        paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		int totCnt = egovQustnrRespondInfoService.selectQustnrRespondInfoManageListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageList";
-    }
+		return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageList";
+	}
 
 	/**
 	 * 설문조사(설문등록)를 등록한다.
+	 *
 	 * @param searchVO
 	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageRegist"
 	 * @throws Exception
 	 */
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value="/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do")
+	@PostMapping("/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do")
+	@RequireAdmin
 	public String egovQustnrRespondInfoManageRegist(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@Valid @ModelAttribute("searchVO") ComDefaultVO searchVO,
+			BindingResult bindingResult,
 			@RequestParam Map commandMap,
 			HttpServletRequest request,
-    		ModelMap model)
-    throws Exception {
-		
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		if(loginVO == null){ loginVO = new LoginVO();}
+		// 2026.07.13 KISA 보안취약점 조치 - 인증/검증 이전 시점에 전체 요청 파라미터(PII, 자유서술 응답 포함)를
+		// 그대로 로그에 남기지 않도록 민감 정보를 마스킹하고, 화이트리스트된 필드만 로그에 기록한다.
+		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - commandMap 키목록: {}", commandMap.keySet());
+		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - qestnrTmplateId raw: {}", commandMap.get("qestnrTmplateId"));
+		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - qestnrId raw: {}", commandMap.get("qestnrId"));
+		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - cmd raw: {}", commandMap.get("cmd"));
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null) {
+			loginVO = new LoginVO();
+		}
 
 		String sLocationUrl = "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageRegist";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		LOGGER.info("cmd => {}", sCmd);
 
+		// 성별코드조회
+		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+		voComCode.setCodeId("COM014");
+		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+		model.addAttribute("comCode014", listComCode);
 
-     	//성별코드조회
-    	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
-    	voComCode.setCodeId("COM014");
-    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-    	model.addAttribute("comCode014", listComCode);
-
-    	//직업코드조회
-    	voComCode.setCodeId("COM034");
-    	listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-    	model.addAttribute("comCode034", listComCode);
-
-        if(sCmd.equals("save")){
-
-    		//설문조사 처리 START
-    		String sKey ="";
-    		String sVal ="";
-           	for(Object key:commandMap.keySet()){
-
-           		sKey = key.toString();
-
-           		//설문문항정보 추출
-           		if(sKey.length() > 6 && sKey.substring(0, 6).equals("QQESTN")){
+		// 직업코드조회
+		voComCode.setCodeId("COM034");
+		listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+		model.addAttribute("comCode034", listComCode);
 
 
-           			//설문조사 등록
-	           		//객관식 답안 처리
-	           		if( commandMap.get("TY_"+key).equals("1") ){
-	           			
-	           			String[] arrayParam = request.getParameterValues(key.toString());
-	           			
-           				if( arrayParam.length == 1 ){
-	           				sVal = arrayParam[0];
+			for (Object keyObj : commandMap.keySet()) {
+				String key = keyObj.toString();
+				if (!key.startsWith("QQESTN")) continue; //멀티체크박스는 안될 수도 있음
+				String[] arr = request.getParameterValues(key);
+				if (arr == null || arr.length == 0 || Arrays.stream(arr).allMatch(v -> v == null || v.trim().isEmpty())) {
+					bindingResult.reject("required", key + "입력 없음");
+					}
+			}
+		if (bindingResult.hasErrors()) {
+			LOGGER.info("####EgovQustnrRespondInfoManageRegist 유효성검증 ERROR");
+			model.addAttribute("searchVO", searchVO);
 
-		           			QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
+			// 검증 실패로 폼을 다시 표시할 때도 정상 표시 경로와 동일하게 참조데이터를 재적재한다.
+			// (누락 시 문항 영역이 빈 templateUrl로 에러 페이지 대체 + hidden qestnrTmplatId/qestnrId 유실)
+			if (loginVO.getUniqId() != null) {
+				commandMap.put("uniqId", loginVO.getUniqId());
+				// 사용자정보
+				model.addAttribute("Emplyrinfo",
+						egovQustnrRespondInfoService.selectQustnrRespondInfoManageEmplyrinfo(commandMap));
+			}
+			// 설문템플릿정보
+			model.addAttribute("QustnrTmplatManage",
+					egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
+			// 설문정보
+			model.addAttribute("Comtnqestnrinfo",
+					egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
+			// 문항정보
+			model.addAttribute("Comtnqustnrqesitm",
+					egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
+			// 항목정보
+			model.addAttribute("Comtnqustnriem",
+					egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
+			// 설문템플릿ID 설정
+			model.addAttribute("qestnrTmplatId",
+					commandMap.get("qestnrTmplatId") == null ? "" : (String) commandMap.get("qestnrTmplatId"));
+			// 설문지정보ID 설정
+			model.addAttribute("qestnrId",
+					commandMap.get("qestnrId") == null ? "" : (String) commandMap.get("qestnrId"));
 
-		           			qustnrRespondInfoVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
-		           			qustnrRespondInfoVO.setQestnrId((String) commandMap.get("qestnrId"));
-		           			qustnrRespondInfoVO.setQestnrQesitmId(sKey);
-		           			qustnrRespondInfoVO.setQustnrIemId(sVal);
+			return "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageRegist";
+		}
 
-		           			qustnrRespondInfoVO.setRespondAnswerCn("");
+		if (sCmd.equals("save")) {
+			LOGGER.info("####EgovQustnrRespondInfoManageRegist save 모드 진입");
+			// 설문조사 처리 START
+			String sKey = "";
+			String sVal = "";
 
-		           			qustnrRespondInfoVO.setRespondNm((String) commandMap.get("respondNm"));
-		           			qustnrRespondInfoVO.setEtcAnswerCn((String) commandMap.get("ETC_" + sVal));
+			for (Object key : commandMap.keySet()) {
 
+				sKey = key.toString();
 
-		            		qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
-		            		qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
+				// 설문문항정보 추출
+				if (sKey.length() > 6 && sKey.substring(0, 6).equals("QQESTN")) {
 
-		           			egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
-           				}else{
-	        				String[] arrVal = arrayParam;
-	        				for(int g=0; g < arrVal.length; g++ ){
-	        					//("QQESTN arr :" + arrVal[g]);
-			           			QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
+					// 설문조사 등록
+					// 객관식 답안 처리
+					if ("1".equals(commandMap.get("TY_" + key))) {
 
-			           			qustnrRespondInfoVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
-			           			qustnrRespondInfoVO.setQestnrId((String) commandMap.get("qestnrId"));
-			           			qustnrRespondInfoVO.setQestnrQesitmId(sKey);
-			           			qustnrRespondInfoVO.setQustnrIemId(arrVal[g]);
+						String[] arrayParam = request.getParameterValues(key.toString());
 
-			           			qustnrRespondInfoVO.setRespondAnswerCn("");
+						if (arrayParam != null && arrayParam.length == 1) {
+							sVal = arrayParam[0];
 
-			           			qustnrRespondInfoVO.setRespondNm((String) commandMap.get("respondNm"));
-			           			qustnrRespondInfoVO.setEtcAnswerCn((String) commandMap.get("ETC_" + arrVal[g]));
+							QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
 
+							qustnrRespondInfoVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
+							qustnrRespondInfoVO.setQestnrId((String) commandMap.get("qestnrId"));
+							qustnrRespondInfoVO.setQestnrQesitmId(sKey);
+							qustnrRespondInfoVO.setQustnrIemId(sVal);
 
-			            		qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
-			            		qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
+							qustnrRespondInfoVO.setRespondAnswerCn("");
 
-			           			egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
-	        				}
-           				}
+							qustnrRespondInfoVO.setRespondNm((String) commandMap.get("respondNm"));
+							qustnrRespondInfoVO.setEtcAnswerCn((String) commandMap.get("ETC_" + sVal));
 
+							qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
+							qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
 
-	           		//주관식 답안 처리
-	           		}else if( commandMap.get("TY_"+key).equals("2") ){
-	           			QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
+							egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
+						} else {
+							String[] arrVal = arrayParam != null ? arrayParam : new String[0];
+							for (int g = 0; g < arrVal.length; g++) {
+								// ("QQESTN arr :" + arrVal[g]);
+								QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
 
-	           			qustnrRespondInfoVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
-	           			qustnrRespondInfoVO.setQestnrId((String) commandMap.get("qestnrId"));
-	           			qustnrRespondInfoVO.setQestnrQesitmId(sKey);
-	           			qustnrRespondInfoVO.setQustnrIemId(null);
+								qustnrRespondInfoVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
+								qustnrRespondInfoVO.setQestnrId((String) commandMap.get("qestnrId"));
+								qustnrRespondInfoVO.setQestnrQesitmId(sKey);
+								qustnrRespondInfoVO.setQustnrIemId(arrVal[g]);
 
-	           			qustnrRespondInfoVO.setRespondAnswerCn((String) commandMap.get(sKey));
+								qustnrRespondInfoVO.setRespondAnswerCn("");
 
-	           			qustnrRespondInfoVO.setRespondNm((String) commandMap.get("respondNm"));
-	           			qustnrRespondInfoVO.setEtcAnswerCn(null);
+								qustnrRespondInfoVO.setRespondNm((String) commandMap.get("respondNm"));
+								qustnrRespondInfoVO.setEtcAnswerCn((String) commandMap.get("ETC_" + arrVal[g]));
 
-	            		qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
-	            		qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
+								qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
+								qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
 
+								egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
+							}
+						}
 
-	           			egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
-	           		}
+						// 주관식 답안 처리
+					} else if ("2".equals(commandMap.get("TY_" + key))) {
+						QustnrRespondInfoVO qustnrRespondInfoVO = new QustnrRespondInfoVO();
 
+						qustnrRespondInfoVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
+						qustnrRespondInfoVO.setQestnrId((String) commandMap.get("qestnrId"));
+						qustnrRespondInfoVO.setQestnrQesitmId(sKey);
+						qustnrRespondInfoVO.setQustnrIemId(null);
 
-           		}
-        	}
+						qustnrRespondInfoVO.setRespondAnswerCn((String) commandMap.get(sKey));
 
-       		//설문응답자 처리
-       		QustnrRespondManageVO qustnrRespondManageVO = new QustnrRespondManageVO();
+						qustnrRespondInfoVO.setRespondNm((String) commandMap.get("respondNm"));
+						qustnrRespondInfoVO.setEtcAnswerCn(null);
 
-       		qustnrRespondManageVO.setQestnrId((String) commandMap.get("qestnrId"));
-       		qustnrRespondManageVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
+						qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
+						qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
 
-       		qustnrRespondManageVO.setSexdstnCode((String) commandMap.get("sexdstnCode"));
-       		qustnrRespondManageVO.setOccpTyCode((String) commandMap.get("occpTyCode"));
-       		qustnrRespondManageVO.setBrth((String) commandMap.get("brth"));
-       		qustnrRespondManageVO.setRespondNm((String) commandMap.get("respondNm"));
+						egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
+					}
 
-       		qustnrRespondManageVO.setFrstRegisterId(loginVO.getUniqId());
-       		qustnrRespondManageVO.setLastUpdusrId(loginVO.getUniqId());
-       		egovQustnrRespondManageService.insertQustnrRespondManage(qustnrRespondManageVO);
+				}
 
-           	String ResultScript = "";
+			}
 
-           	ResultScript += "<script type='text/javaScript' language='javascript'>";
-        	ResultScript += "alert(' 설문참여에 응해주셔서 감사합니다!  ');";
-           	ResultScript += "</script>";
+			LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 설문응답자 처리");
+			// 설문응답자 처리
+			QustnrRespondManageVO qustnrRespondManageVO = new QustnrRespondManageVO();
 
-           	model.addAttribute("resultScript", ResultScript);
-        	sLocationUrl = "redirect:/uss/olp/qnn/EgovQustnrRespondInfoManageList.do";
-        }else{
+			qustnrRespondManageVO.setQestnrId((String) commandMap.get("qestnrId"));
+			qustnrRespondManageVO.setQestnrTmplatId((String) commandMap.get("qestnrTmplatId"));
 
-        	 if(loginVO.getUniqId() != null){
-	        	 commandMap.put("uniqId", loginVO.getUniqId());
-	        	 //사용자정보
-	        	 model.addAttribute("Emplyrinfo",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageEmplyrinfo(commandMap));
-        	 }
-        	 
-     		 //설문템플릿정보
-    		 model.addAttribute("QustnrTmplatManage",  egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
+			qustnrRespondManageVO.setSexdstnCode((String) commandMap.get("sexdstnCode"));
+			qustnrRespondManageVO.setOccpTyCode((String) commandMap.get("occpTyCode"));
+			qustnrRespondManageVO.setBrth((String) commandMap.get("brth"));
+			qustnrRespondManageVO.setRespondNm((String) commandMap.get("respondNm"));
 
-        	 //설문정보
-        	 model.addAttribute("Comtnqestnrinfo",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
-        	 //문항정보
-        	 model.addAttribute("Comtnqustnrqesitm",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
-        	 //항목정보
-        	 model.addAttribute("Comtnqustnriem",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
-        	 //설문템플릿ID 설정
-        	 model.addAttribute("qestnrTmplatId",  commandMap.get("qestnrTmplatId") == null ? "" : (String)commandMap.get("qestnrTmplatId") );
-           	 //설문지정보ID 설정
-        	 model.addAttribute("qestnrId",  commandMap.get("qestnrId") == null ? "" : (String)commandMap.get("qestnrId"));
+			qustnrRespondManageVO.setFrstRegisterId(loginVO.getUniqId());
+			qustnrRespondManageVO.setLastUpdusrId(loginVO.getUniqId());
+			egovQustnrRespondManageService.insertQustnrRespondManage(qustnrRespondManageVO);
 
-        }
+			String resultScript = "";
+
+			resultScript += "<script type='text/javaScript' language='javascript'>";
+			resultScript += "alert(' 설문참여에 응해주셔서 감사합니다!  ');";
+			resultScript += "</script>";
+
+			LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 설문응답자 리다이렉트전");
+			model.addAttribute("resultScript", resultScript);
+			sLocationUrl = "redirect:/uss/olp/qnn/EgovQustnrRespondInfoManageList.do";
+		} else {
+				// 2026.03.09 KISA 취약점 조치: trt-catch 삭제
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 사용자 정보");
+				if (loginVO.getUniqId() != null) {
+					commandMap.put("uniqId", loginVO.getUniqId());
+					// 사용자정보 - 뷰테이블을 select 하는데, 테이블에 없는 컬럼을 요청해서 수정중.
+					model.addAttribute("Emplyrinfo",
+							egovQustnrRespondInfoService.selectQustnrRespondInfoManageEmplyrinfo(commandMap));
+				}
+				// 설문템플릿정보
+				model.addAttribute("QustnrTmplatManage",
+						egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist QustnrTmplatManage 완료");
+				// 설문정보
+				model.addAttribute("Comtnqestnrinfo",
+						egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqestnrinfo(commandMap));
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist Comtnqestnrinfo 완료");
+				// 문항정보
+				model.addAttribute("Comtnqustnrqesitm",
+						egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnrqesitm(commandMap));
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist Comtnqustnrqesitm 완료");
+				// 항목정보
+				model.addAttribute("Comtnqustnriem",
+						egovQustnrRespondInfoService.selectQustnrRespondInfoManageComtnqustnriem(commandMap));
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist Comtnqustnriem 완료");
+				// 설문템플릿ID 설정
+				model.addAttribute("qestnrTmplatId",
+						commandMap.get("qestnrTmplatId") == null ? "" : (String) commandMap.get("qestnrTmplatId"));
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist qestnrTmplatId 완료");
+				// 설문지정보ID 설정
+				model.addAttribute("qestnrId",
+						commandMap.get("qestnrId") == null ? "" : (String) commandMap.get("qestnrId"));
+				LOGGER.info("#### EgovQustnrRespondInfoManageRegist qestnrId 완료");
+
+		}
+
+		LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 cmd 실제 값:[{}]", commandMap.get("cmd"));
+		LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 리턴직전 returnview : {}", sLocationUrl);
+
+		if (sLocationUrl == null || sLocationUrl.trim().isEmpty()) {
+		    LOGGER.error("#####view name is empty! fallback applied");
+		    sLocationUrl = "egovframework/com/uss/olp/qnn/EgovQustnrRespondInfoManageRegist";
+		}
 
 		return sLocationUrl;
 	}
 
 	/**
-     * 응답자결과(설문조사) 목록을 조회한다.
-     *
-     * @param searchVO
-     * @param request
-     * @param commandMap
-     * @param qustnrRespondInfoVO
-     * @param model
-     * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoList"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoList.do")
-    public String egovQustnrRespondInfoList(@ModelAttribute("searchVO") ComDefaultVO searchVO, HttpServletRequest request, @RequestParam Map<?, ?> commandMap, QustnrRespondInfoVO qustnrRespondInfoVO,
-            ModelMap model) throws Exception {
+	 * 응답자결과(설문조사) 목록을 조회한다.
+	 *
+	 * @param searchVO
+	 * @param request
+	 * @param commandMap
+	 * @param qustnrRespondInfoVO
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoList"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoList.do")
+	@RequireAdmin
+	public String egovQustnrRespondInfoList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			HttpServletRequest request, @RequestParam Map<?, ?> commandMap, QustnrRespondInfoVO qustnrRespondInfoVO,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 
-        // 0. Spring Security 사용자권한 처리
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        if (loginVO == null) {
-            loginVO = new LoginVO();
-        }
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null) {
+			loginVO = new LoginVO();
+		}
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
-        // 설문지정보에서 넘어오면 자동검색 설정
-        if (sSearchMode.equals("Y")) {
-            searchVO.setSearchCondition("QESTNR_ID");
-            searchVO.setSearchKeyword(qustnrRespondInfoVO.getQestnrId());
-        }
+		// 설문지정보에서 넘어오면 자동검색 설정
+		if (sSearchMode.equals("Y")) {
+			searchVO.setSearchCondition("QESTNR_ID");
+			searchVO.setSearchKeyword(qustnrRespondInfoVO.getQestnrId());
+		}
 
-        /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-        /** pageing */
-        PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+		/** pageing */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoList(searchVO);
-        model.addAttribute("resultList", resultList);
+		List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoList(searchVO);
+		model.addAttribute("resultList", resultList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+		model.addAttribute("searchKeyword",
+				commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
+		model.addAttribute("searchCondition",
+				commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
 
-        int totCnt = egovQustnrRespondInfoService.selectQustnrRespondInfoListCnt(searchVO);
-        paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		int totCnt = egovQustnrRespondInfoService.selectQustnrRespondInfoListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoList";
-    }
+		return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoList";
+	}
 
-    /**
-     * 응답자결과(설문조사) 목록을 상세조회 조회한다.
-     *
-     * @param searchVO
-     * @param qustnrRespondInfoVO
-     * @param commandMap
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoDetail.do")
-    public String egovQustnrRespondInfoDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, QustnrRespondInfoVO qustnrRespondInfoVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	/**
+	 * 응답자결과(설문조사) 목록을 상세조회 조회한다.
+	 *
+	 * @param searchVO
+	 * @param qustnrRespondInfoVO
+	 * @param commandMap
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoDetail.do")
+	@RequireAdmin
+	public String egovQustnrRespondInfoDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			QustnrRespondInfoVO qustnrRespondInfoVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
+			throws Exception {
 
-        String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoDetail";
+		String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoDetail";
 
-        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-        if (sCmd.equals("del")) {
-            egovQustnrRespondInfoService.deleteQustnrRespondInfo(qustnrRespondInfoVO);
-            sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
-        } else {
-            List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
-            model.addAttribute("resultList", resultList);
-        }
+		if (sCmd.equals("del")) {
+			// 삭제는 응답자(등록자) 본인만 할 수 있다.
+			List<EgovMap> storedList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+			Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+			EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
+			egovQustnrRespondInfoService.deleteQustnrRespondInfo(qustnrRespondInfoVO);
+			sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
+		} else {
+			// KISA 보안취약점 조치: 객체 수준 접근제어 누락 - 관리자만 응답 상세를 조회할 수 있다.
+			EgovAuthorizationHelper.assertAdmin();
+			List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+			model.addAttribute("resultList", resultList);
+		}
 
-        return sLocationUrl;
-    }
+		return sLocationUrl;
+	}
 
-    /**
-     * 응답자결과(설문조사)를 수정한다.
-     *
-     * @param searchVO
-     * @param commandMap
-     * @param request
-     * @param qustnrRespondInfoVO
-     * @param bindingResult
-     * @param model
-     * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoModify.do")
-    public String qustnrRespondInfoModify(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, HttpServletRequest request, @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	/**
+	 * 응답자결과(설문조사)를 수정한다.
+	 *
+	 * @param searchVO
+	 * @param commandMap
+	 * @param request
+	 * @param qustnrRespondInfoVO
+	 * @param bindingResult
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify"
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoModify.do")
+	@RequireAdmin
+	public String qustnrRespondInfoModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
+			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 
-        // 0. Spring Security 사용자권한 처리
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        if (loginVO == null) {
-            loginVO = new LoginVO();
-        }
+		// 응답결과는 설문 참여 때 참여자를 등록자로 저장한다(응답자 = 등록자).
+		// 삭제와 같이 응답자 본인만 수정 화면·저장을 쓴다(입력 오류 재표시보다 앞). 관리자도 예외가 아니다.
+		List<EgovMap> storedList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+		Object ownerId = (storedList == null || storedList.isEmpty()) ? null : storedList.get(0).get("frstRegisterId");
+		EgovAuthorizationHelper.assertOwner(ownerId == null ? null : ownerId.toString());
 
-        String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify";
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null) {
+			loginVO = new LoginVO();
+		}
 
-        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify";
 
-        if (sCmd.equals("save")) {
-            // 서버 validate 체크
-            beanValidator.validate(qustnrRespondInfoVO, bindingResult);
-            if (bindingResult.hasErrors()) {
-                return sLocationUrl;
-            }
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-            // 아이디 설정
-            qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
-            qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
+		if (sCmd.equals("save")) {
+			if (bindingResult.hasErrors()) {
+				List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+				model.addAttribute("resultList", resultList);
+				return sLocationUrl;
+			}
 
-            egovQustnrRespondInfoService.updateQustnrRespondInfo(qustnrRespondInfoVO);
-            sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
-        } else {
-            List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
-            model.addAttribute("resultList", resultList);
-        }
+			// 아이디 설정
+			qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
+			qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
 
-        return sLocationUrl;
-    }
+			egovQustnrRespondInfoService.updateQustnrRespondInfo(qustnrRespondInfoVO);
+			sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
+		} else {
+			List<EgovMap> resultList = egovQustnrRespondInfoService.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+			model.addAttribute("resultList", resultList);
+		}
+
+		return sLocationUrl;
+	}
 
 	/**
 	 * 응답자결과(설문조사)를 등록한다.
+	 *
 	 * @param searchVO
 	 * @param commandMap
 	 * @param request
@@ -568,48 +740,45 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
-	public String qustnrRespondInfoRegist(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
-			HttpServletRequest request,
-			@ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
+	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
+	@RequireAdmin
+	public String qustnrRespondInfoRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
+			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
 			BindingResult bindingResult,
-    		ModelMap model)
-    throws Exception {
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		if(loginVO == null){ loginVO = new LoginVO();}
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null) {
+			loginVO = new LoginVO();
+		}
 
 		String sLocationUrl = "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoRegist";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		LOGGER.info("cmd => {}", sCmd);
 
-        if(sCmd.equals("save")){
-    		//서버  validate 체크
-            beanValidator.validate(qustnrRespondInfoVO, bindingResult);
-    		if(bindingResult.hasErrors()){
-    	        return sLocationUrl;
-    		}
+		if (sCmd.equals("save")) {
+			if (bindingResult.hasErrors()) {
+				return sLocationUrl;
+			}
 
-    		//아이디 설정
-    		qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
-    		qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
+			// 아이디 설정
+			qustnrRespondInfoVO.setFrstRegisterId(loginVO.getUniqId());
+			qustnrRespondInfoVO.setLastUpdusrId(loginVO.getUniqId());
 
-        	egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
-        	sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
-        }
+			egovQustnrRespondInfoService.insertQustnrRespondInfo(qustnrRespondInfoVO);
+			sLocationUrl = "redirect:/uss/olp/qri/EgovQustnrRespondInfoList.do";
+		}
 
 		return sLocationUrl;
 	}
 }
-
-

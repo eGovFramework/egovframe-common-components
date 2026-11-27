@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovDeptJobBxList.jsp
@@ -29,6 +30,9 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 	function fn_egov_init_deptjobbx(){
+		if("${deptJobBxNotEmpty}" == "true"){
+			alert("<spring:message code="comCopSmtDjm.deptJobBxList.deptJobBxNotEmpty" />");/* 부서업무가 남아 있어 부서업무함을 삭제할 수 없습니다. */
+		}
 		var opener = parent.window.dialogArguments;
 	}
 	
@@ -67,7 +71,7 @@
 <div class="board">
 	<h1><spring:message code="comCopSmtDjm.deptJobBxList.title" /></h1><!-- 부서업무함 목록 -->
 	
-	<form name="frm" method="post" action="<c:url value='/cop/smt/djm/selectDeptJobBxList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/selectDeptJobBxList.do">
 
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="deptId">
@@ -90,7 +94,7 @@
 		</ul>
 	</div>
 	
-	</form>
+	</form:form>
 	
 	<table class="board_list">
 		<caption><spring:message code="comCopSmtDjm.deptJobBxList.title" /></caption><!-- 부서업무함 목록 -->

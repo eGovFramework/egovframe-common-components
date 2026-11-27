@@ -98,13 +98,13 @@ function fnDelete(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymCcmAdc.ccmAdministCode.administName" /> <span class="pilsu">*</span></th> <!-- 행정구역명 -->
+			<th><spring:message code="comSymCcmAdc.ccmAdministCode.administName" /></th> <!-- 행정구역명 -->
 			<td class="left">
 			    ${result.administZoneNm}
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymCcmAdc.ccmAdministCode.createDate" /> <span class="pilsu">*</span></th> <!-- 생성일자 -->
+			<th><spring:message code="comSymCcmAdc.ccmAdministCode.createDate" /></th> <!-- 생성일자 -->
 			<td class="left">
 			    <c:out value='${fn:substring(result.creatDe, 0,4)}'/>-<c:out value='${fn:substring(result.creatDe, 4,6)}'/>-<c:out value='${fn:substring(result.creatDe, 6,8)}'/>
 			</td>
@@ -143,7 +143,8 @@ function fnDelete(){
 
 
 
-<form name="Form" id="Form" method="post" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCodeModify.do'/>">
+<form name="Form" id="Form" method="post" action="${pageContext.request.contextPath}/sym/ccm/adc/EgovCcmAdministCodeModify.do">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type=hidden name="administZoneSe">
 	<input type=hidden name="administZoneCode">
 	<input type="submit" id="invisible" class="invisible"/>

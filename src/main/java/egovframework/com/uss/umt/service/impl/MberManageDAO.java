@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.umt.service.MberManageVO;
+import egovframework.com.uss.umt.service.MberPasswordManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 
@@ -61,7 +62,7 @@ public class MberManageDAO extends EgovComAbstractDAO{
      * @return String 등록결과
      */
     public String insertMber(MberManageVO mberManageVO){
-        return String.valueOf((int)insert("mberManageDAO.insertMber_S", mberManageVO));
+        return String.valueOf(insert("mberManageDAO.insertMber_S", mberManageVO));
     }
 
     /**
@@ -92,22 +93,22 @@ public class MberManageDAO extends EgovComAbstractDAO{
 
     /**
      * 일반회원 암호수정
-     * @param passVO 기업회원수정정보(비밀번호)
+     * @param mberPasswordManageVO 일반회원 비밀번호 수정정보
      */
-    public void updatePassword(MberManageVO passVO) {
-        update("mberManageDAO.updatePassword_S", passVO);
+    public void updatePassword(MberPasswordManageVO mberPasswordManageVO) {
+        update("mberManageDAO.updatePassword_S", mberPasswordManageVO);
     }
 
     /**
      * 일반회원이 비밀번호를 기억하지 못할 때 비밀번호를 찾을 수 있도록 함
-     * @param mberManageVO 일반회원암호 조회조건정보
-     * @return MberManageVO 일반회원 암호정보
+     * @param mberPasswordManageVO 일반회원 암호 조회조건정보
+     * @return MberPasswordManageVO 일반회원 암호정보
      */
-    public MberManageVO selectPassword(MberManageVO mberManageVO){
-    	return (MberManageVO) selectOne("mberManageDAO.selectPassword_S", mberManageVO);
+    public MberPasswordManageVO selectPassword(MberPasswordManageVO mberPasswordManageVO){
+    	return (MberPasswordManageVO) selectOne("mberManageDAO.selectPassword_S", mberPasswordManageVO);
     }
-    
-    
+
+
     /**
      * 로그인인증제한 해제
      * @param mberManageVO 일반회원정보

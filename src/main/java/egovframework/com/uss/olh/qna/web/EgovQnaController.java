@@ -2,60 +2,85 @@ package egovframework.com.uss.olh.qna.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.uss.olh.qna.service.EgovQnaService;
 import egovframework.com.uss.olh.qna.service.QnaDefaultVO;
 import egovframework.com.uss.olh.qna.service.QnaVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 /**
-*
-* Q&A를 처리하는 Controller 클래스
-* @author 공통서비스 개발팀 박정규
-* @since 2009.04.01
-* @version 1.0
-* @see
-*
-* <pre>
+ *
+ * Q&A를 처리하는 Controller 클래스
+ * 
+ * @author 공통서비스 개발팀 박정규
+ * @since 2009.04.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
 * << 개정이력(Modification Information) >>
 *
 *   수정일     	수정자           			수정내용
 *  ------------   --------    ---------------------------------------------
-*   2009.04.01  	박정규          최초 생성
-*   2011.08.26		정진오			IncludedInfo annotation 추가
-*   2011.10.21		이기하			삭제시 비밀번호 확인 추가(최종감리 반영)
-*   2016.08.05		김연호			표준프레임워크 3.6 개선
-*
-* </pre>
-*/
+
+ *
+ *      </pre>
+ */
+/**
+ * 사용자 계정을 처리하는 비즈니스 구현 클래스
+ * <p>
+ * <b>NOTE:</b> Exception 종류를 EgovBizException, RuntimeException 에서만 동작한다.
+ * fail.common.msg 메세지키가 Message Resource 에 정의 되어 있어야 한다.
+ * 
+ * @author 공통컴포넌트 개발팀 홍길동
+ * @since 2009.06.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  박정규          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2011.10.21  이기하          삭제시 비밀번호 확인 추가(최종감리 반영)
+ *   2016.08.05  김연호          표준프레임워크 3.6 개선
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessarySemicolon(필요없는 ; 문장 존재)
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *
+ *      </pre>
+ */
 @Controller
 public class EgovQnaController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQnaController.class);
-	
+
 	@Resource(name = "EgovQnaService")
 	private EgovQnaService egovQnaService;
 
@@ -70,15 +95,12 @@ public class EgovQnaController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-	
 	/**
 	 * Q&A정보 목록을 조회한다. (pageing)
+	 * 
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaListInqire"
+	 * @return "/uss/olh/qna/EgovQnaListInqire"
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "Q&A관리", order = 550, gid = 50)
@@ -99,8 +121,8 @@ public class EgovQnaController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<QnaVO> QnaList = egovQnaService.selectQnaList(searchVO);
-		model.addAttribute("resultList", QnaList);
+		List<QnaVO> resultList = egovQnaService.selectQnaList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		// 인증여부 체크
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -117,46 +139,52 @@ public class EgovQnaController {
 
 		return "egovframework/com/uss/olh/qna/EgovQnaList";
 	}
-	
+
 	/**
 	 * Q&A정보 목록에 대한 상세정보를 조회한다.
+	 * 
 	 * @param passwordConfirmAt
 	 * @param qnaVO
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaDetail"
+	 * @return "/uss/olh/qna/EgovQnaDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/selectQnaDetail.do")
-	public String selectQnaDetail(@RequestParam("qaId") String qaId, QnaVO qnaVO, @ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model) throws Exception {
+	@PostMapping("/uss/olh/qna/selectQnaDetail.do")
+	@RequireAdmin
+	public String selectQnaDetail(@RequestParam("qaId") String qaId, QnaVO qnaVO,
+			@ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model, HttpServletRequest request) throws Exception {
 
 		qnaVO.setQaId(qaId);
-		
-		//조회수 수정처리
+
+		QnaVO vo = EgovAuthorizationHelper.requireTarget(egovQnaService.selectQnaDetail(qnaVO));
+
+		// 조회수 수정처리
 		egovQnaService.updateQnaInqireCo(qnaVO);
-		
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
 
 		// 작성 비밀번호를 얻는다.
 //		String writngPassword = vo.getWritngPassword();
 
 		// EgovFileScrty Util에 있는 암호화 모듈을 적용해서 복호화한다.
 //		vo.setWritngPassword(EgovFileScrty.decode(writngPassword));
-		
+		vo.setWritngPassword(null); // 응답 모델에 작성비밀번호를 포함하지 않는다.
+
 		model.addAttribute("result", vo);
 
 		return "egovframework/com/uss/olh/qna/EgovQnaDetail";
 	}
-	
+
 	/**
 	 * Q&A정보를 등록하기 위한 전 처리(인증체크)
+	 * 
 	 * @param searchVO
 	 * @param qnaManageVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaRegist"
+	 * @return "/uss/olh/qna/EgovQnaRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/insertQnaView.do")
+	@PostMapping("/uss/olh/qna/insertQnaView.do")
+	@RequireAdmin
 	public String insertQnaView(@ModelAttribute("searchVO") QnaVO searchVO, QnaVO qnaVO, Model model) throws Exception {
 
 		// 인증여부 체크
@@ -167,7 +195,7 @@ public class EgovQnaController {
 			return "egovframework/com/uss/olh/qna/EgovQnaRegist";
 		}
 
-		// 로그인VO에서  사용자 정보 가져오기
+		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String wrterNm = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName()); // 사용자명
@@ -181,26 +209,26 @@ public class EgovQnaController {
 		return "egovframework/com/uss/olh/qna/EgovQnaRegist";
 
 	}
-	
+
 	/**
 	 * Q&A정보를 등록한다.
+	 * 
 	 * @param searchVO
 	 * @param qnaVO
 	 * @param bindingResult
-	 * @return	"forward:/uss/olh/qna/selectQnaList.do"
+	 * @return "forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/insertQna.do")
-	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
-
-		beanValidator.validate(qnaVO, bindingResult);
+	@PostMapping("/uss/olh/qna/insertQna.do")
+	@RequireAdmin
+	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @Valid @ModelAttribute("qnaVO") QnaVO qnaVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/qna/EgovQnaRegist";
 		}
 
-		// 로그인VO에서  사용자 정보 가져오기
+		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String frstRegisterId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
@@ -218,19 +246,22 @@ public class EgovQnaController {
 
 		return "forward:/uss/olh/qna/selectQnaList.do";
 	}
-	
+
 	/**
 	 * Q&A정보를 수정하기 위한 전 처리
+	 * 
 	 * @param qnaVO
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaUpdt
+	 * @return "/uss/olh/qna/EgovQnaUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQnaView.do")
-	public String updateQnaView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model) throws Exception {
+	@PostMapping("/uss/olh/qna/updateQnaView.do")
+	@RequireAdmin
+	public String updateQnaView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
+			throws Exception {
 
-		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
+		QnaVO vo = EgovAuthorizationHelper.requireTarget(egovQnaService.selectQnaDetail(qnaVO));
 
 		// 작성 비밀번호를 얻는다.
 //		String writngPassword = vo.getWritngPassword();
@@ -242,45 +273,28 @@ public class EgovQnaController {
 
 		return "egovframework/com/uss/olh/qna/EgovQnaUpdt";
 	}
-	
+
 	/**
 	 * Q&A정보를 수정처리한다.
+	 * 
 	 * @param searchVO
 	 * @param qnaVO
 	 * @param bindingResult
-	 * @return	"forward:/uss/olh/qna/selectQnaList.do"
+	 * @return "forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQna.do")
-	public String updateQna(
-    		HttpServletRequest request,
-			@ModelAttribute("searchVO") QnaVO searchVO,
-			@ModelAttribute("qnaVO") QnaVO qnaVO, 
-			BindingResult bindingResult) throws Exception {
+	@PostMapping("/uss/olh/qna/updateQna.do")
+	@RequireAdmin
+	public String updateQna(HttpServletRequest request, @ModelAttribute("searchVO") QnaVO searchVO,
+			@Valid @ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult) throws Exception {
 
-		// Validation
-		beanValidator.validate(qnaVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/qna/EgovQnaUpdt";
 		}
-		
-    	//--------------------------------------------------------------------------------------------
-    	// @ XSS 사용자권한체크 START
-    	// param1 : 사용자고유ID(uniqId,esntlId)
-    	//--------------------------------------------------------
-    	LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-    	//step1 DB에서 해당 게시물의 uniqId 조회
-    	QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);;
-    	
-    	//step2 EgovXssChecker 공통모듈을 이용한 권한체크
-    	EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId()); 
-      	LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-    	//--------------------------------------------------------
-    	// @ XSS 사용자권한체크 END
-    	//--------------------------------------------------------------------------------------------
 
-		// 로그인VO에서  사용자 정보 가져오기
+
+		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
@@ -297,46 +311,32 @@ public class EgovQnaController {
 		return "forward:/uss/olh/qna/selectQnaList.do";
 
 	}
-	
+
 	/**
 	 * Q&A정보를 삭제처리한다.
+	 * 
 	 * @param qnaVO
 	 * @param searchVO
-	 * @return	"forward:/uss/olh/qna/selectQnaList.do"
+	 * @return "forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/deleteQna.do")
-	public String deleteQna(
-    		HttpServletRequest request,
-			QnaVO qnaVO, 
-			@ModelAttribute("searchVO") QnaVO searchVO) throws Exception {
+	@PostMapping("/uss/olh/qna/deleteQna.do")
+	@RequireAdmin
+	public String deleteQna(HttpServletRequest request, QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO)
+			throws Exception {
 
-    	//--------------------------------------------------------------------------------------------
-    	// @ XSS 사용자권한체크 START
-    	// param1 : 사용자고유ID(uniqId,esntlId)
-    	//--------------------------------------------------------
-    	LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-    	
-    	//step1 DB에서 해당 게시물의 uniqId 조회
-    	QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);;
-    	
-    	//step2 EgovXssChecker 공통모듈을 이용한 권한체크
-    	EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId()); 
-      	LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-    	//--------------------------------------------------------
-    	// @ XSS 사용자권한체크 END
-    	//--------------------------------------------------------------------------------------------
-    
+
 		egovQnaService.deleteQna(qnaVO);
 
 		return "forward:/uss/olh/qna/selectQnaList.do";
 	}
-	
+
 	/**
 	 * Q&A답변정보 목록을 조회한다. (pageing)
+	 * 
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaAnswerList"
+	 * @return "/uss/olh/qna/EgovQnaAnswerList"
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "Q&A답변관리", order = 551, gid = 50)
@@ -357,8 +357,8 @@ public class EgovQnaController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<QnaVO> QnaAnswerList = egovQnaService.selectQnaAnswerList(searchVO);
-		model.addAttribute("resultList", QnaAnswerList);
+		List<QnaVO> resultList = egovQnaService.selectQnaAnswerList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovQnaService.selectQnaAnswerListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -366,17 +366,20 @@ public class EgovQnaController {
 
 		return "egovframework/com/uss/olh/qna/EgovQnaAnswerList";
 	}
-	
+
 	/**
 	 * Q&A답변정보 목록에 대한 상세정보를 조회한다.
+	 * 
 	 * @param qnaVO
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaAnswerDetail"
+	 * @return "/uss/olh/qna/EgovQnaAnswerDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/selectQnaAnswerDetail.do")
-	public String selectQnaAnswerDetail(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model) throws Exception {
+	@PostMapping("/uss/olh/qna/selectQnaAnswerDetail.do")
+	@RequireAdmin
+	public String selectQnaAnswerDetail(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
+			throws Exception {
 
 		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
 
@@ -384,42 +387,60 @@ public class EgovQnaController {
 
 		return "egovframework/com/uss/olh/qna/EgovQnaAnswerDetail";
 	}
-	
+
 	/**
 	 * Q&A답변정보를 수정하기 위한 전 처리(공통코드 처리)
+	 * 
 	 * @param qnaVO
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/qna/EgovQnaAnswerUpdt"
+	 * @return "/uss/olh/qna/EgovQnaAnswerUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQnaAnswerView.do")
-	public String updateQnaAnswerView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model) throws Exception {
+	@RequireAdmin
+	@PostMapping("/uss/olh/qna/updateQnaAnswerView.do")
+	public String updateQnaAnswerView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model)
+			throws Exception {
 
 		// 공통코드를 가져오기 위한 Vo
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM028");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("qnaProcessSttusCode", _result);
+		List<CmmnDetailCode> qnaProcessSttusCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("qnaProcessSttusCode", qnaProcessSttusCode);
 
-		qnaVO = egovQnaService.selectQnaDetail(qnaVO);
-		model.addAttribute("qnaVO", qnaVO);
+		QnaVO resultVO = egovQnaService.selectQnaDetail(qnaVO);
+		model.addAttribute("qnaVO", resultVO);
 
 		return "egovframework/com/uss/olh/qna/EgovQnaAnswerUpdt";
 	}
-	
+
 	/**
 	 * Q&A답변정보를 수정처리한다.
+	 * 
 	 * @param qnaVO
 	 * @param searchVO
-	 * @return	"forward:/uss/olh/qnm/selectQnaAnswerList.do"
+	 * @return "forward:/uss/olh/qnm/selectQnaAnswerList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/qna/updateQnaAnswer.do")
-	public String updateQnaAnswer(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO) throws Exception {
+	@RequireAdmin
+	@PostMapping("/uss/olh/qna/updateQnaAnswer.do")
+	public String updateQnaAnswer(@Valid QnaVO qnaVO, BindingResult bindingResult,
+			 @ModelAttribute("searchVO") QnaVO searchVO,
+			 Model model
+			) throws Exception {
 
-		// 로그인VO에서  사용자 정보 가져오기
+		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+			comDefaultCodeVO.setCodeId("COM028");
+			
+			List<CmmnDetailCode> qnaProcessSttusCode = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			model.addAttribute("qnaProcessSttusCode",qnaProcessSttusCode);
+			
+			return "egovframework/com/uss/olh/qna/EgovQnaAnswerUpdt";
+		}
+		
+		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		qnaVO.setLastUpdusrId(lastUpdusrId); // 최종수정자ID
@@ -429,5 +450,5 @@ public class EgovQnaController {
 		return "forward:/uss/olh/qna/selectQnaAnswerList.do";
 
 	}
-	
+
 }

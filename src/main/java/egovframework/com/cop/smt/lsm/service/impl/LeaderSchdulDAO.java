@@ -31,7 +31,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param emplyrVO
 	 */	
-	public List<EmplyrVO> selectEmplyrList(EmplyrVO emplyrVO) throws Exception{
+	public List<EmplyrVO> selectEmplyrList(EmplyrVO emplyrVO) {
 		return selectList("LeaderSchdulDAO.selectEmplyrList", emplyrVO);
 	}
 	
@@ -42,7 +42,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param emplyrVO
 	 */
-	public int selectEmplyrListCnt(EmplyrVO emplyrVO) throws Exception{
+	public int selectEmplyrListCnt(EmplyrVO emplyrVO) {
 		return (Integer)selectOne("LeaderSchdulDAO.selectEmplyrListCnt", emplyrVO);
 	}
 	
@@ -54,7 +54,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * @param leaderSchdulVO
 	 */
 	
-	public List<LeaderSchdulVO> selectLeaderSchdulList(LeaderSchdulVO leaderSchdulVO) throws Exception{
+	public List<LeaderSchdulVO> selectLeaderSchdulList(LeaderSchdulVO leaderSchdulVO) {
 		return selectList("LeaderSchdulDAO.selectLeaderSchdulList", leaderSchdulVO);
 	}
 
@@ -65,7 +65,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSchdulVO
 	 */
-	public LeaderSchdulVO selectLeaderSchdul(LeaderSchdulVO leaderSchdulVO) throws Exception{
+	public LeaderSchdulVO selectLeaderSchdul(LeaderSchdulVO leaderSchdulVO) {
 		return (LeaderSchdulVO)selectOne("LeaderSchdulDAO.selectLeaderSchdul", leaderSchdulVO);
 	}
 
@@ -75,7 +75,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSchdul
 	 */
-	public void updateLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
+	public void updateLeaderSchdul(LeaderSchdul leaderSchdul) {
 		update("LeaderSchdulDAO.updateLeaderSchdul", leaderSchdul);
 	}
 
@@ -85,7 +85,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSchdul
 	 */
-	public void insertLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
+	public void insertLeaderSchdul(LeaderSchdul leaderSchdul) {
 		insert("LeaderSchdulDAO.insertLeaderSchdul", leaderSchdul);
 	}
 	
@@ -95,7 +95,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSchdul
 	 */
-	public void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) throws Exception{
+	public void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) {
 		insert("LeaderSchdulDAO.insertLeaderSchdulDe", leaderSchdul);
 	}
 
@@ -105,7 +105,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSchdul
 	 */
-	public void deleteLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
+	public void deleteLeaderSchdul(LeaderSchdul leaderSchdul) {
 		delete("LeaderSchdulDAO.deleteLeaderSchdul", leaderSchdul);
 	}
 	
@@ -115,7 +115,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSchdul
 	 */
-	public void deleteLeaderSchdulDe(LeaderSchdul leaderSchdul) throws Exception{
+	public void deleteLeaderSchdulDe(LeaderSchdul leaderSchdul) {
 		delete("LeaderSchdulDAO.deleteLeaderSchdulDe", leaderSchdul);
 	}
 	
@@ -126,7 +126,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param LeaderSttusVO
 	 */
-	public List<LeaderSttusVO> selectLeaderSttusList(LeaderSttusVO leaderSttusVO) throws Exception{
+	public List<LeaderSttusVO> selectLeaderSttusList(LeaderSttusVO leaderSttusVO) {
 		return selectList("LeaderSchdulDAO.selectLeaderSttusList", leaderSttusVO);
 	}
 	
@@ -137,7 +137,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param LeaderSttusVO
 	 */
-	public int selectLeaderSttusListCnt(LeaderSttusVO leaderSttusVO) throws Exception{
+	public int selectLeaderSttusListCnt(LeaderSttusVO leaderSttusVO) {
 		return (Integer)selectOne("LeaderSchdulDAO.selectLeaderSttusListCnt", leaderSttusVO);
 	}
 	
@@ -148,7 +148,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSttusVO
 	 */
-	public LeaderSttusVO selectLeaderSttus(LeaderSttusVO leaderSttusVO) throws Exception{
+	public LeaderSttusVO selectLeaderSttus(LeaderSttusVO leaderSttusVO) {
 		return (LeaderSttusVO)selectOne("LeaderSchdulDAO.selectLeaderSttus", leaderSttusVO);
 	}
 
@@ -158,7 +158,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSttus
 	 */
-	public void updateLeaderSttus(LeaderSttus leaderSttus) throws Exception{
+	public void updateLeaderSttus(LeaderSttus leaderSttus) {
 		update("LeaderSchdulDAO.updateLeaderSttus", leaderSttus);
 	}
 
@@ -168,7 +168,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSttus
 	 */
-	public void insertLeaderSttus(LeaderSttus leaderSttus) throws Exception{
+	public void insertLeaderSttus(LeaderSttus leaderSttus) {
 		insert("LeaderSchdulDAO.insertLeaderSttus", leaderSttus);
 	}
 	
@@ -179,7 +179,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSttus
 	 */
-	public int selectLeaderSttusCheck(LeaderSttus leaderSttus) throws Exception{
+	public int selectLeaderSttusCheck(LeaderSttus leaderSttus) {
 		return (Integer)selectOne("LeaderSchdulDAO.selectLeaderSttusCheck", leaderSttus);
 	}
 
@@ -189,7 +189,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param leaderSttus
 	 */
-	public void deleteLeaderSttus(LeaderSttus leaderSttus) throws Exception{
+	public void deleteLeaderSttus(LeaderSttus leaderSttus) {
 		delete("LeaderSchdulDAO.deleteLeaderSttus", leaderSttus);
 	}
 

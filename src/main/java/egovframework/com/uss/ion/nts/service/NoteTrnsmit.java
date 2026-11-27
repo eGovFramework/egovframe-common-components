@@ -1,7 +1,5 @@
 package egovframework.com.uss.ion.nts.service;
 
-import java.io.Serializable;
-
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -18,9 +16,13 @@ import egovframework.com.cmm.ComDefaultVO;
  * 
  * </pre>
  */
-@SuppressWarnings("serial")
-public class NoteTrnsmit extends ComDefaultVO implements Serializable{
-	
+public class NoteTrnsmit extends ComDefaultVO {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** 쪽지 ID */
 	private String noteId;
 	

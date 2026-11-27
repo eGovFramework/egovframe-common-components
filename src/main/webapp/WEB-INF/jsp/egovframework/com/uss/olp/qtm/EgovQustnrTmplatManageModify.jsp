@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQtm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -27,10 +26,8 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="qustnrTmplatManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 
@@ -61,7 +58,7 @@ function fn_egov_save_QustnrTmplatManage(form){
 
 	var resultExtension = EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", "<c:out value='${fileUploadExtensions}'/>"); // 결과가 false인경우 허용되지 않음
 	if (!resultExtension) return true;
-	var resultSize = EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", 65535); // 파일당 1M까지 허용 (1K=1024), 결과가 false인경우 허용되지 않음
+	var resultSize = EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", <c:out value='${fileUploadMaxSize}'/>); // 서버가 넘긴 이미지 한도(바이트), 결과가 false인경우 허용되지 않음
 	if (!resultSize) return true;
 	
 	if(confirm("<spring:message code="common.save.msg" />")){
@@ -108,7 +105,6 @@ function fnImgChange(obj){
 				img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"
                     + obj.value + "', sizingMethod='scale')"; //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
                 /* IE 8, 9에서 불가능 */
-                //document.getElementById("IMG_VIEW").src = obj.value;
                 img.width = 66;
                 img.height = 52;
                 img.alt = "";
@@ -174,6 +170,7 @@ function fnImgChange(obj){
 			<input type="file" name="qestnrTmplatImage" id="qestnrTmplatImage" onChange="fnImgChange(this)" title="<spring:message code='comUssOlpQtm.regist.egovfile'/><spring:message code='input.input'/>"><!-- title="템플릿유형이미지 첨부" -->
 			<input type="text" id="uploadFileName" value="" readonly style="width:150px;"/><!-- 파일명 보이게 하는 기능 -->
 			</div>
+			<div><form:errors path="qestnrTmplatImagepathnm" cssClass="error" /></div>
 			
 			<div id="DIV_IMG_VIEW" style="display:none;">
 		     	<img src="" name="IMG_VIEW" id="IMG_VIEW" align="middle" alt="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>" title="<spring:message code='comUssOlpQtm.title.image'/><spring:message code='button.preview'/>"><!-- alt="이미지미리보기" title="이미지미리보기" -->

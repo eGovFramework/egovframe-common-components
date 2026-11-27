@@ -3,7 +3,20 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="synchrnServerDAO">
 
-    <resultMap id="synchrnServer" type="egovframework.com.utl.sys.ssy.service.SynchrnServerVO">
+    <resultMap id="synchrnServer" type="egovframework.com.utl.sys.ssy.service.SynchrnServer">
+        <result property="serverId" column="SERVER_ID"/>
+        <result property="serverNm" column="SERVER_NM"/>
+        <result property="serverIp" column="SERVER_IP"/>
+        <result property="serverPort" column="SERVER_PORT"/>
+        <result property="ftpId" column="FTP_ID"/>
+        <result property="synchrnLc" column="SYNCHRN_LC"/>
+        <result property="reflctAt" column="REFLCT_AT"/>        
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>        
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+    <resultMap id="synchrnServerWithPassword" type="egovframework.com.utl.sys.ssy.service.SynchrnServer">
         <result property="serverId" column="SERVER_ID"/>
         <result property="serverNm" column="SERVER_NM"/>
         <result property="serverIp" column="SERVER_IP"/>
@@ -18,7 +31,7 @@
         <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
     </resultMap>
 
-    <select id="selectSynchrnServerList" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServerVO" resultMap="synchrnServer">
+    <select id="selectSynchrnServerList" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer" resultMap="synchrnServer">
             
             SELECT  * 
               FROM  (
@@ -29,7 +42,6 @@
                     SERVER_IP,
                     SERVER_PORT,
                     FTP_ID,
-                    FTP_PASSWORD,
                     SYNCHRN_LC,
                     REFLCT_AT,
                     FRST_REGIST_PNTTM,
@@ -51,7 +63,7 @@
             ]]>       
     </select>
 
-    <select id="selectSynchrnServerListTotCnt" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServerVO" resultType="int">
+    <select id="selectSynchrnServerListTotCnt" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer" resultType="int">
 
              SELECT COUNT(*) totcnt
                FROM COMTNSYNCHRNSERVERINFO
@@ -68,7 +80,6 @@
                     SERVER_IP,
                     SERVER_PORT,
                     FTP_ID,
-                    FTP_PASSWORD,
                     SYNCHRN_LC,
                     REFLCT_AT,
                     FRST_REGIST_PNTTM,
@@ -137,7 +148,7 @@
              WHERE SERVER_ID = #{serverId}
     </update>
 
-    <select id="processSynchrnServerList" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServerVO" resultMap="synchrnServer">
+    <select id="processSynchrnServerList" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer" resultMap="synchrnServerWithPassword">
              SELECT SERVER_ID,
                     SERVER_NM,
                     SERVER_IP,

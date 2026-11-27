@@ -11,5 +11,5 @@
 # @version 1.0
 # @see
 #
-# Copyright (C) 2009 by MOPAS  All right reserved.
+# Copyright (C) 2009 by MOPAS  All rights reserved.
 ls -alF $1 | grep $2  | awk -F" " '{print $3}'

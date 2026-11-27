@@ -24,7 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtSim.title"/></c:set>
 <!DOCTYPE html>
@@ -37,16 +36,19 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="indvdlSchdulManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
-
+<script type="text/javascript" src="<c:url value='/html/egovframework/com/cmm/utl/ckeditor/ckeditor.js?t=B37D54V'/>" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
  ******************************************************** */
 function fn_egov_init_IndvdlSchdulManage(){
+
+	var ckeditor_config = {
+		filebrowserImageUploadUrl: '${ckImageUploadUrl}?${_csrf.parameterName}=${_csrf.token}'
+	};
+	CKEDITOR.replace('schdulCn', ckeditor_config);
 
 	$("#schdulBgndeYYYMMDD").datepicker(  
 	        {dateFormat:'yy-mm-dd'
@@ -98,6 +100,7 @@ function fn_egov_list_IndvdlSchdulManage(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_save_IndvdlSchdulManage(form){
+	CKEDITOR.instances.schdulCn.updateElement();
 	if(confirm("<spring:message code="common.save.msg" />")){
 		if(!validateIndvdlSchdulManageVO(form)){
 			return;
@@ -262,7 +265,7 @@ String.prototype.replaceAll = function(src, repl){
 		<!-- 반복구분 -->
 		<c:set var="title"><spring:message code="comCopSmtSim.regist.reptitSeCode"/></c:set>
 		<tr>
-			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="infoProvdAgreCn">${title}</label> </th>
 			<td class="nopd">
 				<div style="float:left;"><form:radiobutton path="reptitSeCode" value="1"/><spring:message code="comCopSmtSdm.regist.schdulSe1"/> </div> <!-- 당일 -->
 				<div style="float:left; margin:0 0 0 10px"><form:radiobutton path="reptitSeCode" value="2"/><spring:message code="comCopSmtSdm.regist.schdulSe2"/> </div><!-- 반복 --> 
@@ -302,7 +305,7 @@ String.prototype.replaceAll = function(src, repl){
 		<!-- 첨부파일 -->
 		<c:set var="title"><spring:message code="comCopSmtSim.regist.schdulAtch"/></c:set>
 		<tr>
-			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="infoProvdAgreCn">${title}</label> </th>
 			<td class="nopd">
 			 <!--첨부목록을 보여주기 위한 -->
 			<c:if test="${indvdlSchdulManageVO.atchFileId ne null && indvdlSchdulManageVO.atchFileId ne ''}">

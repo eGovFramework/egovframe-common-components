@@ -2,6 +2,8 @@ package egovframework.com.cop.smt.lsm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 /**
  * 개요
  * - 간부상태에 대한 model 클래스를 정의한다.
@@ -26,10 +28,12 @@ public class LeaderSttus  implements Serializable{
 	/** 간부ID */
 	private String leaderId;
 	/** 간부명 */
+	@EgovNullCheck
 	private String leaderNm;
 	/** 소속 */
 	private String orgnztNm;
 	/** 간부상태 */
+	@EgovNullCheck
 	private String leaderSttus;
 	/** 간부상태 */
 	private String leaderSttusNm;

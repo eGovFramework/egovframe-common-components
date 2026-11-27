@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -90,7 +89,7 @@ function fncBndtCeckManageList() {
 	<table class="wTable">
 		<colgroup>
 			<col style="width:20%" />
-			<col style="" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
 			<th><spring:message code="comUssIonBnt.common.bndtCeckTemp1"/> <span class="pilsu">*</span></th><!-- 당직체크구분 -->
@@ -122,9 +121,9 @@ function fncBndtCeckManageList() {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManage.do'/>?cmd=updt&bndtCeckSe=<c:out value='${bndtCeckManageVO.bndtCeckSe}'/>&bndtCeckCd=<c:out value='${bndtCeckManageVO.bndtCeckCd}'/>" onclick="fncEgovBndtCeckManage(); return false;"><spring:message code="button.update" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/deleteBndtCeckManage.do'/>?bndtCeckSe=<c:out value='${bndtCeckManageVO.bndtCeckSe}'/>&bndtCeckCd=<c:out value='${bndtCeckManageVO.bndtCeckCd}'/>" onclick="fncDeleteBndtCeckManage(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovBndtCeckManage(); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteBndtCeckManage(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

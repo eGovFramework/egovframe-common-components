@@ -13,10 +13,8 @@
 package egovframework.com.sts.dst.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public interface EgovDtaUseStatsService {
 
@@ -56,11 +54,10 @@ public interface EgovDtaUseStatsService {
 	public int selectDtaUseStatsTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception;
 	
 	/**
-	 * 자료이용현황 정보를 생성한다.
+	 * 자료이용현황 정보를 생성한다. (파일 다운로드 AOP용)
 	 * @param jp - AOP의 pointcut을 위한 JoinPoint
-	 * @param dtaUseStats - 자료이용현황 model
 	 */
-	public void insertDtaUseStats(JoinPoint jp, @RequestParam Map<String, Object> commandMap) throws Exception;	
+	public void insertDtaUseStats(JoinPoint jp) throws Exception;	
 	
 	/**
 	 * 등록일자별 통계정보를 그래프로 표현한다.

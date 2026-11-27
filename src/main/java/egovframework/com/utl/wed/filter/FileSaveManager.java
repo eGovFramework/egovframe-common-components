@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author guavatak (https://github.com/guavatak/ckeditor-upload-filter-java)
  */
 package egovframework.com.utl.wed.filter;
@@ -30,7 +30,7 @@ import org.apache.commons.fileupload.FileItem;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *  수정일              수정자             수정내용
  *  ----------  --------    ---------------------------
  *  2014.12.04	표준프레임워크	최초 적용 (패키지 변경 및 소스 정리)

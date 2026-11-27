@@ -91,7 +91,7 @@ public class EgovArticleDAOTest_AaaTestData {
 		Board board = new Board();
 
 		try {
-			board.setNttId(egovNttIdGnrService.getNextIntegerId());
+			board.setNttId((long) egovNttIdGnrService.getNextIntegerId());
 		} catch (FdlException e) {
 			log.error("FdlException egovNttIdGnrService");
 		}
@@ -141,6 +141,8 @@ public class EgovArticleDAOTest_AaaTestData {
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		boardVO.setBlogId(blog.getBlogId());
+		// BoardVO.firstIndex 기본값은 1(OFFSET 1)이라 첫 행이 빠진다 — 컨트롤러(PaginationInfo)와 같이 0 으로 맞춘다.
+		boardVO.setFirstIndex(0);
 		boardVO.setBbsNm(boardMaster.getBbsNm());
 		boardVO.setSearchWrd(boardMaster.getBbsIntrcn());
 		boardVO.setBbsId(blog.getBbsId());

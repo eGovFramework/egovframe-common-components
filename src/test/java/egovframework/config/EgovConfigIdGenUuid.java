@@ -10,7 +10,7 @@ public class EgovConfigIdGenUuid {
         try {
 			egovUUIdGnrService.setAddress("00:00:F0:79:19:5B");
 		} catch (FdlException | NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
         return egovUUIdGnrService;
     }

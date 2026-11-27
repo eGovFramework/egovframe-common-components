@@ -55,6 +55,9 @@
 		FROM COMTNWIKIBKMK A
 		WHERE 1=1
 		AND A.FRST_REGISTER_ID=#{frstRegisterId}
+	 <if test="wikiBkmkId != null and wikiBkmkId != ''">
+		 AND A.WIKI_BKMK_ID = #{wikiBkmkId}
+	 </if>
 	 <if test="searchCondition == 'A.WIKI_BKMK_NM'">
 	 	
 	 		
@@ -70,7 +73,7 @@
 		COUNT(*) CTN
 		FROM COMTNWIKIBKMK A
 		WHERE 1=1
-		AND A.USER_ID=(SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE EMPLYR_ID = #{usid})
+		AND A.USER_ID=#{usid}
 		AND A.WIKI_BKMK_NM=#{wikiBkmkNm}
 	
 	</select>
@@ -107,7 +110,7 @@
 	</insert>
 	<!-- 위키북마크::아이디조회  -->
 	<select id="selectWikiBookmarkEmpUniqId" resultType="String">
-		SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE EMPLYR_ID = #{usid}
+		SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE ESNTL_ID = #{usid}
 	</select>
 
 

@@ -40,27 +40,27 @@ public interface EgovLoginScrinImageService {
 
 	/**
 	 * 로그인화면이미지정보를 신규로 등록한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public LoginScrinImageVO insertLoginScrinImage(LoginScrinImage loginScrinImage, LoginScrinImageVO loginScrinImageVO) throws Exception;
+	public LoginScrinImageVO insertLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception;
 
 	/**
 	 * 기 등록된 로그인화면이미지정보를 수정한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void updateLoginScrinImage(LoginScrinImage loginScrinImage) throws Exception;
+	public void updateLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception;
 
 	/**
 	 * 기 등록된 로그인화면이미지정보를 삭제한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void deleteLoginScrinImage(LoginScrinImage loginScrinImage) throws Exception;
+	public void deleteLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception;
 
 	/**
 	 * 기 등록된 로그인화면이미지정보의 파일을 삭제한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void deleteLoginScrinImageFile(LoginScrinImage loginScrinImage) throws Exception;
+	public void deleteLoginScrinImageFile(LoginScrinImageVO loginScrinImageVO) throws Exception;
 
 	/**
 	 * 로그인화면이미지가 특정화면에 반영된 결과를 조회한다.

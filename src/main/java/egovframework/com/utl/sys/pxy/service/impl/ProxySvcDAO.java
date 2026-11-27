@@ -5,14 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.sys.pxy.service.ProxyLog;
-import egovframework.com.utl.sys.pxy.service.ProxyLogVO;
 import egovframework.com.utl.sys.pxy.service.ProxySvc;
-import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 
 /**
  * 개요
  * - 프록시서비스정보 및 프록시로그정보에 대한 DAO 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 프록시서비스정보 및 프록시로그정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 프록시서비스정보의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -26,31 +24,31 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
 	/**
      * 프록시서비스를 관리하기 위해 등록된 프록시정보 목록을 조회한다.
      *
-     * @param proxySvcVO - 프록시서비스 Vo
+     * @param proxySvc - 프록시서비스 Vo
      * @return List - 프록시서비스 목록
      */
-    public List<ProxySvcVO> selectProxySvcList(ProxySvcVO proxySvcVO) throws Exception {
-        return selectList("proxySvcDAO.selectProxySvcList", proxySvcVO);
+    public List<ProxySvc> selectProxySvcList(ProxySvc proxySvc) {
+        return selectList("proxySvcDAO.selectProxySvcList", proxySvc);
     }
 
     /**
      * 프록시서비스 목록 총 개수를 조회한다.
      *
-     * @param proxySvcVO - 프록시서비스 Vo
+     * @param proxySvc - 프록시서비스 Vo
      * @return int - 프록시서비스 카운트 수
      */
-    public int selectProxySvcListTotCnt(ProxySvcVO proxySvcVO) throws Exception {
-        return selectOne("proxySvcDAO.selectProxySvcListTotCnt", proxySvcVO);
+    public int selectProxySvcListTotCnt(ProxySvc proxySvc) {
+        return selectOne("proxySvcDAO.selectProxySvcListTotCnt", proxySvc);
     }
 
     /**
      * 등록된 프록시서비스의 상세정보를 조회한다.
      *
-     * @param proxySvcVO - 프록시서비스 Vo
-     * @return proxySvcVO - 프록시서비스 Vo
+     * @param proxySvc - 프록시서비스 Vo
+     * @return proxySvc - 프록시서비스 Vo
      */
-    public ProxySvcVO selectProxySvc(ProxySvcVO proxySvcVO) throws Exception {
-        return selectOne("proxySvcDAO.selectProxySvc", proxySvcVO);
+    public ProxySvc selectProxySvc(ProxySvc proxySvc) {
+        return selectOne("proxySvcDAO.selectProxySvc", proxySvc);
     }
 
     /**
@@ -58,7 +56,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxySvc - 프록시서비스 model
      */
-    public int insertProxySvc(ProxySvc proxySvc) throws Exception {
+    public int insertProxySvc(ProxySvc proxySvc) {
         return insert("proxySvcDAO.insertProxySvc", proxySvc);
     }
 
@@ -67,7 +65,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxySvc - 프록시서비스 model
      */
-    public int updateProxySvc(ProxySvc proxySvc) throws Exception {
+    public int updateProxySvc(ProxySvc proxySvc) {
         return update("proxySvcDAO.updateProxySvc", proxySvc);
     }
 
@@ -76,28 +74,28 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxySvc - 프록시서비스 model
      */
-    public int deleteProxySvc(ProxySvc proxySvc) throws Exception {
+    public int deleteProxySvc(ProxySvc proxySvc) {
         return delete("proxySvcDAO.deleteProxySvc", proxySvc);
     }
 
     /**
      * 프록시서비스를 모니터링하기 위해 등록된 프록시로그 목록을 조회한다.
      *
-     * @param proxyLogVO - 프록시로그 Vo
+     * @param proxyLog - 프록시로그 Vo
      * @return List - 프록시로그 목록
      */
-    public List<ProxyLogVO> selectProxyLogList(ProxyLogVO proxyLogVO) throws Exception {
-        return selectList("proxySvcDAO.selectProxyLogList", proxyLogVO);
+    public List<ProxyLog> selectProxyLogList(ProxyLog proxyLog) {
+        return selectList("proxySvcDAO.selectProxyLogList", proxyLog);
     }
 
     /**
      * 프록시로그 목록 총 개수를 조회한다.
      *
-     * @param proxyLogVO - 프록시로그 Vo
+     * @param proxyLog - 프록시로그 Vo
      * @return int - 프록시로그 카운트 수
      */
-    public int selectProxyLogListTotCnt(ProxyLogVO proxyLogVO) throws Exception {
-        return selectOne("proxySvcDAO.selectProxyLogListTotCnt", proxyLogVO);
+    public int selectProxyLogListTotCnt(ProxyLog proxyLog) {
+        return selectOne("proxySvcDAO.selectProxyLogListTotCnt", proxyLog);
     }
 
     /**
@@ -105,7 +103,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxyLog - 프록시로그 model
      */
-    public int insertProxyLog(ProxyLog proxyLog) throws Exception {
+    public int insertProxyLog(ProxyLog proxyLog) {
         return insert("proxySvcDAO.insertProxyLog", proxyLog);
     }
 

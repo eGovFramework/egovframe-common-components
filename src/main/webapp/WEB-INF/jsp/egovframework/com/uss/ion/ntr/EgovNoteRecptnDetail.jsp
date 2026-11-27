@@ -11,7 +11,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.09.16
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -28,12 +28,6 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
-/* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_NoteRecptn(){
-
-}
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
@@ -65,7 +59,7 @@ function fn_egov_delete_NoteRecptn(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_NoteRecptn();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -75,15 +69,16 @@ function fn_egov_delete_NoteRecptn(){
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
-	<form name="NoteRecptnForm" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post">
+	<form name="NoteRecptnForm" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 상세조회 -->
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.detail" /></caption>
 	<colgroup>
-		<col style="width:16%;">
-		<col style="width: ;">
-		<col style="width:16%;">
-		<col style="width:18%;">
+		<col style="width:20%;">
+		<col style="width:30%;">
+		<col style="width:20%;">
+		<col style="width:30%;">
 	</colgroup>
 	<tbody>
 		<!-- 쪽지제목 -->
@@ -92,7 +87,7 @@ function fn_egov_delete_NoteRecptn(){
 			<td colspan="3" class="left">
 				<c:set var="noteRecptnNoteSj" value="${fn:escapeXml(noteRecptn.noteSj)}"/>
 				<c:set var="noteRecptnNoteSj" value="${fn:replace(noteRecptn.noteSj , crlf , '<br>')}"/>
-				<c:out value="${noteRecptn.noteSj}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteRecptn.noteSj}"/></span>
 			</td>
 		</tr>
 		<!-- 발신자, 발신시각 -->
@@ -126,7 +121,7 @@ function fn_egov_delete_NoteRecptn(){
 			<td colspan="3" class="cnt">
 				<c:set var="noteRecptnNoteCn" value="${fn:escapeXml(noteRecptn.noteCn)}"/>
 				<c:set var="noteRecptnNoteCn" value="${fn:replace(noteRecptn.noteCn , crlf , '<br>')}"/>
-				<c:out value="${noteRecptn.noteCn}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteRecptn.noteCn}"/></span>
 			</td>
 		</tr>
 	</tbody>
@@ -141,13 +136,15 @@ function fn_egov_delete_NoteRecptn(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 
-		<form name="formUpdt" action="<c:url value='/uss/ion/ntm/registEgovNoteManage.do'/>" method="post" style="float:left;">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/ntm/registEgovNoteManage.do" method="post" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="comUssIonNtr.btn.replay" />">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
 			<input name="cmd" type="hidden" value="<c:out value='reply'/>">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteRecptn(); return false;">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
 			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteRecptn.noteTrnsmitId)}">
@@ -155,7 +152,8 @@ function fn_egov_delete_NoteRecptn(){
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/ntr/listNoteRecptn.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/ntr/listNoteRecptn.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

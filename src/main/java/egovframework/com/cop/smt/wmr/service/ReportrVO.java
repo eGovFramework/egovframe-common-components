@@ -1,10 +1,12 @@
 package egovframework.com.cop.smt.wmr.service;
 
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 개요
  * - 보고자에 대한 Vo 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 보고자의 목록 항목, 조회조건 등을 관리한다.
  * @author 장철호
@@ -19,15 +21,17 @@ package egovframework.com.cop.smt.wmr.service;
  *
  * </pre>
  */
+@Getter
+@Setter
 @SuppressWarnings("serial")
 public class ReportrVO extends Reportr {
 
 	/** 검색조건 */
     private String searchCnd = "";
-    
+
     /** 검색단어 */
     private String searchWrd = "";
-    
+
    /** 현재페이지 */
     private int pageIndex = 1;
 
@@ -45,69 +49,5 @@ public class ReportrVO extends Reportr {
 
     /** 페이지당 레코드 개수 */
     private int recordCountPerPage = 10;
-
-	public String getSearchCnd() {
-		return searchCnd;
-	}
-
-	public void setSearchCnd(String searchCnd) {
-		this.searchCnd = searchCnd;
-	}
-
-	public String getSearchWrd() {
-		return searchWrd;
-	}
-
-	public void setSearchWrd(String searchWrd) {
-		this.searchWrd = searchWrd;
-	}
-
-	public int getPageIndex() {
-		return pageIndex;
-	}
-
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
-	}
-
-	public int getPageUnit() {
-		return pageUnit;
-	}
-
-	public void setPageUnit(int pageUnit) {
-		this.pageUnit = pageUnit;
-	}
-
-	public int getPageSize() {
-		return pageSize;
-	}
-
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	public int getFirstIndex() {
-		return firstIndex;
-	}
-
-	public void setFirstIndex(int firstIndex) {
-		this.firstIndex = firstIndex;
-	}
-
-	public int getLastIndex() {
-		return lastIndex;
-	}
-
-	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
-	}
-
-	public int getRecordCountPerPage() {
-		return recordCountPerPage;
-	}
-
-	public void setRecordCountPerPage(int recordCountPerPage) {
-		this.recordCountPerPage = recordCountPerPage;
-	}
 
 }

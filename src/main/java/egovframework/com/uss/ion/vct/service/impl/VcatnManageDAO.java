@@ -5,8 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.vct.service.IndvdlYrycManage;
-import egovframework.com.uss.ion.vct.service.VcatnManage;
 import egovframework.com.uss.ion.vct.service.VcatnManageVO;
 
 /**
@@ -29,7 +27,7 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return List - 휴가관리 목록
 	 */
-	public List<VcatnManageVO> selectVcatnManageList(VcatnManageVO vcatnManageVO) throws Exception {
+	public List<VcatnManageVO> selectVcatnManageList(VcatnManageVO vcatnManageVO) {
 		return selectList("vcatnManageDAO.selectVcatnManageList", vcatnManageVO);
 	}
 
@@ -37,9 +35,8 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	 * 휴가관리목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectVcatnManageListTotCnt(VcatnManageVO vcatnManageVO) throws Exception {
+    public int selectVcatnManageListTotCnt(VcatnManageVO vcatnManageVO) {
         return (Integer)selectOne("vcatnManageDAO.selectVcatnManageListTotCnt", vcatnManageVO);
     }
 
@@ -48,41 +45,40 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return VcatnManageVO - 휴가관리 VO
 	 */
-	public VcatnManageVO selectVcatnManage(VcatnManageVO vcatnManageVO)  throws Exception {
+	public VcatnManageVO selectVcatnManage(VcatnManageVO vcatnManageVO) {
 		return (VcatnManageVO) selectOne("vcatnManageDAO.selectVcatnManage", vcatnManageVO);
 	}
 
 	/**
 	 * 휴가관리정보를 신규로 등록한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void insertVcatnManage(VcatnManage vcatnManage) throws Exception {
-		insert("vcatnManageDAO.insertVcatnManage", vcatnManage);
+	public void insertVcatnManage(VcatnManageVO vcatnManageVO) {
+		insert("vcatnManageDAO.insertVcatnManage", vcatnManageVO);
 	}
 
 	/**
 	 * 기 등록된 휴가관리정보를 수정한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void updtVcatnManage(VcatnManage vcatnManage) throws Exception {
-		update("vcatnManageDAO.updateVcatnManage", vcatnManage);
+	public void updtVcatnManage(VcatnManageVO vcatnManageVO) {
+		update("vcatnManageDAO.updateVcatnManage", vcatnManageVO);
 	}
 
 	/**
 	 * 기 등록된 휴가관리정보를 삭제한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void deleteVcatnManage(VcatnManage vcatnManage) throws Exception {
-        delete("vcatnManageDAO.deleteVcatnManage",vcatnManage);
+	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) {
+        delete("vcatnManageDAO.deleteVcatnManage",vcatnManageVO);
 	}
 
     /**
 	 * 휴가일자 중복여부 체크
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectVcatnManageDplctAt(VcatnManageVO vcatnManageVO) throws Exception {
+    public int selectVcatnManageDplctAt(VcatnManageVO vcatnManageVO) {
         return (Integer)selectOne("vcatnManageDAO.selectVcatnManageDplctAt", vcatnManageVO);
     }
 	
@@ -93,7 +89,7 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return List - 휴가관리 목록
 	 */
-	public List<VcatnManageVO> selectVcatnManageConfmList(VcatnManageVO vcatnManageVO) throws Exception {
+	public List<VcatnManageVO> selectVcatnManageConfmList(VcatnManageVO vcatnManageVO) {
 		return selectList("vcatnManageDAO.selectVcatnManageConfmList", vcatnManageVO);
 	}
 
@@ -101,18 +97,17 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectVcatnManageConfmListTotCnt(VcatnManageVO vcatnManageVO) throws Exception {
+    public int selectVcatnManageConfmListTotCnt(VcatnManageVO vcatnManageVO) {
         return (Integer)selectOne("vcatnManageDAO.selectVcatnManageConfmListTotCnt", vcatnManageVO);
     }
 	
 	/**
 	 * 신청된 휴가를 승인처리한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void updtVcatnManageConfm(VcatnManage vcatnManage) throws Exception {
-		update("vcatnManageDAO.updateVcatnManageConfm", vcatnManage);
+	public void updtVcatnManageConfm(VcatnManageVO vcatnManageVO) {
+		update("vcatnManageDAO.updateVcatnManageConfm", vcatnManageVO);
 	}	
 
 
@@ -123,19 +118,17 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return VcatnManageVO - 휴가관리 VO
 	 */
-	public VcatnManageVO selectIndvdlYrycManage(VcatnManageVO vcatnManageVO)  throws Exception {
+	public VcatnManageVO selectIndvdlYrycManage(VcatnManageVO vcatnManageVO) {
 		return (VcatnManageVO) selectOne("vcatnManageDAO.selectIndvdlYrycManage", vcatnManageVO);
 	}
 	
 	
 	/**
 	 * 연차정보를 수정처리한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void updtIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
-
-		   
-		update("vcatnManageDAO.updateIndvdlYrycManage", indvdlYrycManage);
+	public void updtIndvdlYrycManage(VcatnManageVO vcatnManageVO) {
+		update("vcatnManageDAO.updateIndvdlYrycManage", vcatnManageVO);
 	}
 
 }

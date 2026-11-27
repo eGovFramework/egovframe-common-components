@@ -12,7 +12,7 @@ import java.util.Map;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.6.8  한성곤          최초 생성
@@ -20,60 +20,39 @@ import java.util.Map;
  * </pre>
  */
 public interface EgovNotificationService {
+
     /**
      * 정보알림이 목록을 조회 한다.
-     * 
-     * @param BoardMasterVO
      */
-    public Map<String, Object> selectNotificationInfs(NotificationVO searchVO) throws Exception;
-    
+    Map<String, Object> selectNotificationInfs(NotificationVO notificationVO) throws Exception;
+
     /**
      * 정보알림이 정보를 등록한다.
-     * 
-     * @param notification
-     * @throws Exception
      */
-    public void insertNotificationInf(Notification notification) throws Exception;
-    
+    void insertNotificationInf(NotificationVO notificationVO) throws Exception;
+
     /**
      * 정보알림이에 대한 상세정보를 조회한다.
-     * 
-     * @param searchVO
-     * @return
-     * @throws Exception
      */
-    public NotificationVO selectNotificationInf(NotificationVO searchVO) throws Exception;
-    
+    NotificationVO selectNotificationInf(NotificationVO notificationVO) throws Exception;
+
     /**
      * 정보알림이 정보를 수정한다.
-     * 
-     * @param notification
-     * @throws Exception
      */
-    public void updateNotifictionInf(Notification notification) throws Exception;
-    
+    void updateNotifictionInf(NotificationVO notificationVO) throws Exception;
+
     /**
      * 정보알림이 정보를 삭제한다.
-     * 
-     * @param notification
-     * @throws Exception
      */
-    public void deleteNotifictionInf(Notification notification) throws Exception;
-    
+    void deleteNotifictionInf(NotificationVO notificationVO) throws Exception;
+
     /**
      * 정보알림이 알림시간 등에 대한 점검을 수행한다.
-     * 
-     * @param notification
-     * @return
-     * @throws Exception
      */
-    public boolean checkNotification(Notification notification) throws Exception;
-    
+    boolean checkNotification(NotificationVO notificationVO) throws Exception;
+
     /**
      * 정보알림이 정보 표시를 수행한다.
-     * 
-     * @return
-     * @throws Exception
      */
-    public List<NotificationVO> selectNotificationData() throws Exception;
+    List<NotificationVO> selectNotificationData() throws Exception;
 }

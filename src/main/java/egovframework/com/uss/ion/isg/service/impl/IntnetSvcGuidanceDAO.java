@@ -17,7 +17,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.isg.service.IntnetSvcGuidance;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO;
 
 @Repository("intnetSvcGuidanceDAO")
@@ -28,16 +27,16 @@ public class IntnetSvcGuidanceDAO extends EgovComAbstractDAO {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return List - 인터넷서비스안내 목록
 	 */	
-	public List<IntnetSvcGuidanceVO> selectIntnetSvcGuidanceList(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+	public List<IntnetSvcGuidanceVO> selectIntnetSvcGuidanceList(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
 		return selectList("intnetSvcGuidanceDAO.selectIntnetSvcGuidanceList", intnetSvcGuidanceVO);
 	}
 
     /**
 	 * 인터넷서비스안내목록 총 개수를 조회한다.
-	 * @param mainImageVO - 인터넷서비스안내 VO
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return int
 	 */
-    public int selectIntnetSvcGuidanceListTotCnt(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+    public int selectIntnetSvcGuidanceListTotCnt(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
         return (Integer)selectOne("intnetSvcGuidanceDAO.selectIntnetSvcGuidanceListTotCnt", intnetSvcGuidanceVO);
     }
 	
@@ -46,32 +45,32 @@ public class IntnetSvcGuidanceDAO extends EgovComAbstractDAO {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return IntnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public IntnetSvcGuidanceVO selectIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+	public IntnetSvcGuidanceVO selectIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
 		return (IntnetSvcGuidanceVO) selectOne("intnetSvcGuidanceDAO.selectIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 
 	/**
 	 * 인터넷서비스안내정보를 신규로 등록한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void insertIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception {
-		insert("intnetSvcGuidanceDAO.insertIntnetSvcGuidance", intnetSvcGuidance);
+	public void insertIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
+		insert("intnetSvcGuidanceDAO.insertIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 수정한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void updateIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception {
-		update("intnetSvcGuidanceDAO.updateIntnetSvcGuidance", intnetSvcGuidance);
+	public void updateIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
+		update("intnetSvcGuidanceDAO.updateIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 삭제한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void deleteIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception {
-		delete("intnetSvcGuidanceDAO.deleteIntnetSvcGuidance", intnetSvcGuidance);
+	public void deleteIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
+		delete("intnetSvcGuidanceDAO.deleteIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 	
 	/**
@@ -79,7 +78,7 @@ public class IntnetSvcGuidanceDAO extends EgovComAbstractDAO {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return List - 인터넷서비스안내 목록
 	 */
-	public List<IntnetSvcGuidanceVO> selectIntnetSvcGuidanceResult(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+	public List<IntnetSvcGuidanceVO> selectIntnetSvcGuidanceResult(IntnetSvcGuidanceVO intnetSvcGuidanceVO) {
 		return selectList("intnetSvcGuidanceDAO.selectIntnetSvcGuidanceResult", intnetSvcGuidanceVO);
 	}	
 }

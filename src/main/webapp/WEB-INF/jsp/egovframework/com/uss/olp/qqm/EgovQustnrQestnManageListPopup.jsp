@@ -18,15 +18,21 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQqm.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/popup_com.css'/>">
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialogCallee.js'/>" ></script>
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-ui_1.12.1.js'/>"></script>  <!-- jQuery UI -->
+<link rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jquery-ui_1.12.1.css'/>">
 
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
@@ -50,7 +56,7 @@ function fn_egov_regist_QustnrQestnManage(){
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_QustnrQestnManage(){
-	location.href = "<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -88,31 +94,18 @@ function fn_egov_search_QustnrQestnManage(){
 /* ********************************************************
  * 선택 처리 함수
  ******************************************************** */
-function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
-	getDialogArguments();
-
-	/* var opener = window.dialogArguments; */
-	var opener;
- 
-	if (window.dialogArguments) {
-	    opener = window.dialogArguments; // Support IE
-	} else {
-	    opener = window.opener;    // Support Chrome, Firefox, Safari, Opera
+function selectQustnrQestn(data) {
+	var parentWin = window.parent;
+	var $p = parentWin.jQuery || parentWin.$;
+	if (!$p) {
+		return;
 	}
-
-	opener.document.getElementById("qestnrQesitmId").value = qestnrQesitmId;
-	opener.document.getElementById("qestnrQesitmCn").value = document.getElementById("iptText_"+ cnt).value;
-
-	if( opener.document.getElementById("divQestnTyCode") != null ){
-
-		if(qestnTyCode == '1')
-			opener.document.getElementById("divQestnTyCode").innerText = '<spring:message code="comUssOlpQqm.regist.objectiveQuest"/>'; //객관식
-		else if(qestnTyCode == '2')
-			opener.document.getElementById("divQestnTyCode").innerText = '<spring:message code="comUssOlpQqm.regist.subjectiveQuest"/>'; //주관식
-	}
-	window.returnValue=true;
-	window.close();
-
+	// 값 설정 전 현재 부모 input 값들 로그
+	$p("#qestnrQesitmId").val(data.qestnrQesitmId);
+	$p("#qestnrQesitmCn").val(data.qestnrQesitmCn); //제목-인풋창에표시되는 값
+	$p("#qestnTyCode").val(data.qestnTyCode);
+	// 값 설정 후 로그
+	$p("#qestnrModal").dialog("close");
 }
 </script>
 </head>
@@ -123,7 +116,7 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="ListForm" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageListPopup.do'/>" method="post" onSubmit="fn_egov_search_QustnrQestnManage(); return false;">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageListPopup.do" method="post" onSubmit="fn_egov_search_QustnrQestnManage(); return false;">
 
 	<!-- pageTitle과 title.list를 넣을것 -->
 	<h1>${pageTitle} <spring:message code="title.list" /> <spring:message code="comUssOlpQqm.regist.popup" /></h1>
@@ -144,14 +137,14 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value=""  maxlength="155" >
 				<input type="submit" class="btn_style3" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrQestnManage(); return false;" />
 				<!-- 등록버튼 -->
-				<%-- <span class="btn_b"> <a href="<c:url value='/uss/olp/qmc/EgovQustnrManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span>  --%>
+				<%-- <span class="btn_b"> <a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qmc/EgovQustnrManageRegist.do' />'); return false;" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span>  --%>
 			</li>
 		</ul>
 	</div>
 
 
-</form>
-
+</form:form>
+<table class="popwTable" ...>
 	<!-- 목록영역 -->
 	<table class="popwTable" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
@@ -192,7 +185,12 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 		<!-- 질문내용  -->
 		<td class="lt_text3L">
 			<div class="divDotText" style="width:320px; border:solid 0px;">
-    			<a href="#LINK" onClick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')">${resultInfo.qestnCn}</a>
+    			<a href="#LINK" 
+			onClick="selectQustnrQestn({
+					qestnrQesitmId: '${resultInfo.qestnrQesitmId}', 
+					qestnTyCode: '${resultInfo.qestnTyCode}',
+					qestnrQesitmCn: '<c:out value="${egovc:escapeJavaScript(resultInfo.qestnCn)}"/>'}); return false">
+                <c:out value="${resultInfo.qestnCn}"/></a>
     		</div>
 		</td>
 		<!-- 질문유형 -->
@@ -201,13 +199,17 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
     		<c:if test="${resultInfo.qestnTyCode == '2'}"><spring:message code="comUssOlpQqm.regist.subjectiveQuest" /></c:if><!-- 주관식 -->
 		</td>	
 	  	<!-- 등록자  -->
-	  	<td class="lt_text3">${resultInfo.frstRegisterNm}</td>
+          <td class="lt_text3"><c:out value="${resultInfo.frstRegisterNm}"/></td>
 	  	<!-- 등록일자  -->
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
 	  	<td class="lt_text3">
-			<a href="#LINK" onClick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
-    		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.qestnCn}">
+			<a href="#LINK" 
+			onClick="selectQustnrQestn({
+					qestnrQesitmId: '${resultInfo.qestnrQesitmId}', 
+					qestnTyCode: '${resultInfo.qestnTyCode}',
+					qestnrQesitmCn: '<c:out value="${egovc:escapeJavaScript(resultInfo.qestnCn)}"/>'}); return false"><spring:message code="input.cSelect" /></a><!-- 선택 -->
+            <input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="<c:out value='${resultInfo.qestnCn}'/>">
 		</td>
 	  </tr>	  
 	</c:forEach>	

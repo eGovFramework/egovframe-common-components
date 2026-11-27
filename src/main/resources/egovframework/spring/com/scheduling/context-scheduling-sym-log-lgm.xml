@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- 시스템 로그 요약  -->
 	<bean id="sysLogging" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -12,9 +12,9 @@
 	<!-- 시스템 로그 요약  트리거-->
 	<bean id="sysLogTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
 		<property name="jobDetail" ref="sysLogging" />
-		<!-- 시작하고 1분후에 실행한다. (milisecond) -->
+		<!-- 1분 후 시작 (ms) -->
 		<property name="startDelay" value="60000" />
-		<!-- 매 1시간마다 실행한다. (milisecond) -->
+		<!-- 1시간 간격 (ms) -->
 		<property name="repeatInterval" value="3600000" />
 	</bean>
 	

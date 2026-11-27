@@ -22,21 +22,18 @@ public interface EgovSndngMailDetailService {
 	 * 발송메일을 상세 조회한다.
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
-	SndngMailVO selectSndngMail(SndngMailVO vo) throws Exception;
+	SndngMailVO selectSndngMail(SndngMailVO vo);
 
 	/**
 	 * 발송메일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
-	void deleteSndngMail(SndngMailVO vo) throws Exception;
+	void deleteSndngMail(SndngMailVO vo);
 
 	/**
 	 * 첨부파일을 삭제한다.
 	 * @param vo SndngMailVO
-	 * @exception
 	 */
-	void deleteAtchmnFile(SndngMailVO vo) throws Exception;
+	void deleteAtchmnFile(SndngMailVO vo);
 }

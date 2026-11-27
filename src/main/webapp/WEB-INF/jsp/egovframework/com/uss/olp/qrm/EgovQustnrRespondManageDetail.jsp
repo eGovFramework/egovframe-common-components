@@ -70,7 +70,8 @@ function fn_egov_delete_QustnrRespondManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
-<form name="QustnrRespondManageForm" id="QustnrRespondManageForm" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do'/>" method="post">
+<form name="QustnrRespondManageForm" id="QustnrRespondManageForm" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageModifyView.do" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -89,7 +90,7 @@ function fn_egov_delete_QustnrRespondManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrSj}"/></span>
 			</td>
 		</tr>
 		<!-- 성별 -->
@@ -99,7 +100,7 @@ function fn_egov_delete_QustnrRespondManage(){
 			<td class="left">
 				<c:forEach items="${comCode014}" var="comCodeList" varStatus="status">
 				<c:if test="${comCodeList.code eq resultList[0].sexdstnCode}">
-				<c:out value="${fn:replace(comCodeList.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${comCodeList.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -111,7 +112,7 @@ function fn_egov_delete_QustnrRespondManage(){
 			<td class="left">
   				<c:forEach items="${comCode034}" var="comCodeList" varStatus="status">
 				<c:if test="${comCodeList.code eq resultList[0].occpTyCode}">
-				<c:out value="${fn:replace(comCodeList.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${comCodeList.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -121,7 +122,7 @@ function fn_egov_delete_QustnrRespondManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].respondNm , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].respondNm}"/></span>
 			</td>
 		</tr>
 		
@@ -135,18 +136,21 @@ function fn_egov_delete_QustnrRespondManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 수정 버튼 -->
-		<form name="formUpdt" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do'/>" method="post" onsubmit="fn_egov_modify_QustnrRespondManage(document.forms[0]); return false;" style="float:left;">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageModifyView.do" method="post" onsubmit="fn_egov_modify_QustnrRespondManage(document.forms[0]); return false;" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 			<input name="qestnrRespondId" type="hidden" value="${resultList[0].qestnrRespondId}">
 		</form>
 		<!-- 삭제 버튼 -->
-		<form name="formDelete" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code='button.delete' />" onclick="fn_egov_delete_QustnrRespondManage(document.forms[0]); return false;">
 			<input name="qestnrRespondId" type="hidden" value="${resultList[0].qestnrRespondId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 		<!-- 목록 버튼 -->
-		<form name="formList" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 		  <input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrRespondManage(document.forms[0]); return false;">
 		</form>		
 	</div>

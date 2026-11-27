@@ -15,50 +15,69 @@
  */
 package egovframework.com.cmm.filter;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
 /**
-*
-* HTMLTagFilterRequestWrapper 
-* @author 공통컴포넌트 팀 신용호
-* @since 2018.03.21
-* @version 1.0
-* @see
-*
-* <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일              수정자              수정내용
-*  -------      --------    ---------------------------
-*   2018.03.21  신용호              getParameterMap()구현 추가
-*   2019.01.31  신용호              whiteList 태그 추가
-*
-*/
+ *
+ * HTMLTagFilterRequestWrapper
+ * 
+ * @author 공통컴포넌트 팀 신용호
+ * @since 2018.03.21
+ * @version 3.9.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2018.03.21  신용호          getParameterMap()구현 추가
+ *   2019.01.31  신용호          whiteList 태그 추가
+ *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(부울 표현식 단순화), AvoidReassigningParameters(매개변수 재할당 방지)
+ *   2026.07.09  EricSeokgon      지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
+ *
+ *      </pre>
+ */
 
 public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 
 	// Tag 화이트 리스트 ( 허용할 태그 등록 )
-	static private String[] whiteListTag = { "<p>","</p>","<br />" };
-	
+	static private String[] whiteListTag = { "<p>", "</p>", "<br />" };
+
+	/**
+	 * CKEditor 등 리치텍스트 에디터가 사용하는 파라미터명 목록.
+	 * 이 필드는 HTML 태그(이미지 포함)를 그대로 저장해야 하므로 이 필터의 태그 치환 대상에서 제외한다.
+	 * (조회화면 출력 시에는 egovc:sanitizeHtml 로 XSS 방지 처리를 한다.)
+	 */
+	static private Set<String> richTextParameterNames = new HashSet<>(Arrays.asList(
+			"schdulCn", "nttCn", "onlineMnlDc", "indvdlInfoDc"));
+
 	public HTMLTagFilterRequestWrapper(HttpServletRequest request) {
 		super(request);
 	}
 
+	@Override
 	public String[] getParameterValues(String parameter) {
 
 		String[] values = super.getParameterValues(parameter);
-		
-		if(values==null){
-			return null;			
+
+		if (values == null) {
+			return null;
 		}
-		
+
+		if (isRichTextParameter(parameter)) {
+			return values;
+		}
+
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] != null) {
 				values[i] = getSafeParamData(values[i]);
-				//System.out.println( "[HTMLTagFilter getParameterValues] "+ parameter + "===>>>"+values[i] );
 			} else {
 				values[i] = null;
 			}
@@ -67,69 +86,78 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		return values;
 	}
 
+	@Override
 	public String getParameter(String parameter) {
-		
+
 		String value = super.getParameter(parameter);
-		
-		if(value==null){
+
+		if (value == null) {
 			return null;
 		}
-		
+
+		if (isRichTextParameter(parameter)) {
+			return value;
+		}
+
 		value = getSafeParamData(value);
-		//System.out.println( "[HTMLTagFilter getParameter] "+ parameter + "===>>>"+value );
 		return value;
 	}
 
 	/**
 	 * Map으로 바인딩된 경우를 처리한다.
 	 *
-	 * @return  Map - String Type Key / String배열타입 값
+	 * @return Map - String Type Key / String배열타입 값
 	 */
-    public Map<String, String[]> getParameterMap() {
-    	Map<String, String[]> valueMap = super.getParameterMap();
+	@Override
+	public Map<String, String[]> getParameterMap() {
+		Map<String, String[]> valueMap = super.getParameterMap();
 
-    	String[] values;
-    	for( String key : valueMap.keySet() ){
-    		values = valueMap.get(key);
+		for (Map.Entry<String, String[]> entry : valueMap.entrySet()) {
+			String key = entry.getKey();
+			String[] values = entry.getValue();
 
-    		for (int i = 0; i < values.length; i++) {			
-    			if (values[i] != null) {				
-    				values[i] = getSafeParamData(values[i]);
-    				//System.out.println( "[HTMLTagFilter getParameterMap] "+ key + "===>>>"+values[i] );
-    			} else {
-    				values[i] = null;
-    			}
-    		}
-    		
-            //System.out.println( String.format("키 : %s, 값 : %s", key, valueMap.get(key)) );
-        }
+			if (isRichTextParameter(key)) {
+				continue;
+			}
 
-    	return valueMap;
-    }
-    
+			for (int i = 0; i < values.length; i++) {
+				if (values[i] != null) {
+					values[i] = getSafeParamData(values[i]);
+				}
+			}
+
+		}
+
+		return valueMap;
+	}
+
+	private boolean isRichTextParameter(String parameter) {
+		return richTextParameterNames.contains(parameter);
+	}
+
 	private String getSafeParamData(String value) {
-		StringBuffer strBuff = new StringBuffer();
+		StringBuilder strBuff = new StringBuilder();
 
 		for (int i = 0; i < value.length(); i++) {
 			char c = value.charAt(i);
 			switch (c) {
 			case '<':
-				if ( checkNextWhiteListTag(i, value) == false )
+				if (!checkNextWhiteListTag(i, value)) {
 					strBuff.append("&lt;");
-				else 
+				} else {
 					strBuff.append(c);
-				//System.out.println("checkNextWhiteListTag = "+checkNextWhiteListTag(i, value));
+				}
 				break;
 			case '>':
-				if ( checkPrevWhiteListTag(i, value) == false )
+				if (!checkPrevWhiteListTag(i, value)) {
 					strBuff.append("&gt;");
-				else 
+				} else {
 					strBuff.append(c);
-				//System.out.println("checkPrevWhiteListTag = "+checkPrevWhiteListTag(i, value));
+				}
 				break;
-			//case '&':
-			//	strBuff.append("&amp;");
-			//	break;
+			// case '&':
+			// strBuff.append("&amp;");
+			// break;
 			case '"':
 				strBuff.append("&quot;");
 				break;
@@ -142,54 +170,54 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			case ')':
 				strBuff.append("&#41;");
 				break;
-			//case '.':
-			//	strBuff.append("&#46;");
-			//	break;
+			// case '.':
+			// strBuff.append("&#46;");
+			// break;
 			default:
 				strBuff.append(c);
 				break;
 			}
 		}
-		
-		value = strBuff.toString();
-		return value;
+
+		return strBuff.toString();
 	}
 
 	private boolean checkNextWhiteListTag(int index, String data) {
 		String extractData = "";
-		//int beginIndex = 0;
+		// int beginIndex = 0;
 		int endIndex = 0;
-		for(String whiteListData: whiteListTag) {
-		    //System.out.println("===>>> whiteListData="+whiteListData);
-			endIndex = index+whiteListData.length();
-		    if ( data.length() > endIndex )
-		    	extractData = data.substring(index, endIndex);
-		    else
-		    	extractData = "";
-		    //System.out.println("extractData="+extractData);
-		    if ( whiteListData.equals(extractData) ) return true; // whiteList 대상으로 판정
+		for (String whiteListData : whiteListTag) {
+			endIndex = index + whiteListData.length();
+			if (data.length() > endIndex) {
+				extractData = data.substring(index, endIndex);
+			} else {
+				extractData = "";
+			}
+			if (whiteListData.equals(extractData)) {
+				return true; // whiteList 대상으로 판정
+			}
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean checkPrevWhiteListTag(int index, String data) {
 		String extractData = "";
 		int beginIndex = 0;
 		int endIndex = 0;
-		for(String whiteListData: whiteListTag) {
-		    //System.out.println("===>>> whiteListData="+whiteListData);
-			beginIndex = index-whiteListData.length()+1;
-			endIndex = index+1;
-		    //System.out.println("  range ["+beginIndex+" ~ "+endIndex+"]");
-		    if ( beginIndex >= 0 )
-		    	extractData = data.substring(beginIndex, endIndex);
-		    else
-		    	extractData = "";
-		    //System.out.println("extractData="+extractData);
-		    if ( whiteListData.equals(extractData) ) return true; // whiteList 대상으로 판정
+		for (String whiteListData : whiteListTag) {
+			beginIndex = index - whiteListData.length() + 1;
+			endIndex = index + 1;
+			if (beginIndex >= 0) {
+				extractData = data.substring(beginIndex, endIndex);
+			} else {
+				extractData = "";
+			}
+			if (whiteListData.equals(extractData)) {
+				return true; // whiteList 대상으로 판정
+			}
 		}
-		
+
 		return false;
 	}
 

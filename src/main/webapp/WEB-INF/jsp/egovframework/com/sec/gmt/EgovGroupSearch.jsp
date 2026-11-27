@@ -79,12 +79,10 @@ function fncManageChecked() {
 function fncSelectGroupList(pageNo){
     document.listForm.searchCondition.value = "1";
     document.listForm.pageIndex.value = pageNo;
- // document.listForm.action = "<c:url value='/sec/gmt/EgovGroupSearchList.do'/>";
     document.listForm.submit();
 }
 
 function fncSelectGroup(groupId) {
- // window.returnValue = groupId;
     opener.listForm.searchKeyword.value = groupId;
     window.close();
 }
@@ -92,7 +90,6 @@ function fncSelectGroup(groupId) {
 function fncSelectGroupConfirm() {
 	if(fncManageChecked()) {
 		opener.listForm.searchKeyword.value = document.listForm.groupId.value;
-     // window.returnValue = document.listForm.groupId.value;
 		window.close();
 	}
 }
@@ -100,7 +97,6 @@ function fncSelectGroupConfirm() {
 function linkPage(pageNo){
     document.listForm.searchCondition.value = "1";
     document.listForm.pageIndex.value = pageNo;
- // document.listForm.action = "<c:url value='/sec/gmt/EgovGroupSearchList.do'/>";
     document.listForm.submit();
 }
 
@@ -119,7 +115,7 @@ function press() {
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupSearchList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupSearchList.do" method="post" modelAttribute="searchVO">
 <div class="popup">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 그룹 조회 팝업 -->
 	<!-- 검색영역 -->

@@ -21,7 +21,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysFsm.fileSysMntrngLog.title"/></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
@@ -30,8 +29,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="fileSysMntrngLogVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_FileSysMntrng(){
 	
@@ -67,7 +65,7 @@
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.logId.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${fileSysMntrngLog.logId}" escapeXml="false" />
+			    <c:out value="${fileSysMntrngLog.logId}"/>
 			</td>
 		</tr>
 		<tr>
@@ -103,21 +101,21 @@
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.mntrngSttus.label" /></th>
 			<td class="left">
-			    <c:out value="${fileSysMntrngLog.mntrngSttus}" escapeXml="false" />
+			    <c:out value="${fileSysMntrngLog.mntrngSttus}"/>
 			</td>
 		</tr>
 		<c:if test="${fileSysMntrngLog.mntrngSttus} ne '정상'">
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.logInfo.label" /></th>
 			<td class="left">
-			    <textarea id="logInfo" name="logInfo" rows="10" cols="75" title="<spring:message code='comUtlSysFsm.fileSysMntrngLog.logInfo.label' />" readonly><c:out value="${fileSysMntrngLog.logInfo}" escapeXml="false" /></textarea>
+			    <textarea id="logInfo" name="logInfo" rows="10" cols="75" title="<spring:message code='comUtlSysFsm.fileSysMntrngLog.logInfo.label' />" readonly><c:out value="${fileSysMntrngLog.logInfo}"/></textarea>
 			</td>
 		</tr>
 		</c:if>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.creatDt.label" /></th>
 			<td class="left">
-			    <c:out value="${fileSysMntrngLog.creatDt}" escapeXml="false" />
+			    <c:out value="${fileSysMntrngLog.creatDt}"/>
 			</td>
 		</tr>
 	</table>

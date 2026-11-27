@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -56,6 +55,7 @@
 	<h2><spring:message code="comUssIonIsm.infrmlSanctnDetail.confmAtR" /></h2><!-- 반려 -->
 
 	<form id="targetForm" name="targetForm" method="post" action="#LINK">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="cmd">
 	<input type="hidden" name="checkedEventRceptForConfm">
 
@@ -66,7 +66,7 @@
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUssIonIsm.infrmlSanctnDetail.confmAtReason" /> <span class="pilsu">*</span></th><!-- 반려사유 -->
+			<th><spring:message code="comUssIonIsm.infrmlSanctnDetail.confmAtReason" /></th><!-- 반려사유 -->
 			<td class="left">
 			    <textarea id="returnResn" name="returnResn" class="txaClass" rows="4" cols="70" title="<spring:message code="common.noScriptTitle.msg" />"><c:out value='${rwardManageVO.returnResn}'/></textarea>
 			</td>

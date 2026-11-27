@@ -39,22 +39,21 @@ public interface EgovUserAbsnceService {
 
 	/**
 	 * 사용자부재정보를 신규로 등록한다.
-	 * @param userAbsnce - 사용자부재 model
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public UserAbsnceVO insertUserAbsnce(UserAbsnce userAbsnce, UserAbsnceVO userAbsnceVO) throws Exception;
+	public UserAbsnceVO insertUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception;
 
 	/**
 	 * 기 등록된 사용자부재정보를 수정한다.
-	 * @param userAbsnce - 사용자부재 model
+	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void updateUserAbsnce(UserAbsnce userAbsnce) throws Exception;
+	public void updateUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception;
 
 	/**
 	 * 기 등록된 사용자부재정보를 삭제한다.
-	 * @param userAbsnce - 사용자부재 model
+	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void deleteUserAbsnce(UserAbsnce userAbsnce) throws Exception;
+	public void deleteUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception;
 
 	/**
 	 * 사용자부재정보가 특정화면에 반영된 결과를 조회한다.

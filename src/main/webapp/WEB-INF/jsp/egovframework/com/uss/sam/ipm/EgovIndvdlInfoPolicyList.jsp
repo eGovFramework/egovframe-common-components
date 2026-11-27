@@ -18,9 +18,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" >
 <title><spring:message code="ussSamIpm.indvdlInfoPolicyList.indvdlInfoPolicyList"/></title><!-- 개인정보보호정책 관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -65,7 +68,7 @@ function fn_egov_search_IndvdlInfoPolicy(){
 <div class="board">
 	<h1><spring:message code="ussSamIpm.indvdlInfoPolicyList.indvdlInfoPolicyList"/></h1><!-- 개인정보보호정책 관리 목록 -->
 	
-	<form name="listForm" action="<c:url value='/uss/sam/ipm/listIndvdlInfoPolicy.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/sam/ipm/listIndvdlInfoPolicy.do" method="post">
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다 -->
 		<ul>
@@ -78,7 +81,7 @@ function fn_egov_search_IndvdlInfoPolicy(){
 				<input class="s_input2 vat" type="text" name="searchKeyword" value="${searchVO.searchKeyword}" size="25" title="<spring:message code="title.search"/>" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fn_egov_search_IndvdlInfoPolicy(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/sam/ipm/registIndvdlInfoPolicyView.do' />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/sam/ipm/registIndvdlInfoPolicyView.do' />'); return false;"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -86,7 +89,7 @@ function fn_egov_search_IndvdlInfoPolicy(){
 	<input name="indvdlInfoId" type="hidden" value="">
 	<input name="searchMode" type="hidden" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption><spring:message code="ussSamIpm.indvdlInfoPolicyList.indvdlInfoPolicyList"/></caption><!-- 개인정보보호정책 관리 -->
@@ -116,7 +119,7 @@ function fn_egov_search_IndvdlInfoPolicy(){
 						<c:if test="${resultInfo.indvdlInfoscrPolicyAgreAt == 'N'}"><spring:message code="input.no"/></c:if><!-- 아니오 -->
 					</td>
 					<td>			
-						<a href="<c:url value='/uss/sam/ipm/detailIndvdlInfoPolicy.do'/>?indvdlInfoId=${resultInfo.indvdlInfoPolicyId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_detail_IndvdlInfoPolicy('<c:out value="${resultInfo.indvdlInfoPolicyId}"/>');return false;"><c:out value='${resultInfo.indvdlInfoPolicyNm}'/></a>	
+						<a href="javascript:void(0);" onClick="fn_egov_detail_IndvdlInfoPolicy('<c:out value="${resultInfo.indvdlInfoPolicyId}"/>');return false;"><c:out value='${resultInfo.indvdlInfoPolicyNm}'/></a>	
 					</td>
 					<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 					<td><c:out value="${fn:substring(resultInfo.frstRegistPnttm, 0, 10)}"/></td>

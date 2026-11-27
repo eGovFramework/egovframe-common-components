@@ -28,9 +28,8 @@ public class RssDao extends EgovComAbstractDAO {
      * RSS서비스 테이블을 조회 한다.
      * @param param -조회할 정보가 담긴 객체
      * @return List -조회한목록이담긴List
-     * @throws Exception
      */
-    public List<?> selectRssTagServiceTable(Map<?, ?> param) throws Exception {
+    public List<?> selectRssTagServiceTable(Map<?, ?> param) {
     	return selectList("RssTagService.selectRssTagServiceTable",param);
     }
 
@@ -38,9 +37,8 @@ public class RssDao extends EgovComAbstractDAO {
      * RSS서비스를(을) 목록을 한다.
      * @param rssInfo -조회할 정보가 담긴 객체
      * @return List
-     * @throws Exception
      */
-    public List<?> selectRssTagServiceList(RssInfo rssInfo) throws Exception {
+    public List<?> selectRssTagServiceList(RssInfo rssInfo) {
     	return selectList("RssTagService.selectRssTagService",rssInfo);
     }
 
@@ -48,9 +46,8 @@ public class RssDao extends EgovComAbstractDAO {
      * RSS서비스를(을) 목록 전체 건수를(을) 조회한다.
      * @param rssInfo -조회할 정보가 담긴 객체
      * @return int -조회한건수가담긴Integer
-     * @throws Exception
      */
-    public int selectRssTagServiceListCnt(RssInfo rssInfo) throws Exception {
+    public int selectRssTagServiceListCnt(RssInfo rssInfo) {
     	return (Integer)selectOne("RssTagService.selectRssTagServiceCnt", rssInfo);
     }
 
@@ -58,9 +55,8 @@ public class RssDao extends EgovComAbstractDAO {
      * RSS서비스를(을) 상세조회 한다.
      * @param rssInfo -조회할 정보가 담긴 객체
      * @return Map -조회한정보가담긴Map
-     * @throws Exception
      */
-    public Map<?, ?> selectRssTagServiceDetail(RssInfo rssInfo) throws Exception {
+    public Map<?, ?> selectRssTagServiceDetail(RssInfo rssInfo) {
     	return (Map<?, ?>)selectOne("RssTagService.selectRssTagServiceDetail", rssInfo);
     }
 

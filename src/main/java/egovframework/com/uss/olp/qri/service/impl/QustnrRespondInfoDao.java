@@ -34,9 +34,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	 * 설문템플릿을 조회한다.
 	 * @param map - 조회할 정보가 담긴 map
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<?> selectQustnrTmplatManage(Map<?, ?> map) throws Exception{
+	public List<?> selectQustnrTmplatManage(Map<?, ?> map) {
 		return selectList("QustnrRespondInfo.selectQustnrTmplatManages", map);
 	}
 
@@ -45,9 +44,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	 *
 	 * @param map - 조회할 정보가 담긴 map
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectQustnrRespondInfoManageStatistics1(Map<?, ?> map) throws Exception {
+	public List<EgovMap> selectQustnrRespondInfoManageStatistics1(Map<?, ?> map) {
 		return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageStatistics1", map);
 	}
 
@@ -56,9 +54,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      *
      * @param map - 조회할 정보가 담긴 map
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrRespondInfoManageStatistics2(Map<?, ?> map) throws Exception {
+    public List<EgovMap> selectQustnrRespondInfoManageStatistics2(Map<?, ?> map) {
         return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageStatistics2", map);
     }
 
@@ -66,9 +63,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	 * 회원정보를 조회한다.
 	 * @param map - 조회할 정보가 담긴 map
 	 * @return List
-	 * @throws Exception
 	 */
-	public Map<?, ?> selectQustnrRespondInfoManageEmplyrinfo(Map<?, ?> map) throws Exception{
+	public Map<?, ?> selectQustnrRespondInfoManageEmplyrinfo(Map<?, ?> map) {
 		return (Map<?, ?>)selectOne("QustnrRespondInfo.selectQustnrRespondInfoManageEmplyrinfo", map);
 	}
 
@@ -77,9 +73,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      *
      * @param map - 조회할 정보가 담긴 map
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrRespondInfoManageComtnqestnrinfo(Map<?, ?> map) throws Exception {
+    public List<EgovMap> selectQustnrRespondInfoManageComtnqestnrinfo(Map<?, ?> map) {
         return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageComtnqestnrinfo", map);
     }
 
@@ -88,9 +83,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      *
      * @param map - 조회할 정보가 담긴 map
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnrqesitm(Map<?, ?> map) throws Exception {
+    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnrqesitm(Map<?, ?> map) {
         return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageComtnqustnrqesitm", map);
     }
 
@@ -99,9 +93,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      *
      * @param map - 조회할 정보가 담긴 map
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnriem(Map<?, ?> map) throws Exception {
+    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnriem(Map<?, ?> map) {
         return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageComtnqustnriem", map);
     }
 
@@ -110,7 +103,6 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      *
      * @param searchVO - 조회할 정보가 담긴 VO
      * @return List
-     * @throws Exception
      */
     public List<EgovMap> selectQustnrRespondInfoManageList(ComDefaultVO searchVO){
         return selectList("QustnrRespondInfo.selectQustnrRespondInfoManage", searchVO);
@@ -120,9 +112,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	 * 설문조사(설문등록)를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectQustnrRespondInfoManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectQustnrRespondInfoManageListCnt(ComDefaultVO searchVO) {
 		return (Integer)selectOne("QustnrRespondInfo.selectQustnrRespondInfoManageCnt", searchVO);
 	}
 
@@ -130,9 +121,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      * 응답자결과(설문조사) 목록을 조회한다.
      *
      * @param searchVO - 조회할 정보가 담긴 VO
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrRespondInfoList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectQustnrRespondInfoList(ComDefaultVO searchVO) {
         return selectList("QustnrRespondInfo.selectQustnrRespondInfo", searchVO);
     }
 
@@ -140,9 +130,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      * 응답자결과(설문조사)를(을) 상세조회 한다.
      *
      * @param qustnrRespondInfoVO - 응답자결과(설문조사) 정보 담김 VO
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrRespondInfoDetail(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception {
+    public List<EgovMap> selectQustnrRespondInfoDetail(QustnrRespondInfoVO qustnrRespondInfoVO) {
         return selectList("QustnrRespondInfo.selectQustnrRespondInfoDetail", qustnrRespondInfoVO);
     }
 
@@ -150,36 +139,32 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	 * 응답자결과(설문조사)를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
  	 * @return int
-	 * @throws Exception
 	 */
-	public int selectQustnrRespondInfoListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectQustnrRespondInfoListCnt(ComDefaultVO searchVO) {
 		return (Integer)selectOne("QustnrRespondInfo.selectQustnrRespondInfoCnt", searchVO);
 	}
 
     /**
 	 * 응답자결과(설문조사)를(을) 등록한다.
 	 * @param qqustnrRespondInfoVO - 응답자결과(설문조사) 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void insertQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception{
+	public void insertQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) {
 		insert("QustnrRespondInfo.insertQustnrRespondInfo", qustnrRespondInfoVO);
 	}
 
     /**
 	 * 응답자결과(설문조사)를(을) 수정한다.
 	 * @param qustnrRespondInfoVO - 응답자결과(설문조사) 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void updateQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception{
+	public void updateQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) {
 		insert("QustnrRespondInfo.updateQustnrRespondInfo", qustnrRespondInfoVO);
 	}
 
     /**
 	 * 응답자결과(설문조사)를(을) 삭제한다.
 	 * @param qustnrRespondInfoVO - 응답자결과(설문조사) 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void deleteQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception{
+	public void deleteQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) {
 		insert("QustnrRespondInfo.deleteQustnrRespondInfo", qustnrRespondInfoVO);
 	}
 
@@ -188,9 +173,8 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
      *
      * @param map - 조회할 정보가 담긴 map
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectQustnrTmplatWhiteList() throws Exception {
+    public List<EgovMap> selectQustnrTmplatWhiteList() {
         return selectList("QustnrRespondInfo.selectQustnrTmplatWhiteList");
     }
 }

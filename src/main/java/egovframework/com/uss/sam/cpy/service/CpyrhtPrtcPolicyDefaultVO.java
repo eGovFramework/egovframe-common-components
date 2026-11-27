@@ -2,10 +2,13 @@ package egovframework.com.uss.sam.cpy.service;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  *
  * 저작권보호정책내용을 처리하는 DefaultVO 클래스
- * 
+ *
  * @author 공통서비스 개발팀 박정규
  * @since 2009.04.01
  * @version 1.0
@@ -20,6 +23,8 @@ import java.io.Serializable;
  *
  * </pre>
  */
+@Getter
+@Setter
 public class CpyrhtPrtcPolicyDefaultVO implements Serializable {
 
 	private static final long serialVersionUID = -1756683013057173109L;
@@ -50,168 +55,5 @@ public class CpyrhtPrtcPolicyDefaultVO implements Serializable {
 
     /** recordCountPerPage */
     private int recordCountPerPage = 10;
-
-	/**
-	 * searchCondition attribute 를 리턴한다.
-	 * 
-	 * @return the String
-	 */
-	public String getSearchCondition() {
-		return searchCondition;
-	}
-
-	/**
-	 * searchCondition attribute 값을 설정한다.
-	 * 
-	 * @return searchCondition String
-	 */
-	public void setSearchCondition(String searchCondition) {
-		this.searchCondition = searchCondition;
-	}
-
-	/**
-	 * searchKeyword attribute 를 리턴한다.
-	 * 
-	 * @return the String
-	 */
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
-
-	/**
-	 * searchKeyword attribute 값을 설정한다.
-	 * 
-	 * @return searchKeyword String
-	 */
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
-
-	/**
-	 * searchUseYn attribute 를 리턴한다.
-	 * 
-	 * @return the String
-	 */
-	public String getSearchUseYn() {
-		return searchUseYn;
-	}
-
-	/**
-	 * searchUseYn attribute 값을 설정한다.
-	 * 
-	 * @return searchUseYn String
-	 */
-	public void setSearchUseYn(String searchUseYn) {
-		this.searchUseYn = searchUseYn;
-	}
-
-	/**
-	 * pageIndex attribute 를 리턴한다.
-	 * 
-	 * @return the int
-	 */
-	public int getPageIndex() {
-		return pageIndex;
-	}
-
-	/**
-	 * pageIndex attribute 값을 설정한다.
-	 * 
-	 * @return pageIndex int
-	 */
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
-	}
-
-	/**
-	 * pageUnit attribute 를 리턴한다.
-	 * 
-	 * @return the int
-	 */
-	public int getPageUnit() {
-		return pageUnit;
-	}
-
-	/**
-	 * pageUnit attribute 값을 설정한다.
-	 * 
-	 * @return pageUnit int
-	 */
-	public void setPageUnit(int pageUnit) {
-		this.pageUnit = pageUnit;
-	}
-
-	/**
-	 * pageSize attribute 를 리턴한다.
-	 * 
-	 * @return the int
-	 */
-	public int getPageSize() {
-		return pageSize;
-	}
-
-	/**
-	 * pageSize attribute 값을 설정한다.
-	 * 
-	 * @return pageSize int
-	 */
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	/**
-	 * firstIndex attribute 를 리턴한다.
-	 * 
-	 * @return the int
-	 */
-	public int getFirstIndex() {
-		return firstIndex;
-	}
-
-	/**
-	 * firstIndex attribute 값을 설정한다.
-	 * 
-	 * @return firstIndex int
-	 */
-	public void setFirstIndex(int firstIndex) {
-		this.firstIndex = firstIndex;
-	}
-
-	/**
-	 * lastIndex attribute 를 리턴한다.
-	 * 
-	 * @return the int
-	 */
-	public int getLastIndex() {
-		return lastIndex;
-	}
-
-	/**
-	 * lastIndex attribute 값을 설정한다.
-	 * 
-	 * @return lastIndex int
-	 */
-	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
-	}
-
-	/**
-	 * recordCountPerPage attribute 를 리턴한다.
-	 * 
-	 * @return the int
-	 */
-	public int getRecordCountPerPage() {
-		return recordCountPerPage;
-	}
-
-	/**
-	 * recordCountPerPage attribute 값을 설정한다.
-	 * 
-	 * @return recordCountPerPage int
-	 */
-	public void setRecordCountPerPage(int recordCountPerPage) {
-		this.recordCountPerPage = recordCountPerPage;
-	}
-
 
 }

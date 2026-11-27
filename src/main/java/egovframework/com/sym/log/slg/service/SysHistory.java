@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Size;
+
 
 /**
  * @Class Name  : SysHistory.java
@@ -39,10 +42,13 @@ public class SysHistory implements Serializable {
 	/**
 	 * 이력내용
 	 */
+	@EgovNullCheck
+	@Size(max=2000)
 	private String histCn = "";
 	/**
 	 * 이력구분코드
 	 */
+	@EgovNullCheck
 	private String histSeCode = "";
 	/**
 	 * 최종수정자아이디
@@ -55,19 +61,21 @@ public class SysHistory implements Serializable {
 	/**
 	 * 시스템명
 	 */
+	@EgovNullCheck
+	@Size(max=120)
 	private String sysNm = "";
 	/**
 	 * 첨부파일ID
 	 */
 	private String atchFileId = "";
 	/**
-	 * @return the creatDt
+	 * @return the histId
 	 */
 	public String getHistId() {
 		return histId;
 	}
 	/**
-	 * @param creatDt the creatDt to set
+	 * @param histId the histId to set
 	 */
 	public void setHistId(String histId) {
 		this.histId = histId;

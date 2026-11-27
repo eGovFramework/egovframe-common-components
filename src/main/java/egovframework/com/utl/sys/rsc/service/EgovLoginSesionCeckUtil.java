@@ -9,7 +9,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 /**
  * 개요
  * - 로그인 세션정보체크 컴포넌트에 대한 util 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 로그인 세션정보체크에 대한 기능을 제공한다.
  * @author lee.m.j
@@ -38,14 +38,15 @@ public class EgovLoginSesionCeckUtil extends EgovAbstractServiceImpl {
 	/**
 	 * 로그인 세션정보체크 화면 이동
 	 * @return String - 세션URL
-	 */	
+	 */
 	public String checkLoginSessionView() throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		// KISA 보안취약점 조치 (2018-12-10, 이정은)
-		if ( user == null )
+		if ( user == null ) {
 			return "";
-		else 
+		} else {
 			return user.getUrl();
+		}
 	}
 
 }

@@ -20,13 +20,13 @@ import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
  */
 
 public class EgovFileExtensionException extends BaseRuntimeException {
-    
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * EgovFileExtensionException 생성자.
-	 * 
-	 * @param defaultMessage 메세지 지정
+	 *
+	 * @param defaultMessage 메시지 지정
 	 * @param wrappedException 원인 Exception
 	 */
 	public EgovFileExtensionException(String message, String messageKey) {

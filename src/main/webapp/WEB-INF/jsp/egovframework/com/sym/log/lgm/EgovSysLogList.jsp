@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymLogLgm.sysLog.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -125,7 +126,7 @@ function fn_egov_inquire_sysLog(requstId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="SysLogForm" action="<c:url value='/sym/log/lgm/SelectSysLogList.do'/>" method="post" onSubmit="fn_egov_search_sysLog(); return false;"> 
+<form:form name="SysLogForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/log/lgm/SelectSysLogList.do" method="post" onSubmit="fn_egov_search_sysLog(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -204,7 +205,7 @@ function fn_egov_inquire_sysLog(requstId) {
 </div>
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

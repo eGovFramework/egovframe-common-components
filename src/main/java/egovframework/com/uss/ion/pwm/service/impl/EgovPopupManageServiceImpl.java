@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.pwm.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
+import javax.annotation.Resource;
 
 /**
  * 개요
@@ -39,7 +38,6 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 기 등록된 팝업창정보를 삭제한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
@@ -51,7 +49,6 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 팝업창정보를 신규로 등록한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
@@ -65,7 +62,6 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/**
 	 * 기 등록된 팝업창정보를 수정한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
@@ -97,7 +93,7 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	public List<EgovMap> selectPopupWhiteList() throws Exception {
 		return dao.selectPopupWhiteList();
 	}
-	
+
 	/**
 	 * 팝업창를 관리하기 위해 등록된 팝업창목록을 조회한다.
 	 * @param popupManageVO - 팝업창 Vo

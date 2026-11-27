@@ -23,6 +23,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtDsm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -40,16 +42,10 @@ function linkPage(pageNo){
    	document.listForm.submit();
 }
 /* ********************************************************
- * 등록 처리 함수
- ******************************************************** */
-function fn_egov_regist_DiaryManage(){
-	location.href = "<c:url value='/cop/smt/dsm/EgovDiaryManageRegist.do' />";
-}
-/* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_DiaryManage(diaryId){
-	var vFrom = document.subForm;
+	var vFrom = document.listForm;
 	vFrom.diaryId.value = diaryId;
 	vFrom.action = "<c:url value='/cop/smt/dsm/EgovDiaryManageDetail.do' />";
 	vFrom.submit();
@@ -75,7 +71,7 @@ function fn_egov_search_DiaryManage(){
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form id="listForm" name="listForm" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post">
+	<form:form id="listForm" name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageList.do" method="post">
 		<!-- 검색영역 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 			<ul>
@@ -92,13 +88,12 @@ function fn_egov_search_DiaryManage(){
 				<li>
 					<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 					<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
-					<span class="btn_b"><a href="<c:url value='/cop/smt/dsm/EgovDiaryManageRegist.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 목록 -->
+					<span class="btn_b"><a href="<c:url value='/cop/smt/dsm/EgovDiaryManageRegist.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 				</li>
 			</ul>
 		</div>
 	<input id="diaryId" name="diaryId" type="hidden" value="">
     <input id="pageIndex" name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -131,13 +126,7 @@ function fn_egov_search_DiaryManage(){
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-
-		<form name="subForm" method="post" action="<c:url value='/cop/smt/dsm/EgovDiaryManageDetail.do'/>">
-		    <input name="diaryId" type="hidden" value="<c:out value="${resultInfo.diaryId}"/>">
-		    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-		    <span class="link"><input type="submit" value="<c:out value="${resultInfo.diaryNm}"/>" style="border:0px solid #e0e0e0;"></span>
-		</form>
-		
+			<a href="javascript:void(0);" onclick="fn_egov_detail_DiaryManage('<c:out value="${resultInfo.diaryId}"/>'); return false;"><c:out value="${resultInfo.diaryNm}"/></a>
 		</td>
 		<td><c:out value='${resultInfo.diaryProcsPte}'/>%</td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>	
@@ -152,6 +141,7 @@ function fn_egov_search_DiaryManage(){
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
 	</div>
 	
+	</form:form>
 </div><!-- end div board -->
 
 

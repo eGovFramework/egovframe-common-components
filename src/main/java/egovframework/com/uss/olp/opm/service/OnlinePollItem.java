@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.opm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 /**
  * 온라인POLL항목 VO Class 구현
  * @author 공통서비스 장동한
@@ -30,6 +32,7 @@ public class OnlinePollItem implements Serializable {
     private String pollIemId;
 
     /** 온라인POLL항목 이름 */
+    @EgovNullCheck
     private String pollIemNm;
 
     /** 최초등록시점 */

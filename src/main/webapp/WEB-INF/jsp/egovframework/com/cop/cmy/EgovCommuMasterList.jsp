@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopCmy.commuMasterVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,7 @@ function fn_egov_inquire_commudetail(cmmntyId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="CommuMasterForm" action="<c:url value='/cop/cmy/selectCommuMasterList.do'/>" method="post" onSubmit="fn_egov_search_commu(); return false;"> 
+<form:form name="CommuMasterForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/cmy/selectCommuMasterList.do" method="post" onSubmit="fn_egov_search_commu(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 커뮤니티 마스터 목록 -->
 	<!-- 하단 버튼 -->
@@ -115,7 +116,7 @@ function fn_egov_inquire_commudetail(cmmntyId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/cop/cmy/selectCommuMasterDetail.do'/>?cmmntyId=${resultInfo.cmmntyId}" onClick="fn_egov_inquire_commudetail('<c:out value="${resultInfo.cmmntyId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cmmntyNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_inquire_commudetail('<c:out value="${resultInfo.cmmntyId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cmmntyNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>		
@@ -142,7 +143,7 @@ function fn_egov_inquire_commudetail(cmmntyId) {
 
 <input name="cmmntyId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

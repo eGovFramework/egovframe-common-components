@@ -24,6 +24,7 @@ import egovframework.com.uss.sam.stp.service.StplatManageVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  박정규          최초 생성
  *   2016.06.13  장동한          표준프레임워크 v3.6 개선
+ *   2026.06.18  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -35,9 +36,8 @@ public class StplatManageDAO extends EgovComAbstractDAO {
 	 * 약관정보 글 목록에 대한 상세내용을 조회한다.
 	 * @param vo
 	 * @return 조회한 글
-	 * @exception Exception
 	 */
-    public StplatManageVO selectStplatDetail(StplatManageVO vo) throws Exception {
+    public StplatManageVO selectStplatDetail(StplatManageVO vo) {
 
         return (StplatManageVO) selectOne("StplatManage.selectStplatDetail", vo);
 
@@ -47,9 +47,8 @@ public class StplatManageDAO extends EgovComAbstractDAO {
 	 * 약관정보 글 목록을 조회한다.
 	 * @param searchVO
 	 * @return 글 목록
-	 * @exception Exception
 	 */
-    public List<StplatManageVO> selectStplatList(StplatManageDefaultVO searchVO) throws Exception {
+    public List<StplatManageVO> selectStplatList(StplatManageDefaultVO searchVO) {
 
         return selectList("StplatManage.selectStplatList", searchVO);
 
@@ -69,9 +68,8 @@ public class StplatManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 약관정보 글을 등록한다.
 	 * @param vo
-	 * @exception Exception
 	 */
-    public void insertStplatCn(StplatManageVO vo) throws Exception {
+    public void insertStplatCn(StplatManageVO vo) {
 
         insert("StplatManage.insertStplatCn", vo);
 
@@ -80,9 +78,8 @@ public class StplatManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 약관정보 글을 수정한다.
 	 * @param vo
-	 * @exception Exception
 	 */
-    public void updateStplatCn(StplatManageVO vo) throws Exception {
+    public void updateStplatCn(StplatManageVO vo) {
 
         update("StplatManage.updateStplatCn", vo);
 
@@ -91,9 +88,8 @@ public class StplatManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 약관정보 글을 삭제한다.
 	 * @param vo
-	 * @exception Exception
 	 */
-    public void deleteStplatCn(StplatManageVO vo) throws Exception {
+    public void deleteStplatCn(StplatManageVO vo) {
 
         delete("StplatManage.deleteStplatCn", vo);
 

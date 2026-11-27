@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -28,13 +27,12 @@
 <title><spring:message code="comSymBat.batchSchdulRegist.title"/></title><!-- 배치스케줄등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>
-<validator:javascript formName="batchSchdul" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 
 function initCalendar(){
@@ -314,7 +312,7 @@ function fn_egov_clearExecutSchdulValue(bYyyyMMdd, bMonth, bDay, bDfk, bHHmmss) 
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymBat.batchSchdulRegist.batchOpertNm"/> <span class="pilsu">*</span></th><!-- 배치작업명 -->
+			<th><spring:message code="comSymBat.batchSchdulRegist.batchOpertNm"/></th><!-- 배치작업명 -->
 			<td class="left">
 			    <form:input path="batchOpertNm" size="60" maxlength="60" readonly="true"  cssClass="readOnlyClass"/>
         		<form:errors path="batchOpertNm" cssClass="error" />
@@ -379,7 +377,7 @@ function fn_egov_clearExecutSchdulValue(bYyyyMMdd, bMonth, bDay, bDfk, bHHmmss) 
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_save(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/sym/bat/getBatchSchdulList.do'/>" onclick="fn_egov_get_list(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_get_list(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

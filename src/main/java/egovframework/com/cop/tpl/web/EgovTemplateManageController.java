@@ -3,29 +3,29 @@ package egovframework.com.cop.tpl.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInf;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 템플릿 관리를 위한 컨트롤러 클래스
@@ -39,12 +39,11 @@ import egovframework.com.cop.tpl.service.TemplateInfVO;
  *
  *   수정일      수정자           수정내용
  *  -------        --------    ---------------------------
- *   2009. 3.18  이삼섭          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2009.03.18  이삼섭          최초 생성
+ *   2011.08.26	 정진오			IncludedInfo annotation 추가
  *
  * </pre>
  */
-
 @Controller
 public class EgovTemplateManageController {
 
@@ -57,9 +56,6 @@ public class EgovTemplateManageController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertyService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	//Logger log = Logger.getLogger(this.getClass());
 
 	/**
@@ -68,11 +64,10 @@ public class EgovTemplateManageController {
 	 * @param searchVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@IncludedInfo(name = "템플릿관리", order = 200, gid = 40)
 	@RequestMapping("/cop/tpl/selectTemplateInfs.do")
-	public String selectTemplateInfs(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, ModelMap model) throws Exception {
+	public String selectTemplateInfs(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, ModelMap model) {
 		tmplatInfVO.setPageUnit(propertyService.getInt("pageUnit"));
 		tmplatInfVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -104,10 +99,9 @@ public class EgovTemplateManageController {
 	 * @param searchVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/selectTemplateInf.do")
-	public String selectTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, ModelMap model) throws Exception {
+	@PostMapping("/cop/tpl/selectTemplateInf.do")
+	public String selectTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, ModelMap model) {
 
 		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
 
@@ -115,6 +109,9 @@ public class EgovTemplateManageController {
 		List<CmmnDetailCode> result = cmmUseService.selectCmmCodeDetail(codeVO);
 
 		TemplateInfVO vo = tmplatService.selectTemplateInf(tmplatInfVO);
+		if (!isAdminManagedDefault(vo)) {
+			EgovAuthorizationHelper.assertOwner(vo == null ? null : vo.getFrstRegisterId());
+		}
 
 		model.addAttribute("TemplateInfVO", vo);
 		model.addAttribute("resultList", result);
@@ -129,16 +126,14 @@ public class EgovTemplateManageController {
 	 * @param tmplatInfo
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/insertTemplateInf.do")
-	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
+	@PostMapping("/cop/tpl/insertTemplateInf.do")
+	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO,
+			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
-		beanValidator.validate(templateInf, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -166,10 +161,9 @@ public class EgovTemplateManageController {
 	 * @param searchVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/addTemplateInf.do")
-	public String addTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, ModelMap model) throws Exception {
+	@PostMapping("/cop/tpl/addTemplateInf.do")
+	public String addTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, ModelMap model) {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 
 		vo.setCodeId("COM005");
@@ -188,16 +182,21 @@ public class EgovTemplateManageController {
 	 * @param tmplatInfo
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/updateTemplateInf.do")
-	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
+	@PostMapping("/cop/tpl/updateTemplateInf.do")
+	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO,
+			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(templateInf, bindingResult);
+		TemplateInfVO lookup = new TemplateInfVO();
+		lookup.setTmplatId(templateInf.getTmplatId());
+		TemplateInfVO stored = tmplatService.selectTemplateInf(lookup);
+		if (!isAdminManagedDefault(stored)) {
+			EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		}
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
@@ -229,16 +228,21 @@ public class EgovTemplateManageController {
 	 * @param tmplatInfo
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteTemplateInf.do")
-	public String deleteTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("tmplatInf") TemplateInf tmplatInf, SessionStatus status, ModelMap model)
-			throws Exception {
+	@PostMapping("/cop/bbs/deleteTemplateInf.do")
+	public String deleteTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("tmplatInf") TemplateInf tmplatInf, SessionStatus status, ModelMap model) {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+			TemplateInfVO lookup = new TemplateInfVO();
+			lookup.setTmplatId(tmplatInf.getTmplatId());
+			TemplateInfVO stored = tmplatService.selectTemplateInf(lookup);
+			if (!isAdminManagedDefault(stored)) {
+				EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+			}
+
 			tmplatInf.setLastUpdusrId(user.getUniqId());
 			tmplatService.deleteTemplateInf(tmplatInf);
 		}
@@ -252,10 +256,9 @@ public class EgovTemplateManageController {
 	 * @param searchVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/tpl/selectTemplateInfsPop.do")
-	public String selectTemplateInfsPop(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+	public String selectTemplateInfsPop(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, @RequestParam Map<String, Object> commandMap, ModelMap model) {
 
 		String typeFlag = (String) commandMap.get("typeFlag");
 
@@ -295,5 +298,12 @@ public class EgovTemplateManageController {
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/cop/tpl/EgovTemplateInqirePopup";
+	}
+
+	/**
+	 * 등록자가 SYSTEM 인 기본 템플릿(초기 데이터)을 관리자가 다루는 경우. 그 외 템플릿은 작성자 본인만 상세·수정·삭제한다.
+	 */
+	private static boolean isAdminManagedDefault(TemplateInfVO stored) {
+		return stored != null && "SYSTEM".equals(stored.getFrstRegisterId()) && EgovAuthorizationHelper.isAdmin();
 	}
 }

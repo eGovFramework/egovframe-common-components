@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpp.title"/></c:set>
 <c:set var="ImgUrl" value="/images/egovframework/com/uss/olp/opp/"/>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
@@ -47,7 +46,8 @@ function fn_egov_init_OnlinePollPartcptnStatistics() {
 <div class="wTableFrm">
 
 <!-- 상단타이틀 -->
-<form name="QustnrQestnManageForm" action="<c:url value=''/>" method="post">
+<form name="QustnrQestnManageForm" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
  <%-- 온라인POLL관리 목록 페이지 --%>
 <c:if test="${linkType eq '1'}">
@@ -122,7 +122,7 @@ function fn_egov_init_OnlinePollPartcptnStatistics() {
 	<dl class="poll_chart">
 	<c:forEach items="${PollItemList}" var="resultInfo" varStatus="status2">
 			<table>
-			<th><c:out value="${resultInfo.pollIemNm}" escapeXml="false" /></td>
+			<th><span style="white-space:pre-line"><c:out value="${resultInfo.pollIemNm}"/></span></td>
 			<td>
 				<ul>
 					<c:forEach items="${statisticsList}" var="statisticsInfo" varStatus="status3">

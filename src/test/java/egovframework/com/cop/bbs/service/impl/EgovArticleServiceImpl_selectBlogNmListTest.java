@@ -1,0 +1,46 @@
+package egovframework.com.cop.bbs.service.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+
+import egovframework.com.cop.bbs.service.BoardVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
+import egovframework.com.test.EgovTestV1;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
+class EgovArticleServiceImpl_selectBlogNmListTest extends EgovTestV1 {
+
+	@Autowired
+	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
+
+	@Autowired
+	private EgovArticleService egovArticleService;
+
+	@Test
+	void selectBlogNmList() {
+		// given
+		BoardVO boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
+
+		// when
+		List<BoardVO> blogNmList = egovArticleService.selectBlogNmList(boardVO);
+
+		blogNmList.forEach(blogNm -> {
+			log.debug("bbsId={}", blogNm.getBbsId());
+			log.debug("blogId={}", blogNm.getBlogId());
+			log.debug("bbsNm={}", blogNm.getBbsNm());
+		});
+
+		// then
+		assertEquals(blogNmList.get(0).getBbsId(), boardVO.getBbsId());
+		assertEquals(blogNmList.get(0).getBlogId(), boardVO.getBlogId());
+		assertEquals(blogNmList.get(0).getBbsNm(), boardVO.getBbsNm());
+	}
+
+}

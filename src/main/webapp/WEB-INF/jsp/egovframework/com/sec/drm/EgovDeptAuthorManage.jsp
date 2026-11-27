@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comCopSecDrm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -34,9 +33,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="userManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 
@@ -169,57 +166,9 @@ function linkPage(pageNo){
 }
 
 
-/*
 function fncSelectDeptAuthorPop() {
-
-    var url = "<c:url value='/sec/drm/EgovDeptSearchView.do'/>";
-    var varParam = new Object();
-    var openParam = "dialogWidth:500px;dialogHeight:485px;scroll:no;status:no;center:yes;resizable:yes;";
-
-    var retVal = window.showModalDialog(url, varParam, openParam);
-    if(retVal) {
-        document.listForm.deptCode.value = retVal.substring(0, retVal.indexOf("|"));
-        document.listForm.deptNm.value = retVal.substring(retVal.indexOf("|")+1, retVal.length);
-    }
+    window.open("<c:url value='/sec/drm/EgovDeptSearchList.do'/>","notice","height=500, width=485, top=50, left=20, scrollbars=no, resizable=no");
 }
-*/
-function fncSelectDeptAuthorPop() {
-
-
-    var url = "<c:url value='/sec/drm/EgovDeptSearchList.do'/>";
-    var openParam = "dialogWidth:500px;dialogHeight:485px;scroll:no;status:no;center:yes;resizable:yes;";
-    /*
-    var retVal = window.showModalDialog(url, varParam, openParam);
-    if(retVal) {
-        document.listForm.deptCode.value = retVal.substring(0, retVal.indexOf("|"));
-        document.listForm.deptNm.value = retVal.substring(retVal.indexOf("|")+1, retVal.length);
-    }
-    */
-
-    window.open(url,"<spring:message code="comCopSecDrm.list.searchDept" />",'width=500,height=485,scrollbars=no,resizable=no,status=no,center:yes'); //부서검색
-
-}
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#deptSelectPopup').click(function (e) {
-        	e.preventDefault();
-            //var page = $(this).attr("href");
-            var pagetitle = $(this).attr("title");
-            var page = "<c:url value='/sec/drm/EgovDeptSearchList.do'/>";
-            var $dialog = $('<div></div>')
-            .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
-            .dialog({
-            	autoOpen: false,
-                modal: true,
-                height: 500,
-                width: 520,
-                title: pagetitle
-        	});
-        	$dialog.dialog('open');
-    	});
-
-	});
 </script>
 
 </head>
@@ -227,7 +176,7 @@ function fncSelectDeptAuthorPop() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/drm/EgovDeptAuthorList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/drm/EgovDeptAuthorList.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 부서권한관리 목록 -->
 	<!-- 검색영역 -->
@@ -238,7 +187,7 @@ function fncSelectDeptAuthorPop() {
 			<li>
 				<input name="deptCode" type="text" value="<c:out value='${deptAuthorVO.deptCode}' />" size="22" title="<spring:message code="comCopSecDrm.list.deptCd" />" readonly="readonly" /><!-- 부서코드 -->
 				<input name="deptNm" type="text" value="<c:out value='${deptAuthorVO.deptNm}'/>" size="15" title="<spring:message code="comCopSecDrm.list.deptNm" />" readonly="readonly" /><!-- 부서명 -->
-				<input id="deptSelectPopup" type="button" class="s_btn" value="<spring:message code="comCopSecDrm.btn.deptSelectPopup" />" title="<spring:message code="comCopSecDrm.btn.deptSelectPopup" /> <spring:message code="input.button" />" /><!-- 부서조회팝업 -->
+				<input id="deptSelectPopup" type="button" class="s_btn" onClick="fncSelectDeptAuthorPop()" value="<spring:message code="comCopSecDrm.btn.deptSelectPopup" />" title="<spring:message code="comCopSecDrm.btn.deptSelectPopup" /> <spring:message code="input.button" />" /><!-- 부서조회팝업 -->
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<input type="button" class="s_btn" onClick="fncDeptAuthorDeleteList();return false;" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
 				<input type="button" class="s_btn" onClick="fncAddDeptAuthorInsert();return false;" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" /><!-- 등록 -->

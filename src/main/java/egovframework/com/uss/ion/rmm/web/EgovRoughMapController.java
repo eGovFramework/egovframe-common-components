@@ -1,263 +1,279 @@
 package egovframework.com.uss.ion.rmm.web;
 
-import java.util.List;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.rmm.service.EgovRoughMapService;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
+ * <pre>
  * 개요
  * -  약도 관리에 대한 Controller를 정의한다.
  *
  * 상세내용
  * -  약도에 대한 등록, 수정, 삭제, 조회, 상세조회 요청 사항을 Service와 매핑 처리한다.
+ * </pre>
  *
  * @author 옥찬우
  * @since 2014.08.27
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일			수정자		수정내용
- *  -----------		------		---------
- *   2014.08.27		옥찬우		최초 생성
- *   2022.11.11     김혜준		시큐어코딩 처리
- *   2024.10.29     권태성		상세 페이지에서 목록으로 이동 시 검색 결과로 이동하기 위한 인자 전달
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.08.27  옥찬우          최초 생성
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.10.29  권태성          상세 페이지에서 목록으로 이동 시 검색 결과로 이동하기 위한 인자 전달
+ *   2025.08.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
  *
- * </pre>
+ *      </pre>
  */
-
 @Controller
 public class EgovRoughMapController {
 
-    /** EgovRoughMapService */
-    @Resource(name="EgovRoughMapService")
-    private EgovRoughMapService egovRoughMapService;
+	/** EgovRoughMapService */
+	@Resource(name = "EgovRoughMapService")
+	private EgovRoughMapService egovRoughMapService;
 
-    /** EgovPropertyService */
-    @Resource(name="propertiesService")
-    protected EgovPropertyService propertyService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertyService;
 
-    /** DefaultBeanValidator */
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+	/**
+	 * 약도 목록 조회 Service interface 호출 및 결과를 반환한다.
+	 * 
+	 * @param RoughMapDefaultVO
+	 * @param model
+	 * @return String 약도 목록 조회 화면
+	 * @throws Exception
+	 */
+	@IncludedInfo(name = "약도 관리", order = 943, gid = 50)
+	@RequestMapping("/com/uss/ion/rmm/selectRoughMapList.do")
+	public String selectRoughMapList(@ModelAttribute("searchVO") RoughMapDefaultVO searchVO, ModelMap model)
+			throws Exception {
 
-    /**
-     * 약도 목록 조회 Service interface 호출 및 결과를 반환한다.
-     * @param RoughMapDefaultVO
-     * @param model
-     * @return String 약도 목록 조회 화면
-     * @throws Exception
-    */
-    @IncludedInfo(name="약도 관리", order = 943, gid = 50)
-    @RequestMapping("/com/uss/ion/rmm/selectRoughMapList.do")
-    public String selectRoughMapList(@ModelAttribute("searchVO") RoughMapDefaultVO searchVO, ModelMap model) throws Exception {
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
+		searchVO.setPageSize(propertyService.getInt("pageSize"));
 
-        searchVO.setPageUnit(propertyService.getInt("pageUnit"));
-        searchVO.setPageSize(propertyService.getInt("pageSize"));
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
 
-        PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		List<EgovMap> roughMapList = egovRoughMapService.selectRoughMapList(searchVO);
 
-        List<EgovMap> roughMapList = egovRoughMapService.selectRoughMapList(searchVO);
+		int totCnt = egovRoughMapService.selectRoughMapListTotCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
 
-        int totCnt = egovRoughMapService.selectRoughMapListTotCnt(searchVO);
-        paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("resultList", roughMapList);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        model.addAttribute("resultList", roughMapList);
-        model.addAttribute("paginationInfo", paginationInfo);
+		return "egovframework/com/uss/ion/rmm/EgovRoughMapList";
+	}
 
-        return "egovframework/com/uss/ion/rmm/EgovRoughMapList";
-    }
+	/**
+	 * 약도 상세조회 Service interface 호출 및 결과를 반환한다.
+	 * 
+	 * @param searchVO
+	 * @param model
+	 * @return String 건물 위치정보 상세조회 화면
+	 * @throws Exception
+	 */
+	@PostMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
+	@RequireAdmin
+	public String selectRoughMap(RoughMapVO searchVO, ModelMap model) throws Exception {
 
-    /**
-     * 약도 상세조회 Service interface 호출 및 결과를 반환한다.
-     * @param searchVO
-     * @param model
-     * @return String 건물 위치정보 상세조회 화면
-     * @throws Exception
-    */
-    @RequestMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
-    public String selectRoughMap(RoughMapVO searchVO, ModelMap model) throws Exception {
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(searchVO);
+		model.addAttribute("roughMap", roughMap);
 
-        RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(searchVO);
-        model.addAttribute("roughMap", roughMap);
+		return "egovframework/com/uss/ion/rmm/EgovRoughMapDetail";
+	}
 
-        return "egovframework/com/uss/ion/rmm/EgovRoughMapDetail";
-    }
+	/**
+	 * 약도 등록 화면으로 이동한다.
+	 * 
+	 * @param RoughMapDefaultVO
+	 * @param model
+	 * @return String 건물 위치정보 등록 화면
+	 * @throws Exception
+	 */
+	@PostMapping("/com/uss/ion/rmm/registRoughMap.do")
+	@RequireAdmin
+	public String goRoughMapRegist(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-    /**
-     * 약도 등록 화면으로 이동한다.
-     * @param RoughMapDefaultVO
-     * @param model
-     * @return String 건물 위치정보 등록 화면
-     * @throws Exception
-    */
-    @RequestMapping(value="/com/uss/ion/rmm/registRoughMap.do")
-    public String goRoughMapRegist(@ModelAttribute("roughMap") RoughMapVO roughMap, Model model) throws Exception {
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		return "egovframework/com/uss/ion/rmm/EgovRoughMapRegist";
+	}
 
-        return "egovframework/com/uss/ion/rmm/EgovRoughMapRegist";
-    }
+	/**
+	 * 약도 등록 Service interface 호출 및 결과를 반환한다.
+	 * 
+	 * @param RoughMapVO
+	 * @return String 건물 위치정보 목록 조회 화면
+	 * @throws Exception
+	 */
+	@PostMapping("/com/uss/ion/rmm/insertRoughMap.do")
+	@RequireAdmin
+	public String insertRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
+			throws Exception {
 
-    /**
-     * 약도 등록 Service interface 호출 및 결과를 반환한다.
-     * @param RoughMapVO
-     * @return String 건물 위치정보 목록 조회 화면
-     * @throws Exception
-    */
-    @RequestMapping("/com/uss/ion/rmm/insertRoughMap.do")
-    public String insertRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult) throws Exception {
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
-
-    	beanValidator.validate(roughMap, bindingResult);
-
-		if(bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/rmm/EgovRoughMapRegist";
 		}
 
-        LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        // 2022.11.11 시큐어코딩 처리
-        roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-        roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));    	// 최종수정자ID
-        egovRoughMapService.insertRoughMap(roughMap);
+		// 2022.11.11 시큐어코딩 처리
+		roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+		roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId())); // 최종수정자ID
+		egovRoughMapService.insertRoughMap(roughMap);
 
-        return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
-    }
+		return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
+	}
 
-    /**
-     * 약도 수정 화면으로 이동한다.
-     * @param RoughMapDefaultVO
-     * @param model
-     * @return String 건물 위치정보 수정 화면
-     * @throws Exception
-    */
-    @RequestMapping(value="/com/uss/ion/rmm/updateRoughMapView.do")
-    public String goRoughMapUpdt(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
+	/**
+	 * 약도 수정 화면으로 이동한다.
+	 * 
+	 * @param RoughMapDefaultVO
+	 * @param model
+	 * @return String 건물 위치정보 수정 화면
+	 * @throws Exception
+	 */
+	@PostMapping("/com/uss/ion/rmm/updateRoughMapView.do")
+	@RequireAdmin
+	public String goRoughMapUpdt(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
 
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        roughMap = egovRoughMapService.selectRoughMapDetail(roughMap);
+		RoughMapVO result = EgovAuthorizationHelper.requireTarget(egovRoughMapService.selectRoughMapDetail(roughMap));
 
-        model.addAttribute("result", roughMap);
-        model.addAttribute("roughMap", roughMap);
+		model.addAttribute("result", result);
+		model.addAttribute("roughMap", result);
 
-        return "egovframework/com/uss/ion/rmm/EgovRoughMapUpdt";
-    }
+		return "egovframework/com/uss/ion/rmm/EgovRoughMapUpdt";
+	}
 
-    /**
-     * 약도 수정 Service interface 호출 및 결과를 반환한다.
-     * @param RoughMapVO
-     * @return String 건물 위치정보 목록 조회 화면
-     * @throws Exception
-    */
-    @RequestMapping(value="/com/uss/ion/rmm/updateRoughMap.do")
-    public String updateRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult) throws Exception {
+	/**
+	 * 약도 수정 Service interface 호출 및 결과를 반환한다.
+	 * 
+	 * @param RoughMapVO
+	 * @return String 건물 위치정보 목록 조회 화면
+	 * @throws Exception
+	 */
+	@PostMapping("/com/uss/ion/rmm/updateRoughMap.do")
+	@RequireAdmin
+	public String updateRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult,
+			ModelMap model)
+			throws Exception {
 
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-    	beanValidator.validate(roughMap, bindingResult);
 
-		if(bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
+			// 형제 goRoughMapUpdt와 동일하게 재표시 폼이 참조하는 result를 담는다
+			model.addAttribute("result", roughMap);
 			return "egovframework/com/uss/ion/rmm/EgovRoughMapUpdt";
 		}
 
-        LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        // 2022.11.11 시큐어코딩 처리
-        roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-        egovRoughMapService.updateRoughMap(roughMap);
+		// 2022.11.11 시큐어코딩 처리
+		roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+		egovRoughMapService.updateRoughMap(roughMap);
 
-        return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
-    }
+		return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
+	}
 
-    /**
-     * 약도 삭제 Service interface 호출 및 결과를 반환한다.
-     * @param RoughMapVO
-     * @return String 건물 위치정보 목록 조회 화면
-     * @throws Exception
-    */
-    @RequestMapping(value="/com/uss/ion/rmm/deleteRoughMap.do")
-    public String deleteRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap) throws Exception {
+	/**
+	 * 약도 삭제 Service interface 호출 및 결과를 반환한다.
+	 * 
+	 * @param RoughMapVO
+	 * @return String 건물 위치정보 목록 조회 화면
+	 * @throws Exception
+	 */
+	@PostMapping("/com/uss/ion/rmm/deleteRoughMap.do")
+	@RequireAdmin
+	public String deleteRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap) throws Exception {
 
-        // 권한 체크
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// 권한 체크
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        // 사용자 인증여부 판단
-        // 2022.11.11 시큐어코딩 처리
-        roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-        egovRoughMapService.deleteRoughMap(roughMap);
+		// 사용자 인증여부 판단
+		// 2022.11.11 시큐어코딩 처리
 
-        return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
-    }
+		roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+		egovRoughMapService.deleteRoughMap(roughMap);
+
+		return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
+	}
 
 }

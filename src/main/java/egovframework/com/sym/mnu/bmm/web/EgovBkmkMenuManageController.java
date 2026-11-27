@@ -1,28 +1,33 @@
 package egovframework.com.sym.mnu.bmm.web;
 
-import java.util.Map;
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
-import javax.annotation.Resource;
+import java.util.Map;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
-import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageservice;
+import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import egovframework.com.cmm.EgovMessageSource;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 바로가기메뉴관리 정보를 관리하기 위한 컨트롤러 클래스
@@ -47,13 +52,13 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovBkmkMenuManageController {
 
     @Resource(name = "bkmkMenuManageservice")
-    private EgovBkmkMenuManageservice bkmkMenuManageService;
+    private EgovBkmkMenuManageService bkmkMenuManageService;
 
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+    @Resource(name = "egovMessageSource")
+    protected EgovMessageSource egovMessageSource;
 
     /**
      * 바로가기메뉴관리 정보에 대한 목록을 조회한다.
@@ -118,8 +123,9 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/sym/mnu/bmm/EgovBkmkMenuManageDelete.do")
-    public String deleteMenuManageList(
+    @PostMapping("/sym/mnu/bmm/EgovBkmkMenuManageDelete.do")
+    @RequireAdmin
+	public String deleteMenuManageList(
             @RequestParam("checkMenuIds") String checkMenuIds ,
             @ModelAttribute("bkmkMenuManageVO") BkmkMenuManageVO bkmkMenuManageVO,
             ModelMap model)
@@ -133,16 +139,28 @@ public class EgovBkmkMenuManageController {
             //    model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-
-        String [] temp = checkMenuIds.split(",");
-
-        for(int i =0; i < temp.length; i++){
-            BkmkMenuManage bkmk = new BkmkMenuManage();
-            bkmk.setMenuId(temp[i]);
-            bkmk.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-            bkmkMenuManageService.deleteBkmkMenuManage(bkmk);
+        // 2026.03.23 kisa 보안점검 대응 조치
+        if(ObjectUtils.isEmpty(checkMenuIds)) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
         }
+	        String [] temp = checkMenuIds.split(",");
 
+	        for (String element : temp) {
+	            BkmkMenuManageVO keyVO = new BkmkMenuManageVO();
+	            keyVO.setMenuId(element);
+	            keyVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+	            BkmkMenuManageVO stored = bkmkMenuManageService.selectBkmkMenuManageResult(keyVO);
+	            EgovAuthorizationHelper.assertOwnerById(stored == null ? null : stored.getUserId());
+	        }
+	
+	        for (String element : temp) {
+	            BkmkMenuManage bkmk = new BkmkMenuManage();
+	            bkmk.setMenuId(element);
+	            bkmk.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+	            bkmkMenuManageService.deleteBkmkMenuManage(bkmk);
+	        }
+        
         return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
     }
 
@@ -155,7 +173,8 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/sym/mnu/bmm/addBkmkInf.do")
+    @PostMapping("/sym/mnu/bmm/addBkmkInf.do")
+    @RequireAdmin
     public String addBkmkMenuManage( @ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage, SessionStatus status, ModelMap model) throws Exception {
 
         if(!bkmkMenuManage.getMenuId().equals("")){
@@ -175,9 +194,10 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @RequestMapping("/sym/mnu/bmm/openPopup.do")
+    @RequireAdmin
     public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
-        String requestUrl = (String)commandMap.get("requestUrl");
+        String requestUrl = EgovWebUtil.sanitizeRelativeRequestUrl((String)commandMap.get("requestUrl"));
         requestUrl = requestUrl.replaceAll("&", "&amp;");
         String width = (String)commandMap.get("width");
         String height = (String)commandMap.get("height");
@@ -197,11 +217,9 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping("/sym/mnu/bmm/selectMenuList.do")
+    @RequireAdmin
     public String selectMenuList(@ModelAttribute("bkmkMenuManageVO") BkmkMenuManageVO bkmkMenuManageVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-        String popFlag = (String)commandMap.get("PopFlag");
-
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         bkmkMenuManageVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -241,8 +259,9 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/sym/mnu/bmm/registBkmkInf.do")
-    public String registBkmkInf(@ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage,
+    @PostMapping("/sym/mnu/bmm/registBkmkInf.do")
+    @RequireAdmin
+    public String registBkmkInf(@Valid @ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage,
             BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -251,18 +270,19 @@ public class EgovBkmkMenuManageController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-
-        beanValidator.validate(bkmkMenuManage, bindingResult);
+        
         if (bindingResult.hasErrors()) {
+        	model.addAttribute("bkmkMenuManage", bkmkMenuManage);
             return "egovframework/com/sym/mnu/bmm/EgovBkmkMenuManageRegist";
+        }else {
+            bkmkMenuManage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+
+            // 2022.11.11 시큐어코딩 처리
+            bkmkMenuManageService.insertBkmkMenuManage(bkmkMenuManage);
+
+            return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
+//              return "/sym/mnu/bmm/selectBkmkMenuManageList";
         }
-
-        bkmkMenuManage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-
-        // 2022.11.11 시큐어코딩 처리
-        bkmkMenuManageService.insertBkmkMenuManage(bkmkMenuManage);
-
-        return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
     }
 
     /**
@@ -273,7 +293,8 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value="/sym/mnu/bmm/previewBkmkInf.do")
+    @RequestMapping(value = "/sym/mnu/bmm/previewBkmkInf.do")
+    @RequireAdmin
     public String previewBkmkInf(@ModelAttribute("searchVO") BkmkMenuManageVO bkmkMenuManageVO,ModelMap model)
             throws Exception {
         String resultMsg    = "";

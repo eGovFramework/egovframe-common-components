@@ -25,76 +25,67 @@ public interface EgovNcrdManageService {
      * 명함 정보를 삭제한다.
      * 
      * @param nameCard
-     * @throws Exception
      */
 
-	public void deleteNcrdItem(NameCardVO namecardVO) throws Exception;
+	public void deleteNcrdItem(NameCardVO namecardVO);
     /**
      * 명함 정보 및 명함사용자 정보를 등록한다.
      * 
      * @param nameCard
-     * @throws Exception
      */
-    public void insertNcrdItem(NameCard nameCard) throws Exception;
+    public void insertNcrdItem(NameCard nameCard);
 
     /**
      * 명함사용자 정보를 등록한다.
      * 
      * @param ncrdUser
-     * @throws Exception
      */
-    public void insertNcrdUseInf(NameCardUser ncrdUser) throws Exception;
+    public void insertNcrdUseInf(NameCardUser ncrdUser);
 
     /**
      * 명함 정보에 대한 상세정보를 조회한다.
      * 
      * @param nameCard
      * @return
-     * @throws Exception
      */
-    public NameCardVO selectNcrdItem(NameCardVO ncrdVO) throws Exception;
+    public NameCardVO selectNcrdItem(NameCardVO ncrdVO);
 
     /**
      * 명함 정보에 대한 목록을 조회한다.
      * 
      * @param nameCard
      * @return
-     * @throws Exception
      */
-    public Map<String, Object> selectNcrdItems(NameCardVO ncrdVO) throws Exception;
+    public Map<String, Object> selectNcrdItems(NameCardVO ncrdVO);
 
     /**
      * 명함 정보에 대한 목록 전체 건수를 조회한다.
      * 
      * @param ncrdUser
      * @return
-     * @throws Exception
      */
-    public Map<String, Object> selectNcrdUseInfs(NameCardUser ncrdUser) throws Exception;
+    public Map<String, Object> selectNcrdUseInfs(NameCardUser ncrdUser);
 
     /**
      * 명함 정보를 수정한다.
      * 
      * @param nameCard
-     * @throws Exception
      */
-    public void updateNcrdItem(NameCard nameCard) throws Exception;
+    public void updateNcrdItem(NameCard nameCard);
 
     /**
      * 명함사용자 정보를 수정한다.
      * 
      * @param ncrdUser
-     * @throws Exception
      */
-    public void updateNcrdUseInf(NameCardUser ncrdUser) throws Exception;
+    public void updateNcrdUseInf(NameCardUser ncrdUser);
 
     /**
      * 내 명함 정보에 대한 목록을 조회한다.
      * 
      * @param ncrdVO
      * @return
-     * @throws Exception
      */
-    public Map<String, Object> selectMyNcrdItems(NameCardVO ncrdVO) throws Exception;
+    public Map<String, Object> selectMyNcrdItems(NameCardVO ncrdVO);
     
 }

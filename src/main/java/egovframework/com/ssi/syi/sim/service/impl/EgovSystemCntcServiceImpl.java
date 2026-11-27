@@ -2,8 +2,6 @@ package egovframework.com.ssi.syi.sim.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.ssi.syi.sim.service.EgovSystemCntcService;
 import egovframework.com.ssi.syi.sim.service.SystemCntc;
 import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
+import javax.annotation.Resource;
 
 
 
@@ -29,7 +28,7 @@ import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 @Service("SystemCntcService")

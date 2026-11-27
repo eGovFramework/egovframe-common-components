@@ -2,6 +2,9 @@ package egovframework.com.ssi.syi.iis.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Size;
+
 /**
  * 연계시스템 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -16,7 +19,7 @@ import java.io.Serializable;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 public class CntcSystem implements Serializable {
@@ -26,6 +29,8 @@ public class CntcSystem implements Serializable {
 	/*
 	 * 기관ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String insttId        = "";
 
 	/*
@@ -36,6 +41,8 @@ public class CntcSystem implements Serializable {
 	/*
 	 * 시스템명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String sysNm          = "";
 
 	/*

@@ -6,6 +6,7 @@
  *     수정일         수정자                   수정내용
  *     -------          --------        ---------------------------
  *   2009.02.13       이삼섭                  최초 생성
+ *   2026.07.09       EricSeokgon             지역 StringBuffer를 StringBuilder로 변경(불필요한 동기화 제거)
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 02. 13
@@ -26,24 +27,35 @@ public class EgovNumberUtil {
 
 	// 221116	김혜준	2022 시큐어코딩 조치
 	private static SecureRandom rnd = new SecureRandom();
-	
+
 	/**
-	 * 특정숫자 집합에서 랜덤 숫자를 구하는 기능 시작숫자와 종료숫자 사이에서 구한 랜덤 숫자를 반환한다
+	 * 특정숫자 집합에서 랜덤 숫자를 구하는 기능. 시작숫자(startNum)와 종료숫자(endNum) 사이에서
+	 * 균등하게 추출한 랜덤 숫자를 반환한다.
 	 *
-	 * @param startNum - 시작숫자
-	 * @param endNum - 종료숫자
-	 * @return 랜덤숫자
+	 * <p>반환값의 범위는 [startNum, endNum]으로 시작숫자와 종료숫자를 모두 포함한다(양 끝 포함).
+	 * startNum과 endNum이 같으면 항상 해당 값을 반환한다.</p>
+	 *
+	 * <p>음수 구간도 지원한다. 예를 들어 startNum이 -10, endNum이 -1이면 -10 이상 -1 이하의
+	 * 값을 반환하며, Integer.MIN_VALUE ~ Integer.MAX_VALUE 전 구간을 지원한다.</p>
+	 *
+	 * @param startNum - 시작숫자(반환 범위의 하한, 포함)
+	 * @param endNum - 종료숫자(반환 범위의 상한, 포함)
+	 * @return startNum 이상 endNum 이하의 랜덤숫자
+	 * @throws IllegalArgumentException startNum이 endNum보다 큰 경우
 	 * @see
 	 */
 	public static int getRandomNum(int startNum, int endNum) {
-		int randomNum = 0;
+		if (startNum > endNum) {
+			throw new IllegalArgumentException("startNum(" + startNum + ")은 endNum(" + endNum + ")보다 클 수 없습니다.");
+		}
 
-		do {
-			// 종료숫자내에서 랜덤 숫자를 발생시킨다.
-			randomNum = rnd.nextInt(endNum + 1);
-		} while (randomNum < startNum); // 랜덤 숫자가 시작숫자보다 작을경우 다시 랜덤숫자를 발생시킨다.
+		// (endNum - startNum + 1)이 int 범위를 넘을 수 있으므로 long으로 구간 크기를 계산한다.
+		// endNum이 Integer.MAX_VALUE일 때 endNum + 1 오버플로와, endNum < startNum일 때
+		// 발생하던 무한 루프를 함께 방지한다.
+		long range = (long) endNum - (long) startNum + 1L;
 
-		return randomNum;
+		// [startNum, endNum] 구간에서 균등하게 난수를 뽑는다.
+		return (int) (startNum + Math.floorMod(rnd.nextLong(), range));
 	}
 
 	/**
@@ -59,11 +71,7 @@ public class EgovNumberUtil {
 		String searchStr = String.valueOf(searchInt);
 
 		// 특정숫자가 존재하는지 하여 위치값을 리턴한다. 없을 시 -1
-		if (sourceStr.indexOf(searchStr) == -1) {
-			return false;
-		} else {
-			return true;
-		}
+		return sourceStr.contains(searchStr);
 	}
 
 	/**
@@ -125,11 +133,15 @@ public class EgovNumberUtil {
 	/**
 	 * 체크할 숫자 중에서 숫자인지 아닌지 체크하는 기능
 	 * 숫자이면 True, 아니면 False를 반환한다
+	 * null 또는 빈 문자열은 False를 반환한다.
 	 * @param checkStr - 체크문자열
 	 * @return 숫자여부
 	 * @see
 	 */
 	public static Boolean getNumberValidCheck(String checkStr) {
+		if (checkStr == null || checkStr.isEmpty()) {
+			return false;
+		}
 
 		int i;
 		//String sourceStr = String.valueOf(sourceInt);
@@ -165,7 +177,7 @@ public class EgovNumberUtil {
 		String subject = String.valueOf(cnvrSrcNumber);
 		String object = String.valueOf(cnvrTrgtNumber);
 
-		StringBuffer rtnStr = new StringBuffer();
+		StringBuilder rtnStr = new StringBuilder();
 		String preStr = "";
 		String nextStr = source;
 

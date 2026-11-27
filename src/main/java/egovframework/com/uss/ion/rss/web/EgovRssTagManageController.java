@@ -1,30 +1,32 @@
 package egovframework.com.uss.ion.rss.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.rss.service.EgovRssTagManageService;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * RSS태그관리를 처리하는 Controller Class 구현
@@ -45,9 +47,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 @Controller
 public class EgovRssTagManageController {
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -67,15 +66,15 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    //@IncludedInfo(name="RSS태그관리", order = 821)
     @RequestMapping(value = "/uss/ion/rss/listRssTagManageTableColumnList.do")
+    @RequireAdmin
     public String EgovRssTagManageTableColumnList(@RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
 
     	String sDbType = egovMessageSource.getMessage("Globals.DbType");
     	String sTableName = commandMap.get("tableName") == null ? "" : (String) commandMap.get("tableName");
 
-    	HashMap<String, String> hmParam =  new HashMap<String, String>();
+    	HashMap<String, String> hmParam =  new HashMap<>();
 
     	hmParam.put("dbType", sDbType);
     	hmParam.put("tableName", sTableName);
@@ -88,7 +87,6 @@ public class EgovRssTagManageController {
 
     /**
      * RSS태그관리 목록을 조회한다.
-     * @param searchVO -검색정보가 담긴 객체
      * @param commandMap -Request Variable
      * @param rssManage -RSS태그관리 객체
      * @param model -Spring 제공하는 ModelMap
@@ -96,12 +94,11 @@ public class EgovRssTagManageController {
      * @throws Exception
      */
     @IncludedInfo(name="RSS태그관리", listUrl="/uss/ion/rss/listRssTagManage.do", order = 820 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do")
+    @RequestMapping("/uss/ion/rss/listRssTagManage.do")
     public String EgovRssTagManageList(
-            @ModelAttribute("searchVO") RssManage searchVO,
             @RequestParam Map<?, ?> commandMap,
-            @RequestParam(value="checkList", required=false) List<String> checkList,
-            RssManage rssManage, ModelMap model)
+            @RequestParam(value = "checkList", required=false) List<String> checkList,
+            @ModelAttribute("rssManage") RssManage rssManage, ModelMap model)
             throws Exception {
 
     	//변수 설정
@@ -119,9 +116,22 @@ public class EgovRssTagManageController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
-        	
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			// 일괄 삭제: 관리자끼리는 신뢰하므로 등록자 대신 모든 건이 있는지만 먼저 확인한 뒤 삭제한다.
+			for(String checkData : checkList) {
+				RssManage target = new RssManage();
+				target.setRssId(checkData);
+				EgovAuthorizationHelper.requireTarget(egovRssManageService.selectRssTagManageDetail(target));
+			}
+
         	for(String checkData : checkList) {
-               
+
         		rssManage.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            rssManage.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            rssManage.setRssId(checkData);
@@ -130,30 +140,36 @@ public class EgovRssTagManageController {
             }
 
 	        //페이지 인텍스 설정
-	        searchVO.setPageIndex(1);
+	        rssManage.setPageIndex(1);
         }
 
+        // 검색 조건 설정
+        String searchKeyword = commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword");
+        String searchCondition = commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition");
+        rssManage.setSearchKeyword(searchKeyword);
+        rssManage.setSearchCondition(searchCondition);
+
         /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+        rssManage.setPageUnit(propertiesService.getInt("pageUnit"));
+        rssManage.setPageSize(propertiesService.getInt("pageSize"));
 
         /** pageing */
         PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+        paginationInfo.setCurrentPageNo(rssManage.getPageIndex());
+        paginationInfo.setRecordCountPerPage(rssManage.getPageUnit());
+        paginationInfo.setPageSize(rssManage.getPageSize());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        rssManage.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        rssManage.setLastIndex(paginationInfo.getLastRecordIndex());
+        rssManage.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovRssManageService.selectRssTagManageList(searchVO);
+        List<?> reusltList = egovRssManageService.selectRssTagManageList(rssManage);
         model.addAttribute("resultList", reusltList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchCondition", searchCondition);
 
-        int totCnt = egovRssManageService.selectRssTagManageListCnt(searchVO);
+        int totCnt = egovRssManageService.selectRssTagManageListCnt(rssManage);
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
@@ -163,16 +179,15 @@ public class EgovRssTagManageController {
 
     /**
      * RSS태그관리 목록을 상세조회 조회한다.
-     * @param searchVO -검색정보가 담긴 객체
      * @param rssManage -RSS태그관리 객체
      * @param commandMap -Request Variable
      * @param model -Spring 제공하는 ModelMap
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do")
-    public String EgovRssTagManageDetail(
-            @ModelAttribute("searchVO") RssManage searchVO,
+    @PostMapping("/uss/ion/rss/detailRssTagManage.do")
+    @RequireAdmin
+	public String EgovRssTagManageDetail(
             RssManage rssManage, @RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
 
@@ -181,6 +196,11 @@ public class EgovRssTagManageController {
         String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
         if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
             egovRssManageService.deleteRssTagManage(rssManage);
             sLocationUrl = "redirect:/uss/ion/rss/listRssTagManage.do";
         } else {
@@ -195,7 +215,6 @@ public class EgovRssTagManageController {
 
     /**
      * RSS태그관리를 수정한다.
-     * @param searchVO -검색정보가 담긴 객체
      * @param commandMap -Request Variable
      * @param rssManage -RSS태그관리 객체
      * @param BindingResult	-Validator 하기위한 객체
@@ -203,11 +222,11 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/updtRssTagManage.do")
-    public String EgovRssTagManageModify(
-            @ModelAttribute("searchVO") RssManage searchVO,
+    @PostMapping("/uss/ion/rss/updtRssTagManage.do")
+    @RequireAdmin
+	public String EgovRssTagManageModify(
             @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("rssManage") RssManage rssManage,
+            @Valid @ModelAttribute("rssManage") RssManage rssManage,
             BindingResult bindingResult, ModelMap model) throws Exception {
 
             // 0. Spring Security 사용자권한 처리
@@ -226,9 +245,14 @@ public class EgovRssTagManageController {
 
             if (sCmd.equals("save")) {
 
-                //서버  validate 체크
-                beanValidator.validate(rssManage, bindingResult);
+                // 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 삭제와 같이 관리자만 수정 가능
+                EgovAuthorizationHelper.assertAdmin();
+
+
                 if(bindingResult.hasErrors()){
+                	//테이블 목록 불러오기
+                	model.addAttribute("trgetSvcTableList", egovRssManageService.selectRssTagManageTableList());
+                	model.addAttribute("rssManage", rssManage);
                     return sLocationUrl;
                 }
                 //아이디 설정
@@ -251,20 +275,44 @@ public class EgovRssTagManageController {
     }
 
     /**
+     * RSS태그관리를 등록 전 단계처리
+     * @param rssManage -RSS태그관리 객체
+     * @param model -Spring 제공하는 ModelMap
+     * @return String -리턴 URL
+     * @throws Exception
+     */
+    @PostMapping("/uss/ion/rss/insertRssTagManageView.do")
+    @RequireAdmin
+    public String insertRssTagManageView(
+            @ModelAttribute("rssManage") RssManage rssManage,
+            ModelMap model) throws Exception {
+
+            // 0. Spring Security 사용자권한 처리
+            Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+            if (!isAuthenticated) {
+                model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+                return "redirect:/uat/uia/egovLoginUsr.do";
+            }
+
+            //테이블 목록 불러오기
+            model.addAttribute("trgetSvcTableList", egovRssManageService.selectRssTagManageTableList());
+            model.addAttribute("rssManage", rssManage);
+
+            return "egovframework/com/uss/ion/rss/EgovRssTagManageRegist";
+    }
+
+    /**
      * RSS태그관리를 등록한다.
-     * @param searchVO -검색정보가 담긴 객체
-     * @param commandMap -Request Variable
      * @param rssManage -RSS태그관리 객체
      * @param BindingResult	-Validator 하기위한 객체
      * @param model -Spring 제공하는 ModelMap
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/registRssTagManage.do")
-    public String EgovRssTagManageRegist(
-            @ModelAttribute("searchVO") RssManage searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("rssManage") RssManage rssManage,
+    @PostMapping("/uss/ion/rss/insertRssTagManage.do")
+    @RequireAdmin
+    public String insertRssTagManage(
+            @Valid @ModelAttribute("rssManage") RssManage rssManage,
             BindingResult bindingResult, ModelMap model) throws Exception {
 
             // 0. Spring Security 사용자권한 처리
@@ -274,32 +322,28 @@ public class EgovRssTagManageController {
                 return "redirect:/uat/uia/egovLoginUsr.do";
             }
 
+            // 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 삭제와 같이 관리자만 등록 가능
+            EgovAuthorizationHelper.assertAdmin();
+
             // 로그인 객체 선언
             LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
             String sLocationUrl = "egovframework/com/uss/ion/rss/EgovRssTagManageRegist";
 
-            String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-
-            if (sCmd.equals("save")) {
-                //서버  validate 체크
-                beanValidator.validate(rssManage, bindingResult);
-                if(bindingResult.hasErrors()){
-                    return sLocationUrl;
-                }
-                //아이디 설정
-                rssManage.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-                rssManage.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-                //저장
-                egovRssManageService.insertRssTagManage(rssManage);
-
-                sLocationUrl = "forward:/uss/ion/rss/listRssTagManage.do";
-            }else{
-            	model.addAttribute("trgetSvcTableList", egovRssManageService.selectRssTagManageTableList());
-
+            if(bindingResult.hasErrors()){
+                //테이블 목록 불러오기
+                model.addAttribute("trgetSvcTableList", egovRssManageService.selectRssTagManageTableList());
+                model.addAttribute("rssManage", rssManage);
+                return sLocationUrl;
             }
 
-            return sLocationUrl;
+            //아이디 설정
+            rssManage.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+            rssManage.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+            //저장
+            egovRssManageService.insertRssTagManage(rssManage);
+
+            return "forward:/uss/ion/rss/listRssTagManage.do";
     }
 
 

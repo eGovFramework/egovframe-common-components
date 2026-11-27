@@ -3,8 +3,6 @@ package egovframework.com.sym.ccm.acr.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -12,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
@@ -22,6 +22,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
 import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
+import javax.annotation.Resource;
 
 /**
  *
@@ -39,7 +40,7 @@ import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
  *   2009.04.01  이중호          최초 생성
  *   2011.8.26	정진오			IncludedInfo annotation 추가
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 
@@ -67,7 +68,8 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeRegist"
 	 * @throws Exception
 	 */
-    @RequestMapping(value="/sym/ccm/acr/addAdministCode.do")
+    @PostMapping("/sym/ccm/acr/addAdministCode.do")
+	@RequireAdmin
 	public String insertAdministCodeRecptn (AdministCodeRecptn administCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -92,7 +94,8 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/ccm/acr/getAdministCodeDetail.do")
+	@PostMapping("/sym/ccm/acr/getAdministCodeDetail.do")
+ 	@RequireAdmin
  	public String selectAdministCodeDetail (@ModelAttribute("administCode") AdministCodeRecptn administCode
 			, @ModelAttribute("administCodeRecptnVO") AdministCodeRecptnVO administCodeRecptnVO
 			, ModelMap model
@@ -135,7 +138,7 @@ public class EgovAdministCodeRecptnController {
      * @throws Exception
      */
 	@IncludedInfo(name="행정코드관리", listUrl="/sym/ccm/acr/getAdministCodeRecptnList.do", order = 1010 ,gid = 60)
-    @RequestMapping(value="/sym/ccm/acr/getAdministCodeRecptnList.do")
+    @RequestMapping(value = "/sym/ccm/acr/getAdministCodeRecptnList.do")
 	public String selectAdministCodeRecptnList (@ModelAttribute("searchVO") AdministCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -171,7 +174,8 @@ public class EgovAdministCodeRecptnController {
      * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeList"
      * @throws Exception
      */
-    @RequestMapping(value="/sym/ccm/acr/getAdministCodeRecptnMainList.do")
+    @RequestMapping(value = "/sym/ccm/acr/getAdministCodeRecptnMainList.do")
+	@RequireAdmin
 	public String selectAdministCodeRecptnMainList (@ModelAttribute("searchVO") AdministCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -196,13 +200,11 @@ public class EgovAdministCodeRecptnController {
      * @return
      */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap){
-		String ret = "";
-       	for(Object key:commandMap.keySet()){
-    		Object value = commandMap.get(key);
-
-    		ret += "key:" + key.toString() + " value:" + value.toString();
+		StringBuilder ret = new StringBuilder();
+       	for(Map.Entry<?, ?> entry : commandMap.entrySet()){
+    		ret.append("key:").append(entry.getKey()).append(" value:").append(entry.getValue());
     	}
-       	return ret;
+       	return ret.toString();
 	}
 
 }

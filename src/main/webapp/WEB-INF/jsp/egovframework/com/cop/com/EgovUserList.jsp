@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovUserList.jsp
@@ -120,7 +121,7 @@
 
 </head>
 <body>
-<form name="frm" action ="" method="post">
+<form:form name="frm" modelAttribute="searchVO" action ="" method="post">
 <input type="hidden" name="targetMethod" value="${targetMethod}" />
 <input type="hidden" name="trgetId" value="${trgetId}" />
 <input type="hidden" name="param_emplyrId" />
@@ -218,6 +219,6 @@
 	</div>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 </div>
-</form>
+</form:form>
 </body>
 </html>

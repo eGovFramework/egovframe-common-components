@@ -21,7 +21,6 @@ package egovframework.com.ext.ldapumt.service.impl;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
@@ -35,6 +34,7 @@ import org.springframework.ldap.core.LdapTemplate;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.ext.ldapumt.service.LdapObject;
+import javax.annotation.Resource;
 
 /**
 *
@@ -64,9 +64,11 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	 * vo의 dn의 객체를 인자로 넘어온 객체로 업데이트.
 	 */
 	protected void updateOrg(LdapObject vo) {
-		String dn = vo.getDn();
+		String dn = EgovWebUtil.removeLDAPInjectionRisk(vo.getDn());
+		vo.setDn(dn);
+		// 2026.07.13 KISA 보안취약점 조치 - DN 검증
 
-		final ArrayList<ModificationItem> itemList = new ArrayList<ModificationItem>();
+		final ArrayList<ModificationItem> itemList = new ArrayList<>();
 
 		introspect(vo, new Executable(){
 			@Override
@@ -124,13 +126,14 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	private void introspect(LdapObject vo, Executable e) {
 		Map<Object, Object> introspected = new BeanMap(vo);
 
-		for (Object key : introspected.keySet()) {
-			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
-					|| introspected.get(key).equals("")) {
+		for (Map.Entry<Object, Object> entry : introspected.entrySet()) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			if (key.equals("dn") || key.equals("class") || value == null || value.equals("")) {
 				continue;
 			}
 
-			e.execute((String) key, introspected.get(key));
+			e.execute((String) key, value);
 		}
 
 	}

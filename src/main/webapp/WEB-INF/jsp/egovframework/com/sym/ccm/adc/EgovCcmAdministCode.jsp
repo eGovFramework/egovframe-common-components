@@ -22,6 +22,9 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmAdc.ccmAdministCode.upperCode"/> <spring:message code="title.list" /></c:set>
 <html lang="ko">
 <head>
@@ -86,7 +89,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="board">
-<form name="listForm" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCode.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/adc/EgovCcmAdministCode.do" method="post">
 	<h1>${pageTitle}</h1>
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -120,7 +123,8 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
-			<tr style="cursor:pointer;cursor:hand;" onclick="fnReturnDay('${resultInfo.administZoneCode}','${resultInfo.administZoneNm}');">
+			<%-- 2026.07.30 보안 조치 - JS 문자열 컨텍스트 이스케이프(행정코드 팝업 XSS 차단) --%>
+			<tr style="cursor:pointer;cursor:hand;" onclick="fnReturnDay('<c:out value="${egovc:escapeJavaScript(resultInfo.administZoneCode)}"/>','<c:out value="${egovc:escapeJavaScript(resultInfo.administZoneNm)}"/>');">
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
 					<c:choose>
@@ -151,13 +155,10 @@
 	</div>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>	
 <input name="searchCondition" type=hidden value="<c:out value='${searchVO.searchCondition}'/>"/>
-</form>
-<form name="Form" id="Form" method="post" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCode.do'/>">
-	<input type=hidden name="administZoneSe">
-	<input type=hidden name="administZoneCode">
-	<input type=hidden name="searchCondition">
-	<input type="submit" id="invisible" class="invisible">
-</form>
+<input type=hidden name="administZoneSe">
+<input type=hidden name="administZoneCode">
+</form:form>
+
 
 </div>
 

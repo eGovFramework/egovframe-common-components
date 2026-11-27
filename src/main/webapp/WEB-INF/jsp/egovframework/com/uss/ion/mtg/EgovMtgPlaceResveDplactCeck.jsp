@@ -14,7 +14,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <title><spring:message code="comUssIonMtg.mtgPlaceResveDplactCeck.title" /></title><!-- 회의실 중복체크 -->
@@ -61,6 +60,7 @@
     <td width="400">
 <!-- ********** 여기서 부터 본문 내용 *************** -->
 <form name="dplactCeckForm" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input type="hidden" name="dplactCeck" value="<c:out value='${dplactCeck}'/>">
 </form>
 

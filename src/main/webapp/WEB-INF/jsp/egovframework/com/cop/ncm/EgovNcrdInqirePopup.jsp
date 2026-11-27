@@ -106,7 +106,7 @@ function fn_egov_delete_ncrdInf(){
 	<!-- 하단 버튼 --> 
 	<div class="btn">
 		<span class="btn_s"><a href="<c:url value='/cop/ncm/selectNcrdInfs.do'/>"><spring:message code='button.list' /></a></span> <!-- 목록 -->
-		<span class="btn_s"><a href="<c:url value='/cop/ncm/deleteNcrdInf.do'/>?ncrdId=<c:out value='${ncrdVO.ncrdId}'/>" onclick="fn_egov_delete_ncrdInf(); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_ncrdInf(); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
 	</div>
 </div>
 

@@ -1,5 +1,7 @@
 package egovframework.com.secure.coding;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * NullCheck Test Class 구현
  * @author 표준프레임워크 신용호
@@ -15,6 +17,7 @@ package egovframework.com.secure.coding;
  * </pre>
  */
 
+@Slf4j
 public class PrivateTest {
 
 	public static void main(String[] args) {
@@ -25,11 +28,11 @@ public class PrivateTest {
 		// Private String TEST
 		String myName = "SYH";
 		myUser.setName(myName);
-		System.out.println(myName);
-		System.out.println(myUser.getName());
+		log.debug(myName);
+		log.debug(myUser.getName());
 
 		myName = "Change Name";
-		System.out.println(myUser.getName());
+		log.debug(myUser.getName());
 		
 		
 		// Private Array TEST
@@ -37,11 +40,11 @@ public class PrivateTest {
 		
 		myUser.setMyColor(myColor);
 		
-		System.out.println(myColor[0]);
-		System.out.println(myUser.getMyColor()[0]);
+		log.debug(myColor[0]);
+		log.debug(myUser.getMyColor()[0]);
 
 		myColor[0] = "direct access";
-		System.out.println(myUser.getMyColor()[0]); //<=== 직접 접근 가능
+		log.debug(myUser.getMyColor()[0]); //<=== 직접 접근 가능
 		
 	}
 

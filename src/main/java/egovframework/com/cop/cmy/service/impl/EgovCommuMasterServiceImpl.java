@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cop.cmy.service.Community;
 import egovframework.com.cop.cmy.service.CommunityVO;
 import egovframework.com.cop.cmy.service.EgovCommuMasterService;
+import javax.annotation.Resource;
 
 @Service("EgovCommuMasterService")
 public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implements EgovCommuMasterService{
@@ -23,14 +23,14 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 
     @Resource(name = "egovCmmntyIdGnrService")
     private EgovIdGnrService idgenService;
-	
+
 	@Override
 	public Map<String, Object> selectCommuMasterList(CommunityVO cmmntyVO) {
-		
+
 		List<CommunityVO> result = egovCommuMasterDAO.selectCommuMasterList(cmmntyVO);
 		int cnt = egovCommuMasterDAO.selectCommuMasterListCnt(cmmntyVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -39,21 +39,27 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	@Override
-	public String insertCommuMaster(Community community) throws FdlException {
+	public String insertCommuMaster(Community community) {
 		//게시판 ID 채번
-		String cmmntyId = idgenService.getNextStringId();
+		String cmmntyId;
+		try {
+			cmmntyId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		community.setCmmntyId(cmmntyId);
-		
+
 		egovCommuMasterDAO.insertCommuMaster(community);
-		
+
 		return cmmntyId;
 	}
 
 	@Override
-	public CommunityVO selectCommuMaster(CommunityVO cmmntyVO) throws Exception {
+	public CommunityVO selectCommuMaster(CommunityVO cmmntyVO) {
 		CommunityVO resultVO = egovCommuMasterDAO.selectCommuMasterDetail(cmmntyVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw new BaseRuntimeException(processException("info.nodata.msg"));
+		}
         return resultVO;
 	}
 
@@ -68,7 +74,7 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	@Override
-	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws Exception {
+	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) {
 		return egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
 	}
 

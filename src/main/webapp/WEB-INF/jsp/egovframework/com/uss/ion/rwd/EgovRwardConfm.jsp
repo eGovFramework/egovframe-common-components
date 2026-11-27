@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -37,8 +36,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="rwardManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 	/* ********************************************************
@@ -161,22 +159,25 @@
 			<th><spring:message code="comUssIonRwd.common.rwardNm"/> <span class="pilsu">*</span></th><!-- 포상명 -->
 			<td class="left">
 			    <c:out value='${rwardManageVO.rwardNm}'/>
+			    <form:errors path="rwardManage.rwardNm" cssClass="error" />
 			</td>
 			<th><spring:message code="comUssIonRwd.common.rwardDe"/> <span class="pilsu">*</span></th><!-- 포상일자 -->
 			<td class="left">
 			    <c:out value='${rwardManageVO.rwardDe}'/>
+			    <form:errors path="rwardManage.rwardDe" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonRwd.common.pblenCn"/> <span class="pilsu">*</span></th><!-- 공적사항 -->
 			<td class="left" colspan="3">
 			    <textarea id="pblenCn" name="pblenCn" class="txaClass" rows="4" cols="70" title="공적사항" readOnly><c:out value='${rwardManageVO.pblenCn}'/></textarea>
+			    <form:errors path="rwardManage.pblenCn" cssClass="error" />
 			</td>
 		</tr>
 		<!-- 첨부파일 테이블 레이아웃 설정 Start..-->
   		<c:if test="${result.atchFileId != ''}">
 		<tr>
-			<th><spring:message code="comUssIonRwd.rwardUpdt.atchFileIdList"/> <span class="pilsu">*</span></th><!-- 첨부파일목록 -->
+			<th><spring:message code="comUssIonRwd.rwardUpdt.atchFileIdList"/></th><!-- 첨부파일목록 -->
 			<td class="left" colspan="3">
 			    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
 					<c:param name="param_atchFileId" value="${egovc:encrypt(rwardManageVO.atchFileId)}" />
@@ -201,7 +202,7 @@
 			<input id="confirmAgree" class="s_submit" type="submit" value="<spring:message code="comUssIonRwd.common.confmAt.C"/>" title="<spring:message code="comUssIonRwd.common.confmAt.C"/>" /><!-- 승인 -->
 			<span class="btn_s"><a id="confirmDisAgree" title="<spring:message code="comUssIonRwd.common.confmAt.R"/>"><spring:message code="comUssIonRwd.common.confmAt.R"/></a></span><!-- 반려 -->
 		</c:if>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rwd/EgovRwardConfmList.do'/>?searchCondition=1" onclick="fncEgovRwardConfmList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovRwardConfmList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

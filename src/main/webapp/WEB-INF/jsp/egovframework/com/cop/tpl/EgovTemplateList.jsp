@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopTpl.template.title"/> <spring:message code="title.list" /></c:set>
 <%
  /**
@@ -55,7 +56,7 @@
 </script>
 </head>
 <body>
-<form name="frm" action ="" method="post">
+<form:form name="frm" modelAttribute="searchVO" action ="" method="post">
 <input type="hidden" name="tmplatId" value="" />
 <input type="hidden" name="pageIndex" value="${searchVO.pageIndex}" />
 
@@ -103,7 +104,7 @@
 			<tr>
 				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 				<td>
-					<a href="<c:url value='/cop/tpl/selectTemplateInf.do'/>?tmplatId=<c:out value='${result.tmplatId}'/>" onclick="">
+					<a href="javascript:void(0);" onclick="fn_egov_inqire_tmplatInfor('<c:out value="${result.tmplatId}"/>'); return false;">
 					<c:out value="${result.tmplatNm}"/>
 					</a>
 				</td>
@@ -132,6 +133,6 @@
 	</div>
 </div>
 
-</form>
+</form:form>
 </body>
 </html>

@@ -1,21 +1,21 @@
 package egovframework.com.test;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 
 //@ActiveProfiles({ "altibase", "dummy" })
 //@ActiveProfiles({ "cubrid", "dummy" })
@@ -36,8 +36,8 @@ public class EgovTestV1 {
 	@Autowired
 	private ApplicationContext context;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@BeforeAll
+	static void setUpBeforeClass() throws Exception {
 		log.info("setUpBeforeClass");
 		log.info("");
 
@@ -46,8 +46,8 @@ public class EgovTestV1 {
 		STOP_WATCH.start();
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+	@AfterAll
+	static void tearDownAfterClass() throws Exception {
 		log.info("tearDownAfterClass");
 		log.info("");
 
@@ -59,8 +59,8 @@ public class EgovTestV1 {
 		log.info("getTotalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
 	}
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeEach
+	void setUp() throws Exception {
 		log.info("setUp");
 		log.info("");
 
@@ -77,8 +77,8 @@ public class EgovTestV1 {
 		}
 	}
 
-	@After
-	public void tearDown() throws Exception {
+	@AfterEach
+	void tearDown() throws Exception {
 		log.info("tearDown");
 		log.info("");
 

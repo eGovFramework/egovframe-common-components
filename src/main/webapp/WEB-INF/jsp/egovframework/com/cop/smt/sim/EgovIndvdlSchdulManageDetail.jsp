@@ -24,7 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <%
@@ -55,8 +54,6 @@ function fn_egov_init_IndvdlSchdulManage(){
  ******************************************************** */
 function fn_egov_diary_IndvdlSchdulManage(frm){
 	var vFrom = frm;
-	//vFrom.cmd.value = '';
-	//vFrom.action = "<c:url value='/cop/smt/dsm/EgovDiaryManageList.do' />";;
 	vFrom.submit();
 }
 /* ********************************************************
@@ -89,8 +86,6 @@ function fn_egov_modify_IndvdlSchdulManage(){
 function fn_egov_delete_IndvdlSchdulManage(frm){
 	var vFrom = frm;
 	if(confirm("<spring:message code="common.delete.msg" />")){	
-		//vFrom.cmd.value = 'del';
-		//vFrom.action = "<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />";
 		vFrom.submit();
 	}else{
 		vFrom.cmd.value = '';
@@ -123,7 +118,7 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 			<td class="left">
 			    <c:forEach items="${schdulSe}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].schdulSe}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -135,7 +130,7 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 			<td class="nopd">
 			    <c:forEach items="${schdulIpcrCode}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].schdulIpcrCode}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -145,7 +140,7 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulNm}"/></span>
 			</td>
 		</tr>
 		<!-- 일정내용 -->
@@ -153,7 +148,7 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulCn , crlf , '<br/>')}" escapeXml="false" />
+				<span class="ck-content"><c:out value="${egovc:sanitizeHtml(resultList[0].schdulCn)}" escapeXml="false"/></span>
 			</td>
 		</tr>
 		<!-- 반복구분 -->
@@ -163,7 +158,7 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 			<td class="nopd">
 			    <c:forEach items="${reptitSeCode}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].reptitSeCode}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -192,14 +187,16 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	
-		<form name="IndvdlSchdulManageForm" id="IndvdlSchdulManageFormh" action="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageModify.do'/>" method="post" style="float:left;">
+		<form name="IndvdlSchdulManageForm" id="IndvdlSchdulManageFormh" action="${pageContext.request.contextPath}/cop/smt/sim/EgovIndvdlSchdulManageModify.do" method="post" style="float:left;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 		<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 		<input name="linkType" type="hidden" value="${sLinkType}">
 		<input name="cmd" type="hidden" value="<c:out value=''/>"/>
 		</form>
 
-		<form name="formDelete" action="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/cop/smt/sim/EgovIndvdlSchdulManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_IndvdlSchdulManage(this.form); return false;">
 		<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 		<input name="linkType" type="hidden" value="${sLinkType}">
@@ -208,7 +205,8 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 	
 		<!-- 2011.09.16 : 일지관리 버튼 존재 방법 변경  -->
 		<c:if test="${useDiaryManage == 'true'}">
-		<form name="formSubDiaryManage" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formSubDiaryManage" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="comCopSmtSim.btn.diaryManage" />" title="<spring:message code="comCopSmtSim.btn.diaryManage" /> <spring:message code="input.button" />" onclick="fn_egov_diary_IndvdlSchdulManage(this.form); return false;">
 		<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 		<input name="linkType" type="hidden" value="${sLinkType}">
@@ -218,7 +216,8 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 		</c:if>
 		<!-- 2011.09.16 끝  -->
 		
-		<form name="formList" action="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/cop/smt/sim/EgovIndvdlSchdulManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />" onClick="fn_egov_list_IndvdlSchdulManage(); return false;"><!-- 목록 -->
 		</form>
 	

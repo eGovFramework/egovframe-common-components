@@ -10,12 +10,12 @@ import egovframework.com.uss.ion.nws.service.NewsVO;
 @Repository("EgovNewsDAO")
 public class EgovNewsDAO extends EgovComAbstractDAO {
 
-	public List<NewsVO> selectNewsList(NewsVO searchVO) {
-		return selectList("NewsManage.selectNewsList", searchVO);
+	public List<NewsVO> selectNewsList(NewsVO newsVO) {
+		return selectList("NewsManage.selectNewsList", newsVO);
 	}
 
-	public int selectNewsListCnt(NewsVO searchVO) {
-		return (Integer) selectOne("NewsManage.selectNewsListCnt", searchVO);
+	public int selectNewsListCnt(NewsVO newsVO) {
+		return (Integer) selectOne("NewsManage.selectNewsListCnt", newsVO);
 	}
 
 	public void insertNews(NewsVO newsVO) {

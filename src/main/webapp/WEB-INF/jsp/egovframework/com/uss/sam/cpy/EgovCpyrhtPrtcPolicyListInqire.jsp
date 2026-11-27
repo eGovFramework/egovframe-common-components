@@ -23,6 +23,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -92,7 +93,7 @@ function fn_egov_inquire_cpyrhtprtcpolicydetail(cpyrhtId) {
 
 <div class="board">
 	<h1><spring:message code="ussSamCpy.cpyrhtPrtcPolicyListInqire.cpyrhtPrtcPolicyListInqire"/></h1><!-- 저작권보호정책 목록 -->
-<form name="CpyrhtPrtcPolicyForm" action="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do'/>" method="post">
+<form:form name="CpyrhtPrtcPolicyForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -103,13 +104,13 @@ function fn_egov_inquire_cpyrhtprtcpolicydetail(cpyrhtId) {
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="25" maxlength="35" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 검색어 입력 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_cpyrhtprtcpolicycn(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyCnRegistView.do'/>" onclick="fn_egov_regist_cpyrhtprtcpolicycn(); return false;"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_regist_cpyrhtprtcpolicycn(); return false;"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input name="cpyrhtId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="${searchVO.pageIndex}">
-</form>
+</form:form>
 	
 	<table class="board_list">
 		<caption><spring:message code="ussSamCpy.cpyrhtPrtcPolicyListInqire.cpyrhtPrtcPolicyListInqire"/></caption><!-- 저작권보호정책 목록 -->
@@ -130,7 +131,7 @@ function fn_egov_inquire_cpyrhtprtcpolicydetail(cpyrhtId) {
 			<tr>
 				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>			        
 				<td>
-					<a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do'/>?cpyrhtId=${resultInfo.cpyrhtId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_inquire_cpyrhtprtcpolicydetail('<c:out value="${resultInfo.cpyrhtId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cpyrhtPrtcPolicyCn, 0, 40)}'/></a>
+					<a href="javascript:void(0);" onClick="fn_egov_inquire_cpyrhtprtcpolicydetail('<c:out value="${resultInfo.cpyrhtId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cpyrhtPrtcPolicyCn, 0, 40)}'/></a>
 				</td>		
 				<td><c:out value="${resultInfo.lastUpdtPnttm}" /></td>			
 			</tr>   

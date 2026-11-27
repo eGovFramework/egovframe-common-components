@@ -31,9 +31,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * 온라인POLL관리를(을) 목록을 한다.
      * @param searchVO  조회할 정보가 담긴 VO
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) {
         return selectList("OnlinePollPartcptn.selectOnlinePollManageList", searchVO);
     }
 
@@ -41,9 +40,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * 온라인POLL관리를(을) 목록 전체 건수를(을) 조회한다.
      * @param searchVO  조회할 정보가 담긴 VO
      * @return int
-     * @throws Exception
      */
-    public int selectOnlinePollManageListCnt(ComDefaultVO searchVO) throws Exception {
+    public int selectOnlinePollManageListCnt(ComDefaultVO searchVO) {
         return (Integer)selectOne("OnlinePollPartcptn.selectOnlinePollManageListCnt", searchVO);
     }
 
@@ -51,9 +49,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * 온라인POLL관리를(을) 상세조회 한다.
      * @param onlinePollPartcptn  온라인POLL 정보가 담김 VO
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+    public List<EgovMap> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) {
         return selectList("OnlinePollPartcptn.selectOnlinePollManageDetail", onlinePollPartcptn);
     }
 
@@ -61,9 +58,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * 온라인POLL항목를(을) 상세조회 한다.
      * @param onlinePollPartcptn  온라인POLL 정보가 담김 VO
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+    public List<EgovMap> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) {
         return selectList("OnlinePollPartcptn.selectOnlinePollItem", onlinePollPartcptn);
     }
 
@@ -71,18 +67,16 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
     /**
      * 온라인POLL참여를(을) 등록한다.
      * @param qonlinePollPartcptn  온라인POLL 정보가 담김 VO
-     * @throws Exception
      */
-    public void insertOnlinePollResult(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+    public void insertOnlinePollResult(OnlinePollPartcptn onlinePollPartcptn) {
         insert("OnlinePollPartcptn.insertOnlinePollResult", onlinePollPartcptn);
     }
 
     /**
      * 온라인POLL통계를(을) 등록한다.
      * @param qonlinePollPartcptn  온라인POLL 정보가 담김 VO
-     * @throws Exception
      */
-    public List<EgovMap> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+    public List<EgovMap> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) {
         return selectList("OnlinePollPartcptn.selectOnlinePollPartcptnStatistics", onlinePollPartcptn);
     }
 
@@ -90,9 +84,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * 온라인POLL참여 여부를 조회한다.
      * @param onlinePollPartcptn 회정정보가 담김 VO
      * @return int
-     * @throws Exception
      */
-    public int selectOnlinePollResult( OnlinePollPartcptn onlinePollPartcptn) throws Exception{
+    public int selectOnlinePollResult( OnlinePollPartcptn onlinePollPartcptn) {
     	return (Integer)selectOne("OnlinePollPartcptn.selectOnlinePollResult", onlinePollPartcptn);
     }
 

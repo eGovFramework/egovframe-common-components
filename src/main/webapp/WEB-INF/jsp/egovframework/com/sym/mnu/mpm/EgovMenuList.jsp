@@ -28,7 +28,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
 //String imagePath_icon   = "/images/egovframework/com/sym/mnu/mpm/icon/";
 //String imagePath_button = "/images/egovframework/com/sym/mnu/mpm/button/";
@@ -218,7 +217,7 @@ function checkNumber(str) {
 <!-- ********** 여기서 부터 본문 내용 *************** -->
 
 
-<form name="menuManageVO" action ="<c:url value='/sym/mnu/mpm/EgovMenuListInsert.do' />" method="post">
+<form:form name="menuManageVO" modelAttribute="menuManageVO" action ="<c:url value='/sym/mnu/mpm/EgovMenuListInsert.do' />" method="post">
 <input type="hidden" name="req_RetrunPath" value="/sym/mnu/mpm/EgovMenuList">
 
 <div class="board">
@@ -227,7 +226,7 @@ function checkNumber(str) {
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<span class="btn_b"><a href="<c:url value='/sym/mnu/mpm/EgovMenuListSelect.do'/>" onclick="initlMenuList(); return false;" title="<spring:message code="button.init" />"><spring:message code="button.init" /></a></span><!-- 초기화 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="initlMenuList(); return false;" title="<spring:message code="button.init" />"><spring:message code="button.init" /></a></span><!-- 초기화 -->
 				<input class="s_btn" type="submit" value='<spring:message code="button.save" />' title='<spring:message code="button.save" />' onclick="insertMenuList(); return false;" />
 				<span class="btn_b"><a href="#LINK" onclick="updateMenuList(); return false;" title='<spring:message code="button.update" />'><spring:message code="button.update" /></a></span>
 				<span class="btn_b"><a href="#LINK" onclick="deleteMenuList(); return false;" title='<spring:message code="button.delete" />'><spring:message code="button.delete" /></a></span>
@@ -256,7 +255,8 @@ function checkNumber(str) {
   <tr>
    <td style="vertical-align:top">
 	<c:forEach var="result" items="${list_menulist}" varStatus="status" >
-	<input type="hidden" name="tmp_menuNmVal" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.progrmFileNm}|${result.menuNo}|${result.menuOrdr}|${result.menuNm}|${result.upperMenuId}|${result.menuDc}|${result.relateImagePath}|${result.relateImageNm}|${result.progrmFileNm}|">
+	<%-- 2026.07.30 보안 조치 - 속성값 이스케이프(HTML 속성 breakout 저장형 XSS 차단) --%>
+	<input type="hidden" name="tmp_menuNmVal" value="<c:out value='${result.menuNo}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.progrmFileNm}'/>|<c:out value='${result.menuNo}'/>|<c:out value='${result.menuOrdr}'/>|<c:out value='${result.menuNm}'/>|<c:out value='${result.upperMenuId}'/>|<c:out value='${result.menuDc}'/>|<c:out value='${result.relateImagePath}'/>|<c:out value='${result.relateImageNm}'/>|<c:out value='${result.progrmFileNm}'/>|">
 	</c:forEach>
 	
 	<div class="tree" style="overflow:scroll; width:218px; height:383px; padding:5px; border:1px solid #ddd">
@@ -295,7 +295,7 @@ function checkNumber(str) {
 	   <table border="0" cellspacing="0" cellpadding="0" align="left">
 		<tr>
           <td width="90%"></td>
-          <td><span class="button"><a href="<c:url value='/sym/mnu/mpm/EgovMenuListSelect.do'/>" onclick="initlMenuList(); return false;">초기화</a></span></td>
+          <td><span class="button"><a href="javascript:void(0);" onclick="initlMenuList(); return false;">초기화</a></span></td>
           <td width="2%"></td>
           <td><span class="button"><input type="submit" value="<spring:message code="button.save" />" onclick="insertMenuList(); return false;"></span></td>
           <td width="2%"></td>
@@ -375,7 +375,7 @@ function checkNumber(str) {
     <input type="hidden" name="tmp_CheckVal" value="">
 </div>
 
-</form>
+</form:form>
 
 <!-- ********** 여기까지 내용 *************** -->
 </td>

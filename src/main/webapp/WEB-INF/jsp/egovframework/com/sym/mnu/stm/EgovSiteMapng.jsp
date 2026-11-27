@@ -61,6 +61,7 @@ function fCallUrl(fURL){
 <c:if test="${empty resultList}">
 
 	<form name="siteMapngForm" action ="javascript:fSiteMapng()" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymMnuStm.siteMapng.siteMap"/></h2><!-- 사이트맵 -->

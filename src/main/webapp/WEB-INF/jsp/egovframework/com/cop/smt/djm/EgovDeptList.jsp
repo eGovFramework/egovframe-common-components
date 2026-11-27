@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovDeptList.jsp
@@ -64,7 +65,7 @@
 <div class="board">
 	<h1><spring:message code="comCopSmtDjm.deptList.deptSelect" /></h1><!-- 부서 선택 -->
 	
-	<form name="frm" method="post" action="<c:url value='/cop/smt/djm/selectDeptList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/selectDeptList.do">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -81,7 +82,7 @@
 				</li>
 			</ul>
 		</div>
-	</form>
+	</form:form>
 		
 	<table class="board_list">
 		<caption><spring:message code="comCopSmtDjm.deptListPopup.title" /></caption><!-- 부서목록 -->

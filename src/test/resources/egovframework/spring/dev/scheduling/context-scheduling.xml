@@ -2,8 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
-	<bean id="testJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
-	    <property name="jobClass" value="egovframework.dev.scheduling.TestJobExecutor" />
+	<!-- Job Detail Bean 정의 : xmlJobDetail => TestJobExecutor -->
+	<bean id="xmlJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+	    <property name="jobClass" value="egovframework.dev.scheduling.TestJobExecutor" /> <!-- QuartzJobBean 구현 클래스 -->
 	    <property name="jobDataAsMap">
 	        <map>
 	            <entry key="jobName" value="TestJob"/>
@@ -11,38 +12,44 @@
 	    </property>
 	</bean>
 	
-	<bean id="testMethodInvokingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+	<!-- Job Detail Bean 정의 : xmlMethodInvokingJobDetail => TestJobService -->
+	<bean id="xmlMethodInvokingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="testJobService" />
 		<property name="targetMethod" value="runJob" />
 		<property name="concurrent" value="false" />
 	</bean>
 
-	<!-- 트리거 정의 -->
-	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
-		<property name="jobDetail" ref="testMethodInvokingJobDetail" />
-		<!-- 시작하고 2초 후에 실행한다. (milisecond) -->
+	<!-- Trigger Bean 정의 : xmlSimpleTrigger -->
+	<bean id="xmlSimpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="xmlJobDetail" />
+		 <!-- 시작하고 2초 후에 실행한다. (milisecond) -->
 		<property name="startDelay" value="2000" />
-		<!-- 매 1분 마다 실행한다. (milisecond) -->
+		 <!-- 매 10초 마다 실행한다. (milisecond) -->
 		<property name="repeatInterval" value="10000" />
 	</bean>
 	
-	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+	<!-- Trigger Bean 정의 : xmlCronTrigger -->
+	<bean id="xmlCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail">
-			<ref bean="testMethodInvokingJobDetail"/>
+			<ref bean="xmlMethodInvokingJobDetail"/>
 		</property>
 		<property name="cronExpression">
-			<!-- 매  10초마다 실행 -->
-			<value>*/10 * * * * ?</value>
+			<!-- 매 20초 마다 실행 -->
+			<value>*/20 * * * * ?</value>
 			<!-- 매일 오후 3시 20분마다 실행  -->
 			<!-- <value>0 20 15 * * ?</value> -->
 		</property>
 	</bean>
 	
 	<!-- 스케줄러 정의 -->
-	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+	<bean id = "xmlScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
-				<ref bean="cronTrigger"/>
+				<!-- Scheduler 설정 Case 1 : xmlSimpleTrigger를 통한 TestJobExecutor 실행 -->
+				<ref bean="xmlSimpleTrigger"/>
+				
+				<!-- Scheduler 설정 Case 2 : xmlCronTrigger을 통한 TestJobService 실행 -->
+				<!-- <ref bean="xmlCronTrigger" /> -->
 			</list>
 		</property>
 	</bean>

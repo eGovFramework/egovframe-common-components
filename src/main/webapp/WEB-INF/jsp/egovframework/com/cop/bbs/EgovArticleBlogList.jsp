@@ -3,12 +3,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%-- <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%> --%>
 <c:set var="pageTitle"><spring:message code="comCopBbs.articleVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>${pageTitle} <spring:message code="title.list" /></title><!-- 블로그 메인 목록 -->
 
@@ -16,10 +16,31 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js' />"></script>
 
 <!-- 댓글 작성 스크립트  -->
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="formComment" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 
 <script>
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+var sessionUniqId = "<c:out value='${sessionUniqId}'/>";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
+// 2026.07.30 보안 조치 - innerHTML/.html()에 삽입되는 값 이스케이프
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
 
 /*********************************************************
  * 페이징 처리 함수
@@ -46,6 +67,7 @@ function fn_egov_loadBdList(bbsId,blogNm,cnt){
 	$('#sub').text(blogNm);
 	$(".comm_List").empty();
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		url :"<c:url value='/cop/bbs/selectArticleBlogDetail.do'/>"
         ,type: "POST"
         	,data : {"bbsId":bbsId, "searchCnd":searchCnd}
@@ -56,17 +78,25 @@ function fn_egov_loadBdList(bbsId,blogNm,cnt){
         	var innerPaging = "";
         	var length = data['blogSubJectList'].length;
         	if(length > 0) {
+        		var targetSet = false;
         		$.each(data['blogSubJectList'], function(i) {
-        	          innerHtml += '<tr>';  
-        	          innerHtml +=    '<td id="target" onclick="fn_clickComm(\'' + bbsId + '\', \''+data['blogSubJectList'][i].nttId+'\', \''+data['blogSubJectList'][i].ntcrId+'\', \''+data['blogSubJectList'][i].replyPosblAt+'\', \''+data['blogSubJectList'][i].blogId+'\', \''+cnt+'\')"; style="cursor:pointer">';
+        	          innerHtml += '<tr>';
+        	          // 비밀글이며 작성자가 본인이 아닌 경우(클릭 불가) — 게시판 목록(EgovArticleList.jsp)과 같다
+        	          if(data['blogSubJectList'][i].secretAt == 'Y' && data['blogSubJectList'][i].frstRegisterId != sessionUniqId) {
+        	        	  innerHtml +=    '<td><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_lock.png'/>" alt="secret">&nbsp;';
+        	          } else {
+        	        	  // 진입 시 자동으로 여는 글(#target)은 첫 번째 클릭 가능한 글
+        	        	  innerHtml +=    '<td' + (targetSet ? '' : ' id="target"') + ' onclick="fn_clickComm(\'' + bbsId + '\', \''+data['blogSubJectList'][i].nttId+'\', \''+data['blogSubJectList'][i].ntcrId+'\', \''+data['blogSubJectList'][i].replyPosblAt+'\', \''+data['blogSubJectList'][i].blogId+'\', \''+cnt+'\')"; style="cursor:pointer">';
+        	        	  targetSet = true;
+        	          }
         	          if(data['blogSubJectList'][i].commentCo != "") {
-        	        	  innerHtml +=      data['blogSubJectList'][i].nttSj+"["+data['blogSubJectList'][i].commentCo+"]";
+        	        	  innerHtml +=      escapeHtml(data['blogSubJectList'][i].nttSj)+"["+escapeHtml(data['blogSubJectList'][i].commentCo)+"]";
         	          }else{
-        	        	  innerHtml +=      data['blogSubJectList'][i].nttSj;
+        	        	  innerHtml +=      escapeHtml(data['blogSubJectList'][i].nttSj);
         	          }
         	          innerHtml +=    '</td>';
         	          innerHtml +=    '<td>';
-        	          innerHtml +=      data['blogSubJectList'][i].frstRegisterPnttm;
+        	          innerHtml +=      escapeHtml(data['blogSubJectList'][i].frstRegisterPnttm);
         	          innerHtml +=    '</td>';
         	          innerHtml += '</tr>';
         	          
@@ -97,11 +127,12 @@ function fn_blog_cn(blogId){
 		return;
 	}
 
-	location.href="<c:url value='/cop/bbs/insertArticleView.do' />?bbsId="+bbsId+"&blogAt=Y&blogId="+blogId;
+	fn_egov_postNavigate("<c:url value='/cop/bbs/insertArticleView.do' />", {bbsId: bbsId, blogAt: 'Y', blogId: blogId}, document.blogfrm);
 }
 
 function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		url :"<c:url value='/cop/bbs/selectArticleBlogDetailCn.do'/>"
         ,type: "POST"
         ,data : {"bbsId":bbsId, "nttId":nttId}
@@ -112,7 +143,7 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
         	var innerReply = "";
         	if(length > 0) {
         		$.each(data['blogCnList'], function(i) {
-        	          innerHtml += data['blogCnList'][i].nttCn;
+                      innerHtml += data['blogCnList'][i].nttCn; // 서버에서 EgovHtmlSanitizer 로 정제한 리치 텍스트
         		});
         		$(".cnt").html(innerHtml);
         		
@@ -124,10 +155,10 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
         			innerReply += "<dl>";
         			innerReply += "<dt>";
         			innerReply += "<strong>";
-        			innerReply += data['resultList'][i].wrterNm;
+                    innerReply += escapeHtml(data['resultList'][i].wrterNm);
         			innerReply += "</strong>";
         			innerReply += "<span>"
-        			innerReply += data['resultList'][i].frstRegisterPnttm;
+                    innerReply += escapeHtml(data['resultList'][i].frstRegisterPnttm);
         			innerReply += "</span>"
         			
        				if(cnt == 1) {
@@ -138,13 +169,13 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
         			
         			innerReply += "</dt>";
         			innerReply += "<dd>";
-        			innerReply += data['resultList'][i].commentCn;
+                    innerReply += escapeHtml(data['resultList'][i].commentCn);
         			innerReply += "</dd>";
         			innerReply += "</dl>";
       			});
         		innerReply += "<dl>";
         		innerReply += "<dd>";
-        		innerReply += "<form id='formComment' name='formComment' method='post'>";
+        		innerReply += "<form id='formComment' name='formComment' method='post'><c:if test="${not empty _csrf}"><input type='hidden' name='${_csrf.parameterName}' value='${_csrf.token}'/></c:if>";
         		innerReply += "<textarea name='commentCn' placeholder='<spring:message code="comCopBlog.articleBlogList.validate.limitSize" />'/>";//댓글은 500byte 까지 작성할 수 있습니다.
         		innerReply += "<button type='button' onclick='fn_egov_insert_commentList(\""+bbsId+"\", \""+nttId+"\", \""+blogId+"\");'><spring:message code="title.create"/></button>";//등록
         		innerReply += "<input name='bbsId' type='hidden' value=''>";
@@ -226,7 +257,7 @@ $(document).ready(function() {
 			<ul class="gnb r">
 			<c:choose>
 				<c:when test="${loginUserCnt == 1}">
-				<li><a href="<c:url value='/cop/bbs/insertBBSMasterView.do?blogId=${boardMasterVO.blogId}&blogAt=Y' />" onclick="fn_egov_ls()"><spring:message code="comCopBlog.articleBlogList.regCategory" /></a></li><!-- 카테고리등록 -->
+				<li><a href="<c:url value='/cop/bbs/insertBBSMasterView.do?blogId=${boardMasterVO.blogId}&blogAt=Y' />"><spring:message code="comCopBlog.articleBlogList.regCategory" /></a></li><!-- 카테고리등록 -->
 				<li><a href="<c:url value='/cop/bbs/selectBlogListManager.do?blogId=${boardMasterVO.blogId}' />" ><spring:message code="comCopBlog.blogUseMgrMain.btnBoard" /></a></li> <!-- 개인블로그관리  -->
 			</ul>
 				<button class="write" onclick="fn_blog_cn('${boardMasterVO.blogId}')"><spring:message code="button.create" /></button>
@@ -253,6 +284,7 @@ $(document).ready(function() {
 				</tbody>
 			</table>
 			<form name="postCnt" method="post" onChange="$('#titleck').click();">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<div class="post_opt">
 					<label for="" class="blind"><spring:message code="comCopBlog.articleBlogList.setListNumbers" /></label><!-- 포스트 개수 설정 -->
 					<select name="searchCnd" id="searchCnd">

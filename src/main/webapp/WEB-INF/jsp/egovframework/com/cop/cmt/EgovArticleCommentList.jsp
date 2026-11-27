@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
  /**
   * @Class Name : EgovCommentList.jsp
@@ -40,7 +39,7 @@
 					<span class="date"><c:out value="${result.frstRegisterPnttm}" /></span>
 				</div>
 				<p class="txt">
-					<c:out value="${fn:replace(result.commentCn , crlf , '<br/>')}" escapeXml="false" />
+					<span style="white-space:pre-line"><c:out value="${result.commentCn}"/></span>
 				</p>
 				<div class="bottom">
 					<c:if test="${result.wrterId == sessionUniqId}">

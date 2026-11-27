@@ -1,7 +1,13 @@
 package egovframework.com.uss.ion.bnt.service;
 
-import java.io.Serializable;
 import java.util.List;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import egovframework.com.cmm.ComDefaultVO;
+import javax.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 개요
@@ -13,10 +19,58 @@ import java.util.List;
  * @version 1.0
  * @created 06-15-2010 오후 2:08:56
  */
+@Getter
+@Setter
+public class BndtCeckManageVO extends ComDefaultVO {
 
-public class BndtCeckManageVO extends BndtCeckManage implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = -9114350207789216858L;
+	/**
+	*  당직체크구분
+	*/
+	@EgovNullCheck
+	@Size(max=10)
+	private String bndtCeckSe;
+
+	/**
+	*  당직체크코드
+	*/
+	@EgovNullCheck
+	@Size(max=10)
+	private String bndtCeckCd;
+
+	/**
+	*  당직체크코드명
+	*/
+	@EgovNullCheck
+	@Size(max=100)
+	private String bndtCeckCdNm;
+
+	/**
+	*  사용여부
+	*/
+	@EgovNullCheck
+	private String useAt;
+
+	/**
+	*  최초등록자ID
+	*/
+	private String frstRegisterId;
+
+	/**
+	*  최초등록시점
+	*/
+	private String frstRegisterPnttm;
+
+	/**
+	*  최종수정자ID
+	*/
+	private String lastUpdusrId;
+
+	/**
+	*  최종수정시점
+	*/
+	private String lastUpdusrPnttm;
 
 	/**
 	 * 당직체크리스트관리 목록
@@ -42,69 +96,5 @@ public class BndtCeckManageVO extends BndtCeckManage implements Serializable {
 	 * 당직체크리스트 당직체크구분 조회조건 변수
 	 */
 	private String searchUseAt;
-
-	/**
-	 * @return the searchUseAt
-	 */
-	public String getSearchUseAt() {
-		return searchUseAt;
-	}
-	/**
-	 * @param searchUseAt the searchUseAt to set
-	 */
-	public void setSearchUseAt(String searchUseAt) {
-		this.searchUseAt = searchUseAt;
-	}
-	/**
-	 * @return the bndtCeckManageList
-	 */
-	public List<BndtCeckManageVO> getBndtCeckManageList() {
-		return bndtCeckManageList;
-	}
-	/**
-	 * @param bndtCeckManageList the bndtCeckManageList to set
-	 */
-	public void setBndtCeckManageList(List<BndtCeckManageVO> bndtCeckManageList) {
-		this.bndtCeckManageList = bndtCeckManageList;
-	}
-
-	/**
-	 * @return the bndtCeckTemp1
-	 */
-	public String getBndtCeckTemp1() {
-		return bndtCeckTemp1;
-	}
-	/**
-	 * @param bndtCeckTemp1 the bndtCeckTemp1 to set
-	 */
-	public void setBndtCeckTemp1(String bndtCeckTemp1) {
-		this.bndtCeckTemp1 = bndtCeckTemp1;
-	}
-	/**
-	 * @return the searchBndtCeckSe
-	 */
-	public String getSearchBndtCeckSe() {
-		return searchBndtCeckSe;
-	}
-	/**
-	 * @param searchBndtCeckSe the searchBndtCeckSe to set
-	 */
-	public void setSearchBndtCeckSe(String searchBndtCeckSe) {
-		this.searchBndtCeckSe = searchBndtCeckSe;
-	}
-	/**
-	 * @return the searchBndtCeckCd
-	 */
-	public String getSearchBndtCeckCd() {
-		return searchBndtCeckCd;
-	}
-	/**
-	 * @param searchBndtCeckCd the searchBndtCeckCd to set
-	 */
-	public void setSearchBndtCeckCd(String searchBndtCeckCd) {
-		this.searchBndtCeckCd = searchBndtCeckCd;
-	}
-
-
 
 }

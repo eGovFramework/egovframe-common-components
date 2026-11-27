@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- HTTP서비스모니터링   -->
 	<bean id="httpMon" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -12,13 +12,13 @@
 	<!-- HTTP서비스모니터링  트리거-->
 	<bean id="httpMntrngTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
 		<property name="jobDetail" ref="httpMon" />
-		<!-- 시작하고 1분후에 실행한다. (milisecond) -->
+		<!-- 1분 후 시작 (ms) -->
 		<property name="startDelay" value="60000" />
-		<!-- 매 10분마다 실행한다. (milisecond) -->
+		<!-- 10분 간격 (ms) -->
 		<property name="repeatInterval" value="600000" />
 	</bean>
 	
-	<!-- 모니터링 스케줄러 -->
+	<!-- 모니터링 스케줄러 (사용 시 주석 해제) -->
 	<!-- <bean id="mntrngScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>

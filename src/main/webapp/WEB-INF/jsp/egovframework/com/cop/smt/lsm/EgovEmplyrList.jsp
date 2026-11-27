@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovEmplyrList.jsp
@@ -53,7 +54,7 @@
 </head>
 <body style="margin:0">
 
-<form name="frm" method="post" action="<c:url value='/cop/smt/lsm/selectEmplyrList.do'/>">
+<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/lsm/selectEmplyrList.do">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 
 	<div class="board">
@@ -122,7 +123,7 @@
 		</ul>
 	</div>
 
-</form>
+</form:form>
 
 </body>
 </html>

@@ -50,10 +50,6 @@ public class EgovFileBasePathSecurityValidator {
 		whiteList.add(EgovProperties.getProperty("Globals.fileStorePath"));
 		// 파일 동기화 컴포넌트에서 사용할 파일 업로드 경로
 		whiteList.add(EgovProperties.getProperty("Globals.SynchrnServerPath"));
-		// 테스트용 Base Path - Windows OS
-		// whiteList.add("D:/TEMP/");
-		// 테스트용 Base Path - Linux, Mac OS
-		// whiteList.add("/Users/EgovStoredFiles");
 
 		if (ObjectUtils.isEmpty(basePath)) {
 			log.error("ERROR : The base path is empty.");
@@ -75,7 +71,7 @@ public class EgovFileBasePathSecurityValidator {
 			// 허용된 디렉토리 내인지 검증
 			for (String whiteBasePath : whiteList) {
 				File file = new File(whiteBasePath).getCanonicalFile();
-				if (base.getPath().startsWith(file.getPath())) {
+				if (base.toPath().startsWith(file.toPath())) {
 					validateResult = true;
 				}
 			}

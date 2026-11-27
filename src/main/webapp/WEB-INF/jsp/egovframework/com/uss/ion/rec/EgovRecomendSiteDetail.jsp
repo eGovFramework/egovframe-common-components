@@ -46,7 +46,8 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="recomendSiteForm" action="<c:url value='/uss/ion/rec/updateRecomendSiteView.do'/>" method="post">
+<form name="recomendSiteForm" action="${pageContext.request.contextPath}/uss/ion/rec/updateRecomendSiteView.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -62,43 +63,41 @@
 		<!-- 추천사이트명 -->
 		<tr>
 			<th><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteNm" /></th>
-			<td class="left"><c:out value="${result.recomendSiteNm}"/></td>
+			<td class="left"><c:out value="${recomendSiteVO.recomendSiteNm}"/></td>
 		</tr>
 		<!-- 추천사이트URL -->
 		<tr>
 			<th><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteUrl" /></th>
-			<td class="left"><c:out value="${result.recomendSiteUrl}"/></td>
+			<td class="left"><c:out value="${recomendSiteVO.recomendSiteUrl}"/></td>
 		</tr>
 		<!-- 추천사이트설명 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.recomendSiteDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${recomendSiteVO.recomendSiteDc}"/></span>
 			</td>
 		</tr>
 		<!-- 추천사유내용 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonRec.recomendSiteVO.recomendResnCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.recomendResnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${recomendSiteVO.recomendResnCn}"/></span>
 			</td>
 		</tr>
 		<!-- 추천승인여부 -->
 		<tr>
 			<th><spring:message code="comUssIonRec.recomendSiteVO.recomendConfmAt" /></th>
-			<td class="left"><c:out value="${result.recomendConfmAt}"/></td>
+			<td class="left"><c:out value="${recomendSiteVO.recomendConfmAt}"/></td>
 		</tr>
 		<!-- 승인일자 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonRec.recomendSiteVO.confmDe" /></th>
-			<td class="left"><c:out value="${result.confmDe}"/></td>
-			</td>
+			<td class="left"><c:out value="${recomendSiteVO.confmDe}"/></td>
 		</tr>
 		<!-- 등록일자 -->
 		<tr>
 			<th class="vtop"><spring:message code="table.regdate" /></th>
-			<td class="left"><c:out value="${result.frstRegisterPnttm}"/></td>
-			</td>
+			<td class="left"><c:out value="${recomendSiteVO.frstRegisterPnttm}"/></td>
 		</tr>
 		
 	</tbody>
@@ -106,13 +105,13 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rec/deleteRecomendSite.do' />" onClick="fn_egov_delete_site('<c:out value="${result.recomendSiteId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onClick="fn_egov_delete_site('<c:out value="${recomendSiteVO.recomendSiteId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/uss/ion/rec/selectRecomendSiteList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>
 
-<input name="recomendSiteId" type="hidden" value="<c:out value="${result.recomendSiteId}" />">
+<input name="recomendSiteId" type="hidden" value="<c:out value="${recomendSiteVO.recomendSiteId}" />">
 <input name="cmd" type="hidden" value="">
 </form>
 

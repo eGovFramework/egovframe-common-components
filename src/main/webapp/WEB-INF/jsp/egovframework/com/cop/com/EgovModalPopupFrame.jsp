@@ -47,6 +47,6 @@
 
 </head>
 <body>
-	<iframe id="popupFrame" src="<c:url value='${requestUrl}' />" width="${width}" height="${height}" align="middle" frameborder="0" title="팝업창열기"></iframe>
+	<iframe id="popupFrame" src="<c:url value='${fn:escapeXml(requestUrl)}' />" width="<c:out value='${width}'/>" height="<c:out value='${height}'/>" align="middle" frameborder="0" title="팝업창열기"></iframe>
 </body>
 </html>

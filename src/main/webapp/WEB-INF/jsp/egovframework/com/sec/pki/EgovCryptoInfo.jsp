@@ -33,7 +33,7 @@
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/pki/EgovCryptoInfo.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/pki/EgovCryptoInfo.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle}</h1><!-- 암호화/복호화 -->
 	<!-- 요청영역 -->

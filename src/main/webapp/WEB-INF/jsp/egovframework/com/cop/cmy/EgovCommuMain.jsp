@@ -95,6 +95,7 @@
 </head>
 <body onload="fn_alert_returnMsg()">
 <form action="" name="frm" method="post" >
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="cmmntyId" value="<c:out value='${cmmntyVO.cmmntyId}' />" />
 	<input type="hidden" name="cmmntyNm" value="<c:out value='${cmmntyVO.cmmntyNm}' />" />
 	<input type="hidden" name="clbId" value="" />
@@ -114,8 +115,8 @@
 				<li class="home"><a class="on" href="" onclick="fn_egov_goCmmntyHome(); return false;">Home</a></li>
              	<!-- 관리자 메뉴 부분 Start -->
                 <c:if test="${cmmntyUser.mngrAt == 'Y'}">
-                <li><a href="" onclick="fn_egov_loadMngrMenu('<c:url value="/cop/bbs/selectBBSMasterInfs.do"/>'); return false;"><spring:message code="comCopCmy.communityUseMgrMain.btnBoard" /></a></li> <!-- 게시판관리  -->
-                <li><a href="" onclick="fn_egov_loadMngrMenu('<c:url value="/cop/cmy/selectCommuUserList.do"/>'); return false;"><spring:message code="comCopCmy.communityUseMgrMain.btnUser" /></a></li> <!-- 사용자관리  -->
+                <li><a href="javascript:void(0);" onclick="fn_egov_loadMngrMenu('<c:url value="/cop/bbs/selectBBSMasterInfs.do"/>'); return false;"><spring:message code="comCopCmy.communityUseMgrMain.btnBoard" /></a></li> <!-- 게시판관리  -->
+                <li><a href="javascript:void(0);" onclick="fn_egov_loadMngrMenu('<c:url value="/cop/cmy/selectCommuUserList.do"/>'); return false;"><spring:message code="comCopCmy.communityUseMgrMain.btnUser" /></a></li> <!-- 사용자관리  -->
                 </c:if>
                 <!-- 관리자 메뉴 부분 End -->
 			</ul>

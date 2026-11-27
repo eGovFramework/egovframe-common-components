@@ -11,60 +11,64 @@ import java.sql.Statement;
 import java.sql.Wrapper;
 
 /**
- * Utility class  to support to close resources
+ * Utility class to support to close resources
+ * 
  * @author Vincent Han
  * @since 2014.09.18
  * @version 1.0
  * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- * <pre>
- * << 개정이력(Modification Information) >>
- *   
- *   수정일        수정자       수정내용
- *  -------       --------    ---------------------------
- *   2014.09.18	표준프레임워크센터	최초 생성
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.09.18  표준프레임워크센터  최초 생성
+ *   2025.05.28  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
  *
- * </pre>
+ *      </pre>
  */
 public class EgovResourceCloseHelper {
 	/**
 	 * Resource close 처리.
+	 * 
 	 * @param resources
 	 */
-	public static void close(Closeable  ... resources) {
-		for (Closeable resource : resources) {
+	public static void close(Closeable... resources) {
+		for (Closeable resource : resources) { // NOPMD - CloseResource
 			if (resource != null) {
 				try {
 					resource.close();
-				} catch (IOException ignore) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+				} catch (IOException ignore) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 					EgovBasicLogger.ignore("Occurred IOException to close resource is ingored!!");
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * JDBC 관련 resource 객체 close 처리
+	 * 
 	 * @param objects
 	 */
-	public static void closeDBObjects(Wrapper ... objects) {
+	public static void closeDBObjects(Wrapper... objects) {
 		for (Object object : objects) {
 			if (object != null) {
 				if (object instanceof ResultSet) {
 					try {
-						((ResultSet)object).close();
-					} catch (SQLException ignore) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+						((ResultSet) object).close();
+					} catch (SQLException ignore) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 						EgovBasicLogger.ignore("Occurred SQLException to close resource is ingored!!");
 					}
 				} else if (object instanceof Statement) {
 					try {
-						((Statement)object).close();
-					} catch (SQLException ignore) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+						((Statement) object).close();
+					} catch (SQLException ignore) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 						EgovBasicLogger.ignore("Occurred SQLException to close resource is ingored!!");
 					}
 				} else if (object instanceof Connection) {
 					try {
-						((Connection)object).close();
+						((Connection) object).close();
 					} catch (SQLException ignore) {
 						EgovBasicLogger.ignore("Occurred SQLException to close resource is ingored!!");
 					}
@@ -74,9 +78,10 @@ public class EgovResourceCloseHelper {
 			}
 		}
 	}
-	
+
 	/**
 	 * Socket 관련 resource 객체 close 처리
+	 * 
 	 * @param objects
 	 */
 	public static void closeSocketObjects(Socket socket, ServerSocket server) {
@@ -86,14 +91,14 @@ public class EgovResourceCloseHelper {
 			} catch (IOException ignore) {
 				EgovBasicLogger.ignore("Occurred IOException to close resource is ingored!!");
 			}
-			
+
 			try {
 				socket.close();
 			} catch (IOException ignore) {
 				EgovBasicLogger.ignore("Occurred IOException to close resource is ingored!!");
 			}
 		}
-		
+
 		if (server != null) {
 			try {
 				server.close();
@@ -102,21 +107,21 @@ public class EgovResourceCloseHelper {
 			}
 		}
 	}
-	
+
 	/**
-	 *  Socket 관련 resource 객체 close 처리
-	 *  
+	 * Socket 관련 resource 객체 close 처리
+	 * 
 	 * @param sockets
 	 */
-	public static void closeSockets(Socket ... sockets) {
-		for (Socket socket : sockets) {
+	public static void closeSockets(Socket... sockets) {
+		for (Socket socket : sockets) { // NOPMD - CloseResource
 			if (socket != null) {
 				try {
 					socket.shutdownOutput();
 				} catch (IOException ignore) {
 					EgovBasicLogger.ignore("Occurred IOException to close resource is ingored!!");
 				}
-				
+
 				try {
 					socket.close();
 				} catch (IOException ignore) {

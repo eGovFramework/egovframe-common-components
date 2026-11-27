@@ -1,0 +1,73 @@
+package egovframework.com.cmm.service.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.FileVO;
+import egovframework.com.test.EgovTestV1;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ContextConfiguration(classes = { EgovFileMngServiceImplConfigurationTest.class })
+public class EgovFileMngServiceImpl_insertFileInfsTest extends EgovTestV1 {
+
+	@Autowired
+	private EgovFileMngService egovFileMngService;
+
+	@Resource(name = "egovFileIdGnrService")
+	private EgovIdGnrService egovFileIdGnrService;
+
+	@Test
+	public void test() {
+		// given
+		FileVO fvo = new FileVO();
+		try {
+			fvo.setAtchFileId(egovFileIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
+		int maxFileSN = egovFileMngService.getMaxFileSN(fvo);
+		log.debug("maxFileSN={}", maxFileSN);
+
+		List<FileVO> fileList = new ArrayList<>();
+		FileVO file = new FileVO();
+		file.setAtchFileId(fvo.getAtchFileId());
+		file.setFileSn(String.valueOf(maxFileSN++));
+		file.setFileMg(file.getFileSn());
+		fileList.add(file);
+
+		file = new FileVO();
+		file.setAtchFileId(fvo.getAtchFileId());
+		file.setFileSn(String.valueOf(maxFileSN++));
+		file.setFileMg(file.getFileSn());
+		fileList.add(file);
+
+		for (int i = 0; i < 10; i++) {
+			file = new FileVO();
+			file.setAtchFileId(fvo.getAtchFileId());
+			file.setFileSn(String.valueOf(maxFileSN++));
+			file.setFileMg(file.getFileSn());
+			fileList.add(file);
+		}
+
+		// when
+		String result = egovFileMngService.insertFileInfs(fileList);
+
+		// then
+		assertEquals(result, fvo.getAtchFileId());
+
+		log.debug("result={}", result);
+	}
+
+}

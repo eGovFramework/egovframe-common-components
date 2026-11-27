@@ -25,22 +25,39 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-public class HTMLTagFilter implements Filter{
+/**
+ * HTMLTagFilter 클래스
+ * 
+ * @author 표준프레임워크센터
+ * @since 2020.03.11
+ * @version 3.9.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2020.03.11  표프센          최초 생성
+ *   2025.05.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(주석 처리되지 않은 빈 메서드 본문)
+ *
+ *      </pre>
+ */
+public class HTMLTagFilter implements Filter {
 
-	@SuppressWarnings("unused")
-	private FilterConfig config;
-
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-
-		chain.doFilter(new HTMLTagFilterRequestWrapper((HttpServletRequest)request), response);
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
 	}
 
-	public void init(FilterConfig config) throws ServletException {
-		this.config = config;
-	}
-
+	@Override
 	public void destroy() {
-
 	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		chain.doFilter(new HTMLTagFilterRequestWrapper((HttpServletRequest) request), response);
+	}
+
 }

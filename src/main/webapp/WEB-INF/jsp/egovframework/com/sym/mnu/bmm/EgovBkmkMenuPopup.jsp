@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%
  /**
   * @Class Name : EgovBkmkMenuPopup.jsp
@@ -59,6 +60,7 @@
 	<h1><spring:message code="comSymMnuBmm.BkmkMenuPopup.pageTop.title" /></h1><!-- 메뉴목록 -->
 	<span>※ "1100. 메뉴생성관리" 메뉴에서 "메뉴생성"을 먼저 해야 목록에서 확인이 가능합니다.</span>
 	<form name="frm" action ="<c:url value='/sym/mnu/bmm/selectMenuList.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="PopFlag" value="Y" >
 	<input type="hidden" name="searchCnd" value ="0" >
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
@@ -98,7 +100,8 @@
 			    <td><c:out value="${result.menuNm}" /></td>
 			    <td><c:out value="${result.menuDc}" /></td>
 				<td>
-					<input class="btn01" type="submit" name="selectUser" value="선택" onclick="fn_egov_return_menuInfo('<c:out value="${result.menuId}" />','${result.menuNm}');" />
+					<%-- 2026.07.30 보안 조치 - JS 문자열 컨텍스트 이스케이프(팝업 선택 시 XSS 차단) --%>
+					<input class="btn01" type="submit" name="selectUser" value="선택" onclick="fn_egov_return_menuInfo('<c:out value="${result.menuId}" />','<c:out value="${egovc:escapeJavaScript(result.menuNm)}" />');" />
 				</td>
 			  </tr>
 			 </c:forEach>

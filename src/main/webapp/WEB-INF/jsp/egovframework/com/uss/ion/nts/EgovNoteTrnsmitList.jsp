@@ -17,6 +17,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNts.title"/></c:set>
 <!DOCTYPE html>
@@ -32,8 +34,7 @@
 /* ********************************************************
  * 초기화
  ******************************************************** */
-function fn_egov_init(){
-
+$(document).ready(function(){
 	$("#searchFromDate").datepicker(  
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
@@ -64,7 +65,7 @@ function fn_egov_init(){
 	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
 	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 	});
-}
+});
 
 /* ********************************************************
  * 페이징 처리 함수
@@ -80,8 +81,10 @@ function linkPage(pageNo){
  ******************************************************** */
 function fn_egov_detail_NoteTrnsmit(noteId,noteTrnsmitId){
 	var vFrom = document.listForm;
-	vFrom.noteId.value = noteId;
-	vFrom.noteTrnsmitId.value = noteTrnsmitId;
+	var rowFields = vFrom.querySelectorAll('tbody input[name="noteId"], tbody input[name="noteTrnsmitId"]');
+	for(var i=0; i<rowFields.length; i++){ rowFields[i].disabled = true; }
+	document.getElementById('detailNoteId').value = noteId;
+	document.getElementById('detailNoteTrnsmitId').value = noteTrnsmitId;
 	vFrom.action = "<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>";
 	vFrom.submit();
 }
@@ -99,10 +102,10 @@ function fn_egov_search_NoteTrnsmit(){
 /* ********************************************************
 * 수신자 목록 팝업
 ******************************************************** */
-function fn_egov_cnfirm_NoteTrnsmit(noteId){
+function fn_egov_cnfirm_NoteTrnsmit(noteId,noteTrnsmitId){
 	var left = (screen.width-800)/2;
 	var top = (screen.height-700)/3;
-	var url = "<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=" + noteId;
+	var url = "<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=" + encodeURIComponent(noteId) + "&noteTrnsmitId=" + encodeURIComponent(noteTrnsmitId);
 	var name = "";
 	var width = 800;
 	var height = 700;
@@ -210,7 +213,7 @@ function fn_egov_search_NoteRecptn(){
 </script>
 
 </head>
-<body onload="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -218,7 +221,7 @@ function fn_egov_search_NoteRecptn(){
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/nts/listNoteTrnsmit.do'/>" method="post" onSubmit="fn_egov_search_NoteRecptn(); return false;"> 
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/ion/nts/listNoteTrnsmit.do" method="post" onSubmit="fn_egov_search_NoteRecptn(); return false;"> 
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
@@ -247,12 +250,12 @@ function fn_egov_search_NoteRecptn(){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 3%;">
 		<col style="width: 5%;">
-		<col style="width: ;">
-		<col style="width: 13%;">
-		<col style="width: 13%;">
-		<col style="width: 18%;">
+		<col style="width: 5%;">
+		<col style="width: 50%;">
+		<col style="width: 10%;">
+		<col style="width: 10%;">
+		<col style="width: 20%;">
 	</colgroup>
 	<thead>
 	<tr>
@@ -277,10 +280,10 @@ function fn_egov_search_NoteRecptn(){
 		<input type="hidden" name="noteTrnsmitId" value="<c:out value="${egovc:encryptId(resultInfo.noteTrnsmitId)}"/>" /></td>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-			<a href="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${egovc:encryptId(resultInfo.noteId)}&amp;noteTrnsmitId=${egovc:encryptId(resultInfo.noteTrnsmitId)}">
+			<a href="javascript:void(0);" onclick="fn_egov_detail_NoteTrnsmit('${egovc:encryptId(resultInfo.noteId)}','${egovc:encryptId(resultInfo.noteTrnsmitId)}'); return false;">
  				<c:set var="noteTrnsmitNoteSj" value="${fn:escapeXml(resultInfo.noteSj)}"/>
 				<c:set var="noteTrnsmitNoteSj" value="${fn:replace(resultInfo.noteSj , crlf , '<br>')}"/>
-				<c:out value="${resultInfo.noteSj}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultInfo.noteSj}"/></span>
 			</a>
 		</td>
 		<td>
@@ -289,7 +292,7 @@ function fn_egov_search_NoteRecptn(){
 			<c:if test="${resultInfo.rcverCnt > 0}">&nbsp;외&nbsp; ${resultInfo.rcverCnt}명</c:if>
 		</td>
 		<td>
-			<span class="btn_s"><a href="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=${egovc:encryptId(resultInfo.noteId)}" onClick="fn_egov_cnfirm_NoteTrnsmit('${egovc:encryptId(resultInfo.noteId)}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onClick="fn_egov_cnfirm_NoteTrnsmit('${egovc:encryptId(resultInfo.noteId)}','${egovc:encryptId(resultInfo.noteTrnsmitId)}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
 		</td>
 		<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
 	</tr>
@@ -305,8 +308,10 @@ function fn_egov_search_NoteRecptn(){
 	<input name="cmd" type="hidden" value="">
 	<input name="noteIdAll" type="hidden" value="">
 	<input name="noteTrnsmitIdAll" type="hidden" value="">
+	<input type="hidden" id="detailNoteId" name="noteId" value="">
+	<input type="hidden" id="detailNoteTrnsmitId" name="noteTrnsmitId" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
+	</form:form>
 </div><!-- end div board -->
 
 

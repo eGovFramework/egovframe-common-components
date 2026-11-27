@@ -3,6 +3,8 @@ package egovframework.com.sym.bat.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -19,6 +21,7 @@ import egovframework.com.cmm.ComDefaultVO;
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.06.17   김진만     최초 생성
+ *  2026.07.09   EricSeokgon  PMD UseCollectionIsEmpty: size() != 0 대신 !isEmpty() 사용
  * </pre>
  */
 @SuppressWarnings("serial")
@@ -32,11 +35,13 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 	/**
 	 * 배치작업ID
 	 */
+	@EgovNullCheck
 	private String batchOpertId;
 
 	/**
 	 * 실행주기
 	 */
+	@EgovNullCheck
 	private String executCycle;
 	/**
 	 * 실행스케줄일자
@@ -45,14 +50,17 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 	/**
 	 * 실행스케줄시
 	 */
+	@EgovNullCheck
 	private String executSchdulHour;
 	/**
 	 * 실행스케줄분
 	 */
+	@EgovNullCheck
 	private String executSchdulMnt;
 	/**
 	 * 실행스케줄초
 	 */
+	@EgovNullCheck
 	private String executSchdulSecnd;
 	/**
 	 * 실행스케줄요일
@@ -371,7 +379,7 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 		// 요일출력
 		if (this.executCycle.equals("02")) {
 			// 실행주기가 매주인 경우에만 출력한다.
-			if (dfkSeList.size() != 0) {
+			if (!dfkSeList.isEmpty()) {
 				for (int i = 0; i < dfkSeList.size(); i++) {
 					if (i != 0) {
 						executSchdul = executSchdul + ",";

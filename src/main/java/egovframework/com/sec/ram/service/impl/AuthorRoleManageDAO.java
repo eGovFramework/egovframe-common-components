@@ -21,7 +21,8 @@ import egovframework.com.sec.ram.service.AuthorRoleManageVO;
  *  수정일               수정자               수정내용
  *  ----------   ---------   ---------------------------
  *  2009.03.11   이문준              최초 생성
- *  2021.02-09   신용호              updateAuthorRole 삭제
+ *  2021.02.09   신용호              updateAuthorRole 삭제
+ *  2026.06.15   이백행              [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -33,27 +34,24 @@ public class AuthorRoleManageDAO extends EgovComAbstractDAO {
 	 * 권한 롤 관계정보 목록 조회
 	 * @param authorRoleManageVO AuthorRoleManageVO
 	 * @return List<AuthorRoleManageVO>
-	 * @exception Exception
 	 */
-	public List<AuthorRoleManageVO> selectAuthorRoleList(AuthorRoleManageVO authorRoleManageVO) throws Exception {
+	public List<AuthorRoleManageVO> selectAuthorRoleList(AuthorRoleManageVO authorRoleManageVO) {
 		return selectList("authorRoleManageDAO.selectAuthorRoleList", authorRoleManageVO);
 	}
 	
 	/**
 	 * 권한 롤 관계정보를 화면에서 입력하여 입력항목의 정합성을 체크하고 데이터베이스에 저장
 	 * @param authorRoleManage AuthorRoleManage
-	 * @exception Exception
 	 */
-	public void insertAuthorRole(AuthorRoleManage authorRoleManage) throws Exception {
+	public void insertAuthorRole(AuthorRoleManage authorRoleManage) {
 		insert("authorRoleManageDAO.insertAuthorRole", authorRoleManage);
 	}
 
 	/**
 	 * 권한 롤 관계정보를 화면에 조회하여 데이터베이스에서 삭제
 	 * @param authorRoleManage AuthorRoleManage
-	 * @exception Exception
 	 */
-	public void deleteAuthorRole(AuthorRoleManage authorRoleManage) throws Exception {
+	public void deleteAuthorRole(AuthorRoleManage authorRoleManage) {
 		delete("authorRoleManageDAO.deleteAuthorRole", authorRoleManage);
 	}
 
@@ -61,9 +59,8 @@ public class AuthorRoleManageDAO extends EgovComAbstractDAO {
 	 * 목록조회 카운트를 반환한다
 	 * @param authorRoleManageVO AuthorRoleManageVO
 	 * @return int
-	 * @exception Exception
 	 */
-	public int selectAuthorRoleListTotCnt(AuthorRoleManageVO authorRoleManageVO) throws Exception {
+	public int selectAuthorRoleListTotCnt(AuthorRoleManageVO authorRoleManageVO) {
 		return (Integer)selectOne("authorRoleManageDAO.selectAuthorRoleListTotCnt", authorRoleManageVO);
 	}
 

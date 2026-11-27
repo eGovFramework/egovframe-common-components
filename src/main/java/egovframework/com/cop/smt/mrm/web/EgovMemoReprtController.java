@@ -1,21 +1,23 @@
 package egovframework.com.cop.smt.mrm.web;
+
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -30,78 +32,87 @@ import egovframework.com.cop.smt.mrm.service.MemoReprt;
 import egovframework.com.cop.smt.mrm.service.MemoReprtVO;
 import egovframework.com.cop.smt.mrm.service.ReportrVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
+ * <pre>
  * 개요
  * - 메모보고에 대한 controller 클래스를 정의한다.
  * 
  * 상세내용
  * - 메모보고에 대한 등록, 수정, 삭제, 조회기능을 제공한다.
  * - 메모보고의 조회기능은 목록조회, 상세조회로 구분된다.
- * @author 장철호
- * @version 1.0
- * @created 19-7-2010 오전 10:14:53
- * <pre>
- * << 개정이력(Modification Information) >>
- *   
- *  수정일               수정자             수정내용
- *  ----------   --------   ---------------------------
- *  2010.07.19   장철호            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2019.12.09   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
- *
+ * - 소유권(관리자 예외 없음): 메모보고 수정·삭제 = 작성자(frstRegisterId), 지시사항 작성 = 보고받는 사람(reportrId)
  * </pre>
+ * 
+ * @author 장철호
+ * @since 19-7-2010 오전 10:14:53
+ * @version 1.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.07.19  장철호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2025.06.11  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *
+ *      </pre>
  */
 
 @Controller
 public class EgovMemoReprtController {
 
-	@Resource(name="EgovMemoReprtService")
-    protected EgovMemoReprtService memoReprtService;
-	
-	@Resource(name="propertiesService")
-    protected EgovPropertyService propertyService;
-    
-    @Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
-    
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-    
-    // 첨부파일 관련 
+	@Resource(name = "EgovMemoReprtService")
+	protected EgovMemoReprtService memoReprtService;
+
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertyService;
+
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
+
+    // 첨부파일 관련
 	@Resource(name="EgovFileMngService")
-	private EgovFileMngService fileMngService;	
-	 
-	@Resource(name="EgovFileMngUtil")
+	private EgovFileMngService fileMngService;
+
+	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
-    
-    //Logger log = Logger.getLogger(this.getClass());
-    
-    /**
+
+	// Logger log = Logger.getLogger(this.getClass());
+
+	/**
 	 * 보고자 정보에 대한 팝업 목록을 조회한다.
+	 * 
 	 * @param ReportrVO
-	 * @return  String
+	 * @return String
 	 * 
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/mrm/selectReportrListPopup.do")
-	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) throws Exception{
+	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		return "egovframework/com/cop/smt/mrm/EgovReportrListPopup";
 	}
-	
+
 	/**
 	 * 보고자 정보에 대한 목록을 조회한다.
+	 * 
 	 * @param ReportrVO
-	 * @return  String
+	 * @return String
 	 * 
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/mrm/selectReportrList.do")
-	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) throws Exception{
-		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		
-		//reportrVO.setUniqId(user.getUniqId());
-		
+	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
+		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// reportrVO.setUniqId(user.getUniqId());
+
 		reportrVO.setPageUnit(propertyService.getInt("pageUnit"));
 		reportrVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -115,7 +126,7 @@ public class EgovMemoReprtController {
 		reportrVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		Map<String, Object> map = memoReprtService.selectReportrList(reportrVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		model.addAttribute("resultList", map.get("resultList"));
@@ -124,27 +135,28 @@ public class EgovMemoReprtController {
 
 		return "egovframework/com/cop/smt/mrm/EgovReportrList";
 	}
-	
+
 	/**
 	 * 메모보고 정보에 대한 목록을 조회한다.
+	 * 
 	 * @param MemoReprtVO - 메모보고 VO
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprtVO
 	 * @param model
 	 */
-	@IncludedInfo(name="메모보고", order = 430 ,gid = 40)
-    @RequestMapping("/cop/smt/mrm/selectMemoReprtList.do")
-	public String selectMemoReprtList(@ModelAttribute("searchVO") MemoReprtVO memoReprtVO, ModelMap model) throws Exception{
-    	//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+	@IncludedInfo(name = "메모보고", order = 430, gid = 40)
+	@RequestMapping("/cop/smt/mrm/selectMemoReprtList.do")
+	public String selectMemoReprtList(@ModelAttribute("searchVO") MemoReprtVO memoReprtVO, ModelMap model) {
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
-		
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
 		memoReprtVO.setPageUnit(propertyService.getInt("pageUnit"));
 		memoReprtVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -156,14 +168,13 @@ public class EgovMemoReprtController {
 		memoReprtVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		memoReprtVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		memoReprtVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
+
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		
-	
+
 		Map<String, Object> map = memoReprtService.selectMemoReprtList(memoReprtVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 		paginationInfo.setTotalRecordCount(totCnt);
-		
+
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -173,32 +184,34 @@ public class EgovMemoReprtController {
 
 	/**
 	 * 메모보고 정보를 조회한다.
+	 * 
 	 * @param MemoReprtVO - 메모보고 VO
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprtVO
 	 * @param model
 	 */
-    @RequestMapping("/cop/smt/mrm/selectMemoReprt.do")
-	public String selectMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) throws Exception{
+	@PostMapping("/cop/smt/mrm/selectMemoReprt.do")
+	public String selectMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
 
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
-        
-        // 1. 로그인 객체 선언
- 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-        
-        memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-        MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		// 1. 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		MemoReprt memoReprt = EgovAuthorizationHelper.requireTarget(memoReprtService.selectMemoReprt(memoReprtVO));
 		model.addAttribute("memoReprt", memoReprt);
-		
+
 		model.addAttribute("uniqId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-    	
-		if((loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())).equals(memoReprt.getReportrId())){
+
+		if ((loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()))
+				.equals(memoReprt.getReportrId())) {
 			memoReprtService.readMemoReprt(memoReprt);
 		}
 		return "egovframework/com/cop/smt/mrm/EgovMemoReprtDetail";
@@ -206,65 +219,72 @@ public class EgovMemoReprtController {
 
 	/**
 	 * 메모보고 정보의 등록페이지로 이동한다.
+	 * 
 	 * @param MemoReprt - 메모보고 model
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprt
 	 * @param model
 	 */
-    @RequestMapping("/cop/smt/mrm/addMemoReprt.do")
-	public String addMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
-    	String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
-		
-    	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
-    	
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	
-    	// 1. 로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		
-    	java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.KOREA);
+	@PostMapping("/cop/smt/mrm/addMemoReprt.do")
+	public String addMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
+			ModelMap model) {
+		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
+
+		// 파일업로드 제한
+		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		// 1. 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.KOREA);
 		memoReprtVO.setReprtDe(formatter.format(new java.util.Date()));
-    	memoReprtVO.setWrterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-    	memoReprtVO.setWrterNm(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName()));
-    	memoReprtVO.setWrterClsfNm(memoReprtService.selectWrterClsfNm(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())));
-    	
-    	model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
-        
-    	return sLocationUrl; 	
+		memoReprtVO.setWrterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		memoReprtVO.setWrterNm(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName()));
+		memoReprtVO.setWrterClsfNm(memoReprtService
+				.selectWrterClsfNm(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())));
+
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+
+		return sLocationUrl;
 	}
 
 	/**
 	 * 메모보고 정보의 수정페이지로 이동한다.
+	 * 
 	 * @param MemoReprt - 메모보고 model
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprt
 	 * @param model
 	 */
-    @RequestMapping("/cop/smt/mrm/modifyMemoReprt.do")
-	public String modifyMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	
-    	// 1. 로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		
+	@PostMapping("/cop/smt/mrm/modifyMemoReprt.do")
+	public String modifyMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
+			ModelMap model, HttpServletRequest request) {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		// 1. 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		
-    	MemoReprtVO resultVO = memoReprtService.selectMemoReprt(memoReprtVO);
+
+		MemoReprtVO resultVO = memoReprtService.selectMemoReprt(memoReprtVO);
+		EgovAuthorizationHelper.assertOwner(resultVO == null ? null : resultVO.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, resultVO.getAtchFileId());
 		resultVO.setSearchCnd(memoReprtVO.getSearchCnd());
 		resultVO.setSearchWrd(memoReprtVO.getSearchWrd());
 		resultVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe());
@@ -272,61 +292,72 @@ public class EgovMemoReprtController {
 		resultVO.setSearchSttus(memoReprtVO.getSearchSttus());
 		resultVO.setSearchDrctMatter(memoReprtVO.getSearchDrctMatter());
 		resultVO.setPageIndex(memoReprtVO.getPageIndex());
-        model.addAttribute("memoReprtVO", resultVO);
-        
+		model.addAttribute("memoReprtVO", resultVO);
+
 		return "egovframework/com/cop/smt/mrm/EgovMemoReprtUpdt";
 	}
 
 	/**
 	 * 메모보고 정보를 수정한다.
+	 * 
 	 * @param MemoReprt - 메모보고 model
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprt
 	 * @param model
 	 */
-    @RequestMapping("/cop/smt/mrm/updateMemoReprt.do")
-	public String updateMemoReprt(final MultipartHttpServletRequest multiRequest, @RequestParam Map<?, ?> commandMap, @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
-    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	@PostMapping("/cop/smt/mrm/updateMemoReprt.do")
+	public String updateMemoReprt(final MultipartHttpServletRequest multiRequest, @RequestParam Map<?, ?> commandMap,
+			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) {
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(memoReprtVO, bindingResult);
+		memoReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		MemoReprtVO stored = memoReprtService.selectMemoReprt(memoReprtVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		// 수정·삭제 SQL 은 등록자 조건(FRST_REGISTER_ID)으로 한 번 더 거르므로 원본 등록자를 채운다
+		memoReprtVO.setFrstRegisterId(stored.getFrstRegisterId());
+		// 첨부 그룹은 요청값이 아니라 소유권을 확인한 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		memoReprtVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
+		// 작성자도 원본 값을 쓴다(요청값으로 타인 명의 변경 차단)
+		memoReprtVO.setWrterId(stored.getWrterId());
+
 		if (bindingResult.hasErrors()) {
 			MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
-		    model.addAttribute("memoReprt", memoReprt);
-		    return "egovframework/com/cop/smt/mrm/EgovMemoReprtUpdt";
+			model.addAttribute("memoReprt", memoReprt);
+			return "egovframework/com/cop/smt/mrm/EgovMemoReprtUpdt";
 		}
 
 		if (isAuthenticated) {
-			/* *****************************************************************
-        	// 첨부파일 관련 ID 생성 start....
-			****************************************************************** */
-    		String _atchFileId = memoReprtVO.getAtchFileId();	
-    		
-    		
-    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
-    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
-    		
-    		if(!files.isEmpty()){
-    			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
-    			if("N".equals(atchFileAt)){
-    				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");	
-    				_atchFileId = fileMngService.insertFileInfs(_result);
-    							
-    				// 첨부파일 ID 셋팅
-    				memoReprtVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
-    				
-    			}else{				
-    				FileVO fvo = new FileVO();
-    				fvo.setAtchFileId(_atchFileId);
-    				int _cnt = fileMngService.getMaxFileSN(fvo);
-    				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");	
-    				fileMngService.updateFileInfs(_result);
-    			}
-    		}	
-    		
-    		memoReprtVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));		    
-    		memoReprtService.updateMemoReprt(memoReprtVO);
+			/*
+			 * ***************************************************************** // 첨부파일 관련
+			 * ID 생성 start....
+			 */
+			String atchFileId = memoReprtVO.getAtchFileId();
+
+			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
+
+			if (!files.isEmpty()) {
+				String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String) commandMap.get("atchFileAt");
+				if ("N".equals(atchFileAt)) {
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, atchFileId, "");
+					atchFileId = fileMngService.insertFileInfs(fvoList);
+
+					// 첨부파일 ID 셋팅
+					memoReprtVO.setAtchFileId(atchFileId); // 첨부파일 ID
+
+				} else {
+					FileVO fvo = new FileVO();
+					fvo.setAtchFileId(atchFileId);
+					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", fileKeyParam, atchFileId, "");
+					fileMngService.updateFileInfs(fvoList);
+				}
+			}
+
+			memoReprtVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+			memoReprtService.updateMemoReprt(memoReprtVO);
 		}
 
 		return "forward:/cop/smt/mrm/selectMemoReprtList.do";
@@ -334,19 +365,26 @@ public class EgovMemoReprtController {
 
 	/**
 	 * 메모보고 정보의 지시사항을 등록한다.
+	 * 
 	 * @param MemoReprt - 메모보고 model
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprt
 	 * @param model
 	 */
-    @SuppressWarnings("unused")
-	@RequestMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
-	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) throws Exception{
-    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	@PostMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
+	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
+		LoginVO user = EgovAuthorizationHelper.assertLoginUser();
+		MemoReprtVO ownerCheckVO = new MemoReprtVO();
+		ownerCheckVO.setReprtId(memoReprtVO.getReprtId());
+		ownerCheckVO.setSearchId(user.getUniqId());
+		// 지시사항은 보고받는 사람(REPORTR_ID)만 작성한다
+		MemoReprtVO stored = memoReprtService.selectMemoReprt(ownerCheckVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getReportrId());
+
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		if (isAuthenticated) {	    
+		if (isAuthenticated) {
 			memoReprtService.updateMemoReprtDrctMatter(memoReprtVO);
 		}
 
@@ -355,98 +393,107 @@ public class EgovMemoReprtController {
 
 	/**
 	 * 메모보고 정보를 등록한다.
+	 * 
 	 * @param MemoReprt - 메모보고 model
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprt
 	 * @param model
 	 */
-    @RequestMapping("/cop/smt/mrm/insertMemoReprt.do")
-	public String insertMemoReprt(final MultipartHttpServletRequest multiRequest, @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		
-		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist"; 
-		
-		//서버  validate 체크
-        beanValidator.validate(memoReprtVO, bindingResult);
-		if(bindingResult.hasErrors()){
-			
-			// 파일업로드 제한
-	    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-	    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+	@PostMapping("/cop/smt/mrm/insertMemoReprt.do")
+	public String insertMemoReprt(final MultipartHttpServletRequest multiRequest,
+			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-	        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-	        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
-			
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
+
+		if (bindingResult.hasErrors()) {
+
+			// 파일업로드 제한
+			String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+			String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+			model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+			model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+
 			return sLocationUrl;
 		}
-		
+
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
-		
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
+
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
-		
-		if(!files.isEmpty()){
-		 _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", ""); 
-		 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+
+		if (!files.isEmpty()) {
+			fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
-		
-    	// 리턴받은 첨부파일ID를 셋팅한다..
-		memoReprtVO.setAtchFileId(_atchFileId);			// 첨부파일 ID
-		
-		//아이디 설정
+
+		// 리턴받은 첨부파일ID를 셋팅한다..
+		memoReprtVO.setAtchFileId(atchFileId); // 첨부파일 ID
+
+		// 아이디 설정
 		memoReprtVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		memoReprtVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		
+		memoReprtVO.setWrterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
 		memoReprtService.insertMemoReprt(memoReprtVO);
-    	sLocationUrl = "forward:/cop/smt/mrm/selectMemoReprtList.do";
-        
-        return sLocationUrl;
+		sLocationUrl = "forward:/cop/smt/mrm/selectMemoReprtList.do";
+
+		return sLocationUrl;
 	}
 
 	/**
 	 * 메모보고 정보를 삭제한다.
+	 * 
 	 * @param MemoReprt - 메모보고 model
-	 * @return  String - 리턴 URL
+	 * @return String - 리턴 URL
 	 * 
 	 * @param memoReprt
 	 * @param model
 	 */
-    @RequestMapping("/cop/smt/mrm/deleteMemoReprt.do")
-	public String deleteMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) throws Exception{
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	
-    	// 1. 로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		
+	@PostMapping("/cop/smt/mrm/deleteMemoReprt.do")
+	public String deleteMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		// 1. 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-    	
-    	// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = memoReprtVO.getAtchFileId();	
-    	
-		// 첨부파일을 삭제하기 위한  Vo
-    	FileVO fvo = new FileVO();
-    	fvo.setAtchFileId(_atchFileId);
-    			
-    	fileMngService.deleteAllFileInf(fvo);
-    	// 첨부파일 삭제 End.............
-    	
-    	memoReprtService.deleteMemoReprt(memoReprtVO);
+
+		// 첨부파일 삭제를 위한 ID 생성 start....
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		MemoReprtVO stored = memoReprtService.selectMemoReprt(memoReprtVO);
+		EgovAuthorizationHelper.assertOwner(stored == null ? null : stored.getFrstRegisterId());
+		// 수정·삭제 SQL 은 등록자 조건(FRST_REGISTER_ID)으로 한 번 더 거르므로 원본 등록자를 채운다
+		memoReprtVO.setFrstRegisterId(stored.getFrstRegisterId());
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
+
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
+
+			fileMngService.deleteAllFileInf(fvo);
+		}
+		// 첨부파일 삭제 End.............
+
+		memoReprtService.deleteMemoReprt(memoReprtVO);
 		return "forward:/cop/smt/mrm/selectMemoReprtList.do";
 	}
 

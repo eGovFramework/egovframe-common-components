@@ -31,9 +31,8 @@ public class DiaryManageDao extends EgovComAbstractDAO {
 	 * 일지관리 목록을 조회한다. 
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) {
 		return selectList("DiaryManage.selectDiaryManage", searchVO);
 	}
 	
@@ -41,9 +40,8 @@ public class DiaryManageDao extends EgovComAbstractDAO {
 	 * 일지관리를(을) 상세조회 한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public DiaryManageVO selectDiaryManageDetail(DiaryManageVO diaryManageVO) throws Exception{
+	public DiaryManageVO selectDiaryManageDetail(DiaryManageVO diaryManageVO) {
 		return (DiaryManageVO)selectOne("DiaryManage.selectDiaryManageDetail", diaryManageVO);
 	}
 
@@ -51,27 +49,24 @@ public class DiaryManageDao extends EgovComAbstractDAO {
 	 * 일지관리를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectDiaryManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectDiaryManageListCnt(ComDefaultVO searchVO) {
 		return (Integer)selectOne("DiaryManage.selectDiaryManageCnt", searchVO);
 	}
 	
     /**
 	 * 일지관리를(을) 등록한다.
 	 * @param qdiaryManageVO - 일지관리 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void insertDiaryManage(DiaryManageVO diaryManageVO) throws Exception{
+	public void insertDiaryManage(DiaryManageVO diaryManageVO) {
 		insert("DiaryManage.insertDiaryManage", diaryManageVO);
 	}
 
     /**
 	 * 일지관리를(을) 수정한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO
-	 * @throws Exception
 	 */
-	public void updateDiaryManage(DiaryManageVO diaryManageVO) throws Exception{
+	public void updateDiaryManage(DiaryManageVO diaryManageVO) {
 		insert("DiaryManage.updateDiaryManage", diaryManageVO);
 	}
 	
@@ -79,9 +74,8 @@ public class DiaryManageDao extends EgovComAbstractDAO {
 	 * 일지관리를(을) 삭제한다.
 	 * @param diaryManageVO - 일지관리 정보 담김 VO
 	 * @return 
-	 * @throws Exception
 	 */
-	public void deleteDiaryManage(DiaryManageVO diaryManageVO) throws Exception{
+	public void deleteDiaryManage(DiaryManageVO diaryManageVO) {
 		insert("DiaryManage.deleteDiaryManage", diaryManageVO);
 	}
 }

@@ -7,11 +7,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +33,7 @@ import egovframework.com.utl.sys.pxy.service.impl.ProxySvcDAO;
  *  수정일                수정자             수정내용
  *  ----------   --------    ---------------------------
  *  2019.12.05   신용호              KISA 보안약점 조치 (경로조작및 자원 삽입, 부적절한 예외처리)
+ *  2026.06.22   이백행              [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  * </pre>
  */
 public class ProxyServer extends Thread {
@@ -150,15 +151,15 @@ public class ProxyServer extends Thread {
 	}
 
 	public void insertProxyLog() {
-
+		
+	
 		try {
+				proxyLog = new ProxyLog();
 
-			proxyLog = new ProxyLog();
-
-			proxyLog.setProxyId(getThreadName());
-
+				proxyLog.setProxyId(getThreadName());
+		
 			proxyLog.setLogId(egovProxyLogIdGnrService.getNextStringId());
-
+		
 			//KISA 보안약점 조치 (2018-10-29, 윤창원)
 			if (client.getInetAddress() != null) {
 				if (!EgovWebUtil.isIPAddress((client.getInetAddress().getHostAddress()))) {
@@ -170,19 +171,18 @@ public class ProxyServer extends Thread {
 			proxyLog.setFrstRegisterId("SYSTEM");
 			proxyLog.setLastUpdusrId("SYSTEM");
 
-			LOGGER.info(proxyLog.getProxyId());
-			LOGGER.info(proxyLog.getLogId());
-			LOGGER.info(proxyLog.getClntIp());
-			LOGGER.info(proxyLog.getClntPort());
-			LOGGER.info(proxyLog.getFrstRegisterId());
-			LOGGER.info(proxyLog.getLastUpdusrId());
+			if (LOGGER.isInfoEnabled()) {
+				LOGGER.info(proxyLog.getProxyId());
+				LOGGER.info(proxyLog.getLogId());
+				LOGGER.info(proxyLog.getClntIp());
+				LOGGER.info(proxyLog.getClntPort());
+				LOGGER.info(proxyLog.getFrstRegisterId());
+				LOGGER.info(proxyLog.getLastUpdusrId());
+			}
 
 			proxySvcDAO.insertProxyLog(proxyLog);
-
-		} catch (SQLException e) {
-			LOGGER.debug("proxyLog Insert Error", e);
-		} catch (Exception e) {
-			LOGGER.debug("proxyLog Insert Error", e);
+		} catch (FdlException | RuntimeException e) {
+			LOGGER.error("proxyLog Insert Error", e);
 		}
 	}
 

@@ -22,7 +22,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmCca.cmmnCodeVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -30,8 +29,7 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="cmmnCodeVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 /* ********************************************************
  * 초기화
@@ -111,7 +109,7 @@ function fncShowMessg(){
 		<tr>
 			<th><label for="codeId">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="codeId" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="codeId" title="${title} ${inputTxt}" size="70" maxlength="6" />
    				<div><form:errors path="codeId" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -121,7 +119,7 @@ function fncShowMessg(){
 		<tr>
 			<th><label for="codeIdNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="codeIdNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="codeIdNm" title="${title} ${inputTxt}" size="70" maxlength="60" />
    				<div><form:errors path="codeIdNm" cssClass="error" /></div>     
 			</td>
 		</tr>

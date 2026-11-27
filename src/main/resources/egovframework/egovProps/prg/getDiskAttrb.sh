@@ -11,7 +11,7 @@
 # @version 1.0
 # @see
 #
-# Copyright (C) 2009 by MOPAS  All right reserved.
+# Copyright (C) 2009 by MOPAS  All rights reserved.
 #### DISK CHECK ####
 #for A in `lspv | awk '{print $1}' `
 for A in `lsdev -Cc disk | awk '{print $1}'`

@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlhWor.wordDicaryVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -28,8 +27,7 @@
 <title>${pageTitle } <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="wordDicaryVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 /* ********************************************************
  * 초기화
@@ -95,7 +93,7 @@ function fn_egov_inqire_list() {
 		<tr>
 			<th><label for="engNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-			    <form:input path="engNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="engNm" title="${title} ${inputTxt}" size="70" maxlength="60" />
    				<div><form:errors path="engNm" cssClass="error" /></div>     
 			</td>
 		</tr>

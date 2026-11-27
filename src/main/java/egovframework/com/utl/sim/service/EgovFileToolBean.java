@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author 김진만
  * @see
- * 
+ *
  *      <pre>
  * == 개정이력(Modification Information) ==
  *
@@ -89,9 +89,9 @@ public class EgovFileToolBean {
 		if (!EgovFileBasePathSecurityValidator.validate(basePath)) {
 			throw new SecurityException("Unacceptable base path : " + basePath);
 		}
-		
+
 		// 파싱결과 구조체
-		Vector<List<String>> parResult = new Vector<List<String>>();
+		Vector<List<String>> parResult = new Vector<>();
 
 		// 파일 오픈
 		String parFile1 = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
@@ -101,9 +101,9 @@ public class EgovFileToolBean {
 			// 파일이며, 존재하면 파싱 시작
 			if (file.exists() && file.isFile()) {
 
-				// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
+				// 1. 파일 텍스트 내용을 읽어서 StringBuilder에 쌓는다.
 				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				StringBuffer strBuff = new StringBuffer();
+				StringBuilder strBuff = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
 					if (line.length() < MAX_STR_LEN) {
@@ -116,7 +116,7 @@ public class EgovFileToolBean {
 
 				// 3. 필드 수 만큼 돌아가며 Vector<ArrayList> 형태로 만든다.
 				int filedCnt = 1;
-				List<String> arr = new ArrayList<String>();
+				List<String> arr = new ArrayList<>();
 				for (int i = 0; i < strArr.length; i++) {
 
 					if (parField != 1) {
@@ -141,7 +141,7 @@ public class EgovFileToolBean {
 							}
 						}
 					} else {
-						arr = new ArrayList<String>();
+						arr = new ArrayList<>();
 						if (strArr[i] != null) {
 							arr.add(strArr[i]);
 						}

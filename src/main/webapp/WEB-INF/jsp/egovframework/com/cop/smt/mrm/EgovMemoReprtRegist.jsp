@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,10 +34,8 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="memoReprtVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function initCalendar(){
 		$("#reprtDe").datepicker(
@@ -131,7 +128,7 @@
 	
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="memoReprtVO" name="memoReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mrm/insertMemoReprt.do' />" enctype="multipart/form-data">
+<form:form modelAttribute="memoReprtVO" name="memoReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mrm/insertMemoReprt.do" enctype="multipart/form-data">
 
 <table class="wTable">
 		<colgroup>
@@ -148,8 +145,8 @@
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${memoReprtVO.wrterClsfNm}" escapeXml="false" />
-			    <c:out value="${memoReprtVO.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprtVO.wrterClsfNm}"/></span>
+			    <span style="white-space:pre-line"><c:out value="${memoReprtVO.wrterNm}"/></span>
 				<input type="hidden" name="wrterId" id="wrterId" value="${memoReprtVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${memoReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterClsfNm" id="wrterClsfNm" value="${memoReprtVO.wrterClsfNm}"/>
@@ -159,10 +156,11 @@
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reportrNm"/> <span class="pilsu">*</span></th><!-- 보고 대상자 -->
 			<td class="left">
 			    <form:input path="reportrNm" readonly="true" maxlength="10" title="보고대상명" cssStyle="width:128px"/>
-			    <a href="<c:url value='/cop/smt/mrm/selectReportrListPopup.do' />" target="_blank"   title="새 창으로 이동"  onclick="fn_egov_reportr_MemoReprt('보고대상', 'reportrId', '', 'reportrNm', '');return false;">
+			    <a href="javascript:void(0);"  onclick="fn_egov_reportr_MemoReprt('보고대상', 'reportrId', '', 'reportrNm', '');return false;">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" alt="보고대상 검색" title="보고대상 검색">
 				</a>
 		       <form:hidden path="reportrId" />
+		       <div><form:errors path="reportrNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -180,7 +178,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/><span class="pilsu">*</span></th><!--  파일첨부-->
+			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/></th><!--  파일첨부-->
 			<td class="left">
 			    <input name="file_1" id="egovComFileUploader" type="file" title="<spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/>" multiple/>
 			    <div id="egovComFileList"></div>
@@ -191,7 +189,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_insert_memoreprt(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/mrm/selectMemoReprtList.do'/>?searchWrd=<c:out value='${memoReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${memoReprtVO.searchSttus}'/>&amp;searchDrctMatter=<c:out value='${memoReprtVO.searchDrctMatter}'/>&amp;searchBgnDe=<c:out value='${memoReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoReprtVO.searchEndDe}'/>" onclick="fn_egov_list_memoreprt(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_memoreprt(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 

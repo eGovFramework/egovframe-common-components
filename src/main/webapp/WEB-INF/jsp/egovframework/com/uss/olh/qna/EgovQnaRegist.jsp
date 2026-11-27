@@ -24,7 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlhQna.qnaVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -32,8 +31,7 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="qnaVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 /* ********************************************************
  * 초기화
@@ -95,7 +93,7 @@ function fn_egov_regist_qna(form){
 		<tr>
 			<th><label for="wrterNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="wrterNm" title="${title} ${inputTxt}" size="70" maxlength="20" />
    				<div><form:errors path="wrterNm" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -105,9 +103,9 @@ function fn_egov_regist_qna(form){
 		<tr>
 			<th><label for="areaNo">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-			    <form:input path="areaNo" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>&nbsp;-&nbsp;
-			    <form:input path="middleTelno" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>&nbsp;-&nbsp;
-			    <form:input path="endTelno" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:30px;"/>
+			    <form:input path="areaNo" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;"/>&nbsp;-&nbsp;
+			    <form:input path="middleTelno" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;"/>&nbsp;-&nbsp;
+			    <form:input path="endTelno" title="${title} ${inputTxt}" size="70" maxlength="4" style="width:30px;"/>
    				<div><form:errors path="areaNo" cssClass="error" /></div>     
 			</td>
 		</tr>
@@ -117,7 +115,7 @@ function fn_egov_regist_qna(form){
 		<tr>
 			<th><label for="emailAdres">${title}</label></th>
 			<td class="left">
-			    <form:input path="emailAdres" title="${title} ${inputTxt}" size="70" maxlength="70" />
+			    <form:input path="emailAdres" title="${title} ${inputTxt}" size="70" maxlength="50" />
    				<div><form:errors path="emailAdres" cssClass="error" /></div>     
 			</td>
 			<c:set var="title"><spring:message code="comUssOlhQna.qnaVO.emailAnswerAt"/> </c:set>
@@ -158,6 +156,7 @@ function fn_egov_regist_qna(form){
 
 <input name="answerCn" type="hidden" value="<c:out value='answer'/>">
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
+<input name="mode" type="hidden" value="question">
 </form:form>
 
 </body>

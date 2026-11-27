@@ -68,13 +68,13 @@ input[type="radio"] { vertical-align:text-bottom; }
 /* box Style *****************************/
 .boxType1 { position:relative; border:4px solid #ececec; background:#f7f7f7; }
 .boxType1 .box { background:#fff; margin:4px; }
-.boxType1 .box .error { padding:25px 0 25px 190px; min-height:50px; background:url('../images/bul_i.jpg') 30px 50% no-repeat; }
+.boxType1 .box .error { padding:25px 0 25px 190px; min-height:50px; background:url('../../../images/egovframework/com/cmm/bul/bul_i.jpg') 30px 50% no-repeat; }
 .boxType1 .box .error p.title { color:#DB6415; font-size:16px; line-height:21px; font-weight:bold; margin-bottom:10px; }
 .boxType1 .box .error p.cont { line-height:18px; }
 
 .boxType1 { position: relative; border: 4px solid #ececec; background: #f7f7f7; }
 .boxType1 .box { background: #fff; margin: 4px; }
-.boxType1 .box .onepass { padding: 25px 0 25px 50px; min-height: 50px; background: url('../images/bul_i.jpg') 30px 50% no-repeat; }
+.boxType1 .box .onepass { padding: 25px 0 25px 50px; min-height: 50px; background: url('../../../images/egovframework/com/cmm/bul/bul_i.jpg') 30px 50% no-repeat; }
 .boxType1 .box .onepass p.title { color: #DB6415; font-size: 16px; line-height: 21px; font-weight: bold; margin-bottom: 10px; }
 .boxType1 .box .onepass p.cont { line-height: 18px; }
 
@@ -237,6 +237,8 @@ padding-bottom :12px;
 .board_list tbody th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
 .board_list tbody td { text-align:center; padding:11px 5px; border-bottom:1px solid #d9d9d9; 
 							word-break:break-all; white-space:-moz-pre-wrap; overflow:hidden; text-overflow:ellipsis;}
+/* 2026.04.22 추가 */
+.board_list tbody td:has(input[type="checkbox"]) {text-overflow:unset;}
 .board_list tbody td.left { text-align:left; padding:6px 8px; }
 .board_list tbody td.leftElli { text-align:left; padding:6px 8px; 
 overflow:hidden;
@@ -530,5 +532,10 @@ cursor :pointer;
 .twit_list li {margin-bottom:10px; }
 .twit_list li a:hover {text-decoration:underline; }
 .twit_list li img {display:block; margin-top:10px; }
+
+/* CKEditor로 등록한 본문(이미지 포함)을 조회화면에 그대로 출력할 때 사용 */
+.ck-content {word-break:break-all; }
+.ck-content img {max-width:100%; height:auto; }
+.ck-content table {max-width:100%; }
 
 

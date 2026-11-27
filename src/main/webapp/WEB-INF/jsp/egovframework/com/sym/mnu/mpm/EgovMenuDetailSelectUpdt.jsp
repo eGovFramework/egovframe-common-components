@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/sym/mnu/mpm/"/>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
@@ -36,8 +35,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="menuManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script language="javascript1.2" type="text/javaScript">
 <!--
 
@@ -87,7 +85,7 @@ function updateMenuManage(form) {
 		if(!validateMenuManageVO(form)){
 			return;
 		}else{
-            form.action="<c:url value='/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do' />";
+            form.action="${pageContext.request.contextPath}/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do";
 			form.submit();
 		}
 	}
@@ -98,7 +96,7 @@ function updateMenuManage(form) {
  ******************************************************** */
 function deleteMenuManage(form) {
 	if(confirm("<spring:message code="common.delete.msg"/>")){
-        form.action="<c:url value='/sym/mnu/mpm/EgovMenuManageDelete.do' />";
+        form.action="${pageContext.request.contextPath}/sym/mnu/mpm/EgovMenuManageDelete.do";
 		form.submit();
 	}
 }
@@ -209,7 +207,7 @@ function press() {
 		<tr>
 			<th><spring:message code="comSymMnuMpm.menuDetailSelectUpdt.progrmFileNm"/> <span class="pilsu">*</span></th><!-- 파일명 -->
 			<td class="left" colspan="3">
-			    <form:input path="progrmFileNm" size="60" maxlength="60" title="<spring:message code='comSymMnuMpm.menuDetailSelectUpdt.progrmFileNm'/>" cssStyle="width:350px"/><!-- 파일명 -->
+			    <form:input path="progrmFileNm" size="60" maxlength="50" title="<spring:message code='comSymMnuMpm.menuDetailSelectUpdt.progrmFileNm'/>" cssStyle="width:350px"/><!-- 파일명 -->
 			    <form:errors path="progrmFileNm" />
 		        <a id="popupProgrmFileNm" href="<c:url value='/sym/prm/EgovProgramListSearch.do' />" target="_blank" title="<spring:message code="comSymMnuMpm.menuDetailSelectUpdt.newWindow"/>"><img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />"
 		         alt='' width="15" height="15" />(<spring:message code="comSymMnuMpm.menuDetailSelectUpdt.programFileNameSearch"/>)</a><!-- 새창으로 이동 --><!-- 프로그램파일명 검색 -->
@@ -239,8 +237,8 @@ function press() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="updateMenuManage(document.forms[0]); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/uss/ion/evt/selectEventRceptList.do'/>?menuNo=<c:out value='${menuManageVO.menuNo}'/>" onclick="deleteMenuManage(document.forms[0]); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="deleteMenuManage(document.forms[0]); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

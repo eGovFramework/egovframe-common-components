@@ -1,11 +1,11 @@
 package egovframework.com.uss.umt.validation;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
@@ -14,6 +14,9 @@ import org.springframework.validation.DataBinder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.ServletRequestDataBinder;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  *
@@ -69,6 +72,7 @@ public class FormValidationTest {
 		assertTrue(errors.hasFieldErrors("empAge"));
 	}
 
+	@Getter @Setter
 	private class Employee {
 
 		private String empId;
@@ -76,42 +80,6 @@ public class FormValidationTest {
 		private int empAge;
 		private Date birthDate;
 
-		public String getEmpId() {
-			return empId;
-		}
-
-		@SuppressWarnings("unused")
-		public void setEmpId(String empId) {
-			this.empId = empId;
-		}
-
-		public String getEmpName() {
-			return empName;
-		}
-
-		@SuppressWarnings("unused")
-		public void setEmpName(String empName) {
-			this.empName = empName;
-		}
-
-		public int getEmpAge() {
-			return empAge;
-		}
-
-		@SuppressWarnings("unused")
-		public void setEmpAge(int empAge) {
-			this.empAge = empAge;
-		}
-
-		@SuppressWarnings("unused")
-		public Date getBirthDate() {
-			return birthDate;
-		}
-
-		@SuppressWarnings("unused")
-		public void setBirthDate(Date birthDate) {
-			this.birthDate = birthDate;
-		}
 	}
 
 	private class EmployeeValidator implements Validator {

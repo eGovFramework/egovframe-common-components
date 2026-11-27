@@ -14,7 +14,7 @@
   *  @version 1.0
   *  @see
   *  
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -46,7 +46,6 @@
 			var varForm			= document.all["Form"];
 			varForm.action      = "<c:url value='/dam/mgm/EgovComDamManagementModify.do'/>";
 			varForm.knoId.value = "${result.knoId}";
-			//alert(varForm.knoId.value);	
 			varForm.method = 'get';
 			varForm.submit();
 		}
@@ -63,7 +62,8 @@
 		<!-- 타이틀 -->
 		<h2><spring:message code="comDamMgm.comDamManagementDetail.pageTop.title"/></h2><!-- 지식정보 상세조회 -->
 	
-		<form name="Form" action="<c:url value='/dam/mgm/EgovComDamManagementModify.do'/>" method="post">
+		<form name="Form" action="${pageContext.request.contextPath}/dam/mgm/EgovComDamManagementModify.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="knoId" type="hidden">
 	
 		<!-- 등록폼 -->
@@ -169,9 +169,6 @@
 	
 		<!-- 하단 버튼 -->
 		<div class="btn">
-			<c:if test="${result.authorCode = 'ROLE_SYM'}"><!-- 사용하지 않음 -->
-			  	<!-- <input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fnModify(); return false;"> --><!-- 수정 -->
-		  	</c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="comDamMgm.comDamManagementDetail.disposal"/>" onclick="fnModify(); return false;" /><!-- 폐기 -->
 		  	<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fnList(); return false;" /><!-- 목록 -->
 		</div>

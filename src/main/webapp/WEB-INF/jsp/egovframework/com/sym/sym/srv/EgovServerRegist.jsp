@@ -14,7 +14,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 --%>
 
@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comSymSymSrv.serverRegist.title"/></title><!-- 서버정보 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="server" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -86,7 +84,7 @@ function fncServerInsert() {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymSymSrv.serverRegist.serverNm"/></h2><!-- 서버S/W 등록 -->
 
-    <form name="server" id="server" method="post" action="${pageContext.request.contextPath}/sym/sym/srv/addServer.do">
+    <form:form modelAttribute="server" name="server" id="server" method="post" action="${pageContext.request.contextPath}/sym/sym/srv/addServer.do">
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
@@ -100,7 +98,7 @@ function fncServerInsert() {
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymSymSrv.serverRegist.serverKndNm"/> <span class="pilsu">*</span></th><!-- 서버S/W 종류 -->
+			<th><spring:message code="comSymSymSrv.serverRegist.serverKndNm"/></th><!-- 서버S/W 종류 -->
 			<td class="left">
 			    <label for="serverKnd">
 		          <select name="serverKnd">
@@ -128,14 +126,14 @@ function fncServerInsert() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncServerInsert(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/srv/selectServerList.do'/>?pageIndex=<c:out value='${serverVO.pageIndex}'/>&amp;strServerNm=<c:out value="${serverVO.strServerNm}"/>" onclick="fncSelectServerList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectServerList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 	
 	<!-- 검색조건 유지 -->
     <input type="hidden" name="strServerNm" value="<c:out value='${serverVO.strServerNm}'/>" />
     <input type="hidden" name="pageIndex" value="<c:out value='${serverVO.pageIndex}'/>" >
-	</form>
+	</form:form>
 
 </div>
 

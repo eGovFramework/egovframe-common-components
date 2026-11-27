@@ -13,7 +13,7 @@
   *  @version 1.0
   *  @see
   *  
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -45,7 +45,7 @@
 		 ******************************************************** */
 		function fnModify(){
 			var varForm				 = document.all["Form"];
-			varForm.action           = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonModify.do'/>";
+			varForm.action           = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonModifyView.do'/>";
 			varForm.processNm.value  = "${result.processNm}";
 			varForm.submit();
 		}
@@ -71,6 +71,7 @@
 	
 	<div class="wTableFrm">					
 			<form name="Form" action="" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<input name="processNm" type="hidden">
 					<h2>&nbsp;${pageTitle}</h2>
 					<table width="700" border="0" cellpadding="0" cellspacing="1" class="wTable" 

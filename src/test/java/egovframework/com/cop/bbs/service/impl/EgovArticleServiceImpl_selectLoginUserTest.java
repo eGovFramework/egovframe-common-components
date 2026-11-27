@@ -1,0 +1,47 @@
+package egovframework.com.cop.bbs.service.impl;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.bbs.service.Blog;
+import egovframework.com.cop.bbs.service.BoardVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
+import egovframework.com.test.EgovTestV1;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
+class EgovArticleServiceImpl_selectLoginUserTest extends EgovTestV1 {
+
+	@Autowired
+	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
+
+	@Autowired
+	private EgovArticleService egovArticleService;
+
+	@Test
+	void selectLoginUser() {
+		// given
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		Blog blog = null;
+		blog = egovArticleDAOTest_AaaTestData.insertBlogMaster(loginVO);
+
+		BoardVO boardVO = new BoardVO();
+		boardVO.setFrstRegisterId(blog.getFrstRegisterId());
+		boardVO.setBlogId(blog.getBlogId());
+
+		// when
+		int loginUser = egovArticleService.selectLoginUser(boardVO);
+
+		log.debug("loginUser={}", loginUser);
+
+		// then
+		assertEquals(loginUser, 1);
+	}
+
+}

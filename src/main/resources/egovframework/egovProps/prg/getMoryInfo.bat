@@ -1,16 +1,16 @@
 @rem Shell Name : getMoryInfo.bat                                         	
-@rem Description : ½Ã½ºÅÛ ¸Ş¸ğ¸® ÀüÃ¼, »ç¿ëÁß, À¯È¿ ¿ë·®À» Á¶È¸ÇÏ´Â Shell
+@rem Description : ì‹œìŠ¤í…œ ë©”ëª¨ë¦¬ ì „ì²´, ì‚¬ìš©ì¤‘, ìœ íš¨ ìš©ëŸ‰ì„ ì¡°íšŒí•˜ëŠ” Shell
 @rem Modification Information                                                				
 @rem                                                                    
-@rem ¼öÁ¤ÀÏ                      ¼öÁ¤ÀÚ                   ¼öÁ¤³»¿ë
+@rem ìˆ˜ì •ì¼                      ìˆ˜ì •ì                   ìˆ˜ì •ë‚´ìš©
 @rem -------      --------     ---------------------------
-@rem 2009.02.24    ¹ÚÁö¿í                   ÃÖÃÊ »ı¼º
+@rem 2009.02.24    ë°•ì§€ìš±                   ìµœì´ˆ ìƒì„±
 @rem
-@rem author °øÅë ¼­ºñ½º °³¹ßÆÀ ¹ÚÁö¿í
+@rem author ê³µí†µ ì„œë¹„ìŠ¤ ê°œë°œíŒ€ ë°•ì§€ìš±
 @rem since 2009. 02. 24
 @rem version 1.0
 @rem see
 @rem
-@rem Copyright (C) 2009 by MOPAS  All right reserved.
+@rem Copyright (C) 2009 by MOPAS  All rights reserved.
 
 systeminfo

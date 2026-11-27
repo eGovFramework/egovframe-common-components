@@ -115,7 +115,8 @@ function fncSelectGroup(groupId) {
 }
 
 function fncAddGroupInsert() {
-    location.replace("<c:url value='/sec/gmt/EgovGroupInsertView.do'/>");
+    document.listForm.action = "<c:url value='/sec/gmt/EgovGroupInsertView.do'/>";
+    document.listForm.submit();
 }
 
 function fncGroupListDelete() {
@@ -147,7 +148,7 @@ function press() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupList.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 그룹관리 목록 -->
 	<!-- 검색영역 -->
@@ -159,7 +160,7 @@ function press() {
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<input type="button" class="s_btn" onClick="fncGroupListDelete()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
-				<span class="btn_b"><a href="<c:url value='/sec/gmt/EgovGroupInsertView.do'/>" onClick="javascript:fncAddGroupInsert();"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onClick="javascript:fncAddGroupInsert(); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -194,11 +195,11 @@ function press() {
 	<c:forEach var="group" items="${groupList}" varStatus="status">
 	<tr>
 	    <td><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${group.groupId}"/>" /></td>
-	    <td><a href="<c:url value='/sec/gmt/EgovGroup.do?groupId=${group.groupId}'/>" onclick="javascript:fncSelectGroup('<c:out value="${group.groupId}"/>')"><c:out value="${group.groupId}"/></a></td>
+	    <td><a href="javascript:void(0);" onclick="javascript:fncSelectGroup('<c:out value="${group.groupId}"/>'); return false;"><c:out value="${group.groupId}"/></a></td>
 	    <td><c:out value="${group.groupNm}"/></td>
 	    <td><c:out value="${group.groupDc}"/></td>
 	    <td><c:out value="${fn:substring(group.groupCreatDe, 0, 10)}"/></td>
-	    <td><a href="<c:url value='/sec/gmt/EgovGroup.do?groupId=${group.groupId}'/>" onclick="javascript:fncSelectGroup('<c:out value="${group.groupId}"/>')"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>"  align="middle" alt="<spring:message code="title.detail" />"  title="<spring:message code="title.detail" />"></a></td>
+	    <td><a href="javascript:void(0);" onclick="javascript:fncSelectGroup('<c:out value="${group.groupId}"/>'); return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>"  align="middle" alt="<spring:message code="title.detail" />"  title="<spring:message code="title.detail" />"></a></td>
 	</tr>
 	</c:forEach>
 	</tbody>

@@ -13,7 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author 전우성(슈퍼개발자K3)
  */
 package egovframework.com.ext.ldapumt.service.impl;
@@ -21,19 +21,19 @@ package egovframework.com.ext.ldapumt.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.ldap.support.LdapEncoder;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
 import egovframework.com.ext.ldapumt.service.LdapTreeObject;
 import egovframework.com.ext.ldapumt.service.UcorgVO;
 import egovframework.com.ext.ldapumt.service.UserVO;
+import javax.annotation.Resource;
 
 /**
 *
-* 조직도 기능 관련 서비스 객체 
+* 조직도 기능 관련 서비스 객체
 * @author 전우성
 * @since 2014.10.12
 * @version 1.0
@@ -62,6 +62,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 등록된 부서의 정보를 조회한다.
 	 */
+	@Override
 	public Map<Object, Object> selectDeptManage(String dn) {
 		UcorgVO vo = deptManageLdapDAO.selectDeptManageByDn(dn);
 
@@ -73,17 +74,19 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 등록된 사용자의 정보를 조회한다.
 	 */
+	@Override
 	public Map<Object, Object> selectUserManage(String dn) {
 		UserVO vo = userManageLdapDAO.selectUserManageByDn(dn);
-		
+
 		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(vo);
-		
+
 		return map;
 	}
-	
+
 	/**
 	 * 등록된 부서의 목록을 조회한다.
 	 */
+	@Override
 	public Map<Object, Object> selectDeptManageSubList(String dn) throws Exception {
 		UcorgVO u = deptManageLdapDAO.selectDeptManageByDn(dn);
 
@@ -112,13 +115,15 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * ouCode로 하위부서의 목록을 조회한다.
 	 */
+	@Override
 	public List<Object> selectDeptManageSubListByOuCode(String ouCode) throws Exception {
 		return deptManageLdapDAO.selectDeptManageSubListByOuCode(ouCode);
 	}
 
 	/**
-	 * VO의 조건에 부합하는 부서를 조회한다. 
+	 * VO의 조건에 부합하는 부서를 조회한다.
 	 */
+	@Override
 	public UcorgVO selectDeptManage(UcorgVO vo) throws Exception {
 		return deptManageLdapDAO.selectDeptManage(vo);
 	}
@@ -127,6 +132,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 기등록된 부서정보를 수정한다.
 	 */
+	@Override
 	public void updateDeptManage(UcorgVO vo) throws Exception {
 		deptManageLdapDAO.updateDeptManage(vo);
 	}
@@ -134,18 +140,22 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 부서를 추가한다.
 	 */
+	@Override
 	public Map<Object, Object> insertDeptManage(String parentDn, String ou) throws Exception {
+		// 2026.07.13 NCSC 보안점검 조치: 컨트롤러의 문자 제한 검증에 더해, LDAP DN 이스케이프를 한 번 더 적용하여 DN/RDN 주입을 방지(심층 방어)
+		String encodedOu = LdapEncoder.nameEncode(ou);
 		UcorgVO vo = new UcorgVO();
-		if ("j1_1".equals(parentDn)) // Root에서 생성
-			vo.setDn("ou=" + ou);
-		else
-			vo.setDn("ou=" + ou + ", " + parentDn);
+		if ("j1_1".equals(parentDn)) { // Root에서 생성
+			vo.setDn("ou=" + encodedOu);
+		} else { // Root에서 생성
+			vo.setDn("ou=" + encodedOu + ", " + parentDn);
+		}
 		vo.setOu(ou);
 		vo.setOuCode("0000000");
 
 		deptManageLdapDAO.insertDeptManage(vo);
 		LdapTreeObject object = new LdapTreeObject(vo.getOu(), vo.getDn());
-		
+
 		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(object);
 
 		return map;
@@ -154,15 +164,17 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 사용자를 추가한다.
 	 */
+	@Override
 	public Map<Object, Object> insertUserManage(String parentDn, String cn) throws Exception {
+		// 2026.07.13 NCSC 보안점검 조치: LDAP DN 이스케이프 적용(심층 방어)
 		UserVO vo = new UserVO();
-		vo.setDn("cn=" + cn + ", " + parentDn);
+		vo.setDn("cn=" + LdapEncoder.nameEncode(cn) + ", " + parentDn);
 		vo.setCn(cn);
 
 		userManageLdapDAO.insertUserManage(vo);
 
 		LdapTreeObject object = new LdapTreeObject(vo.getOu(), vo.getDn());
-		
+
 		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(object);
 
 		return map;
@@ -171,6 +183,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 사용자 정보를 삭제한다.
 	 */
+	@Override
 	public void deleteDeptManage(String dn) {
 		deptManageLdapDAO.deleteDeptManage(dn);
 	}
@@ -178,9 +191,12 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 부서의 이름을 변경한다.
 	 */
+	@Override
 	public void renameDeptManage(String dn, String name) {
+		// 2026.07.13 NCSC 보안점검 조치: 컨트롤러의 문자 제한 검증(validateRdnValue)에 더해 LDAP DN 이스케이프를 한 번 더 적용(심층 방어)하여
+		// name 값에 쉼표(,), 더하기(+), 등호(=) 등 DN 구분자가 포함되어 있어도 리터럴 RDN 값으로만 처리되도록 한다.
 		String[] nodes = dn.split(",");
-		nodes[0] = "ou=" + name;
+		nodes[0] = "ou=" + LdapEncoder.nameEncode(name);
 
 		String newDn = "";
 		for (String node : nodes) {
@@ -194,9 +210,11 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 사용자의 이름을 변경한다.
 	 */
+	@Override
 	public void renameUserManage(String dn, String name) {
+		// 2026.07.13 NCSC 보안점검 조치: LDAP DN 이스케이프 적용(심층 방어)
 		String[] nodes = dn.split(",");
-		nodes[0] = "cn=" + name;
+		nodes[0] = "cn=" + LdapEncoder.nameEncode(name);
 
 		String newDn = "";
 		for (String node : nodes) {
@@ -210,6 +228,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 조직을 이동한다.
 	 */
+	@Override
 	public void moveOrgManage(String dn, String parentDn) {
 		String name = dn.split(",")[0];
 
@@ -219,13 +238,15 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 부서정보를 수정한다.
 	 */
+	@Override
 	public void modifyDeptManage(UcorgVO ucorgVO) throws Exception {
-		deptManageLdapDAO.updateDeptManage(ucorgVO);		
+		deptManageLdapDAO.updateDeptManage(ucorgVO);
 	}
 
 	/**
 	 * 사용자의 정보를 수정한다.
 	 */
+	@Override
 	public void modifyUserManage(UserVO userVO) {
 		userManageLdapDAO.updateUserManage(userVO);
 	}

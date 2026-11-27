@@ -19,11 +19,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQnn.title"/></c:set>
 <!DOCTYPE html>
 ${resultScript}
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -58,7 +61,6 @@ function fn_egov_search_QustnrManage(){
 
  	 document.getElementById("qestnrId").value = qestnrId;
  	 document.getElementById("qestnrTmplatId").value = qestnrTmplatId;
- 	 //document.listForm.action = "<c:url value='${pageContext.request.contextPath}/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do'/>";
  	 document.listForm.action = "<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do'/>";
  	 document.listForm.submit();
  }
@@ -82,7 +84,7 @@ function fn_egov_statistics_QustnrRespondInfoManage(qestnrId, qestnrTmplatId){
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" id="listForm" action="<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageList.do'/>" method="post" >
+<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/olp/qnn/EgovQustnrRespondInfoManageList.do" method="post" >
 
 	
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
@@ -102,14 +104,12 @@ function fn_egov_statistics_QustnrRespondInfoManage(qestnrId, qestnrTmplatId){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchVO.searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onClick="fn_egov_search_QustnrManage(); return false;" />
 				<!-- 등록버튼 -->
-				<%-- <span class="btn_b"> <a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> --%> 
+				<%-- <span class="btn_b"> <a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qim/EgovQustnrItemManageRegist.do' />'); return false;" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> --%> 
 			</li>
 		</ul>
 	</div>
 
 
-
-<!-- </form> -->
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">
@@ -150,7 +150,7 @@ function fn_egov_statistics_QustnrRespondInfoManage(qestnrId, qestnrTmplatId){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 설문제목  -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do'/>?qestnrId=${resultInfo.qestnrId}&qestnrTmplatId=${resultInfo.qestnrTmplatId}" onClick="fn_egov_regist_QustnrRespondInfoManage('<c:out value="${resultInfo.qestnrId}"/>','<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a> 
+			<a href="javascript:void(0);" onClick="fn_egov_regist_QustnrRespondInfoManage('<c:out value="${resultInfo.qestnrId}"/>','<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a> 
 		</td>
 		<!-- 설문기간 -->
 		<td class="lt_text3">${resultInfo.qestnrBeginDe} ~ ${resultInfo.qestnrEndDe}</td>
@@ -180,7 +180,7 @@ function fn_egov_statistics_QustnrRespondInfoManage(qestnrId, qestnrTmplatId){
 <input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">	
 
-</form>
+</form:form>
 </div><!-- end div board -->
 
 

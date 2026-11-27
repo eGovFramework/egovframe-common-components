@@ -32,7 +32,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param batchOpert    삭제할 배치작업 VO
 	 * @exception Exception Exception
 	 */
-	public void deleteBatchOpert(BatchOpert batchOpert) throws Exception {
+	public void deleteBatchOpert(BatchOpert batchOpert) {
 		delete("BatchOpertDao.deleteBatchOpert", batchOpert);
 	}
 
@@ -42,7 +42,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param batchOpert 저장할 배치작업 VO
 	 * @exception Exception Exception
 	 */
-	public void insertBatchOpert(BatchOpert batchOpert) throws Exception {
+	public void insertBatchOpert(BatchOpert batchOpert) {
 		insert("BatchOpertDao.insertBatchOpert", batchOpert);
 	}
 
@@ -53,7 +53,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param batchOpert    조회할 KEY가 있는 배치작업 VO
 	 * @exception Exception Exception
 	 */
-	public BatchOpert selectBatchOpert(BatchOpert batchOpert) throws Exception {
+	public BatchOpert selectBatchOpert(BatchOpert batchOpert) {
 		return selectOne("BatchOpertDao.selectBatchOpert", batchOpert);
 	}
 
@@ -64,7 +64,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) throws Exception {
+	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) {
 		return selectList("BatchOpertDao.selectBatchOpertList", searchVO);
 	}
 
@@ -75,7 +75,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public int selectBatchOpertListCnt(BatchOpert searchVO) throws Exception {
+	public int selectBatchOpertListCnt(BatchOpert searchVO) {
 		return (Integer) selectOne("BatchOpertDao.selectBatchOpertListCnt", searchVO);
 	}
 
@@ -85,7 +85,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param batchOpert    수정대상 배치작업 VO
 	 * @exception Exception Exception
 	 */
-	public void updateBatchOpert(BatchOpert batchOpert) throws Exception {
+	public void updateBatchOpert(BatchOpert batchOpert) {
 		update("BatchOpertDao.updateBatchOpert", batchOpert);
 	}
 

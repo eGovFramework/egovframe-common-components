@@ -23,6 +23,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopSymEms.regist.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -137,7 +139,7 @@ function fnCheckAll(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <div class="board">
 		<h1>${pageTitle} <spring:message code="title.list" /></h1>
-		<form name="listForm" action="<c:url value='/cop/ems/selectSndngMailList.do'/>" method="post">
+		<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/ems/selectSndngMailList.do" method="post">
 		  <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 		    
 			<div class="search_box" title="<spring:message code="comCopSymEms.regist.title" />">
@@ -154,6 +156,7 @@ function fnCheckAll(){
 					<li>
 						<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 						<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
+						<input type="button" class="s_btn" onClick="fnDelete();" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" />
 					</li>
 				</ul>
 			</div>
@@ -195,7 +198,7 @@ function fnCheckAll(){
 			<td>${resultInfo.sndngResultCode}</td>
 			<td>${resultInfo.dsptchPerson}</td>
 			<td>${resultInfo.recptnPerson}</td>
-			<td><a href="<c:url value='/cop/ems/selectSndngMailDetail.do' />" onclick="fnDetail('${resultInfo.mssageId}'); return false;">${resultInfo.sj}</a></td>
+			<td><a href="javascript:void(0);" onclick="fnDetail('${resultInfo.mssageId}'); return false;">${resultInfo.sj}</a></td>
 			<td>${resultInfo.sndngDe}</td>
 		</tr>
 		</c:forEach>
@@ -208,15 +211,17 @@ function fnCheckAll(){
 		</div>
 	
 			
-		</form>
+		</form:form>
 		<div style="display:none;">
 			<!-- 상세조회할 발송메일ID를 담는 폼 -->
-			<form name="detailForm" action="<c:url value='/cop/ems/selectSndngMailDetail.do'/>" method="post">
+			<form name="detailForm" action="${pageContext.request.contextPath}/cop/ems/selectSndngMailDetail.do" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<input name="mssageId" type="hidden" value=""/>
 				<input type="submit" id="invisible" class="invisible"/>
 			</form>
 			<!-- 삭제할 발송메일ID(여러 ID를 ,로 묶어 만들어진 데이터)를 담는 폼 -->
-			<form name="deleteForm" action="<c:url value='/cop/ems/deleteSndngMailList.do'/>" method="post">
+			<form name="deleteForm" action="${pageContext.request.contextPath}/cop/ems/deleteSndngMailList.do" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<input name="mssageId" type="hidden" value=""/>
 				<input name="atchFileIdList" type="hidden" value=""/>
 				<input type="submit" class="invisible"/>

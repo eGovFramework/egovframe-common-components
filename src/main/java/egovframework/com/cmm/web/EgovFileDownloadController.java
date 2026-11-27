@@ -10,11 +10,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -23,11 +20,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovBrowserUtil;
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
 import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 파일 다운로드를 위한 컨트롤러 클래스
@@ -36,18 +37,19 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  * @since 2009.06.01
  * @version 1.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *     수정일      	수정자           수정내용
- *  ------------   --------    ---------------------------
- *   2009.03.25  	이삼섭          최초 생성
- *   2014.02.24		이기하          IE11 브라우저 한글 파일 다운로드시 에러 수정
- *   2018.08.28		신용호          Safari, Chrome, Firefox, Opera 한글파일 다운로드 처리 수정 (macOS에서 확장자 exe붙는 문제 처리)
- *   2022.12.02     윤창원          File ID 암호화 처리
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.25  이삼섭          최초 생성
+ *   2014.02.24  이기하          IE11 브라우저 한글 파일 다운로드시 에러 수정
+ *   2018.08.28  신용호          Safari, Chrome, Firefox, Opera 한글파일 다운로드 처리 수정 (macOS에서 확장자 exe붙는 문제 처리)
+ *   2022.12.02  윤창원          File ID 암호화 처리
+ *   2025.05.31  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙), CloseResource(리소스 닫기)
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ *   Copyright (C) 2009 by MOPAS  All rights reserved.
  *      </pre>
  */
 @Controller
@@ -65,37 +67,63 @@ public class EgovFileDownloadController {
 	 *
 	 * @param commandMap
 	 * @param response
-	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cmm/fms/FileDown.do")
 	public void cvplFileDownload(@RequestParam Map<String, Object> commandMap, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response) {
+
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+		}
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
 
-			// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
+			// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추
+			// 불가능하도록 조치
 			String param_atchFileId = (String) commandMap.get("atchFileId");
-	    	param_atchFileId = param_atchFileId.replaceAll(" ", "+");
+			if (param_atchFileId == null || param_atchFileId.isEmpty()) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
+			param_atchFileId = param_atchFileId.replaceAll(" ", "+");
 			byte[] decodedBytes = Base64.getDecoder().decode(param_atchFileId);
 			String decodedString = cryptoService.decrypt(new String(decodedBytes));
+			if (decodedString == null || decodedString.isEmpty()) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
 			String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
 			String decodedFileId = StringUtils.substringAfter(decodedString, "|");
 			String fileSn = (String) commandMap.get("fileSn");
+
+			// 자료이용통계를 위해 복호화된 값을 request attribute에 저장
+			request.setAttribute("decrypted_atchFileId", decodedFileId);
+			request.setAttribute("decrypted_fileSn", fileSn);
 
 			String sessionId = request.getSession().getId();
 
 			boolean isSameSessionId = StringUtils.equals(decodedSessionId, sessionId);
 
 			if (!isSameSessionId) {
-				throw new Exception();
+				throw new EgovAccessDeniedException("권한이 없습니다.");
 			}
+
+			// 2026.11.25 KVE-2026-3293 조치 - 첨부 목록이 이 세션에 토큰을 발급한 첨부만 허용한다.
+			// 암호화 기능 등으로 만든 "세션ID|파일ID" 암호문은 복호화되더라도 여기서 거부된다.
+			EgovAttachmentGrants.assertDownloadAllowed(request, decodedFileId);
 
 			FileVO fileVO = new FileVO();
 			fileVO.setAtchFileId(decodedFileId);
 			fileVO.setFileSn(fileSn);
 			FileVO fvo = fileService.selectFileInf(fileVO);
+			if (fvo == null) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
+			// 2026.07.13 KISA 보안취약점 조치 - fileSn을 atchFileId에 바인딩
+			if (fvo.getAtchFileId() == null || !fvo.getAtchFileId().equals(decodedFileId)) {
+				throw new EgovAccessDeniedException("권한이 없습니다.");
+			}
 
 			File uFile = new File(fvo.getFileStreCours(), fvo.getStreFileNm());
 			long fSize = uFile.length();
@@ -121,27 +149,26 @@ public class EgovFileDownloadController {
 				 * FileCopyUtils.copy(in, response.getOutputStream()); in.close();
 				 * response.getOutputStream().flush(); response.getOutputStream().close();
 				 */
-				BufferedInputStream in = null;
-				BufferedOutputStream out = null;
 
-				try {
-					in = new BufferedInputStream(new FileInputStream(uFile));
-					out = new BufferedOutputStream(response.getOutputStream());
-
+				try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(uFile));
+						BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());) {
 					FileCopyUtils.copy(in, out);
 					out.flush();
 				} catch (IOException ex) {
 					// 다음 Exception 무시 처리
 					// Connection reset by peer: socket write error
 					EgovBasicLogger.ignore("IO Exception", ex);
-				} finally {
-					EgovResourceCloseHelper.close(in, out);
 				}
 
 			} else {
 				response.setContentType("application/x-msdownload");
 
-				PrintWriter printwriter = response.getWriter();
+				PrintWriter printwriter;
+				try {
+					printwriter = response.getWriter(); // NOPMD - CloseResource
+				} catch (IOException e) {
+					throw new BaseRuntimeException(e);
+				}
 
 				printwriter.println("<html>");
 				printwriter.println("<br><br><br><h2>Could not get file name:<br>"
@@ -157,4 +184,5 @@ public class EgovFileDownloadController {
 			}
 		}
 	}
+
 }

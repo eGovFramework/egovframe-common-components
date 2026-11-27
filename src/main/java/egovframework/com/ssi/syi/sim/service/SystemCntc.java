@@ -2,6 +2,10 @@ package egovframework.com.ssi.syi.sim.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 /**
  * 시스템연계 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -16,7 +20,7 @@ import java.io.Serializable;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 public class SystemCntc implements Serializable {
@@ -31,36 +35,45 @@ public class SystemCntc implements Serializable {
 	/*
 	 * 연계명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String cntcNm            = "";
 
 	/*
 	 * 연계유형코드
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String cntcType          = "";
 
 	/*
 	 * 제공기관ID
 	 */
+	@EgovNullCheck
 	private String provdInsttId      = "";
 
 	/*
 	 * 제공시스템ID
 	 */
+	@EgovNullCheck
 	private String provdSysId        = "";
 
 	/*
 	 * 제공서비스ID
 	 */
+	@EgovNullCheck
 	private String provdSvcId        = "";
 
 	/*
 	 * 요청기관ID
 	 */
+	@EgovNullCheck
 	private String requstInsttId     = "";
 
 	/*
 	 * 요청시스템ID
 	 */
+	@EgovNullCheck
 	private String requstSysId       = "";
 
 	/*
@@ -71,11 +84,14 @@ public class SystemCntc implements Serializable {
 	/*
 	 * 사용여부
 	 */
+	@EgovNullCheck
 	private String useAt             = "";
 
 	/*
 	 * 유효시작일자
 	 */
+	@EgovNullCheck
+	@Pattern(regexp="^\\d{8}$", message="{validation.pattern.date}")
 	private String validBeginDe      = "";
 
 	/*

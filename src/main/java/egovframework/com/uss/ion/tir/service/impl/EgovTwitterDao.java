@@ -26,9 +26,8 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
      * 트위터 계정을 조회 한다.
      * @param param -조회할 정보가 담긴 객체
      * @return Map - 조회 정보가 담긴 Map
-     * @throws Exception
      */
-    public Map<?, ?> selectTwitterAccount(Map<?, ?> param) throws Exception {
+    public Map<?, ?> selectTwitterAccount(Map<?, ?> param) {
     	return (Map<?, ?>)selectOne("Twitter.selectTwitterAccount",param);
     }
 
@@ -37,9 +36,8 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
      * 트위터 계정을 건수를 조회 한다.
      * @param param -조회할 정보가 담긴 객체
      * @return int - 조회 정보가 담긴 Integer
-     * @throws Exception
      */
-    public int selectTwitterAccountCheck(Map<?, ?> param) throws Exception {
+    public int selectTwitterAccountCheck(Map<?, ?> param) {
     	return (Integer)selectOne("Twitter.selectTwitterAccountCheck",param);
     }
 
@@ -47,7 +45,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
 	 * 트위터 계정을 신규로 등록한다.
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
-	public void insertTwitterAccount(Map<?, ?> param) throws Exception {
+	public void insertTwitterAccount(Map<?, ?> param) {
 		insert("Twitter.insertTwitterAccount", param);
 	}
 
@@ -55,7 +53,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
 	 * 트위터 계정을 수정한다.
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
-	public void updtTwitterAccount(Map<?, ?> param) throws Exception {
+	public void updtTwitterAccount(Map<?, ?> param) {
 		update("Twitter.updateTwitterAccount", param);
 	}
 
@@ -63,7 +61,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
 	 * 트위터 계정을 삭제한다.
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
-	public void deleteTwitterAccount(Map<?, ?> param) throws Exception {
+	public void deleteTwitterAccount(Map<?, ?> param) {
         delete("Twitter.deleteTwitterAccount",param);
 	}
 }

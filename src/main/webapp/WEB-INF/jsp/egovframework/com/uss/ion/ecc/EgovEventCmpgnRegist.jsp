@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssIonEcc.eventCmpgnVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -32,10 +31,9 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="eventCmpgnVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 
 $(function() {
@@ -86,31 +84,21 @@ $(function() {
 });
 
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-
-	// 첫 입력란에 포커스
-	document.getElementById("eventCmpgnVO").eventCn.focus();
-
-}
-/* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_event(form){
 	//input item Client-Side validate
-	if (!validateEventCmpgnVO(form)) {	
+	if (!validateEventCmpgnVO(form)) {
 		return false;
-	} else {
-		if(confirm("<spring:message code="common.regist.msg" />")){	
-			form.submit();	
-		}
-	} 
+	}
+	if(confirm("<spring:message code="common.regist.msg" />")){	
+		form.submit();	
+	}
 }
 </script>
 
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -158,7 +146,7 @@ function fn_egov_regist_event(form){
 		<tr>
 			<th><label for="eventSvcBeginDe">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-				<form:input path="eventSvcBeginDe" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:70px;"/>
+				<form:input path="eventSvcBeginDe" title="${title} ${inputTxt}" maxlength="10" readonly="true" style="width:70px;"/>
 				<div><form:errors path="eventSvcBeginDe" cssClass="error" /></div>       
 			</td>
 		</tr>
@@ -168,8 +156,9 @@ function fn_egov_regist_event(form){
 		<tr>
 			<th><label for="eventSvcEndDe">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-				<form:input path="eventSvcEndDe" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:70px;"/>
-				<div><form:errors path="eventSvcEndDe" cssClass="error" /></div>       
+				<form:input path="eventSvcEndDe" title="${title} ${inputTxt}" maxlength="10" readonly="true" style="width:70px;"/>
+				<div><form:errors path="eventSvcEndDe" cssClass="error" /></div>
+				<div><form:errors path="eventSvcDateRangeValid" cssClass="error" /></div>
 			</td>
 		</tr>
 		
@@ -222,7 +211,7 @@ function fn_egov_regist_event(form){
 		<tr>
 			<th><label for="eventConfmDe">${title} <span class="pilsu">*</span></label></th>
 			<td class="left" colspan="3">
-				<form:input path="eventConfmDe" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:70px;"/>
+				<form:input path="eventConfmDe" title="${title} ${inputTxt}" maxlength="10" readonly="true" style="width:70px;"/>
 				<div><form:errors path="eventConfmDe" cssClass="error" /></div>       
 			</td>
 		</tr>

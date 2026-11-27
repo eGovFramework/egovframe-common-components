@@ -11,7 +11,7 @@
     author   : 공통서비스 개발팀 장동한
     since    : 2009.09.16
 
-    Copyright (C) 2009 by MOPAS  All right reserved.
+    Copyright (C) 2009 by MOPAS  All rights reserved.
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -28,12 +28,6 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
-/* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_NoteTrnsmit(){
-
-}
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
@@ -65,21 +59,22 @@ function fn_egov_delete_NoteTrnsmit(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_NoteTrnsmit();">
+<body>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
-	<form name="NoteRecptnForm" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post">
+	<form name="NoteRecptnForm" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<!-- 상세조회 -->
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.detail" /></caption>
 	<colgroup>
-		<col style="width:16%;">
-		<col style="width: ;">
-		<col style="width:16%;">
-		<col style="width:18%;">
+		<col style="width:20%;">
+		<col style="width:30%;">
+		<col style="width:20%;">
+		<col style="width:30%;">
 	</colgroup>
 	<tbody>
 		<!-- 쪽지제목 -->
@@ -88,7 +83,7 @@ function fn_egov_delete_NoteTrnsmit(){
 			<td colspan="3" class="left">
 				<c:set var="noteTrnsmitNoteSj" value="${fn:escapeXml(noteTrnsmit.noteSj)}"/>
 				<c:set var="noteTrnsmitNoteSj" value="${fn:replace(noteTrnsmit.noteSj , crlf , '<br>')}"/>
-				<c:out value="${noteTrnsmitNoteSj}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteTrnsmitNoteSj}"/></span>
 			</td>
 		</tr>
 		<!-- 발신자, 발신시각 -->
@@ -121,7 +116,7 @@ function fn_egov_delete_NoteTrnsmit(){
 			<td colspan="3" class="cnt">
 				<c:set var="noteTrnsmitNoteCn" value="${fn:escapeXml(noteTrnsmit.noteCn)}"/>
 				<c:set var="noteTrnsmitNoteCn" value="${fn:replace(noteTrnsmit.noteCn , crlf , '<br>')}"/>
-				<c:out value="${noteTrnsmit.noteCn}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteTrnsmit.noteCn}"/></span>
 			</td>
 		</tr>
 	</tbody>
@@ -136,7 +131,8 @@ function fn_egov_delete_NoteTrnsmit(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	
-		<form name="formDelete" action="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/nts/detailNoteTrnsmit.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteTrnsmit(); return false;">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteId)}">
 			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteTrnsmitId)}">
@@ -144,7 +140,8 @@ function fn_egov_delete_NoteTrnsmit(){
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/nts/listNoteTrnsmit.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/nts/listNoteTrnsmit.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

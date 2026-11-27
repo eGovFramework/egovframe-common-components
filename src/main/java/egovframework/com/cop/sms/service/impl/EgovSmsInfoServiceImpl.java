@@ -1,14 +1,12 @@
 package egovframework.com.cop.sms.service.impl;
 
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +18,8 @@ import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsConnection;
 import egovframework.com.cop.sms.service.SmsRecptn;
 import egovframework.com.cop.sms.service.SmsVO;
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 /**
  * 문자메시지를 위한 서비스 구현 클래스
@@ -60,7 +60,7 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     private String getPhoneNumber(String number) {
 	String result = number;
 
-	if (number == null || number.trim().equals("")) {
+	if (number == null || number.trim().isEmpty()) {
 	    return "";
 	}
 
@@ -72,12 +72,12 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
 	return result;
     }
 
-    private String formatPhoneNumber(String number) throws ParseException {
-	if (number == null || number.trim().equals("")) {
+    private String formatPhoneNumber(String number) {
+	if (number == null || number.trim().isEmpty()) {
 	    return "";
 	}
 
-	StringBuffer buffer = new StringBuffer();
+	StringBuilder buffer = new StringBuilder();
 
 
 	if (number.length() == 9) {	// 02-500-1234 형식
@@ -127,17 +127,18 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     /**
      * 문자메시지 목록을 조회 한다.
      */
-    public Map<String, Object> selectSmsInfs(SmsVO searchVO) throws Exception {
+    @Override
+	public Map<String, Object> selectSmsInfs(SmsVO searchVO) {
 	List<SmsVO> result = smsDao.selectSmsInfs(searchVO);
 	int cnt = smsDao.selectSmsInfsCnt(searchVO);
 
 	// 전화번호 포맷 처리
-	for (int i = 0; i < result.size(); i++) {
-	    String phone = result.get(i).getTrnsmitTelno();
-	    result.get(i).setTrnsmitTelno(formatPhoneNumber(phone));
+	for (SmsVO element : result) {
+	    String phone = element.getTrnsmitTelno();
+	    element.setTrnsmitTelno(formatPhoneNumber(phone));
 	}
 
-	Map<String, Object> map = new HashMap<String, Object>();
+	Map<String, Object> map = new HashMap<>();
 
 	map.put("resultList", result);
 	map.put("resultCnt", Integer.toString(cnt));
@@ -148,10 +149,16 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     /**
      * 문자메시지를 전송(등록)한다.
      */
-    public void insertSmsInf(Sms sms) throws Exception {
-	HashMap<String, SmsRecptn> check = new HashMap<String, SmsRecptn>();
+    @Override
+	public void insertSmsInf(Sms sms) {
+	HashMap<String, SmsRecptn> check = new HashMap<>();
 
-	String smsId = idgenService.getNextStringId();
+	String smsId;
+	try {
+		smsId = idgenService.getNextStringId();
+	} catch (FdlException e) {
+		throw new BaseRuntimeException(e);
+	}
 
 	sms.setSmsId(smsId);
 
@@ -230,7 +237,8 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     /**
      * 문자메시지에 대한 상세정보를 조회한다.
      */
-    public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
+    @Override
+	public SmsVO selectSmsInf(SmsVO searchVO) {
 	SmsVO vo = smsDao.selectSmsInf(searchVO);
 
 	// 전화번호 포맷 처리
@@ -243,9 +251,9 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
 	List<SmsRecptn> list = smsDao.selectSmsRecptnInfs(recptn);
 
 	// 전화번호 포맷 처리
-	for (int i = 0; i < list.size(); i++) {
-	    String phone = list.get(i).getRecptnTelno();
-	    list.get(i).setRecptnTelno(formatPhoneNumber(phone));
+	for (SmsRecptn element : list) {
+	    String phone = element.getRecptnTelno();
+	    element.setRecptnTelno(formatPhoneNumber(phone));
 	}
 
 	vo.setRecptn(list);
@@ -256,7 +264,8 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     /**
      * 문자메시지 실 전송을 요청한다.
      */
-    public SmsConnection sendRequsest(SmsConnection smsConn) throws Exception {
+    @Override
+	public SmsConnection sendRequsest(SmsConnection smsConn) {
 	String callTo = smsConn.getCallTo();
 	String callFrom = smsConn.getCallFrom();
 	String callBack = smsConn.getCallBack();
@@ -301,9 +310,9 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
      *
      * @param smsConn
      * @return
-     * @throws Exception
      */
-    public SmsConnection[] sendRequsest(SmsConnection[] smsConn) throws Exception {
+    @Override
+	public SmsConnection[] sendRequsest(SmsConnection[] smsConn) {
 	EgovSmsInfoSender sender = null;
 
 	try {
@@ -338,7 +347,6 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
 		smsConn[i].setResult(result.getResult());
 		smsConn[i].setResultMessage(result.getResultMessage());
 	    }
-
 	} finally {
 	    if (sender != null) {
 		sender.close();

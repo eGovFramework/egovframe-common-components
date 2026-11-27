@@ -20,6 +20,35 @@ var treeIcons			= new Array(6);
 var treeYeobu       = false;
 
 /*
+ * 2026.07.30 보안 조치 - 저장형 XSS 차단(document.write에 사용되는 값 HTML/JS 이스케이프)
+ */
+function escapeHtml(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;')
+		.replace(/'/g, '&#39;');
+}
+
+function escapeJsString(value) {
+	if (value == null) {
+		return '';
+	}
+	return String(value)
+		.replace(/\\/g, '\\\\')
+		.replace(/'/g, "\\'")
+		.replace(/"/g, '\\"')
+		.replace(/\r/g, '\\r')
+		.replace(/\n/g, '\\n')
+		.replace(/</g, '\\x3c')
+		.replace(/>/g, '\\x3e');
+}
+
+/*
  * 노드 , 트리 구성 이미지 정보
  */
 function preloadIcons() {
@@ -148,13 +177,13 @@ function addTreeNode(parentNode, recursedNodes) {
 				if (lastSibling) document.write("<img src='"+imgpath+"menu_joinbottom.gif' border='0' align='absbottom' alt='' >");
 				else document.write("<img src='"+imgpath+"menu_join.gif' border='0' align='absbottom' alt='' >");
 			}
-			document.write("<a href=javascript:temp_aa('" + treeNodes[i] + "');>");
+			document.write("<a href=\"javascript:temp_aa('" + escapeHtml(escapeJsString(treeNodes[i])) + "');\">");
 			if (hasChildNode) {
 				document.write("<img id='icon" + nodeValues[0] + "' src='"+imgpath+"menu_folder")
 					if (isNodeOpen) document.write("open");
 				document.write(".gif' border='0' alt='Folder' >");
 			} else document.write("<img id='icon" + nodeValues[0] + "' src='"+imgpath+"menu_page.gif' border='0' align='absbottom' alt='Page'>");
-			document.write(nodeValues[2]);
+			document.write(escapeHtml(nodeValues[2]));
 			document.write("</a><br>");
 			if (hasChildNode) {
 				document.write("<div id='div" + nodeValues[0] + "'");

@@ -153,6 +153,7 @@
         
             SELECT  INSTT_ID        insttId
                  ,  INSTT_NM        insttNm
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTNCNTCINSTT
              WHERE  INSTT_ID = #{insttId}
                AND  USE_AT = 'Y'
@@ -165,6 +166,7 @@
                  ,  SYS_ID	sysId
                  ,  SYS_NM	sysNm
                  ,  SYS_IP	sysIp
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTNCNTCSYSTEM
              WHERE  INSTT_ID = #{insttId}
                AND  SYS_ID   = #{sysId}
@@ -180,6 +182,7 @@
                  ,  SVC_NM	svcNm
                  ,  REQUST_MSSAGE_ID 	requestMessageId
                  ,  RSPNS_MSSAGE_ID   	rspnsMessageId
+                 ,  FRST_REGISTER_ID  frstRegisterId
               FROM  COMTNCNTCSERVICE
              WHERE  INSTT_ID = #{insttId}
                AND  SYS_ID   = #{sysId}

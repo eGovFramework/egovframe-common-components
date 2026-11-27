@@ -7,9 +7,9 @@ package egovframework.com.cmm.service;
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,6 +29,9 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import egovframework.com.cmm.EgovWebUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * General File System utilities.
@@ -55,6 +58,8 @@ public class FileSystemUtils {
 	/** Singleton instance, used mainly for testing. */
 	private static final FileSystemUtils INSTANCE = new FileSystemUtils();
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemUtils.class);
+
 	/** Operating system state flag for error. */
 	private static final int INIT_PROBLEM = -1;
 	/** Operating system state flag for neither Unix nor Windows. */
@@ -77,13 +82,13 @@ public class FileSystemUtils {
 			}
 			osName = osName.toLowerCase();
 			// match
-			if (osName.indexOf("windows") != -1) {
+			if (osName.contains("windows")) {
 				os = WINDOWS;
-			} else if (osName.indexOf("linux") != -1 || osName.indexOf("sun os") != -1 || osName.indexOf("sunos") != -1 || osName.indexOf("solaris") != -1
-					|| osName.indexOf("mpe/ix") != -1 || osName.indexOf("freebsd") != -1 || osName.indexOf("irix") != -1 || osName.indexOf("digital unix") != -1
-					|| osName.indexOf("unix") != -1 || osName.indexOf("mac os x") != -1) {
+			} else if (osName.contains("linux") || osName.contains("sun os") || osName.contains("sunos") || osName.contains("solaris")
+					|| osName.contains("mpe/ix") || osName.contains("freebsd") || osName.contains("irix") || osName.contains("digital unix")
+					|| osName.contains("unix") || osName.contains("mac os x")) {
 				os = UNIX;
-			} else if (osName.indexOf("hp-ux") != -1 || osName.indexOf("aix") != -1) {
+			} else if (osName.contains("hp-ux") || osName.contains("aix")) {
 				os = POSIX_UNIX;
 			} else {
 				os = OTHER;
@@ -129,6 +134,7 @@ public class FileSystemUtils {
 	 * @deprecated Use freeSpaceKb(String)
 	 *  Deprecated from 1.3, may be removed in 2.0
 	 */
+	@Deprecated
 	public static long freeSpace(String path) throws IOException {
 		return INSTANCE.freeSpaceOS(path, OS, false);
 	}
@@ -209,6 +215,9 @@ public class FileSystemUtils {
 	 */
 	private long freeSpaceWindows(String path) throws IOException {
 		path = FilenameUtils.normalize(path);
+		if (path == null || path.isEmpty()) {
+    		throw new IllegalArgumentException("Path must not be empty: " + path);
+		}
 		if (path.length() > 2 && path.charAt(1) == ':') {
 			path = path.substring(0, 2); // seems to make it work
 		}
@@ -224,8 +233,8 @@ public class FileSystemUtils {
 		// of the ArrayList anyway, but this will ensure it works even if it's
 		// not, still assuming it is on the last non-blank line)
 		for (int i = lines.size() - 1; i >= 0; i--) {
-			String line = (String) lines.get(i);
-			if (line.length() > 0) {
+			String line = lines.get(i);
+			if (!line.isEmpty()) {
 				return parseDir(line, path);
 			}
 		}
@@ -296,7 +305,7 @@ public class FileSystemUtils {
 	 * @throws IOException if an error occurs
 	 */
 	private long freeSpaceUnix(String path, boolean kb, boolean posix) throws IOException {
-		if (path.length() == 0) {
+		if (path.isEmpty()) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
 		path = FilenameUtils.normalize(path);
@@ -305,16 +314,16 @@ public class FileSystemUtils {
 
 		// build and run the 'dir' command
 		String flags = "-";
-		if (kb && osName.indexOf("hp-ux") == -1) {
+		if (kb && !osName.contains("hp-ux")) {
 			flags += "k";
 		}
-		if (posix && osName.indexOf("hp-ux") == -1) {
+		if (posix && !osName.contains("hp-ux")) {
 			flags += "P";
 		}
 
 		String dfCommand = "df";
 
-		if (osName.indexOf("hp-ux") != -1) {
+		if (osName.contains("hp-ux")) {
 			dfCommand = "bdf";
 		}
 
@@ -326,14 +335,14 @@ public class FileSystemUtils {
 			// unknown problem, throw exception
 			throw new IOException("Command line 'df' did not return info as expected " + "for path '" + path + "'- response was " + lines);
 		}
-		String line2 = (String) lines.get(1); // the line we're interested in
+		String line2 = lines.get(1); // the line we're interested in
 
 		// Now, we tokenize the string. The fourth element is what we want.
 		StringTokenizer tok = new StringTokenizer(line2, " ");
 		if (tok.countTokens() < 4) {
 			// could be long Filesystem, thus data on third line
 			if (tok.countTokens() == 1 && lines.size() >= 3) {
-				String line3 = (String) lines.get(2); // the line may be interested in
+				String line3 = lines.get(2); // the line may be interested in
 				tok = new StringTokenizer(line3, " ");
 			} else {
 				throw new IOException("Command line 'df' did not return data as expected " + "for path '" + path + "'- check path is valid");
@@ -344,14 +353,14 @@ public class FileSystemUtils {
 		tok.nextToken(); // Ignore 1K-blocks
 		tok.nextToken(); // Ignore Used
 		String freeSpace = tok.nextToken();
-		
+
 		return parseBytes(freeSpace, path);
 	}
 
 	//-----------------------------------------------------------------------
 	/**
 	 * Parses the bytes from a string.
-	 * 
+	 *
 	 * @param freeSpace  the free space string
 	 * @param path  the path
 	 * @return the number of bytes
@@ -388,7 +397,7 @@ public class FileSystemUtils {
 		// however, its still not perfect as the JDK support is so poor
 		// (see commond-exec or ant for a better multi-threaded multi-os solution)
 
-		List<String> lines = new ArrayList<String>(20);
+		List<String> lines = new ArrayList<>(20);
 		Process proc = null;
 		InputStream in = null;
 		OutputStream out = null;
@@ -412,7 +421,7 @@ public class FileSystemUtils {
 				// os command problem, throw exception
 				throw new IOException("Command line returned OS error code '" + proc.exitValue() + "' for command " + Arrays.asList(cmdAttribs));
 			}
-			if (lines.size() == 0) {
+			if (lines.isEmpty()) {
 				// unknown problem, throw exception
 				throw new IOException("Command line did not return any info " + "for command " + Arrays.asList(cmdAttribs));
 			}
@@ -425,7 +434,7 @@ public class FileSystemUtils {
 			IOUtils.closeQuietly(out);
 			IOUtils.closeQuietly(err);
 			IOUtils.closeQuietly(inr);
-			
+
 			if (proc != null) {
 				proc.destroy();
 			}
@@ -438,31 +447,122 @@ public class FileSystemUtils {
 	 * @param cmdAttribs  the command line parameters
 	 * @return the process
 	 * @throws IOException if an error occurs
-	 * 
-	 * 2022.11.11 김혜준 시큐어코딩 처리 
+	 *
+	 * 2022.11.11 김혜준 시큐어코딩 처리
 	 */
 	private Process openProcess(String[] cmdAttribs) throws IOException {
 		//return Runtime.getRuntime().exec(cmdAttribs);
 		// Runtime.exec 사용 시 Command Injection 위험이 있으므로 사용하지 말 것...
-		// 현재는 빈 프로세스를 리턴하게 구성함...
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		Process process = processBuilder.start();
-		return process;
+		// 명령 실행은 비활성화된 상태임.
+		// 기존의 new ProcessBuilder().start()는 커맨드 목록이 비어 있어
+		// IOException이 아닌 IndexOutOfBoundsException(unchecked)을 던지므로,
+		// 호출부의 catch (IOException) 블록을 우회해 예외가 그대로 전파됨.
+		// 선언된 IOException을 던져 호출부(ProcessMonChecker 등)가 기존
+		// 오류 처리 경로로 정상 동작하도록 함.
+		throw new IOException("Process execution is disabled (command injection prevention). command=" + Arrays.toString(cmdAttribs));
+	}
+
+	/**
+	 * Opens the process for batch to the operating system.
+	 *
+	 * @param cmdAttribs  the command line parameters
+	 * @return the process
+	 * @throws IOException if an error occurs
+	 *
+	 * 2025.12.11 박성완
+	 */
+	private Process openProcessForBatch(String[] cmdAttribs) throws IOException {
+		// 2026.02.28 KISA 취약점 조치 
+		try {
+			if (cmdAttribs == null || cmdAttribs.length != 1 || cmdAttribs[0] == null || cmdAttribs[0].trim().isEmpty()) {
+				throw new SecurityException("Invalid batch command input.");
+			}
+
+			String rawInput = cmdAttribs[0].trim();
+
+			String batchFolder = EgovProperties.getProperty("SHELL.batchShellFolder");
+			if (batchFolder == null || batchFolder.trim().isEmpty()) {
+				throw new SecurityException("SHELL.batchShellFolder is not configured.");
+			}
+
+			// 파일명만 추출
+			String fileName = new java.io.File(rawInput).getName();
+
+			// 특수문자 필터: 원본과 비교하여 변경이 생기면 거부 (detect-and-reject 방식)
+			// removeOSCmdRisk: 공백류(\r\n 포함), *, |, ;, & 제거
+			// Windows 절대경로의 드라이브 구분자 ':' 는 File.getName() 이후에는 파일명에
+			// 포함될 수 없으므로 제거 대상에 포함
+			String sanitizedFileName = EgovWebUtil.removeOSCmdRisk(fileName)
+					.replace(">", "")
+					.replace("<", "")
+					.replace(":", "");
+			if (!fileName.equals(sanitizedFileName)) {
+				throw new SecurityException("Blocked by command filter.");
+			}
+
+			// 화이트리스트 검증 (equals 정확 일치)
+			String wl = EgovProperties.getProperty("SHELL." + Globals.OS_TYPE + ".batchShellFiles");
+			if (wl == null || wl.trim().isEmpty()) {
+				throw new SecurityException("Batch whitelist is not configured.");
+			}
+			boolean allowed = false;
+			for (String item : wl.split(",")) {
+				if (fileName.equals(item.trim())) {
+					allowed = true;
+					break;
+				}
+			}
+			if (!allowed) {
+				throw new SecurityException("Whitelist blocked: " + fileName);
+			}
+
+			// 실행 경로를 신뢰 가능한 baseDir 기준으로 재구성 (사용자 입력 경로를 직접 사용하지 않음)
+			java.nio.file.Path baseDir   = java.nio.file.Paths.get(batchFolder).toAbsolutePath().normalize();
+			java.nio.file.Path targetPath = baseDir.resolve(fileName).normalize();
+
+			// 경로 이탈 방지 (화이트리스트 설정 오류 등에 대한 최후 방어선)
+			if (!targetPath.startsWith(baseDir)) {
+				throw new SecurityException("Path traversal blocked.");
+			}
+
+			// 파일 존재 및 일반 파일 여부 확인
+			if (!java.nio.file.Files.exists(targetPath) || !java.nio.file.Files.isRegularFile(targetPath)) {
+				LOGGER.warn("Batch file not found or not a regular file. file={}", fileName);
+				throw new SecurityException("Batch script is not executable.");
+			}
+
+			ProcessBuilder processBuilder = new ProcessBuilder(targetPath.toString());
+
+			java.io.File workingDir = targetPath.toFile().getParentFile();
+			if (workingDir != null && workingDir.exists()) {
+				processBuilder.directory(workingDir);
+			}
+
+			return processBuilder.start();
+
+		} catch (SecurityException se) {
+			LOGGER.warn("Blocked batch execution. input={}, reason={}", Arrays.toString(cmdAttribs), se.getMessage());
+			throw se;
+		}
 	}
 
 	/**
 	 * Opens the process to the operating system.
-	 * 
+	 *
 	 * @param cmdAttribs  the command line parameters
 	 * @throws IOException if an error occurs
-	 * 
-	 * 2022.11.11 김혜준 시큐어코딩 처리 
+	 *
+	 * 2022.11.11 김혜준 시큐어코딩 처리
 	 */
 	public Process processOperate(String clsssName, String cmdAttribs) throws IOException {
 		String[] sourceClassName = {"BatchShellScriptJob", "EgovAdministCodeRecptnService", "EgovInsttCodeRecptnService", "EgovNetworkState", "ProcessMonChecker"};
 		String[] command = new String[]{cmdAttribs};
 		Process process = null;
-		if (Arrays.asList(sourceClassName).contains(clsssName)) {
+
+		// BatchShellScriptJob은 메서드 분리
+		if("BatchShellScriptJob".equals(clsssName)) {
+			process = openProcessForBatch(command);
+		} else if (Arrays.asList(sourceClassName).contains(clsssName)) {
 			process = openProcess(command);
 		}
 		return process;

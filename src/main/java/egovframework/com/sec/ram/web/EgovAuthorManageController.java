@@ -1,26 +1,30 @@
 package egovframework.com.sec.ram.web;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 권한관리에 관한 controller 클래스를 정의한다.
@@ -31,7 +35,7 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -40,24 +44,21 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  *
  * </pre>
  */
- 
-
-@Controller
+ @Controller
 @SessionAttributes(types=SessionVO.class)
 public class EgovAuthorManageController {
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
-    
+
     @Resource(name = "egovAuthorManageService")
     private EgovAuthorManageService egovAuthorManageService;
-    
+
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-    
-    @Autowired
-	private DefaultBeanValidator beanValidator;
+
+
 
 	/**
 	 * 권한 목록을 조회한다
@@ -66,137 +67,145 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="권한관리", listUrl="/sec/ram/EgovAuthorList.do", order = 60,gid = 20)
-    @RequestMapping(value="/sec/ram/EgovAuthorList.do")
-    public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, 
+    @RequestMapping(value = "/sec/ram/EgovAuthorList.do")
+    @RequireAdmin
+    public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                        ModelMap model)
             throws Exception {
-    	
+
     	/** EgovPropertyService.sample */
     	//authorManageVO.setPageUnit(propertiesService.getInt("pageUnit"));
     	//authorManageVO.setPageSize(propertiesService.getInt("pageSize"));
-    	
+
     	/** paging */
     	PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(authorManageVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(authorManageVO.getPageUnit());
 		paginationInfo.setPageSize(authorManageVO.getPageSize());
-		
+
 		authorManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		authorManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		authorManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
+
 		authorManageVO.setAuthorManageList(egovAuthorManageService.selectAuthorList(authorManageVO));
         model.addAttribute("authorList", authorManageVO.getAuthorManageList());
-        
+
         int totCnt = egovAuthorManageService.selectAuthorListTotCnt(authorManageVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
         return "egovframework/com/sec/ram/EgovAuthorManage";
-    } 
-    
+    }
+
     /**
 	 * 권한 세부정보를 조회한다.
 	 * @param authorCode String
 	 * @param authorManageVO AuthorManageVO
 	 * @return String
 	 * @exception Exception
-	 */   
-    @RequestMapping(value="/sec/ram/EgovAuthor.do")
+	 */
+    @PostMapping("/sec/ram/EgovAuthor.do")
+    @RequireAdmin
     public String selectAuthor(@RequestParam("authorCode") String authorCode,
-    	                       @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, 
+    	                       @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                    ModelMap model) throws Exception {
-    	
+
 		authorManageVO.setAuthorCode(authorCode);
 
     	model.addAttribute("authorManage", egovAuthorManageService.selectAuthor(authorManageVO));
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
     	return "egovframework/com/sec/ram/EgovAuthorUpdate";
-    }     
+    }
 
     /**
 	 * 권한 등록화면 이동
 	 * @return String
 	 * @exception Exception
-	 */     
-    @RequestMapping("/sec/ram/EgovAuthorInsertView.do")
+	 */
+    @PostMapping("/sec/ram/EgovAuthorInsertView.do")
+    @RequireAdmin
     public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage)
             throws Exception {
         return "egovframework/com/sec/ram/EgovAuthorInsert";
     }
-    
+
     /**
 	 * 권한 세부정보를 등록한다.
 	 * @param authorManage AuthorManage
 	 * @param bindingResult BindingResult
 	 * @return String
 	 * @exception Exception
-	 */ 
-    @RequestMapping(value="/sec/ram/EgovAuthorInsert.do")
-    public String insertAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, 
+	 */
+    @PostMapping("/sec/ram/EgovAuthorInsert.do")
+    @RequireAdmin
+    public String insertAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
-    		                    ModelMap model) throws Exception {
-    	
-    	beanValidator.validate(authorManage, bindingResult); //validation 수행
-    	
-		if (bindingResult.hasErrors()) { 
+    		                    ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+
+		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sec/ram/EgovAuthorInsert";
 		} else {
 			egovAuthorManageService.insertAuthor(authorManage);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+			// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 
-			model.addAttribute("searchCondition", authorManage.getSearchCondition());
-			model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-			model.addAttribute("pageIndex", authorManage.getPageIndex());
+			redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
     }
-    
+
     /**
 	 * 권한 세부정보를 수정한다.
 	 * @param authorManage AuthorManage
 	 * @param bindingResult BindingResult
 	 * @return String
 	 * @exception Exception
-	 */   
-    @RequestMapping(value="/sec/ram/EgovAuthorUpdate.do")
-    public String updateAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, 
+	 */
+    @PostMapping("/sec/ram/EgovAuthorUpdate.do")
+    @RequireAdmin
+    public String updateAuthor(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
+			                    @Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
-    		                    Model model) throws Exception {
+    		                    Model model, RedirectAttributes redirectAttributes) throws Exception {
 
-    	beanValidator.validate(authorManage, bindingResult); //validation 수행
-    	
 		if (bindingResult.hasErrors()) {
+			// 형제 selectAuthor와 동일하게 재표시 폼이 참조하는 목록 검색조건을 담는다
+			model.addAttribute("authorManageVO", authorManageVO);
 			return "egovframework/com/sec/ram/EgovAuthorUpdate";
 		} else {
 			egovAuthorManageService.updateAuthor(authorManage);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 
-			model.addAttribute("searchCondition", authorManage.getSearchCondition());
-			model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-			model.addAttribute("pageIndex", authorManage.getPageIndex());
+			redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
-    }    
+    }
 
     /**
 	 * 권한 세부정보를 삭제한다.
 	 * @param authorManage AuthorManage
 	 * @return String
 	 * @exception Exception
-	 */  
-    @RequestMapping(value="/sec/ram/EgovAuthorDelete.do")
-    public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, 
-    		                    Model model) throws Exception {
+	 */
+    @PostMapping("/sec/ram/EgovAuthorDelete.do")
+    @RequireAdmin
+    public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage,
+    		                    Model model, RedirectAttributes redirectAttributes) throws Exception {
 
     	egovAuthorManageService.deleteAuthor(authorManage);
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-		model.addAttribute("searchCondition", authorManage.getSearchCondition());
-		model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-		model.addAttribute("pageIndex", authorManage.getPageIndex());
+    	// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+    	redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 		return "redirect:/sec/ram/EgovAuthorList.do";
 	}
@@ -207,22 +216,29 @@ public class EgovAuthorManageController {
 	 * @param authorManage AuthorManage
 	 * @return String
 	 * @exception Exception
-	 */  
-    @RequestMapping(value="/sec/ram/EgovAuthorListDelete.do")
+	 */
+    @PostMapping("/sec/ram/EgovAuthorListDelete.do")
+    @RequireAdmin
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
-    		                       @ModelAttribute("authorManage") AuthorManage authorManage, 
-    		                        Model model) throws Exception {
-
-    	String [] strAuthorCodes = authorCodes.split(";");
-    	for(int i=0; i<strAuthorCodes.length;i++) {
-			authorManage.setAuthorCode(strAuthorCodes[i]);
+    		                       @ModelAttribute("authorManage") AuthorManage authorManage,
+    		                        Model model, RedirectAttributes redirectAttributes) throws Exception {
+    	// 2026.03.23 kisa 보안점검 대응 조치
+    	if (ObjectUtils.isEmpty(authorCodes)) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "redirect:/sec/ram/EgovAuthorList.do";
+		}
+		String [] strAuthorCodes = authorCodes.split(";");
+		for (String strAuthorCode : strAuthorCodes) {
+			authorManage.setAuthorCode(strAuthorCode);
 			egovAuthorManageService.deleteAuthor(authorManage);
 		}
-		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+    	
+		// 2026.09.21 Spring 6 이관 조치 - RedirectAttributes 로 명시 전달
+		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 
-		model.addAttribute("searchCondition", authorManage.getSearchCondition());
-		model.addAttribute("searchKeyword", authorManage.getSearchKeyword());
-		model.addAttribute("pageIndex", authorManage.getPageIndex());
+		redirectAttributes.addAttribute("searchCondition", authorManage.getSearchCondition());
+		redirectAttributes.addAttribute("searchKeyword", authorManage.getSearchKeyword());
+		redirectAttributes.addAttribute("pageIndex", authorManage.getPageIndex());
 
 		return "redirect:/sec/ram/EgovAuthorList.do";
 	}
@@ -233,8 +249,9 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/ram/accessDenied.do")
-    public String accessDenied()
-            throws Exception {
-        return "egovframework/com/sec/accessDenied";
-    } 
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String accessDenied() throws Exception {
+        return "egovframework/com/cmm/error/accessDenied";
+    }
+
 }

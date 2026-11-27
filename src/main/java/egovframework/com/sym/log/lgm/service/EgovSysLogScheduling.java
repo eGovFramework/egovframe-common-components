@@ -1,13 +1,13 @@
 package egovframework.com.sym.log.lgm.service;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * @Class Name : EgovSysLogScheduling.java
- * @Description : 시스템 로그 요약을 위한 스케쥴링 클래스
+ * @Description : 시스템 로그 요약을 위한 스케줄링 클래스
  * @Modification Information
  *
  *    수정일       수정자         수정내용

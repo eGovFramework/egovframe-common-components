@@ -25,7 +25,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -34,9 +33,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="cpyrhtPrtcPolicyVO" staticJavascript="false" xhtml="true" cdata="false"/>
-
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 /* ********************************************************
@@ -115,7 +112,7 @@ function fn_egov_inqire_cpyrhtprtcpolicylist() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_cpyrhtprtcpolicycn(document.forms[0]); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do'/>" onclick="fn_egov_inqire_cpyrhtprtcpolicylist(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_inqire_cpyrhtprtcpolicylist(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 </div>
 </form:form>

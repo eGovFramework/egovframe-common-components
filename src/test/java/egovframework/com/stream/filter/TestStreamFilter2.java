@@ -1,5 +1,7 @@
 package egovframework.com.stream.filter;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
  * </pre>
  */
 
+@Slf4j
 public class TestStreamFilter2 {
 
 	public static void main(String[] args) {
@@ -50,8 +53,8 @@ public class TestStreamFilter2 {
 		List<Map<String, Object>> newList1 = list.stream().filter(item->item.get("name").toString().equals("shin")).collect(Collectors.toList());;
 		List<Map<String, Object>> newList2 = list.stream().filter(item->!item.get("name").toString().equals("shin")).collect(Collectors.toList());;
 
-		System.out.println("list size1 = "+newList1.size());
-		System.out.println("list size2 = "+newList2.size());
+		log.debug("list size1 = {}", newList1.size());
+		log.debug("list size2 = {}", newList2.size());
 		
 	}
 

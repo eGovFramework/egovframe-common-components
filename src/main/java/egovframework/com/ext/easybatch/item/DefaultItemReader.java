@@ -18,6 +18,8 @@
  */
 package egovframework.com.ext.easybatch.item;
 
+import java.util.Arrays;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
@@ -64,7 +66,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
  * </pre>
  */
 public class DefaultItemReader<T> implements ItemStreamReader<T> {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultItemReader.class);
 
 	// Input Resource Type - key
@@ -112,7 +114,6 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 	// DB 입력인 경우 사용되는 설정
 	private DataSource dataSource;
 	private String sql;
-	@SuppressWarnings("unused")
 	private String[] params;
 
 	public void setDataSource(DataSource dataSource) {
@@ -230,6 +231,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 
 				if (tempParams != null) {
 					this.params = tempParams.split(",");
+					LOGGER.debug(Arrays.toString(this.params));
 				}
 
 				try {
@@ -259,7 +261,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 
 	@SuppressWarnings("unchecked")
 	private EgovObjectMapper<T> makeEgovObjectMapper() {
-		EgovObjectMapper<T> objectMapper = new EgovObjectMapper<T>();
+		EgovObjectMapper<T> objectMapper = new EgovObjectMapper<>();
 		objectMapper.setNames(fieldNames);
 		objectMapper.setType(voType);
 		objectMapper.afterPropertiesSet();
@@ -269,7 +271,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 
 	private EgovDefaultLineMapper<T> makeEgovDefaultLineMapper(EgovLineTokenizer<T> tokenizer,
 		EgovObjectMapper<T> objectMapper) {
-		EgovDefaultLineMapper<T> lineMapper = new EgovDefaultLineMapper<T>();
+		EgovDefaultLineMapper<T> lineMapper = new EgovDefaultLineMapper<>();
 		lineMapper.setLineTokenizer(tokenizer);
 		lineMapper.setObjectMapper(objectMapper);
 		lineMapper.afterPropertiesSet();
@@ -293,15 +295,17 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 			EgovObjectMapper<T> objectMapper = makeEgovObjectMapper();
 			EgovDefaultLineMapper<T> lineMapper = makeEgovDefaultLineMapper(tokenizer, objectMapper);
 
-			this.reader = new FlatFileItemReader<T>();
+			this.reader = new FlatFileItemReader<>();
 			((FlatFileItemReader<T>)this.reader).setLineMapper(lineMapper);
 			((FlatFileItemReader<T>)this.reader).setResource(resource);
 
 			try {
 				((FlatFileItemReader<T>)this.reader).afterPropertiesSet();
 			} catch (Exception e) {
-				throw new RuntimeException(
-					this.readerResourceType + " 타입의 File을 read 하기 위한 FlatFileItemReader 생성에 실패 하였습니다.");
+				// 2026.02.28 KISA 취약점 조치
+				LOGGER.error("{} 타입의 FlatFileItemReader 초기화 실패", this.readerResourceType, e);
+				throw new ItemStreamException(
+					this.readerResourceType + " 타입의 File을 read 하기 위한 FlatFileItemReader 생성에 실패 하였습니다.", e);
 			}
 		} else if (JDBC_DB_TYPE.equalsIgnoreCase(this.readerResourceType)) {
 

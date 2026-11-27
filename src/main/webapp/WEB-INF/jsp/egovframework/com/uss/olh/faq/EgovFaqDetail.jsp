@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssOlhFaq.faqVO.title"/></c:set>
@@ -49,7 +48,8 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="faqForm" action="<c:url value='/uss/olh/faq/updateFaqView.do'/>" method="post">
+<form name="faqForm" action="${pageContext.request.contextPath}/uss/olh/faq/updateFaqView.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -76,14 +76,14 @@
 		<tr>
 			<th><spring:message code="comUssOlhFaq.faqVO.qestnCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.qestnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.qestnCn}"/></span>
 			</td>
 		</tr>
 		<!-- 답변 내용 -->
 		<tr>
 			<th><spring:message code="comUssOlhFaq.faqVO.answerCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.answerCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.answerCn}"/></span>
 			</td>
 		</tr>
 		<!-- 등록일자 -->
@@ -108,7 +108,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/olh/faq/deleteFaq.do' />" onClick="fn_egov_delete_faq('<c:out value="${result.faqId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onClick="fn_egov_delete_faq('<c:out value="${result.faqId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/uss/olh/faq/selectFaqList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	

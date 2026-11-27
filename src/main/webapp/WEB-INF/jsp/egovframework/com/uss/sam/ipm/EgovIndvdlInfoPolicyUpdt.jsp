@@ -20,32 +20,34 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
-<%@ taglib prefix="ckeditor" uri="http://ckeditor.com" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" >
 <title><spring:message code="ussSamIpm.indvdlInfoPolicyUpdt.indvdlInfoPolicyUpdt"/></title><!-- 개인정보보호정책 관리 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-
-<validator:javascript formName="indvdlInfoPolicy" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
+<script type="text/javascript" src="<c:url value='/html/egovframework/com/cmm/utl/ckeditor/ckeditor.js?t=B37D54V'/>" ></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
  ******************************************************** */
 function fn_egov_init_IndvdlInfoPolicy(){
 
+	var ckeditor_config = {
+		filebrowserImageUploadUrl: '${ckImageUploadUrl}?${_csrf.parameterName}=${_csrf.token}',
+	};
+	CKEDITOR.replace('indvdlInfoDc',ckeditor_config);
+
 }
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_IndvdlInfoPolicy(){
-	location.href = "<c:url value='/uss/sam/ipm/listIndvdlInfoPolicy.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/sam/ipm/listIndvdlInfoPolicy.do' />");
 }
 /* ********************************************************
  * 저장처리화면
@@ -106,7 +108,7 @@ function fn_egov_save_IndvdlInfoPolicy(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_save_IndvdlInfoPolicy(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/sam/ipm/listIndvdlInfoPolicy.do' />" onclick=""><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/sam/ipm/listIndvdlInfoPolicy.do' />'); return false;" onclick=""><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

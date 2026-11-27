@@ -59,6 +59,7 @@ function fn_egov_change_Calendar(form){
 <DIV id="content">
 <!-- ------------------------------------------------------------------ 상단타이틀 -->
 <form name="normalDayCalendar" action ="<c:url value='/sym/cal/EgovNormalDayCalendar.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="init" value="${init}" />
 	<table width="700" cellpadding="8" class="table-search" border="0">
 	  <tr>

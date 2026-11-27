@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="${pageContext.request.contextPath}/images/egovframework/com/sym/mnu/mpm/"/>
 <html lang="ko">
 <head>
@@ -37,8 +36,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 
-<script type="text/javascript" src="<c:url value="/validator.do" />"></script>
-<validator:javascript formName="menuManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script language="javascript1.2" type="text/javaScript">
 <!--
 /* ********************************************************
@@ -239,7 +237,7 @@ function press() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.create" />' onclick="insertMenuManage(document.forms[0]); return false;" /><!-- 등록 -->
-		<span class="btn_s"><a href="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

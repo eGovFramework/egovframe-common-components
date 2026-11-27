@@ -39,6 +39,23 @@
 		<script language="javascript" src="<c:url value='/html/egovframework/com/ext/ldapumt/jstree.js' />"></script>
 
 		<script>
+		var csrfHeaderName = "${_csrf.headerName}";
+		var csrfToken = "${_csrf.token}";
+
+		function ldapCsrfBeforeSend(xhr) {
+			if (csrfHeaderName && csrfToken) {
+				xhr.setRequestHeader(csrfHeaderName, csrfToken);
+			}
+		}
+
+		function ldapPost(url, data) {
+			return $.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				beforeSend: ldapCsrfBeforeSend
+			});
+		}
 		
 		$(function () {
 			$(window).resize(function () {
@@ -49,12 +66,16 @@
 			$('#tree')
 				.jstree({
 					'core' : {
+						// 2026.07.13 NCSC 보안점검 조치: LDAP ou/cn 값이 innerHTML로 그대로 렌더링되어 저장된 XSS로 이어지지 않도록 노드 텍스트를 항상 escape(plain text) 처리
+						'force_text' : true,
 						'data' : {
-							'url' : '<c:url value="/ext/ldapumt/dpt/getDeptManageSublist.do"/>',		
+							'type' : 'POST',
+							'url' : '<c:url value="/ext/ldapumt/dpt/getDeptManageSublist.do"/>',
+							'beforeSend' : ldapCsrfBeforeSend,
 							'data' : function (node) {
 								
 								if(node.id == '#')
-									node.dn="<c:out value='${param.baseDn}'/>";
+									node.dn="<c:out value='${empty param.baseDn ? baseDn : param.baseDn}'/>";
 								else 
 									node.dn= node.id;
 								
@@ -131,7 +152,7 @@
 					'plugins' : ['state','dnd','sort','types','contextmenu','unique']
 				})
 				.on('delete_node.jstree', function (e, data) {
-					$.get('<c:url value="/ext/ldapumt/dpt/deleteNode.do" />', { 'dn' : data.node.id })
+					ldapPost('<c:url value="/ext/ldapumt/dpt/deleteNode.do" />', { 'dn' : data.node.id })
 						.fail(function () {
 							data.instance.refresh();
 						});
@@ -143,7 +164,7 @@
 					} else {
 						url="<c:url value='/ext/ldapumt/dpt/createUserNode.do' />";
 					}
-					$.get(url, { 'dn' : data.node.parent, 'text' : data.node.text })
+					ldapPost(url, { 'dn' : data.node.parent, 'text' : data.node.text })
 						.done(function (d) {
 							d = getDataBody(d);
 							data.instance.set_id(data.node, d.id);
@@ -153,25 +174,17 @@
 						});
 				})
 				.on('rename_node.jstree', function (e, data) {
-					if(data.node.icon == "dept") {
+					if(data.node.icon == "DEPT") {
 						url="<c:url value='/ext/ldapumt/dpt/renameNode.do' />";
 					} else {
 						url="<c:url value='/ext/ldapumt/dpt/renameUserNode.do' />";
 					}
 
-					$.ajax({
-				           type: "GET",
-				           url: url+"?id="+data.node.id+"&text="+data.text,
-				           data: $("#form1").serialize(),
-				           success: function(result)
-				           {
-				        	   
-				           }
-				         });
+					ldapPost(url, { id: data.node.id, text: data.text });
 					data.instance.refresh();
 				})
 				.on('move_node.jstree', function (e, data) {
-					$.get('<c:url value="/ext/ldapumt/dpt/moveOrgNode.do" />', { 'id' : data.node.id, 'parent' : data.parent })
+					ldapPost('<c:url value="/ext/ldapumt/dpt/moveOrgNode.do" />', { 'id' : data.node.id, 'parent' : data.parent })
 						.done(function (d) {
 							data.instance.refresh();
 						})
@@ -194,19 +207,19 @@
 						
 						var url;
 						var htmlfile;
-						
 						// 선택이 부서일 경우
-						if(data.node.icon == "dept") {
+						// DEPT, USER (LdapTreeObject.java 기준)
+						if(data.node.icon == "DEPT") {
 							url = "<c:url value='/ext/ldapumt/dpt/getDeptManage.do' />";
 							htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/dept_html.jsp' />";
 						}
 							
-						if(data.node.icon == "user") {
+						if(data.node.icon == "USER") {
 							url = "<c:url value='/ext/ldapumt/dpt/getUserManage.do' />";
 							htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/user_html.jsp' />";
 						}
 						if ( dn == "j1_1" ) return;
-						$.get(url+"?dn="+dn, function (d) {
+						ldapPost(url, { dn: dn }).done(function (d) {
 							d = getDataBody(d);
 							 $("#data .default").load(htmlfile, function() {
 									$.each($("input"), function(i,v) {
@@ -242,15 +255,7 @@
 				url = '<c:url value="/ext/ldapumt/dpt/modifyUserManage.do" />';					
 			}
 
-			$.ajax({
-		           type: "POST",
-		           url: url,
-		           data: $("#form1").serialize(),
-		           success: function(data)
-		           {
-		        	   
-		           }
-		         });
+			ldapPost(url, $("#form1").serialize());
 			return;
 		}
 		

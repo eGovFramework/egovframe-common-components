@@ -59,21 +59,9 @@
 	<bean id="egov.defaultTraceHandler" class="org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
 
 
-    <!-- MULTIPART RESOLVERS -->
-    <!-- regular spring resolver -->
-    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="600000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-
-    <!-- custom multi file resolver -->
-    <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver">
-        <property name="maxUploadSize" value="100000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-
-    <!-- choose one from above and alias it to the name Spring expects -->
-    <!-- alias name="local.MultiCommonsMultipartResolver" alias="multipartResolver" /-->
-    <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" />
+    <!-- MULTIPART RESOLVERS : 실행환경 4.3.2 (Spring 5.3 CommonsMultipartResolver 기반 EgovMultipartResolver) -->
+    <!-- 파일 크기 제한은 globals.properties의 Globals.fileUpload.maxSize로 설정 -->
+    <bean id="multipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver" />
+	<alias name="multipartResolver" alias="local.MultiCommonsMultipartResolver" />
 
 </beans>

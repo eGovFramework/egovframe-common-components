@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 /**
  * @Class Name : HttpMntrngScheduling.java
@@ -110,7 +109,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 				nrmltAt = false;
 			}
 
-			if (httpSttusCd == "02") {
+			if ("02".equals(httpSttusCd)) {
 				nrmltAt = false;
 			}
 
@@ -122,7 +121,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 
 			// DB에 결과값 저장
 			target.setHttpSttusCd(httpSttusCd);
-			if (httpSttusCd == "02") {
+			if ("02".equals(httpSttusCd)) {
 				target.setLogInfo("Connection timed out: connect");
 			}
 

@@ -16,6 +16,7 @@ import java.util.Map;
  *  -------    --------    ---------------------------
  *   2009.9.25  윤성록          최초 생성
  *   2016.12.13 최두영          클래스명 변경
+ *   2026.08.31  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 public interface EgovAddressBookService {
@@ -25,64 +26,56 @@ public interface EgovAddressBookService {
      * 주소록 목록을 조회한다.
      * @param AddressBookVO
      * @return  Map<String, Object>
-     * @exception Exception
      */
-    public Map<String, Object> selectAdressBookList(AddressBookVO addressBookVO) throws Exception;
+    public Map<String, Object> selectAdressBookList(AddressBookVO addressBookVO);
     
     /**
      * 주소록 정보를 조회한다.
      * @param AddressBookVO
      * @return  AdressBookVO
-     * @exception Exception
      */
-    public AddressBookVO selectAdressBook(AddressBookVO addressBookVO) throws Exception;
+    public AddressBookVO selectAdressBook(AddressBookVO addressBookVO);
     
     /**
      * 주소록 정보를 삭제한다.
      * @param AddressBook
      * @return 
-     * @exception Exception
      */
-    public void deleteAdressBook(AddressBook addressBook) throws Exception;
+    public void deleteAdressBook(AddressBook addressBook);
     
     /**
      * 사용자 목록을 조회한다.
      * @param AddressBookUserVO
      * @return Map<String, Object>
-     * @exception Exception
      */
-    public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) throws Exception;
+    public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO);
     
     /**
      * 명함 목록을 조회한다.
      * @param AddressBookUserVO
      * @return Map<String, Object>
-     * @exception Exception
      */
-    public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) throws Exception;
+    public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO);
     
     /**
      * 주소록 정보를 등록한다.
      * 
      * @param AddressBook
-     * @throws Exception
      */
-    public void insertAdressBook(AddressBookVO adbkVO) throws Exception;   
+    public void insertAdressBook(AddressBookVO adbkVO);   
           
     /**
      * 주소록 정보를 수정한다.
      * @param AddressBookVO
      * @return 
-     * @exception Exception
      */
-    public void updateAdressBook(AddressBookVO addressBookVO) throws Exception;
+    public void updateAdressBook(AddressBookVO addressBookVO);
     
     /**
      * 주소록 구성원 정보를 불러온다.
      * @param String
      * @return 
-     * @exception Exception
      */
-    public AddressBookUser selectAdbkUser(String id) throws Exception;
+    public AddressBookUser selectAdbkUser(String id);
 
 }

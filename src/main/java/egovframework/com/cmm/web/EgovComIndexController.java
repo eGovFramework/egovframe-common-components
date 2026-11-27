@@ -4,14 +4,18 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ClassUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.IncludedCompInfoVO;
@@ -20,8 +24,11 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import egovframework.com.uat.uia.service.impl.EgovInitialPasswordChecker;
+import javax.annotation.Resource;
 
 /**
+ * <pre>
  * 컴포넌트 설치 후 설치된 컴포넌트들을 IncludedInfo annotation을 통해 찾아낸 후
  * 화면에 표시할 정보를 처리하는 Controller 클래스
  * <Notice>
@@ -32,23 +39,28 @@ import egovframework.com.uat.uia.service.EgovLoginService;
  * <Disclaimer>
  * 		운영시에 본 컨트롤을 사용하여 메뉴를 구성하는 경우 성능 문제를 일으키거나
  * 		사용자별 메뉴 구성에 오류를 발생할 수 있음
+ * </pre>
+ * 
  * @author 공통컴포넌트 정진오
  * @since 2011.08.26
  * @version 2.0.0
  * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2011.08.26  정진오          최초 생성
+ *   2011.09.16  서준식          컨텐츠 페이지 생성
+ *   2011.09.26  이기하          header, footer 페이지 생성
+ *   2019.12.04  신용호          KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
+ *   2020.07.08  신용호          비밀번호를 수정한후 경과한 날짜 조회
+ *   2020.08.28  정진오          표준프레임워크 v3.10 개선
+ *   2025.05.30  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *   2026.10.02  개발팀         초기 비밀번호 사용 여부(initialPassword) 추가 - 첫 화면 변경 안내
  *
- *  수정일		  수정자		수정내용
- *  ----------   --------   ---------------------------
- *  2011.08.26   정진오		최초 생성
- *  2011.09.16   서준식		컨텐츠 페이지 생성
- *  2011.09.26   이기하		header, footer 페이지 생성
- *  2019.12.04   신용호		KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
- *  2020.07.08   신용호		비밀번호를 수정한후 경과한 날짜 조회
- *  2020.08.28   정진오		표준프레임워크 v3.10 개선
- * </pre>
+ *      </pre>
  */
 
 @Controller
@@ -63,13 +75,19 @@ public class EgovComIndexController {
 	@Resource(name = "loginService")
 	private EgovLoginService loginService;
 
+	/** 초기 비밀번호 사용 여부 확인 */
+	@Resource(name = "egovInitialPasswordChecker")
+	private EgovInitialPasswordChecker initialPasswordChecker;
+
 	@RequestMapping("/index.do")
 	public String index(ModelMap model) {
 		return "egovframework/com/cmm/EgovUnitMain";
 	}
 
 	@RequestMapping("/EgovTop.do")
-	public String top() {
+	public String top(ModelMap model) {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		model.addAttribute("loginVO", loginVO);
 		return "egovframework/com/cmm/EgovUnitTop";
 	}
 
@@ -79,35 +97,38 @@ public class EgovComIndexController {
 	}
 
 	@RequestMapping("/EgovContent.do")
-	public String setContent(ModelMap model) throws Exception {
+	public String setContent(ModelMap model) {
 
 		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일
 		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
-		int expirePwdDay = 0 ;
+		int expirePwdDay = 0;
 		try {
-			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
-		} catch (NumberFormatException Nfe) {
-			LOGGER.debug("convert expirePwdDay Err : "+Nfe.getMessage());
+			expirePwdDay = Integer.parseInt(propertyExpirePwdDay);
+		} catch (NumberFormatException nfe) {
+			LOGGER.debug("convert expirePwdDay Err : " + nfe.getMessage());
 		}
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
 
-		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
+		// 비밀번호 설정일로부터 며칠이 지났는지 확인한다. ex) 3이면 비밀번호 설정후 3일 경과
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
-		if ( loginVO != null ) {
-			LOGGER.debug("===>>> loginVO.getId() = "+loginVO.getId());
-			LOGGER.debug("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
-			LOGGER.debug("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
+		if (loginVO != null) {
+			LOGGER.debug("===>>> loginVO.getId() = " + loginVO.getId());
+			LOGGER.debug("===>>> loginVO.getUniqId() = " + loginVO.getUniqId());
+			LOGGER.debug("===>>> loginVO.getUserSe() = " + loginVO.getUserSe());
 			// 비밀번호 변경후 경과한 일수
 			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
-			LOGGER.debug("===>>> passedDayChangePWD = "+passedDayChangePWD);
+			LOGGER.debug("===>>> passedDayChangePWD = " + passedDayChangePWD);
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
 
 		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
 		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
+
+		// 초기(공개) 비밀번호 사용 중이면 닫을 수 없는 변경 안내를 띄운다(유효기간과 무관)
+		model.addAttribute("initialPassword", initialPasswordChecker.isInitialPassword(loginVO));
 
 		return "egovframework/com/cmm/EgovUnitContent";
 	}
@@ -116,45 +137,15 @@ public class EgovComIndexController {
 	public String setLeftMenu(ModelMap model) {
 
 		Map<Integer, IncludedCompInfoVO> map = new TreeMap<Integer, IncludedCompInfoVO>();
-		RequestMapping rmAnnotation;
 		IncludedInfo annotation;
 		IncludedCompInfoVO zooVO;
 
-		/*
-		 * EgovLoginController가 AOP Proxy되는 바람에 클래스를 reflection으로 가져올 수 없음
-		 */
-		try {
-			Class<?> loginController = Class.forName("egovframework.com.uat.uia.web.EgovLoginController");
-			Method[] methods = loginController.getMethods();
-			for (int i = 0; i < methods.length; i++) {
-				annotation = methods[i].getAnnotation(IncludedInfo.class);
-
-				if (annotation != null) {
-					LOGGER.debug("Found @IncludedInfo Method : {}", methods[i]);
-					zooVO = new IncludedCompInfoVO();
-					zooVO.setName(annotation.name());
-					zooVO.setOrder(annotation.order());
-					zooVO.setGid(annotation.gid());
-
-					rmAnnotation = methods[i].getAnnotation(RequestMapping.class);
-					if ("".equals(annotation.listUrl()) && rmAnnotation != null) {
-						zooVO.setListUrl(rmAnnotation.value()[0]);
-					} else {
-						zooVO.setListUrl(annotation.listUrl());
-					}
-					map.put(zooVO.getOrder(), zooVO);
-				}
-			}
-		} catch (ClassNotFoundException e) {
-			LOGGER.error("No egovframework.com.uat.uia.web.EgovLoginController!!");
-		}
-		/* 여기까지 AOP Proxy로 인한 코드 */
-
-		/*@Controller Annotation 처리된 클래스를 모두 찾는다.*/
+		/* @Controller Annotation 처리된 클래스를 모두 찾는다. */
 		Map<String, Object> myZoos = applicationContext.getBeansWithAnnotation(Controller.class);
-		LOGGER.debug("How many Controllers : ", myZoos.size());
+		LOGGER.debug("How many Controllers : {}", myZoos.size());
 		for (final Object myZoo : myZoos.values()) {
-			Class<? extends Object> zooClass = myZoo.getClass();
+
+			Class<?> zooClass = ClassUtils.getUserClass(myZoo);
 
 			Method[] methods = zooClass.getMethods();
 			LOGGER.debug("Controller Detected {}", zooClass);
@@ -162,20 +153,32 @@ public class EgovComIndexController {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
 				if (annotation != null) {
-					//LOG.debug("Found @IncludedInfo Method : " + methods[i] );
+					// LOG.debug("Found @IncludedInfo Method : " + methods[i] );
+					String listUrl = annotation.listUrl();
+					if ("".equals(listUrl)) {
+						/*
+						 * 목록형 조회를 위한 url 매핑은 @IncludedInfo나 @RequestMapping류(@RequestMapping,
+						 * @GetMapping, @PostMapping, @PutMapping, @PatchMapping, @DeleteMapping)
+						 * 에서 가져온다
+						 */
+						listUrl = resolveMappingUrl(methods[i]);
+					}
+
+					if (listUrl == null) {
+						/*
+						 * URL을 찾지 못한 경우 좌측메뉴 전체가 에러 화면(egovError.jsp)으로 대체되는 것을
+						 * 방지하기 위해 해당 항목만 건너뛴다.
+						 */
+						LOGGER.warn("@IncludedInfo가 설정되었으나 매핑 URL을 확인할 수 없어 좌측메뉴에서 제외합니다. method={}",
+								methods[i]);
+						continue;
+					}
+
 					zooVO = new IncludedCompInfoVO();
 					zooVO.setName(annotation.name());
 					zooVO.setOrder(annotation.order());
 					zooVO.setGid(annotation.gid());
-					/*
-					 * 목록형 조회를 위한 url 매핑은 @IncludedInfo나 @RequestMapping에서 가져온다
-					 */
-					rmAnnotation = methods[i].getAnnotation(RequestMapping.class);
-					if ("".equals(annotation.listUrl())) {
-						zooVO.setListUrl(rmAnnotation.value()[0]);
-					} else {
-						zooVO.setListUrl(annotation.listUrl());
-					}
+					zooVO.setListUrl(listUrl);
 
 					map.put(zooVO.getOrder(), zooVO);
 				}
@@ -187,6 +190,48 @@ public class EgovComIndexController {
 		LOGGER.debug("EgovComIndexController index is called ");
 
 		return "egovframework/com/cmm/EgovUnitLeft";
+	}
+
+	/**
+	 * 메서드에 설정된 @RequestMapping류 애노테이션에서 첫번째 매핑 URL을 조회한다.
+	 * @RequestMapping이 없는 경우 @GetMapping, @PostMapping, @PutMapping, @PatchMapping,
+	 * @DeleteMapping 순서로 확인한다.
+	 *
+	 * @param method 확인 대상 메서드
+	 * @return 매핑된 URL, 없으면 null
+	 */
+	private String resolveMappingUrl(Method method) {
+		RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
+		if (requestMapping != null && requestMapping.value().length > 0) {
+			return requestMapping.value()[0];
+		}
+
+		GetMapping getMapping = method.getAnnotation(GetMapping.class);
+		if (getMapping != null && getMapping.value().length > 0) {
+			return getMapping.value()[0];
+		}
+
+		PostMapping postMapping = method.getAnnotation(PostMapping.class);
+		if (postMapping != null && postMapping.value().length > 0) {
+			return postMapping.value()[0];
+		}
+
+		PutMapping putMapping = method.getAnnotation(PutMapping.class);
+		if (putMapping != null && putMapping.value().length > 0) {
+			return putMapping.value()[0];
+		}
+
+		PatchMapping patchMapping = method.getAnnotation(PatchMapping.class);
+		if (patchMapping != null && patchMapping.value().length > 0) {
+			return patchMapping.value()[0];
+		}
+
+		DeleteMapping deleteMapping = method.getAnnotation(DeleteMapping.class);
+		if (deleteMapping != null && deleteMapping.value().length > 0) {
+			return deleteMapping.value()[0];
+		}
+
+		return null;
 	}
 
 	// context-security.xml 설정

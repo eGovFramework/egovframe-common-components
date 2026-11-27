@@ -1,63 +1,65 @@
 package egovframework.com.uss.ion.rsm.web;
 
-import java.io.OutputStreamWriter;
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
-import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.rsm.service.EgovRecentSrchwrdService;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
 
 /**
  * 최근검색어를 처리하는 Controller Class 구현
+ * 
  * @author 공통서비스 장동한
  * @since 2009.07.03
  * @version 1.0
- * @see <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  *   2011.12.15  이기하          검색어 없을 시 미저장, 사용자 검색여부 'N'일 때 자동검색 미사용 수정
  *   2020.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리
- *   
- * </pre>
+ *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovRecentSrchwrdController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovRecentSrchwrdController.class);
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -73,6 +75,7 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어관리 목록을 조회한다.
+	 * 
 	 * @param searchVO
 	 * @param commandMap
 	 * @param recentSrchwrdVO
@@ -80,39 +83,29 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name = "최근검색어 조회", order = 760, gid = 50)
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrd.do")
-	public String egovRecentSrchwrdList(
-		@ModelAttribute("searchVO") RecentSrchwrd searchVO, @RequestParam Map<?, ?> commandMap,
-		RecentSrchwrd recentSrchwrdVO, ModelMap model)
-		throws Exception {
-
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
+	@RequestMapping("/uss/ion/rsm/listRecentSrchwrd.do")
+	public String egovRecentSrchwrdList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, ModelMap model)
+			throws Exception {
 
 		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		recentSrchwrd.setPageUnit(propertiesService.getInt("pageUnit"));
+		recentSrchwrd.setPageSize(propertiesService.getInt("pageSize"));
 
 		/** pageing */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(recentSrchwrd.getPageIndex());
+		paginationInfo.setRecordCountPerPage(recentSrchwrd.getPageUnit());
+		paginationInfo.setPageSize(recentSrchwrd.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		recentSrchwrd.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		recentSrchwrd.setLastIndex(paginationInfo.getLastRecordIndex());
+		recentSrchwrd.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdList(searchVO);
+		List<EgovMap> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdList(recentSrchwrd);
 		model.addAttribute("resultList", reusltList);
 
-		model.addAttribute("searchKeyword",
-			commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
-		model.addAttribute("searchCondition",
-			commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
-
-		int totCnt = egovRecentSrchwrdService.selectRecentSrchwrdListCnt(searchVO);
+		int totCnt = egovRecentSrchwrdService.selectRecentSrchwrdListCnt(recentSrchwrd);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
@@ -121,22 +114,25 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어관리 목록을 상세조회 조회한다.
+	 * 
 	 * @param searchVO
 	 * @param recentSrchwrdVO
 	 * @param commandMap
 	 * @param model
-	 * @return "govframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail"
+	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/detailRecentSrchwrd.do")
-	public String egovRecentSrchwrdDetail(
-		@ModelAttribute("searchVO") ComDefaultVO searchVO,
-		RecentSrchwrd recentSrchwrd, @RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
+	@PostMapping("/uss/ion/rsm/detailRecentSrchwrd.do")
+	@RequireAdmin
+	public String egovRecentSrchwrdDetail(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+		LOGGER.debug("getUserSe={}", _loginVO.getUserSe());
 
 		String sLocationUrl = "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
 			egovRecentSrchwrdService.deleteRecentSrchwrd(recentSrchwrd);
@@ -151,13 +147,15 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어관리 수정화면
+	 * 
 	 * @param searchVO
 	 * @param recentSrchwrdVO
 	 * @param model
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/updtRecentSrchwrdView.do")
+	@PostMapping("/uss/ion/rsm/updtRecentSrchwrdView.do")
+	@RequireAdmin
 	public String egovRecentSrchwrdModify(RecentSrchwrd recentSrchwrd, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -166,7 +164,7 @@ public class EgovRecentSrchwrdController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		RecentSrchwrd recentSrchwrdVO = egovRecentSrchwrdService.selectRecentSrchwrdDetail(recentSrchwrd);
+		RecentSrchwrd recentSrchwrdVO = EgovAuthorizationHelper.requireTarget(egovRecentSrchwrdService.selectRecentSrchwrdDetail(recentSrchwrd));
 		model.addAttribute("recentSrchwrd", recentSrchwrdVO);
 
 		return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdUpdt";
@@ -174,6 +172,7 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어관리를 수정한다.
+	 * 
 	 * @param searchVO
 	 * @param recentSrchwrdVO
 	 * @param bindingResult
@@ -181,8 +180,9 @@ public class EgovRecentSrchwrdController {
 	 * @return "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/updtRecentSrchwrd.do")
-	public String egovRecentSrchwrdModify(RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
+	@PostMapping("/uss/ion/rsm/updtRecentSrchwrd.do")
+	@RequireAdmin
+	public String egovRecentSrchwrdModify(@Valid RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -191,16 +191,15 @@ public class EgovRecentSrchwrdController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(recentSrchwrd, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdUpdt";
 		}
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		recentSrchwrd.setFrstRegisterId(uniqId);
 		recentSrchwrd.setLastUpdusrId(uniqId);
 
@@ -209,17 +208,18 @@ public class EgovRecentSrchwrdController {
 
 		return "redirect:/uss/ion/rsm/listRecentSrchwrd.do";
 	}
-	
+
 	/**
 	 * 최근검색어관리 등록 화면
+	 * 
 	 * @param searchVO
 	 * @param recentSrchwrdVO
 	 * @param model
-	 * @return
-	 *         "/uss/ion/rsm/EgovOnlinePollRegist"
+	 * @return "/uss/ion/rsm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrdView.do")
+	@PostMapping("/uss/ion/rsm/registRecentSrchwrdView.do")
+	@RequireAdmin
 	public String egovRecentSrchwrdRegist(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -231,20 +231,21 @@ public class EgovRecentSrchwrdController {
 
 		return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdRegist";
 	}
-	
+
 	/**
 	 * 최근검색어관리를 등록한다.
+	 * 
 	 * @param searchVO
 	 * @param recentSrchwrdVO
 	 * @param bindingResult
 	 * @param model
-	 * @return
-	 *         "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
+	 * @return "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrd.do")
+	@PostMapping("/uss/ion/rsm/registRecentSrchwrd.do")
+	@RequireAdmin
 	public String egovRecentSrchwrdRegist(@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -253,16 +254,14 @@ public class EgovRecentSrchwrdController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(recentSrchwrd, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdRegist";
 		}
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		recentSrchwrd.setFrstRegisterId(uniqId);
 		recentSrchwrd.setLastUpdusrId(uniqId);
 
@@ -274,6 +273,7 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어결과 목록을 조회한다.
+	 * 
 	 * @param searchVO
 	 * @param commandMap
 	 * @param recentSrchwrdVO
@@ -281,51 +281,50 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovOnlinePollList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrdResult.do")
-	public String egovRecentSrchwrdResultList(
-		@ModelAttribute("searchVO") RecentSrchwrd searchVO,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model)
-		throws Exception {
+	@PostMapping("/uss/ion/rsm/listRecentSrchwrdResult.do")
+	@RequireAdmin
+	public String egovRecentSrchwrdResultList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		recentSrchwrd.setPageUnit(propertiesService.getInt("pageUnit"));
+		recentSrchwrd.setPageSize(propertiesService.getInt("pageSize"));
 
 		/** pageing */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(recentSrchwrd.getPageIndex());
+		paginationInfo.setRecordCountPerPage(recentSrchwrd.getPageUnit());
+		paginationInfo.setPageSize(recentSrchwrd.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		recentSrchwrd.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		recentSrchwrd.setLastIndex(paginationInfo.getLastRecordIndex());
+		recentSrchwrd.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		//건별삭제
-		if (sCmd.equals("del")) {
-			egovRecentSrchwrdService.deleteRecentSrchwrdResult(searchVO);
-			//관리별삭제
-		} else if (sCmd.equals("delAll")) {
-			egovRecentSrchwrdService.deleteRecentSrchwrdResultAll(searchVO);
+		if (sCmd.equals("del") || sCmd.equals("delAll")) {
 		}
 
-		List<?> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdResultList(searchVO);
+		// 건별삭제
+		if (sCmd.equals("del")) {
+			egovRecentSrchwrdService.deleteRecentSrchwrdResult(recentSrchwrd);
+			// 관리별삭제
+		} else if (sCmd.equals("delAll")) {
+			egovRecentSrchwrdService.deleteRecentSrchwrdResultAll(recentSrchwrd);
+		}
+
+		List<?> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdResultList(recentSrchwrd);
 		model.addAttribute("resultList", reusltList);
 
 		model.addAttribute("searchKeyword",
-			commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
+				commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
 		model.addAttribute("searchCondition",
-			commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
+				commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
 
 		model.addAttribute("srchwrdManageId",
-			commandMap.get("srchwrdManageId") == null ? "" : (String)commandMap.get("srchwrdManageId"));
+				commandMap.get("srchwrdManageId") == null ? "" : (String) commandMap.get("srchwrdManageId"));
 
-		int totCnt = egovRecentSrchwrdService.selectRecentSrchwrdResultListCnt(searchVO);
+		int totCnt = egovRecentSrchwrdService.selectRecentSrchwrdResultListCnt(recentSrchwrd);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
@@ -334,17 +333,22 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어 결과를 조회한다.
+	 * 
 	 * @param searchVO
 	 * @param model
 	 * @return "model"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrdResultSerach.do")
-	protected ModelAndView egovRecentSrchwrdResultSerachList(
-		@RequestParam("searchKeyword") String searchKeyword,
-		RecentSrchwrd recentSrchwrd) throws Exception {
+	@PostMapping("/uss/ion/rsm/listRecentSrchwrdResultSerach.do")
+	@RequireAdmin
+	public ModelAndView egovRecentSrchwrdResultSerachList(@RequestParam("searchKeyword") String searchKeyword,
+			@RequestParam(value = "srchwrdManageId", required = false) String srchwrdManageId,
+			RecentSrchwrd recentSrchwrd) throws Exception {
 
 		recentSrchwrd.setQ(searchKeyword);
+		if (srchwrdManageId != null && !srchwrdManageId.isEmpty()) {
+			recentSrchwrd.setSrchwrdManageId(srchwrdManageId);
+		}
 		LOGGER.debug("recentSrchwrd : {}", recentSrchwrd);
 
 		ModelAndView model = new ModelAndView(new AjaxXmlView());
@@ -354,7 +358,8 @@ public class EgovRecentSrchwrdController {
 		List<EgovMap> reusltList = null;
 
 		// 사용자검색여부 'Y'인 경우만 검색어 조회
-		if (recentSrchwrdVO.getSrchwrdManageUseYn().equals("Y")) {
+		if (recentSrchwrdVO != null && recentSrchwrdVO.getSrchwrdManageUseYn() != null
+				&& recentSrchwrdVO.getSrchwrdManageUseYn().equals("Y")) {
 			reusltList = egovRecentSrchwrdService.selectRecentSrchwrdResultInquire(recentSrchwrd);
 		} else { // 2012.11 KISA 보안조치
 			reusltList = new ArrayList<>();
@@ -364,9 +369,11 @@ public class EgovRecentSrchwrdController {
 
 		EgovMap emResult = new EgovMap();
 		for (int i = 0; i < reusltList.size(); i++) {
-			emResult = (EgovMap)reusltList.get(i);
-			ajaxXmlBuilder.addItem((String)emResult.get("recentSrchwrdNm"), (String)emResult.get("recentSrchwrdNm"),
-				false);
+			emResult = reusltList.get(i);
+			String recentSrchwrdNm = (String) emResult.get("RECENT_SRCHWRD_NM");
+			if (recentSrchwrdNm != null && !recentSrchwrdNm.isEmpty()) {
+				ajaxXmlBuilder.addItem(recentSrchwrdNm, recentSrchwrdNm, false);
+			}
 		}
 
 		model.addObject("ajaxXml", ajaxXmlBuilder.toString());
@@ -376,41 +383,46 @@ public class EgovRecentSrchwrdController {
 
 	/**
 	 * 최근검색어를 등록한다.
+	 * 
 	 * @param commandMap
 	 * @param recentSrchwrd
 	 * @param model
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrdResult.do")
-	public void egovRecentSrchwrdRegist(
-		@RequestParam Map<?, ?> commandMap,
-		HttpServletResponse response,
-		RecentSrchwrd recentSrchwrd) throws Exception {
+	@PostMapping("/uss/ion/rsm/registRecentSrchwrdResult.do")
+	@RequireAdmin
+	public void egovRecentSrchwrdRegist(@RequestParam Map<?, ?> commandMap, HttpServletResponse response,
+			RecentSrchwrd recentSrchwrd) throws Exception {
+		
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out = response.getWriter();
 
-		response.setHeader("Content-Type", "text/html;charset=utf-8");
-		PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
+		// 2026.07.30 보안 조치 - 인증 강제
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+		}
 
 		LOGGER.debug("commandMap : {}", commandMap);
 		LOGGER.debug("recentSrchwrd : {}", recentSrchwrd);
 
 		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+		// 아이디 설정
+		recentSrchwrd.setFrstRegisterId(uniqId);
+		recentSrchwrd.setLastUpdusrId(uniqId);
 
-		//아이디 설정
-		recentSrchwrd.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		recentSrchwrd.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-		//       System.out.println("recentSrchwrd.getSrchwrdNm() : "+ recentSrchwrd.getSrchwrdNm());
-
-		//검색어가 없을 시 미저장
+		// 검색어가 없을 시 미저장
 		if (recentSrchwrd.getSrchwrdNm() != null && !recentSrchwrd.getSrchwrdNm().equals("")) {
 			egovRecentSrchwrdService.insertRecentSrchwrdResult(recentSrchwrd);
 		}
-
-		out.print("Success");
-
-		out.flush();
+		
+		      out.print("Success");
+		  
+		      out.flush();
+		  
 	}
+
 
 }

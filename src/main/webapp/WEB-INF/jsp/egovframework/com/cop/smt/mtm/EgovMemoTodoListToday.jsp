@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -57,7 +58,7 @@
 <div class="board">
 	<h1><spring:message code="comCopSmtMtm.memoTodoListToday.title"/> [ <c:out value="${resultToday}"/> ]</h1><!-- 오늘의 할일 목록조회 -->
 
-	<form name="frm" method="post" action="<c:url value='/cop/smt/mtm/selectMemoTodoList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mtm/selectMemoTodoList.do">
 
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="todoId">
@@ -69,7 +70,6 @@
 			</li>
 		</ul>
 	</div>
-	</form>
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -97,17 +97,8 @@
 			    	~
 			    	<c:out value="${result.todoEndHour}"/>:<c:out value="${result.todoEndMin}"/>
 			    </td>
-			    <td class="lt_text2" nowrap>
-			     <form name="memoReprtVO" method="post" action="<c:url value='/cop/smt/mtm/selectMemoTodo.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchDe}'/>">
-					<input type="hidden" name="todoId" value="<c:out value="${result.todoId}"/>">
-					<span class="link"><input type="submit" value="<c:out value="${result.todoNm}"/>" onclick="fn_egov_inqire_memotodo('<c:out value="${result.todoId}"/>'); return false;"></span>
-				 </form>
+			    <td class="left">
+					<a href="javascript:void(0);" onclick="fn_egov_inqire_memotodo('<c:out value="${result.todoId}"/>'); return false;"><c:out value="${result.todoNm}"/></a>
 				</td>
 				<td><c:out value="${result.wrterNm}"/></td>
 			    <td><c:out value="${fn:substring(result.frstRegisterPnttm, 0, 10)}"/></td>
@@ -120,6 +111,7 @@
 			 </c:if>
 		</tbody>
 	</table>
+	</form:form>
 </div>
 </body>
 </html>

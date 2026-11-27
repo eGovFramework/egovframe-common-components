@@ -192,5 +192,12 @@
 	 
 	</insert>
 
+	<select id="selectQustnrTmplatOtherUseCnt" parameterType="egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO" resultType="int">
+		<![CDATA[
+		SELECT COUNT(*) FROM COMTNQESTNRINFO
+		WHERE QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		AND (FRST_REGISTER_ID IS NULL OR FRST_REGISTER_ID <> #{frstRegisterId})
+		]]>
+	</select>
 
 </mapper>

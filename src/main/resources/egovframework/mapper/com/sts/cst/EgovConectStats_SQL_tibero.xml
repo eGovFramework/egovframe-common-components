@@ -48,18 +48,18 @@
 
 		<!-- 개인별 통계 -->
 		<if test='statsKind == "PRSONAL"'>
-			SELECT COUNT(CONECT_ID) AS statsCo
+			SELECT COUNT(a.CONECT_ID) AS statsCo
 			     <!-- 기간검색(년) -->
 				 <if test='pdKind == "Y"'>
-			     , SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) AS statsDate
+			     , SUBSTR(TO_CHAR(a.CREAT_DT, 'YYYYMMDD'), 1, 4) AS statsDate
 			     </if>
 			     <!-- 기간검색(월) -->
 			     <if test='pdKind == "M"'>
-			     , SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2) AS statsDate
+			     , SUBSTR(TO_CHAR(a.CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(a.CREAT_DT, 'YYYYMMDD'), 5, 2) AS statsDate
 			     </if>
 			     <!-- 기간검색(일) -->
 			     <if test='pdKind == "D"'>
-			     , SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 7, 2) AS statsDate
+			     , SUBSTR(TO_CHAR(a.CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(a.CREAT_DT, 'YYYYMMDD'), 5, 2) || '-' || SUBSTR(TO_CHAR(a.CREAT_DT, 'YYYYMMDD'), 7, 2) AS statsDate
 			     </if>
 			     , '' AS conectMethod
 			     , 0 AS creatCo
@@ -68,10 +68,11 @@
 			     , 0 AS deleteCo
 			     , 0 AS outptCo
 			     , 0 AS errorCo
-			  FROM COMTNLOGINLOG
-		 	 WHERE CONECT_ID = #{detailStatsKind}
+			  FROM COMTNLOGINLOG a
+			  LEFT JOIN COMVNUSERMASTER b ON a.CONECT_ID = b.ESNTL_ID
+		 	 WHERE b.USER_ID = #{detailStatsKind}
 			   <!-- 시작일자~종료일자 기간제한 -->
-			   AND TO_CHAR(CREAT_DT, 'YYYYMMDD') BETWEEN #{fromDate} AND #{toDate}
+			   AND TO_CHAR(a.CREAT_DT, 'YYYYMMDD') BETWEEN #{fromDate} AND #{toDate}
 			 <if test='pdKind == "Y"'>
 			 GROUP BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4)
 			 ORDER BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4)

@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
@@ -143,7 +144,7 @@
 <div class="board">
 	<h1><spring:message code="comCopSmtMrm.memoReprtList.title"/></h1><!-- 메모보고 목록 -->
 
-	<form name="frm" method="post" action="<c:url value='/cop/smt/mrm/selectMemoReprtList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mrm/selectMemoReprtList.do">
 	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="reprtId">
@@ -187,7 +188,6 @@
 			<input class="s_btn" type="submit" value="<spring:message code="title.create"/>" title="<spring:message code="title.create"/>" onclick="fn_egov_insert_memoreprt('1'); return false;" /><!-- 등록 -->
 		</div>
 	</div>
-	</form>
 	
 	<table class="board_list">
 		<caption></caption>
@@ -214,18 +214,8 @@
 			  <tr>
 			    <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 			    <td><c:out value="${result.reprtDe}"/></td>
-			    <td>
-			     <form name="memoReprtVO" method="post" action="<c:url value='/cop/smt/mrm/selectMemoReprt.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchSttus}'/>">
-			    	<input name="searchDrctMatter" type="hidden" value="<c:out value='${searchVO.searchDrctMatter}'/>">
-					<input type="hidden" name="reprtId" value="<c:out value="${egovc:encryptId(result.reprtId)}"/>">
-					<span class="link" ><input type="submit" value="<c:out value="${result.reprtSj}"/>" onclick="fn_egov_inqire_memoreprt('<c:out value="${egovc:encryptId(result.reprtId)}"/>'); return false;"  style="text-align : left;"></span>			
-				 </form>
+			    <td class="left">
+					<a href="javascript:void(0);" onclick="fn_egov_inqire_memoreprt('<c:out value="${egovc:encryptId(result.reprtId)}"/>'); return false;"><c:out value="${result.reprtSj}"/></a>
 				</td>
 				<td><c:out value="${result.wrterNm}"/></td>
 			    <td><c:out value="${result.reportrInqireDt}"/></td>
@@ -246,6 +236,7 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+	</form:form>
 </div>
 </body>
 </html>

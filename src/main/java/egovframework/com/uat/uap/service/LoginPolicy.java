@@ -20,6 +20,8 @@
 package egovframework.com.uat.uap.service;
 
 import egovframework.com.cmm.ComDefaultVO;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import javax.validation.constraints.Size;
 
 public class LoginPolicy extends ComDefaultVO {
 
@@ -46,6 +48,8 @@ public class LoginPolicy extends ComDefaultVO {
     /**
 	 * IP정보
 	 */	
+    @EgovNullCheck
+    @Size(max=23)
     private String ipInfo;
     /**
 	 * 중복허용여부
@@ -54,11 +58,16 @@ public class LoginPolicy extends ComDefaultVO {
     /**
 	 * 제한여부
 	 */	
+    @EgovNullCheck
     private String lmttAt;
     /**
 	 * 등록자 ID
 	 */	
     private String userId;
+    /**
+	 * 최초등록자 ID
+	 */
+    private String frstRegisterId;
     /**
 	 * 등록일시
 	 */	
@@ -160,6 +169,18 @@ public class LoginPolicy extends ComDefaultVO {
 	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	/**
+	 * @return the frstRegisterId
+	 */
+	public String getFrstRegisterId() {
+		return frstRegisterId;
+	}
+	/**
+	 * @param frstRegisterId the frstRegisterId to set
+	 */
+	public void setFrstRegisterId(String frstRegisterId) {
+		this.frstRegisterId = frstRegisterId;
 	}
 	/**
 	 * @return the regDate

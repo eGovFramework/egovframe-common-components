@@ -13,7 +13,7 @@
   *  @version 1.0
   *  @see
   *  
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -50,6 +50,7 @@
 	
 		<DIV class="wTableFrm">						
 			<form name="Form" action="" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<input name="processNm" type="hidden">
 				
 				    <!-- 상단 타이틀  영역 -->

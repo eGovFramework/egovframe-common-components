@@ -4,9 +4,9 @@ import egovframework.com.cmm.ComDefaultVO;
 
 /**
  * 개요 - 프록시로그정보에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용 - 프록시로그정보의 프록시 ID, 로그 ID, 클라이언트 IP, 클라이언트 포트, 접속 시간 등의 항목을 관리한다.
- * 
+ *
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:49
@@ -63,6 +63,16 @@ public class ProxyLog extends ComDefaultVO {
      * 최종수정자ID
      */
     private String lastUpdusrId;
+
+    /**
+     * 프록시서비스접속 시작일자 조회조건
+     */
+    private String strStartDate;
+
+    /**
+     * 프록시서비스접속 종료일자 조회조건
+     */
+    private String strEndDate;
 
 
     /**
@@ -203,5 +213,33 @@ public class ProxyLog extends ComDefaultVO {
      */
     public void setLastUpdusrId(String lastUpdusrId) {
         this.lastUpdusrId = lastUpdusrId;
+    }
+
+    /**
+     * @return the strStartDate
+     */
+    public String getStrStartDate() {
+        return strStartDate;
+    }
+
+    /**
+     * @param strStartDate the strStartDate to set
+     */
+    public void setStrStartDate(String strStartDate) {
+        this.strStartDate = strStartDate;
+    }
+
+    /**
+     * @return the strEndDate
+     */
+    public String getStrEndDate() {
+        return strEndDate;
+    }
+
+    /**
+     * @param strEndDate the strEndDate to set
+     */
+    public void setStrEndDate(String strEndDate) {
+        this.strEndDate = strEndDate;
     }
 }

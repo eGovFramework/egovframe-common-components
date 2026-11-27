@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -34,8 +33,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="memoTodoVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function initCalendar(){
 		$("#todoDe").datepicker(
@@ -87,7 +85,7 @@
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="memoTodoVO" name="memoTodoVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mtm/insertMemoTodo.do' />">
+<form:form modelAttribute="memoTodoVO" name="memoTodoVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mtm/insertMemoTodo.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -124,7 +122,7 @@
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자명 -->
 			<td class="left">
-			    <c:out value="${memoTodoVO.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodoVO.wrterNm}"/></span>
 				<input type="hidden" name="wrterId" id="wrterId" value="${memoTodoVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${memoTodoVO.wrterNm}"/>
 			</td>
@@ -148,7 +146,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_insert_memotodo(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/mtm/selectMemoTodoList.do'/>?searchWrd=<c:out value='${memoTodoVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoTodoVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoTodoVO.pageIndex}'/>&amp;searchDe=<c:out value='${memoTodoVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${memoTodoVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoTodoVO.searchEndDe}'/>" onclick="fn_egov_list_memotodo(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_memotodo(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovSanctnerList.jsp
@@ -54,7 +55,7 @@
 
 <div class="board">
 	
-	<form name="frm" method="post" action="<c:url value='/uss/ion/ism/selectSanctnerListNew.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/uss/ion/ism/selectSanctnerListNew.do">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	
 	<h1><spring:message code="input.cSelect" /></h1><!-- 선택 -->
@@ -73,7 +74,7 @@
 			</li>
 		</ul>
 	</div>
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption><spring:message code="title.list" /></caption><!-- 목록 -->

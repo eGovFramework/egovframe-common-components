@@ -58,7 +58,8 @@ function fn_egov_list(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="backupResultForm"  id="backupResultForm" action="<c:url value='/sym/sym/bak/getBackupResult.do'/>" method="post">
+<form name="backupResultForm"  id="backupResultForm" action="${pageContext.request.contextPath}/sym/sym/bak/getBackupResult.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="backupResultId" type="hidden" value="<c:out value='${resultInfo.backupResultId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
@@ -81,49 +82,49 @@ function fn_egov_list(){
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupResultId"/>	</th><!-- 백업결과ID -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupResultId}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupResultId}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupOpertId"/></th><!-- 백업작업ID -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupOpertId}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupOpertId}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupOpertNm"/></th><!-- 백업작업명 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupOpertNm}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupOpertNm}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupOrginlDrctry"/></th><!-- 백업원본디렉토리 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupOrginlDrctry}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupOrginlDrctry}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupStreDrctry"/></th><!-- 백업저장디렉토리 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupStreDrctry}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupStreDrctry}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupFile"/></th><!-- 백업파일 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupFile}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupFile}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.sttusNm"/></th><!-- 상태 -->
 				<td class="left">
-				    <c:out value="${resultInfo.sttusNm}" escapeXml="false" />
+				    <c:out value="${resultInfo.sttusNm}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.errorInfo"/></th><!-- 에러정보 -->
 				<td class="left">
-				    <c:out value="${resultInfo.errorInfo}" escapeXml="false" />
+				    <span style="white-space:pre-line"><c:out value="${resultInfo.errorInfo}"/></span>
 				</td>
 			</tr>
 			<tr>
@@ -145,7 +146,7 @@ function fn_egov_list(){
 		<!-- 하단 버튼 -->
 		<div class="btn">
 			<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete(); return false;" /><!-- 삭제 -->
-			<span class="btn_s"><a href="<c:url value='/sym/sym/bak/getBackupResultList.do'></c:url>" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 		</div>
 		<div style="clear:both;"></div>
 	</div>

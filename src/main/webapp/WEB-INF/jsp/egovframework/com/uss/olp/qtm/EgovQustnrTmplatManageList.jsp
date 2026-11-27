@@ -19,10 +19,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQtm.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -40,13 +43,13 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_QustnrTmplatManage(){
-	location.href = "<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageRegist.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageRegist.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_QustnrTmplatManage(){
-	location.href = "<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -90,7 +93,7 @@ function fn_egov_search_QustnrTmplatManage(){
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" action="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageList.do'/>" method="post" onSubmit="fn_egov_search_QustnrTmplatManage(); return false;">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/qtm/EgovQustnrTmplatManageList.do" method="post" onSubmit="fn_egov_search_QustnrTmplatManage(); return false;">
 
 	<!-- 설문템플릿관리 목록 -->
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
@@ -110,7 +113,7 @@ function fn_egov_search_QustnrTmplatManage(){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchVO.searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrTmplatManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"><a href="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageRegist.do' />"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageRegist.do' />'); return false;"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>
@@ -118,7 +121,7 @@ function fn_egov_search_QustnrTmplatManage(){
 <input name="qestnrTmplatId" type="hidden" value="">
 <input name="passwordConfirmAt" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>
+</form:form>
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">
@@ -162,7 +165,7 @@ function fn_egov_search_QustnrTmplatManage(){
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 템플릿 설명 -->
 		<td class="lt_text3L">
-		<a href="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageDetail.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" onClick="fn_egov_detail_QustnrTmplatManage('<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrTmplatCn}'/></a>
+		<a href="javascript:void(0);" onClick="fn_egov_detail_QustnrTmplatManage('<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrTmplatCn}'/></a>
 		</td>
 		<!-- 작성자명 -->
 		<td class="lt_text3">${resultInfo.frstRegisterNm}</td>

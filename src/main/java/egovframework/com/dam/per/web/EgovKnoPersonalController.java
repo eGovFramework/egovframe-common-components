@@ -2,14 +2,12 @@ package egovframework.com.dam.per.web;
 
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,14 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.map.mat.service.EgovMapMaterialService;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
@@ -35,29 +36,37 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
 import egovframework.com.dam.per.service.EgovKnoPersonalService;
 import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
+ * <pre>
  * 개요
  * - 개인지식정보에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 개인지식정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 개인지식정보의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
  * @author 박종선
+ * @since 2010.08.12
  * @version 1.0
- * @created 12-8-2010 오후 3:44:40
- *  <pre>
- * << 개정이력(Modification Information) >>
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
- *  -------        --------    ---------------------------
- *   2010.08.12  박종선			최초 생성
- *   2011.08.26	 정진오			IncludedInfo annotation 추가
- *   2024.10.29	 권태성			목록으로 돌아올 때 검색 조건이 유지되도록 수정(#1)
+ *  -------    --------    ---------------------------
+ *   2010.08.12  박종선          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          목록으로 돌아올 때 검색 조건이 유지되도록 수정(#1)
+ *   2025.06.17  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
- * </pre>
+ *      </pre>
  */
-
 @Controller
 public class EgovKnoPersonalController {
 
@@ -67,52 +76,48 @@ public class EgovKnoPersonalController {
 	public EgovKnoPersonalService knoPersonalService;
 
 	@Resource(name = "MapTeamService")
-    private EgovMapTeamService mapTeamService;
+	private EgovMapTeamService mapTeamService;
 
 	@Resource(name = "MapMaterialService")
 	public EgovMapMaterialService mapMaterialService;
 
 	// 첨부파일 관련
-	@Resource(name="EgovFileMngService")
+	@Resource(name = "EgovFileMngService")
 	private EgovFileMngService fileMngService;
 
-	@Resource(name="EgovFileMngUtil")
+	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	/** EgovMessageSource */
-    @Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
 	/**
 	 * 등록된 개인지식 정보를 조회 한다.
+	 * 
 	 * @param KnoPersonalVO - 개인지식 VO
 	 * @return String - 리턴 Url
 	 *
 	 * @param KnoPersonalVO
 	 */
-    @IncludedInfo(name="개인지식관리", listUrl="/dam/per/EgovComDamPersonalList.do", order = 1250,gid = 80)
-	@RequestMapping(value="/dam/per/EgovComDamPersonalList.do")
-	public String selectKnoPersonalList(
-			@ModelAttribute("searchVO") KnoPersonalVO searchVO
-			, ModelMap model
-			) throws Exception {
-    	LOGGER.debug("searchVO={}", searchVO);
-		//Spring Security 사용자권한 처리
-	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	    if (!isAuthenticated) {
-	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "redirect:/uat/uia/egovLoginUsr.do";
-	    }
+	@IncludedInfo(name = "개인지식관리", listUrl = "/dam/per/EgovComDamPersonalList.do", order = 1250, gid = 80)
+	@RequestMapping(value = "/dam/per/EgovComDamPersonalList.do")
+	public String selectKnoPersonalList(@ModelAttribute("searchVO") KnoPersonalVO searchVO, ModelMap model)
+			throws Exception {
+		LOGGER.debug("searchVO={}", searchVO);
+		// Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		/** EgovPropertyService.mapMaterial */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -142,16 +147,29 @@ public class EgovKnoPersonalController {
 
 	/**
 	 * 개인지식정보 상세 정보를 조회 한다.
+	 * 
 	 * @param KnoPersonalVO - 개인지식정보 VO
 	 * @return String - 리턴 Url
 	 *
 	 * @param KnoPersonalVO
 	 */
-	@RequestMapping(value="/dam/per/EgovComDamPersonal.do")
-	public String selectKnoPersonal(KnoPersonalVO knoPersonal
-			, ModelMap model
-			) throws Exception {
+	@RequestMapping(value = "/dam/per/EgovComDamPersonal.do")
+	@RequireAdmin
+	public String selectKnoPersonal(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
+		// Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 		KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
+
+		// 소유권(작성자) 검증 - 작성자 본인 또는 관리자만 조회할 수 있다.
+		if (result == null || !EgovAuthorizationHelper.isAdminOrOwner(result.getFrstRegisterId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		model.addAttribute("result", result);
 		model.addAttribute("searchVO", knoPersonal);
 		return "egovframework/com/dam/per/EgovComDamPersonalDetail";
@@ -159,90 +177,86 @@ public class EgovKnoPersonalController {
 
 	/**
 	 * 개인지식 정보를 등록폼.
+	 * 
 	 * @param KnoNm - 개인지식정보 model
 	 * @return String - 리턴 Url
 	 *
 	 * @param KnoNm
 	 */
-	@RequestMapping(value="/dam/per/EgovComDamPersonalRegistView.do")
-	public String insertKnoPersonalView(
-			KnoPersonalVO knoPersonal
-			, ModelMap model
-			) throws Exception {
+	@PostMapping("/dam/per/EgovComDamPersonalRegistView.do")
+	@RequireAdmin
+	public String insertKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
 		setInsertKnoPersonalViewModel(knoPersonal, model);
 		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
 	}
-	
+
 	/**
-     * 개인지식 정보를 등록폼. 초기값
-     * 
-     * @param model
-     * @throws Exception
-     */
-    private void setInsertKnoPersonalViewModel(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
-    	model.addAttribute("knoPersonal", knoPersonal);
-    	MapTeamVO mapTeamVO = new MapTeamVO();
-        mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
-        mapTeamVO.setFirstIndex(0);
-        List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
-        model.addAttribute("mapTeamList", mapTeamList);
+	 * 개인지식 정보를 등록폼. 초기값
+	 * 
+	 * @param model
+	 * @throws Exception
+	 */
+	private void setInsertKnoPersonalViewModel(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
+		model.addAttribute("knoPersonal", knoPersonal);
+		MapTeamVO mapTeamVO = new MapTeamVO();
+		mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
+		mapTeamVO.setFirstIndex(0);
+		List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+		model.addAttribute("mapTeamList", mapTeamList);
 
-        MapMaterialVO mapMaterialVO = new MapMaterialVO();
-        mapMaterialVO.setRecordCountPerPage(Integer.MAX_VALUE);
-        mapMaterialVO.setFirstIndex(0);
+		MapMaterialVO mapMaterialVO = new MapMaterialVO();
+		mapMaterialVO.setRecordCountPerPage(Integer.MAX_VALUE);
+		mapMaterialVO.setFirstIndex(0);
 
-        List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(mapMaterialVO);
-        model.addAttribute("mapMaterialList", mapMaterialList);
-    }
+		List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(mapMaterialVO);
+		model.addAttribute("mapMaterialList", mapMaterialList);
+	}
 
 	/**
 	 * 개인지식 정보를 신규로 등록한다.
+	 * 
 	 * @param KnoNm - 개인지식정보 model
 	 * @return String - 리턴 Url
 	 *
 	 * @param KnoNm
 	 */
-	@PostMapping(value="/dam/per/EgovComDamPersonalRegist.do")
-	public String insertKnoPersonal(
-			final MultipartHttpServletRequest multiRequest
-			, KnoPersonalVO knoPersonal
-			, BindingResult bindingResult
-			, ModelMap model
-			) throws Exception {
-    	// Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+	@PostMapping(value = "/dam/per/EgovComDamPersonalRegist.do")
+	@RequireAdmin
+	public String insertKnoPersonal(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("knoPersonal") KnoPersonalVO knoPersonal,
+			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+		// Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
+		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalRegist";
 
-		beanValidator.validate(knoPersonal, bindingResult);
-		if (bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			setInsertKnoPersonalViewModel(knoPersonal, model);
 			return sLocationUrl;
 		}
 
-    	// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		// 첨부파일 관련 첨부파일ID 생성
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
-		if(!files.isEmpty()){
-		 _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-		 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+		if (!files.isEmpty()) {
+			fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
-    	// 리턴받은 첨부파일ID를 셋팅한다..
-		knoPersonal.setAtchFileId(_atchFileId);					// 첨부파일 ID
+		// 리턴받은 첨부파일ID를 셋팅한다..
+		knoPersonal.setAtchFileId(atchFileId); // 첨부파일 ID
 
-		//아이디 설정
+		// 아이디 설정
 		knoPersonal.setFrstRegisterId(loginVO.getUniqId());
 		knoPersonal.setLastUpdusrId(loginVO.getUniqId());
 
@@ -252,116 +266,142 @@ public class EgovKnoPersonalController {
 
 	/**
 	 * 기 등록 된 개인지식 정보를 수정폼.
+	 * 
 	 * @param KnoNm - 개인지식정보 model
 	 * @return String - 리턴 Ur
 	 *
 	 * @param KnoNm
 	 */
-	@PostMapping(value="/dam/per/EgovComDamPersonalModifyView.do")
-	public String updateKnoPersonalView(KnoPersonalVO knoPersonal
-			, ModelMap model
-			) throws Exception {
-		updateKnoPersonalViewInit(knoPersonal, model);
+	@PostMapping(value = "/dam/per/EgovComDamPersonalModifyView.do")
+	@RequireAdmin
+	public String updateKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model, HttpServletRequest request) throws Exception {
+		// Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		KnoPersonal existing = EgovAuthorizationHelper.requireTarget(knoPersonalService.selectKnoPersonal(knoPersonal));
+		// 개인 지식은 등록한 본인만 수정·삭제한다
+		EgovAuthorizationHelper.assertOwner(existing.getFrstRegisterId());
+		EgovAttachmentGrants.allowDelete(request, existing.getAtchFileId());
+
+		model.addAttribute("knoPersonal", existing);
 		model.addAttribute("searchVO", knoPersonal);
 		return "egovframework/com/dam/per/EgovComDamPersonalModify";
 	}
-	
-	/**
-     * 기 등록 된 개인지식 정보를 수정폼. 초기값
-     * 
-     * @param knoPersonal
-     * @param model
-     * @throws Exception
-     */
-    private void updateKnoPersonalViewInit(KnoPersonal knoPersonal, ModelMap model) throws Exception {
-        KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
-        model.addAttribute("knoPersonal", result);
-    }
 
 	/**
 	 * 기 등록 된 개인지식 정보를 수정 한다.
+	 * 
 	 * @param KnoNm - 개인지식정보 model
 	 * @return String - 리턴 Ur
 	 *
 	 * @param KnoNm
 	 */
-	@PostMapping(value="/dam/per/EgovComDamPersonalModify.do")
-	public String updateKnoPersonal(
-			final MultipartHttpServletRequest multiRequest
-			, @RequestParam Map<String, String> commandMap
-			, @ModelAttribute("knoPersonal") KnoPersonal knoPersonal
-			, BindingResult bindingResult
-			, ModelMap model
-			) throws Exception {
+	@PostMapping(value = "/dam/per/EgovComDamPersonalModify.do")
+	@RequireAdmin
+	public String updateKnoPersonal(final MultipartHttpServletRequest multiRequest,
+			@RequestParam Map<String, String> commandMap,
+			@ModelAttribute("searchVO") KnoPersonalVO searchVO,
+			@Valid @ModelAttribute("knoPersonal") KnoPersonal knoPersonal,
+			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
-        // 0. Spring Security 사용자권한 처리
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-        if (!isAuthenticated) {
-            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
+		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		KnoPersonal existingKnoPersonal = EgovAuthorizationHelper.requireTarget(knoPersonalService.selectKnoPersonal(knoPersonal));
+		// 개인 지식은 등록한 본인만 수정·삭제한다
+		EgovAuthorizationHelper.assertOwner(existingKnoPersonal.getFrstRegisterId());
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		knoPersonal.setAtchFileId(Objects.toString(existingKnoPersonal.getAtchFileId(), ""));
 
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalModify";
 
-		beanValidator.validate(knoPersonal, bindingResult);
-		if (bindingResult.hasErrors()){
-            updateKnoPersonalViewInit(knoPersonal, model);
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("knoPersonal", existingKnoPersonal);
 			return sLocationUrl;
 		}
 
-		/* *****************************************************************
-    	// 아이디 설정
-		****************************************************************** */
+		/*
+		 * ***************************************************************** // 아이디 설정
+		 */
 		if (loginVO != null) {
-            knoPersonal.setFrstRegisterId(loginVO.getUniqId());
-            knoPersonal.setLastUpdusrId(loginVO.getUniqId());
+			knoPersonal.setFrstRegisterId(loginVO.getUniqId());
+			knoPersonal.setLastUpdusrId(loginVO.getUniqId());
 		}
 
-		/* *****************************************************************
-    	// 첨부파일 관련 ID 생성 start....
-		****************************************************************** */
-		String _atchFileId = knoPersonal.getAtchFileId();
+		/*
+		 * ***************************************************************** // 첨부파일 관련
+		 * ID 생성 start....
+		 */
+		String atchFileId = knoPersonal.getAtchFileId();
 
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
-		if(!files.isEmpty()){
+		if (!files.isEmpty()) {
 			String atchFileAt = commandMap.get("atchFileAt");
-			if("N".equals(atchFileAt)){
-				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
-				_atchFileId = fileMngService.insertFileInfs(_result);
+			if ("N".equals(atchFileAt)) {
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, atchFileId, "");
+				atchFileId = fileMngService.insertFileInfs(fvoList);
 
 				// 첨부파일 ID 셋팅
-				knoPersonal.setAtchFileId(_atchFileId);    	// 첨부파일 ID
+				knoPersonal.setAtchFileId(atchFileId); // 첨부파일 ID
 
-			}else{
+			} else {
 				FileVO fvo = new FileVO();
-				fvo.setAtchFileId(_atchFileId);
-				int _cnt = fileMngService.getMaxFileSN(fvo);
-				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");
-				fileMngService.updateFileInfs(_result);
+				fvo.setAtchFileId(atchFileId);
+				int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", fileKeyParam, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
 		}
-		
-		//저장
+
+		// 저장
 		knoPersonalService.updateKnoPersonal(knoPersonal);
-        sLocationUrl = "forward:/dam/per/EgovComDamPersonalList.do";
+		sLocationUrl = "forward:/dam/per/EgovComDamPersonalList.do";
 		return sLocationUrl;
 	}
 
 	/**
 	 * 기 등록된 개인지식 정보를 삭제한다.
+	 * 
 	 * @param KnoNm - 개인지식정보 model
 	 * @return String - 리턴 Url
 	 *
 	 * @param KnoNm
 	 */
-	@PostMapping(value="/dam/per/EgovComDamPersonalRemove.do")
+	@PostMapping(value = "/dam/per/EgovComDamPersonalRemove.do")
+	@RequireAdmin
 	public String deleteKnoPersonal(KnoPersonal knoPersonal) throws Exception {
+		// Spring Security 사용자권한 처리
+		if (!Boolean.TRUE.equals(EgovUserDetailsHelper.isAuthenticated())) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		KnoPersonal existing = EgovAuthorizationHelper.requireTarget(knoPersonalService.selectKnoPersonal(knoPersonal));
+		// 개인 지식은 등록한 본인만 수정·삭제한다
+		EgovAuthorizationHelper.assertOwner(existing.getFrstRegisterId());
+
+		String atchFileId = existing.getAtchFileId();
+
 		knoPersonalService.deleteKnoPersonal(knoPersonal);
+
+		// 첨부파일을 삭제하기 위한 Vo
+		FileVO fvo = new FileVO();
+		fvo.setAtchFileId(atchFileId);
+
+		fileMngService.deleteAllFileInf(fvo);
+
 		return "forward:/dam/per/EgovComDamPersonalList.do";
 	}
 

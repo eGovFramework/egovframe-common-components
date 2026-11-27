@@ -20,7 +20,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssOlhOmm.onlineManualVO.title"/></c:set>
 <!DOCTYPE html>
@@ -48,7 +48,8 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="onlineManualForm" action="<c:url value='/uss/olh/omm/updateOnlineManualView.do'/>" method="post">
+<form name="onlineManualForm" action="${pageContext.request.contextPath}/uss/olh/omm/updateOnlineManualView.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -77,14 +78,14 @@
 		<tr>
 			<th><spring:message code="comUssOlhOmm.onlineManualVO.onlineMnlDf" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.onlineMnlDf , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.onlineMnlDf}"/></span>
 			</td>
 		</tr>
 		<!-- 온라인메뉴얼 설명 -->
 		<tr>
 			<th><spring:message code="comUssOlhOmm.onlineManualVO.onlineMnlDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.onlineMnlDc , crlf , '<br/>')}" escapeXml="false" />
+				<span class="ck-content"><c:out value="${egovc:sanitizeHtml(result.onlineMnlDc)}" escapeXml="false"/></span>
 			</td>
 		</tr>
 		
@@ -93,7 +94,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/olh/omm/deleteOnlineManual.do' />" onClick="fn_egov_delete_onlinemanual('<c:out value="${result.onlineMnlId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onClick="fn_egov_delete_onlinemanual('<c:out value="${result.onlineMnlId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/uss/olh/omm/selectOnlineManualList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	

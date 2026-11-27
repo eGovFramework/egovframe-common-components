@@ -3,6 +3,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comStsBst.bbsStats.title"/></c:set>
 <%
  /**
@@ -151,17 +153,16 @@ function fnSearch(){
    	document.listForm.submit();
 }
 /* ********************************************************
- * 초기화
+ * 페이지 로드 시 초기화 (서버 값 유지)
  ******************************************************** */
 function fnInitAll(){
 	// 시작일자, 종료일자
 	if (document.listForm.fDate.value == "" && document.listForm.tDate.value == "") {
 		var now = new Date();
-	    var year= now.getFullYear();
-	    var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
-	    var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
-		var toDay = year + mon + day;
-		toDay = year + "-" + mon + "-" + day;
+		var year= now.getFullYear();
+		var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+		var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+		var toDay = year + "-" + mon + "-" + day;
 		document.listForm.fDate.value = toDay;
 		document.listForm.tDate.value = toDay;
 	} else if (document.listForm.fDate.value != "" && document.listForm.tDate.value != "") {
@@ -171,7 +172,7 @@ function fnInitAll(){
 		document.listForm.tDate.value = toDate.substring(0, 4) + "-" + toDate.substring(5, 7) + "-" + toDate.substring(8, 10);
 	}
 
-	// 기간구분
+	// 기간구분 - 서버에서 넘어온 값으로 설정
 	var pdKind = document.listForm.pdKind.value;
 	var v_pdKind = document.getElementById("PD");
 	for(var i = 0; i < v_pdKind.options.length; i++) {
@@ -180,7 +181,7 @@ function fnInitAll(){
 		}
 	}
 
-	// 통계구분
+	// 통계구분 - 서버에서 넘어온 값으로 설정
 	var statsKind = document.listForm.statsKind.value;
 	var v_statsKind = document.getElementById("STKIND");
 	for(var j = 0; j < v_statsKind.options.length; j++) {
@@ -215,7 +216,29 @@ function fnInitAll(){
 		}
 	}
 	*/
-	fn_egov_init_date();	
+	fn_egov_init_date();
+}
+/* ********************************************************
+ * 초기화 버튼 클릭 시 (강제 초기화)
+ ******************************************************** */
+function fnReset(){
+	// 시작일자, 종료일자 - 오늘 날짜로 강제 초기화
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	var toDay = year + "-" + mon + "-" + day;
+	document.listForm.fDate.value = toDay;
+	document.listForm.tDate.value = toDay;
+
+	// 기간구분 - 첫 번째 옵션(미선택)으로 초기화
+	var v_pdKind = document.getElementById("PD");
+	v_pdKind.selectedIndex = 0;
+
+	// 통계구분 - 첫 번째 옵션(미선택)으로 초기화
+	var v_statsKind = document.getElementById("STKIND");
+	v_statsKind.selectedIndex = 0;
+	fnChangeStsKind();
 }
 /* ********************************************************
  * 탭 변경 + 검색
@@ -247,7 +270,7 @@ function getNextWeek(v,t){
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-	<form name="listForm" action="<c:url value='/sts/bst/selectBbsStats.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sts/bst/selectBbsStats.do" method="post">
 	    <input type="hidden" name="pdKind" value='<c:out value="${statsInfo.pdKind}"/>'/>
 	    <input type="hidden" name="statsKind" value='<c:out value="${statsInfo.statsKind}"/>'/>
 	    <input type="hidden" name="detailStatsKind" value=""/>
@@ -292,7 +315,7 @@ function getNextWeek(v,t){
 			      </select>
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.search" />" title="<spring:message code="button.search" />" onclick="fnSearch(); return false;" /> <!-- 검색 -->
-				<span class="btn_b"><a href="#noscript" onclick="fnInitAll(); return false;" title="<spring:message code="button.init" />"><spring:message code="button.init" /></a></span> <!-- 초기화 -->
+				<span class="btn_b"><a href="#noscript" onclick="fnReset(); return false;" title="<spring:message code="button.init" />"><spring:message code="button.init" /></a></span> <!-- 초기화 -->
 			</li>
 		</ul>
 	</div>
@@ -574,7 +597,7 @@ function getNextWeek(v,t){
 	
 	
 	</div>
-</form>
+</form:form>
 </div>
 </body>
 </html>

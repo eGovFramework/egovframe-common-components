@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovReportrList.jsp
@@ -34,7 +35,6 @@
 		getDialogArguments();
 		var opener = parent.window.dialogArguments;
 		
-		//document.frm.title.value = opener[1]; 
 		parent.document.title = opener[1] + " 목록조회"; 
 	}
 	
@@ -80,7 +80,7 @@
 <div class="board" style="width:765px">
 	<h1><spring:message code="comCopSmtMrm.reportrList.select"/></h1><!-- 보고대상자 선택 -->
 
-	<form name="frm" method="post" action="<c:url value='/cop/smt/mrm/selectReportrList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mrm/selectReportrList.do">
 
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	
@@ -100,7 +100,7 @@
 		</ul>
 	</div>
 	
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption></caption>

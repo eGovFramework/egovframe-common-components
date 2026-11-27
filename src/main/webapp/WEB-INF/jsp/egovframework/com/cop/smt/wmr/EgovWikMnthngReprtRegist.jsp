@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,12 +31,10 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="wikMnthngReprtVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript">
@@ -177,7 +174,7 @@ function fn_egov_init_WikMnthngReprt(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="wikMnthngReprtVO" name="wikMnthngReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/wmr/insertWikMnthngReprt.do' />" enctype="multipart/form-data">
+<form:form modelAttribute="wikMnthngReprtVO" name="wikMnthngReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/wmr/insertWikMnthngReprt.do" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -219,9 +216,9 @@ function fn_egov_init_WikMnthngReprt(){
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtRegist.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprtVO.wrterClsfNm}" escapeXml="false" />
+			    <c:out value="${wikMnthngReprtVO.wrterClsfNm}"/>
 				&nbsp;
-				<c:out value="${wikMnthngReprtVO.wrterNm}" escapeXml="false" />
+				<c:out value="${wikMnthngReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterId" id="wrterId" value="${wikMnthngReprtVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${wikMnthngReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterClsfNm" id="wrterClsfNm" value="${wikMnthngReprtVO.wrterClsfNm}"/>
@@ -232,7 +229,7 @@ function fn_egov_init_WikMnthngReprt(){
 			<td class="left">
 				<c:set var="reportrName"><spring:message code="copSmtWmr.wikMnthngReprtRegist.reportrNm"/></c:set>
 			    <form:input path="reportrNm" size="15" readonly="true" maxlength="10" title="${reportrName}" cssStyle="width:128px"/>
-				<a href="<c:url value='/cop/smt/wmr/selectReportrListPopup.do' />" target="_blank"  title="새 창으로 이동" onclick="fn_egov_reportr_WikMnthngReprt('보고대상자', 'reportrId', '', 'reportrNm', '');return false;">
+				<a href="javascript:void(0);" onclick="fn_egov_reportr_WikMnthngReprt('보고대상자', 'reportrId', '', 'reportrNm', '');return false;">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" alt="보고대상자 검색" title="보고대상자 검색"/>
 				</a>
 				<div><form:errors path="reportrNm" cssClass="error"/></div>
@@ -284,7 +281,7 @@ function fn_egov_init_WikMnthngReprt(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_insert_wikmnthngreprt(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/selectWikMnthngReprtList.do'/>?searchWrd=<c:out value='${wikMnthngReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${wikMnthngReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${wikMnthngReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${wikMnthngReprtVO.searchSttus}'/>&amp;searchDe=<c:out value='${wikMnthngReprtVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${wikMnthngReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${wikMnthngReprtVO.searchEndDe}'/>" onclick="fn_egov_list_wikmnthngreprt(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_wikmnthngreprt(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

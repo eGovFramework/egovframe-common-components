@@ -195,7 +195,7 @@
                      CLDR_SE           as cldrSe         ,
                      REPTIT_AT         as reptitSe       
             FROM     COMTNANNVRSRYMANAGE ans
-            where    USER_ID  = #{usid}
+            where    ans.USER_ID  = #{usid}
         
     </select>
     

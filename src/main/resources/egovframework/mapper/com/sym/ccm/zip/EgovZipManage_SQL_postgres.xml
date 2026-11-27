@@ -70,6 +70,7 @@
 			     ,  EMD_NM        emdNm
 			     ,  LI_BULD_NM    liBuldNm
 			     ,  LNBR_DONG_HO  lnbrDongHo
+			     ,  FRST_REGISTER_ID  frstRegisterId
 			  FROM  COMTCZIP
              WHERE  ZIP = #{zip}
                AND  SN  = #{sn}

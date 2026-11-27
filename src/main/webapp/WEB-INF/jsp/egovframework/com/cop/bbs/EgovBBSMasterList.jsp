@@ -22,6 +22,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopBbs.boardMasterVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -68,7 +69,7 @@ function fn_egov_inquire_bbsdetail(bbsId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="BBSMasterForm" action="<c:url value='/cop/bbs/selectBBSMasterInfs.do'/>" method="post" onSubmit="fn_egov_search_bbssj(); return false;"> 
+<form:form name="BBSMasterForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/bbs/selectBBSMasterInfs.do" method="post" onSubmit="fn_egov_search_bbssj(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 게시판 목록 -->
 	<!-- 하단 버튼 -->
@@ -117,7 +118,7 @@ function fn_egov_inquire_bbsdetail(bbsId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/cop/bbs/selectBBSMasterDetail.do?bbsId=${resultInfo.bbsId}'/>" onClick="fn_egov_inquire_bbsdetail('<c:out value="${resultInfo.bbsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.bbsNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_inquire_bbsdetail('<c:out value="${resultInfo.bbsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.bbsNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>		
@@ -144,7 +145,7 @@ function fn_egov_inquire_bbsdetail(bbsId) {
 <input name="cmmntyId" type="hidden" value="<c:out value='${searchVO.cmmntyId}'/>">
 <input name="bbsId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

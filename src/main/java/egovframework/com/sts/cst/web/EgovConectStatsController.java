@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sts.com.StatsVO;
 import egovframework.com.sts.cst.service.EgovConectStatsService;
+import javax.annotation.Resource;
 
 /**
  * 접속 통계 검색 컨트롤러 클래스
@@ -54,7 +53,7 @@ public class EgovConectStatsController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="접속통계", listUrl="/sts/cst/selectConectStats.do", order = 140 ,gid = 30)
-    @RequestMapping(value="/sts/cst/selectConectStats.do")
+    @RequestMapping(value = "/sts/cst/selectConectStats.do")
 	public String selectUserStats(@ModelAttribute("statsVO") StatsVO statsVO,
 			ModelMap model) throws Exception {
 
@@ -70,8 +69,8 @@ public class EgovConectStatsController {
 			} else {
 				// 그래프에 표시될 이미지 길이를 결정한다.
 				float iMaxUnit = 50.0f;
-				for (int i = 0; i < conectStats.size(); i++) {
-					StatsVO vo = (StatsVO)conectStats.get(i);
+				for (StatsVO conectStat : conectStats) {
+					StatsVO vo = conectStat;
 					int iCnt = vo.getStatsCo();
 					if (iCnt > 10 && iCnt <= 100) {
 						if (iMaxUnit > 5.0f) {

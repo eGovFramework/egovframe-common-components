@@ -32,6 +32,13 @@ public interface EgovNoteManageService {
      */
     public Map<?, ?> selectNoteManage(NoteManageVO noteManage) throws Exception;
 
+    /**
+     * 2026.07.30 보안 조치 - 현재 사용자가 해당 쪽지의 수신자인지 확인한다.
+     * @param noteManage -쪽지 관리(보내기) 정보가 담김 객체(noteId, rcverId 사용)
+     * @throws Exception
+     */
+    public int selectNoteRecptnCheck(NoteManageVO noteManage) throws Exception;
+
      /**
 	 * 쪽지 관리(보내기)를(을) 등록한다.
 	 * @param noteManage  쪽지 관리(보내기) 정보 담김 객체

@@ -22,6 +22,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtSdm.deptLyrTitle"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -57,8 +59,6 @@ function fn_egov_search_MeetingManage(){
 function fn_egov_open_Popup(cnt, groupId){
 	
 	getDialogArguments();
-	/* var opener = window.dialogArguments */
-	
 	var opener;
 	 
 	if (window.dialogArguments) {
@@ -94,7 +94,7 @@ function fn_egov_open_Popup(cnt, groupId){
 
 <div class="popup">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="listForm" id="listForm" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageAuthorGroupPopup.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageAuthorGroupPopup.do" method="post">
 	
 	<!-- 검색영역 -->
 	<div class="pop_search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -155,7 +155,7 @@ function fn_egov_open_Popup(cnt, groupId){
 	</table>
 	
 	<input name="cmd" type="hidden" value="">
-	</form>
+	</form:form>
 
 </DIV>
 

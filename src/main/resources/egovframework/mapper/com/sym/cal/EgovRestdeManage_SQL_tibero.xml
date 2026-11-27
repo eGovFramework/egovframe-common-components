@@ -292,6 +292,7 @@
 				 ,  A.RESTDE_DC      restdeDc
 				 ,  B.CODE_NM        restdeSe
 				 ,  A.RESTDE_SE_CODE restdeSeCode
+				 ,  A.FRST_REGISTER_ID  frstRegisterId
 			  FROM  COMTNRESTDE         A
 			     ,  COMTCCMMNDETAILCODE B
 			 WHERE  B.CODE_ID        = 'COM017'

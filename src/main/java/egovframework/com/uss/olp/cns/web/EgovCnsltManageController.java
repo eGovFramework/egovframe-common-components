@@ -1,26 +1,25 @@
 package egovframework.com.uss.olp.cns.web;
 
-import java.util.List;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -31,16 +30,19 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO;
 import egovframework.com.uss.olp.cns.service.CnsltManageVO;
 import egovframework.com.uss.olp.cns.service.EgovCnsltManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
- *
  * 상담내용을 처리하는 컨트롤러 클래스
  * 
  * @author 공통서비스 개발팀 박정규
@@ -49,16 +51,17 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  박정규          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessarySemicolon(필요없는 ; 문장 존재)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovCnsltManageController {
 
@@ -85,10 +88,6 @@ public class EgovCnsltManageController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/**
 	 * 개별 배포시 메인메뉴를 조회한다.
 	 * 
@@ -97,6 +96,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/cns/EgovMain.do")
+	@RequireAdmin
 	public String egovMain(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/cns/EgovMain";
 	}
@@ -109,6 +109,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/cns/EgovLeft.do")
+	@RequireAdmin
 	public String egovLeft(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/cns/EgovLeft";
 	}
@@ -122,7 +123,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "상담관리", order = 580, gid = 50)
-	@RequestMapping(value = "/uss/olp/cns/CnsltListInqire.do")
+	@RequestMapping("/uss/olp/cns/CnsltListInqire.do")
 	public String selectCnsltList(@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -176,20 +177,40 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDetailInqire.do")
+	@PostMapping("/uss/olp/cns/CnsltDetailInqire.do")
+	@RequireAdmin
 	public String selectCnsltListDetail(@RequestParam("passwordConfirmAt") String passwordConfirmAt,
 			CnsltManageVO cnsltManageVO, @ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model)
 			throws Exception {
 
 		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
 
+		// 비공개(othbcAt='N') 상담은 작성자 본인이거나, 사용자가 제출한 작성비밀번호가 저장값과 일치할 때만 열람 가능
+		// (passwordConfirmAt은 클라이언트가 임의로 조작 가능한 값이므로 인가 판단에 신뢰하지 않는다)
+		if ("N".equals(vo.getOthbcAt())) {
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			String loginUniqId = (loginVO == null || loginVO.getUniqId() == null) ? "" : loginVO.getUniqId();
+			boolean isOwner = !EgovStringUtil.isEmpty(loginUniqId) && !EgovStringUtil.isEmpty(vo.getFrstRegisterId())
+					&& loginUniqId.equals(vo.getFrstRegisterId());
+
+			if (!isOwner) {
+				String inputPassword = EgovStringUtil.isNullToString(cnsltManageVO.getWritngPassword());
+				String encodedInput = EgovStringUtil.isEmpty(inputPassword) ? "" : EgovFileScrty.encode(inputPassword);
+
+				if (EgovStringUtil.isEmpty(inputPassword) || vo.getWritngPassword() == null
+						|| !vo.getWritngPassword().equals(encodedInput)) {
+					model.addAttribute("subMsg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+					model.addAttribute("result", new CnsltManageVO());
+					return "egovframework/com/uss/olp/cns/EgovCnsltPasswordConfirm";
+				}
+			}
+		}
+
 		vo.setPasswordConfirmAt(passwordConfirmAt); // 작성비밀번호 확인여부
 
-		// 작성 비밀번호를 얻는다.
-		String writngPassword = vo.getWritngPassword();
-
-		// EgovFileScrty Util에 있는 암호화 모듈을 적용해서 복호화한다.
-		vo.setWritngPassword(EgovFileScrty.decode(writngPassword));
+		// 상세조회 화면(EgovCnsltDetailInqire.jsp)은 작성비밀번호를 사용하지 않으므로
+		// 복호화된 값을 응답 모델에 포함하지 않는다(불필요한 개인정보 노출 방지).
+		vo.setWritngPassword(null);
 
 		model.addAttribute("result", vo);
 
@@ -204,7 +225,8 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cns/CnsltDetailInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltInqireCoUpdt.do")
+	@PostMapping("/uss/olp/cns/CnsltInqireCoUpdt.do")
+	@RequireAdmin
 	public String updateCnsltInqireCo(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
 
@@ -224,6 +246,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olp/cns/LoginRealnmChoice.do")
+	@RequireAdmin
 	public String selectLoginRealnmChoice(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 
@@ -241,7 +264,8 @@ public class EgovCnsltManageController {
 	 * @return "/uss/olp/cns/EgovCnsltDtlsRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltDtlsRegistView.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsRegistView.do")
+	@RequireAdmin
 	public String insertCnsltDtlsView(@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
 			CnsltManageVO cnsltManageVO, Model model) throws Exception {
 
@@ -284,34 +308,36 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsRegist.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsRegist.do")
+	@RequireAdmin
 	public String insertCnsltDtls(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
-			@ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
-		beanValidator.validate(cnsltManageVO, bindingResult);
-
 		if (bindingResult.hasErrors()) {
+
+			// 형제 insertCnsltDtlsView와 동일하게 재표시 폼이 참조하는 result를 담는다
+			model.addAttribute("result", cnsltManageVO);
 
 			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsRegist";
 
 		}
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "CNSLT_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "CNSLT_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
 		// 리턴받은 첨부파일ID를 셋팅한다..
-		cnsltManageVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+		cnsltManageVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -343,6 +369,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olp/cns/CnsltPasswordConfirmView.do")
+	@RequireAdmin
 	public String selectPasswordConfirmView(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 
@@ -362,6 +389,7 @@ public class EgovCnsltManageController {
 	 */
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/uss/olp/cns/CnsltPasswordConfirm.do")
+	@RequireAdmin
 	public String selectPasswordConfirm(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 
@@ -403,19 +431,21 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsUpdtView.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsUpdtView.do")
+	@RequireAdmin
 	public String updateCnsltDtlsView(CnsltManageVO cnsltManageVO,
-			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
+			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model, HttpServletRequest request) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
-		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
 
-		// 작성 비밀번호를 얻는다.
-		String writngPassword = vo.getWritngPassword();
+		CnsltManageVO vo = EgovAuthorizationHelper.requireTarget(cnsltManageService.selectCnsltListDetail(cnsltManageVO));
+		EgovAttachmentGrants.allowDelete(request, vo.getAtchFileId());
 
-		// EgovFileScrty Util에 있는 암호화 모듈을 적용해서 복호화한다.
-		vo.setWritngPassword(EgovFileScrty.decode(writngPassword));
+		// 저장된 비밀번호는 수정 화면에 전달하지 않는다.
+		vo.setWritngPassword(null);
 
-		// 복호화된 패스워드를 넘긴다..
+		// 수정 폼에 비밀번호를 제외한 정보를 전달한다.
 		model.addAttribute("cnsltManageVO", vo);
 
 		// result에도 세팅(jstl 사용을 위해)
@@ -437,23 +467,33 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsUpdt.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsUpdt.do")
+	@RequireAdmin
 	public String updateCnsltDtls(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
-			@ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
-		// Validation
-		beanValidator.validate(cnsltManageVO, bindingResult);
+		// 오류 재표시도 첨부 목록을 보여주므로 검증을 그보다 먼저 한다.
+		CnsltManageVO stored = EgovAuthorizationHelper.requireTarget(cnsltManageService.selectCnsltListDetail(cnsltManageVO));
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		cnsltManageVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
 
 		if (bindingResult.hasErrors()) {
 
+			// 검증 실패로 수정 폼을 다시 표시할 때 JSP가 참조하는 result(대상 식별자·첨부 등)를 표시 경로와 동일하게 복원한다.
+			model.addAttribute("result", stored);
 			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsUpdt";
 
 		}
 
+		// updateCnsltDtls.do는 등록자ID를 폼으로 받지 않아 바인딩되지 않는다.
+		// 수정 매퍼가 FRST_REGISTER_ID를 매번 재기록하므로, 원래 등록자 값을 그대로 보존해야
+		// 다음 수정 시점에도 소유권 검증이 계속 유효하다(비워두면 다음 수정부터 관리자만 통과).
+		cnsltManageVO.setFrstRegisterId(stored == null ? null : stored.getFrstRegisterId());
+
 		// 첨부파일 관련 ID 생성 start....
-		String _atchFileId = cnsltManageVO.getAtchFileId();
+		String atchFileId = cnsltManageVO.getAtchFileId();
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -461,18 +501,18 @@ public class EgovCnsltManageController {
 		if (!files.isEmpty()) {
 
 			if ("N".equals(atchFileAt)) {
-				List<FileVO> _result = fileUtil.parseFileInf(files, "CNSLT_", 0, _atchFileId, "");
-				_atchFileId = fileMngService.insertFileInfs(_result);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "CNSLT_", 0, atchFileId, "");
+				atchFileId = fileMngService.insertFileInfs(fvoList);
 
 				// 첨부파일 ID 셋팅
-				cnsltManageVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+				cnsltManageVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 			} else {
 				FileVO fvo = new FileVO();
-				fvo.setAtchFileId(_atchFileId);
-				int _cnt = fileMngService.getMaxFileSN(fvo);
-				List<FileVO> _result = fileUtil.parseFileInf(files, "CNSLT_", _cnt, _atchFileId, "");
-				fileMngService.updateFileInfs(_result);
+				fvo.setAtchFileId(atchFileId);
+				int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "CNSLT_", fileKeyParam, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
 		}
 		// 첨부파일 관련 ID 생성 end...
@@ -505,37 +545,26 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cns/CnsltListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltDtlsDelete.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsDelete.do")
+	@RequireAdmin
 	public String deleteCnsltDtls(HttpServletRequest request, CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
 
-		// --------------------------------------------------------------------------------------------
-		// @ XSS 사용자권한체크 START
-		// param1 : 사용자고유ID(uniqId,esntlId)
-		// --------------------------------------------------------
-		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-		;
-
-		// step1 DB에서 해당 게시물의 uniqId 조회
-		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
-
-		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
-		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
-		LOGGER.debug("@ XSS 권한체크 END ------------------------------------------------");
-		// --------------------------------------------------------
-		// @ XSS 사용자권한체크 END
-		// --------------------------------------------------------------------------------------------
+		CnsltManageVO vo = EgovAuthorizationHelper.requireTarget(cnsltManageService.selectCnsltListDetail(cnsltManageVO));
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = cnsltManageVO.getAtchFileId();
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 위에서 조회한 서버 값을 그대로 쓴다.
+		String atchFileId = vo.getAtchFileId();
 
 		cnsltManageService.deleteCnsltDtls(cnsltManageVO);
 
-		// 첨부파일을 삭제하기 위한 Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(_atchFileId);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
 
-		fileMngService.deleteAllFileInf(fvo);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 		// 첨부파일 삭제 End.............
 
 		return "forward:/uss/olp/cns/CnsltListInqire.do";
@@ -550,7 +579,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "상담답변관리", order = 581, gid = 50)
-	@RequestMapping(value = "/uss/olp/cnm/CnsltAnswerListInqire.do")
+	@RequestMapping("/uss/olp/cnm/CnsltAnswerListInqire.do")
 	public String selectCnsltAnswerList(@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -568,8 +597,8 @@ public class EgovCnsltManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> CnsltAnswerList = cnsltManageService.selectCnsltAnswerList(searchVO);
-		model.addAttribute("resultList", CnsltAnswerList);
+		List<EgovMap> resultList = cnsltManageService.selectCnsltAnswerList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = cnsltManageService.selectCnsltAnswerListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -587,8 +616,9 @@ public class EgovCnsltManageController {
 	 * @return "/uss/olp/cns/EgovCnsltAnswerDetailInqire"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltAnswerDetailInqire.do")
-	public String selectCnsltAnswerListDetail(CnsltManageVO cnsltManageVO,
+	@PostMapping("/uss/olp/cnm/CnsltAnswerDetailInqire.do")
+	@RequireAdmin
+	public String selectCnsltAnswerListDetail(CnsltManageVO cnsltManageVO, 
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
 
 		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
@@ -607,7 +637,8 @@ public class EgovCnsltManageController {
 	 * @return "/uss/olp/cns/EgovCnsltDtlsAnswerUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdtView.do")
+	@PostMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdtView.do")
+	@RequireAdmin
 	public String updateCnsltDtlsAnswerView(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -615,8 +646,8 @@ public class EgovCnsltManageController {
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setCodeId("COM028");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		model.addAttribute("resultList", _result);
+		List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		model.addAttribute("resultList", resultList);
 
 		// 변수명은 CoC 에 따라
 		model.addAttribute(selectCnsltAnswerListDetail(cnsltManageVO, searchVO, model));
@@ -632,10 +663,23 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cnm/CnsltAnswerListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdt.do")
-	public String updateCnsltDtlsAnswer(CnsltManageVO cnsltManageVO,
-			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
+	@PostMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdt.do")
+	@RequireAdmin
+	public String updateCnsltDtlsAnswer(@Valid CnsltManageVO cnsltManageVO, BindingResult bindingResult,
+			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 
+		if (bindingResult.hasErrors()) {
+
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM028");
+
+			List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("resultList", resultList);
+			// 검증 실패로 답변 수정 폼을 다시 표시할 때 JSP가 참조하는 result(대상 식별자 등)를 표시 경로와 동일하게 복원한다.
+			model.addAttribute("result", cnsltManageService.selectCnsltListDetail(cnsltManageVO));
+			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsAnswerUpdt";
+
+		}
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -648,5 +692,6 @@ public class EgovCnsltManageController {
 		return "forward:/uss/olp/cnm/CnsltAnswerListInqire.do";
 
 	}
+
 
 }

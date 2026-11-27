@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.RandomStringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -22,14 +21,16 @@ import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.EgovBBSMasterService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 /**
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일			수정자		수정내용
  *  -------			--------	---------------------------
  *   2024.10.29		inganyoyo	Controller는 Transaction 처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
+ *   2026.07.06		이백행		[2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
@@ -41,14 +42,14 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 
     @Resource(name = "egovBBSMstrIdGnrService")
     private EgovIdGnrService idgenService;
-	
+
     //---------------------------------
     // 2009.06.26 : 2단계 기능 추가
     //---------------------------------
     @Resource(name = "BBSAddedOptionsDAO")
     private BBSAddedOptionsDAO addedOptionsDAO;
     ////-------------------------------
-    
+
   @Resource(name = "egovBlogIdGnrService")
   private EgovIdGnrService idgenServiceBlog;
 
@@ -63,36 +64,37 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 
 	@Override
 	public void deleteBBSMasterInf(BoardMaster boardMaster) {
-		egovBBSMasterDao.deleteBBSMaster(boardMaster);	
+		egovBBSMasterDao.deleteBBSMaster(boardMaster);
 	}
 
 	@Override
-	public void updateBBSMasterInf(BoardMaster boardMaster) throws Exception {
+	public void updateBBSMasterInf(BoardMaster boardMaster) {
 		egovBBSMasterDao.updateBBSMaster(boardMaster);
-		
+
 		//---------------------------------
 		// 2009.06.26 : 2단계 기능 추가
 		//---------------------------------
 		if (boardMaster.getOption().equals("comment") || boardMaster.getOption().equals("stsfdg")) {
 		    addedOptionsDAO.insertAddedOptionsInf(boardMaster);
 		}
-		
+
 	}
 
 	@Override
-	public BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) throws Exception {
+	public BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) {
 		BoardMasterVO resultVO = egovBBSMasterDao.selectBBSMasterDetail(boardMasterVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
-        
+        if (resultVO == null) {
+			throw new BaseRuntimeException(processException("info.nodata.msg"));
+		}
+
     	if(EgovComponentChecker.hasComponent("EgovBBSCommentService") || EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){//2011.09.15
     	    BoardMasterVO options = addedOptionsDAO.selectAddedOptionsInf(boardMasterVO);
-    	    
+
     	    if (options != null) {
 	    		if (options.getCommentAt().equals("Y")) {
 	    			resultVO.setOption("comment");
 	    		}
-	
+
 	    		if (options.getStsfdgAt().equals("Y")) {
 	    			resultVO.setOption("stsfdg");
 	    		}
@@ -100,7 +102,7 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
     	    	resultVO.setOption("na");	// 미지정 상태로 수정 가능 (이미 지정된 경우는 수정 불가로 처리)
     	    }
     	}
-        
+
         return resultVO;
 	}
 
@@ -108,22 +110,22 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	public Map<String, Object> selectBBSMasterInfs(BoardMasterVO boardMasterVO) {
 		List<BoardMasterVO> result = egovBBSMasterDao.selectBBSMasterInfs(boardMasterVO);
 		int cnt = egovBBSMasterDao.selectBBSMasterInfsCnt(boardMasterVO);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+
+		Map<String, Object> map = new HashMap<>();
+
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
 
 		return map;
 	}
-	
+
 	@Override
 	public Map<String, Object> selectBlogMasterInfs(BoardMasterVO boardMasterVO) {
 		List<BlogVO> result = egovBBSMasterDao.selectBlogMasterInfs(boardMasterVO);
 		int cnt = egovBBSMasterDao.selectBlogMasterInfsCnt(boardMasterVO);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+
+		Map<String, Object> map = new HashMap<>();
+
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
 
@@ -131,16 +133,21 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	@Override
-	public void insertBBSMasterInf(BoardMaster boardMaster) throws Exception {
-		
+	public void insertBBSMasterInf(BoardMaster boardMaster) {
+
 		//2021 github 반영
 		//String bbsId = idgenService.getNextStringId();
 		//게시판 ID 채번
-		String bbsId = idgenService.getNextStringId() + RandomStringUtils.randomAlphabetic(10);
+		String bbsId;
+		try {
+			bbsId = idgenService.getNextStringId() + RandomStringUtils.randomAlphabetic(10);
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		boardMaster.setBbsId(bbsId);
-		
+
 		egovBBSMasterDao.insertBBSMasterInf(boardMaster);
-		
+
 		//---------------------------------
 		// 2009.06.26 : 2단계 기능 추가
 		//---------------------------------
@@ -149,40 +156,46 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 		}
 
 	}
-	
+
 	@Override
 	public String checkBlogUser(BlogVO blogVO) {
 
 		int userCnt = egovBBSMasterDao.checkExistUser(blogVO);
-		
+
 		if (userCnt == 0) {
 		    return "";
 		} else {
 		    return "EXIST";
 		}
 	}
-	
+
 	@Override
 	public BlogVO checkBlogUser2(BlogVO blogVO) {
 		BlogVO userBlog = egovBBSMasterDao.checkExistUser2(blogVO);
 		return userBlog;
 	}
-	
+
 	@Override
 	public void insertBoardBlogUserRqst(BlogUser blogUser) {
 		egovBBSMasterDao.insertBoardBlogUserRqst(blogUser);
 	}
-	
+
 	@Override
-	public void insertBlogMaster(Blog blog) throws FdlException {
+	public void insertBlogMaster(Blog blog) {
 		egovBBSMasterDao.insertBlogMaster(blog);
 	}
 
   @Override
-  public void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user) throws Exception {
+  public void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user) {
 
-    String blogId = idgenServiceBlog.getNextStringId(); //블로그 아이디 채번
-    String bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
+    String blogId;
+    String bbsId;
+	try {
+		blogId = idgenServiceBlog.getNextStringId(); //블로그 아이디 채번
+		bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
+	} catch (FdlException e) {
+		throw new BaseRuntimeException(e);
+	}
 
     blog.setRegistSeCode("REGC02");
     blog.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -208,21 +221,22 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
   }
 
 	@Override
-	public BlogVO selectBlogDetail(BlogVO blogVO) throws Exception {
+	public BlogVO selectBlogDetail(BlogVO blogVO) {
 		BlogVO resultVO = egovBBSMasterDao.selectBlogDetail(blogVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw new BaseRuntimeException(processException("info.nodata.msg"));
+		}
         return resultVO;
 	}
 
 	@Override
-	public List<BlogVO> selectBlogListPortlet(BlogVO blogVO) throws Exception{
+	public List<BlogVO> selectBlogListPortlet(BlogVO blogVO) {
 		return egovBBSMasterDao.selectBlogListPortlet(blogVO);
 	}
 
 	@Override
-	public List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO) throws Exception {
+	public List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO) {
 		return egovBBSMasterDao.selectBBSListPortlet(boardMasterVO);
 	}
-	
+
 }

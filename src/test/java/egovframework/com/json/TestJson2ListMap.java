@@ -5,11 +5,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TestJson2ListMap {
 
 	@SuppressWarnings("unchecked")
@@ -26,18 +31,15 @@ public class TestJson2ListMap {
 				MapUtils.debugPrint(System.out, "map", map);
 				List<String> friends = (List<String>) map.get("friends");
 				for (String friend : friends) {
-					System.out.println(friend);
+					log.debug(friend);
 				}
 			}
 		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 	}
 }

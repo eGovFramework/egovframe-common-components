@@ -31,7 +31,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
+	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) {
 		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
 	}
 
@@ -42,7 +42,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception {
+	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) {
 		return  (Integer)selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
 	}
 
@@ -53,8 +53,17 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) {
 		return (KnoAppraisal)selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
+	}
+
+	/**
+	 * 평가자가 지식유형의 지정 전문가인지 조회한다.
+	 * @param knoAppraisal - knoTypeCd(지식유형), speId(평가자 고유ID)
+	 * @return int - 지정 전문가 건수
+	 */
+	public int selectKnoAppraisalExpertCnt(KnoAppraisal knoAppraisal) {
+		return (Integer)selectOne("KnoAppraisalDAO.selectKnoAppraisalExpertCnt", knoAppraisal);
 	}
 
 	/**
@@ -63,7 +72,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) {
 		insert("KnoAppraisalDAO.insertKnoAppraisal", knoAppraisal);
 	}
 
@@ -73,7 +82,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) {
 		update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
 	}
 
@@ -83,7 +92,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) {
 		delete("KnoAppraisalDAO.deleteKnoAppraisal", knoAppraisal);
 	}
 

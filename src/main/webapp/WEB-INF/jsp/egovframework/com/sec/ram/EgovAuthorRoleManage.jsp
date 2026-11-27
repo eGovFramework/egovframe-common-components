@@ -120,12 +120,7 @@ function fncSelectAuthorRoleList() {
 }
 
 function fncSelectAuthorList(){
-    // document.listForm.searchCondition.value = "1";
-    // document.listForm.pageIndex.value = "1";
     
-    //document.listForm.searchKeyword.value = "";
-    //document.listForm.action = "<c:url value='/sec/ram/EgovAuthorList.do'/>";
-    //document.listForm.submit();
     location.href = "<c:url value='/sec/ram/EgovAuthorList.do'/>";
 }
 
@@ -162,7 +157,7 @@ function press() {
 </head>
 <body>
 <div class="board">
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorRoleList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorRoleList.do" method="post" modelAttribute="searchVO">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 권한롤관리 목록 -->
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">

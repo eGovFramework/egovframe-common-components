@@ -34,7 +34,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * 명함 정보를 삭제한다.
      *
      * @param nameCard
-     * @throws Exception
      */
     public int deleteNcrdItemUser(NameCardVO nameCardVO){
         return delete("NcrdManageDAO.deleteNcrdItemUser", nameCardVO);
@@ -48,7 +47,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * 명함 정보를 등록한다.
      *
      * @param nameCard
-     * @throws Exception
      */
     public int insertNcrdItem(NameCard nameCard) {
         return insert("NcrdManageDAO.insertNcrdItem", nameCard);
@@ -58,7 +56,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * 명함사용자 정보를 등록한다.
      *
      * @param ncrdUser
-     * @throws Exception
      */
     public int insertNcrdUseInf(NameCardUser ncrdUser) {
         return insert("NcrdManageDAO.insertNcrdUseInf", ncrdUser);
@@ -69,7 +66,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param nameCard
      * @return
-     * @throws Exception
      */
     public NameCardVO selectNcrdItem(NameCard nameCard) {
         return selectOne("NcrdManageDAO.selectNcrdItem", nameCard);
@@ -80,7 +76,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param nameCard
      * @return
-     * @throws Exception
      */
     public List<NameCardVO> selectNcrdItemList(NameCardVO nameCardVO) {
         return selectList("NcrdManageDAO.selectNcrdItemList", nameCardVO);
@@ -90,7 +85,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param nameCard
      * @return
-     * @throws Exception
      */
     public int selectNcrdItemListCnt(NameCardVO nameCardVO) {
         return selectOne("NcrdManageDAO.selectNcrdItemListCnt", nameCardVO);
@@ -101,7 +95,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param nameCardUser
      * @return
-     * @throws Exception
      */
     public List<NameCardUser> selectNcrdUseInfs(NameCardUser nameCardUser) {
         return selectList("NcrdManageDAO.selectNcrdUseInfs", nameCardUser);
@@ -112,7 +105,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param ncrdUser
      * @return
-     * @throws Exception
      */
     public int selectNcrdUseInfsCnt(NameCardUser nameCardUser) {
         return selectOne("NcrdManageDAO.selectNcrdUseInfsCnt", nameCardUser);
@@ -122,7 +114,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * 명함 정보를 수정한다.
      *
      * @param nameCard
-     * @throws Exception
      */
     public int updateNcrdItem(NameCard nameCard) {
         return update("NcrdManageDAO.updateNcrdItem", nameCard);
@@ -132,7 +123,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * 명함사용자 정보를 수정한다.
      *
      * @param nameCardUser
-     * @throws Exception
      */
     public int updateNcrdUseInf(NameCardUser nameCardUser) {
         return update("NcrdManageDAO.updateNcrdUseInf", nameCardUser);
@@ -143,7 +133,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param nameCardVO
      * @return
-     * @throws Exception
      */
     public List<NameCardVO> selectMyNcrdItemList(NameCardVO nameCardVO) {
         return selectList("NcrdManageDAO.selectMyNcrdItemList", nameCardVO);
@@ -154,7 +143,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      *
      * @param nameCardVO
      * @return
-     * @throws Exception
      */
     public int selectMyNcrdItemListCnt(NameCardVO nameCardVO) {
         return selectOne("NcrdManageDAO.selectMyNcrdItemListCnt", nameCardVO);

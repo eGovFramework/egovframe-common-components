@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-    <!-- 실행환경에서 빈이름 참조(EgovAbstractDAO) -->
+    <!-- 실행환경 EgovAbstractDAO 참조 빈 -->
 	<bean id="egov.lobHandler" class="org.springframework.jdbc.support.lob.DefaultLobHandler" lazy-init="true" />
 
-	<!-- Mybatis setup for Mybatis Database Layer -->
+	<!-- MyBatis SqlSessionFactory -->
 	<bean id="egov.sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">		
 		<property name="dataSource" ref="egov.dataSource"/>
 		<property name="configLocation" value="classpath:/egovframework/mapper/config/mapper-config.xml" />
@@ -17,7 +17,7 @@
 		</property>
 	</bean>
 
-	<!-- Mybatis Session Template -->
+	<!-- MyBatis SqlSessionTemplate -->
 	<bean id="egov.sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="egov.sqlSession"/>
 	</bean>

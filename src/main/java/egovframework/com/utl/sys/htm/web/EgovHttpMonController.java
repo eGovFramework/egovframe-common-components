@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
@@ -15,12 +12,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.htm.service.EgovHttpMonService;
@@ -29,7 +29,8 @@ import egovframework.com.utl.sys.htm.service.HttpMon;
 import egovframework.com.utl.sys.htm.service.HttpMonLog;
 import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
-
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
@@ -113,9 +114,9 @@ public class EgovHttpMonController {
 	 *
 	 * @param httpMonVO
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonDetail.do")
-	public String selectHttpMonDetail(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon httpMon, ModelMap model)
-			throws Exception {
+	@PostMapping("/utl/sys/htm/EgovComUtlHttpMonDetail.do")
+	@RequireAdmin
+	public String selectHttpMonDetail(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon httpMon, ModelMap model) throws Exception {
 		HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
 		model.addAttribute("result", vo);
 
@@ -138,7 +139,8 @@ public class EgovHttpMonController {
 	 *
 	 * @param siteUrl
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRegist.do")
+	@PostMapping("/utl/sys/htm/EgovComUtlHttpMonRegist.do")
+	@RequireAdmin
 	public String insertHttpMon(
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
 		BindingResult bindingResult,
@@ -172,7 +174,8 @@ public class EgovHttpMonController {
 	 * @param httpMon - Http서비스모니터링 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModifyView.do")
+	@PostMapping("/utl/sys/htm/EgovComUtlHttpMonModifyView.do")
+	@RequireAdmin
 	public String selectHttpMonForUpdate(
 		@ModelAttribute("httpMon") HttpMon httpMon,
 		ModelMap model) throws Exception {
@@ -189,12 +192,14 @@ public class EgovHttpMonController {
 	 * @param httpMon - Http서비스모니터링 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do")
+	@PostMapping("/utl/sys/htm/EgovComUtlHttpMonModify.do")
+	@RequireAdmin
 	public String updateHttpMon(
 		@ModelAttribute("loginVO") LoginVO loginVO,
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
 		BindingResult bindingResult,
 		ModelMap model) throws Exception {
+
 
 		if (bindingResult.hasErrors()) {
 			//HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
@@ -215,7 +220,8 @@ public class EgovHttpMonController {
 	 *
 	 * @param siteUrl
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do")
+	@PostMapping("/utl/sys/htm/EgovComUtlHttpMonRemove.do")
+	@RequireAdmin
 	public String deleteHttpMon(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon cmmWebKind, ModelMap model)
 			throws Exception {
 		egovHttpMonService.deleteHttpMon(cmmWebKind);
@@ -231,7 +237,8 @@ public class EgovHttpMonController {
 	 *
 	 * @param httpSttusCd
 	 */
-	@RequestMapping("/utl/sys/htm/selectHttpMonSttus.do")
+	@PostMapping("/utl/sys/htm/selectHttpMonSttus.do")
+	@RequireAdmin
 	public String selectProcessSttus(@ModelAttribute("httpMonVO") HttpMonVO httpMonVO, ModelMap model)
 			throws Exception {
 
@@ -259,6 +266,7 @@ public class EgovHttpMonController {
 	 * @param httpMonVO
 	 */
 	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonLogList.do")
+	@RequireAdmin
 	public String selectHttpMonLogList(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") HttpMonLogVO httpMonLogVO, ModelMap model) throws Exception {
 		/** EgovPropertyService.sample */
@@ -308,7 +316,8 @@ public class EgovHttpMonController {
 	 *
 	 * @param httpMonVO
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonDetailLog.do")
+	@PostMapping("/utl/sys/htm/EgovComUtlHttpMonDetailLog.do")
+	@RequireAdmin
 	public String selectHttpMonDetailLog(@ModelAttribute("loginVO") LoginVO loginVO, HttpMonLog httpMonLog,
 			ModelMap model) throws Exception {
 		HttpMonLog vo = egovHttpMonService.selectHttpMonDetailLog(httpMonLog);

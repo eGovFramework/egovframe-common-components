@@ -80,6 +80,11 @@
         </if>
     </select>
 
+    <select id="selectExistingInsttCodes" resultType="string">
+        SELECT DISTINCT INSTT_CODE
+          FROM COMTNINSTTCODERECPTNLOG
+    </select>
+
     <select id="selectInsttCodeDetail" parameterType="egovframework.com.sym.ccm.icr.service.InsttCodeRecptn" resultType="egovframework.com.sym.ccm.icr.service.InsttCodeRecptn">
         
             SELECT  INSTT_CODE              insttCode

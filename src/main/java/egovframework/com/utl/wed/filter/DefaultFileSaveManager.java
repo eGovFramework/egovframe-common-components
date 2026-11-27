@@ -29,8 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import egovframework.com.cmm.service.EgovProperties;
-
 /**
  * Created by guava on 1/20/14.
  *  이미지 저장 처리 클래스
@@ -51,8 +49,8 @@ import egovframework.com.cmm.service.EgovProperties;
  */
 public class DefaultFileSaveManager implements FileSaveManager {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovProperties.class);
-	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFileSaveManager.class);
+
 	@Override
 	public String saveFile(FileItem fileItem, String imageBaseDir) {
 		String originalFileName = FilenameUtils.getName(fileItem.getName());
@@ -61,9 +59,9 @@ public class DefaultFileSaveManager implements FileSaveManager {
 		String subDir = File.separator + DirectoryPathManager.getDirectoryPathByDateType(DirectoryPathManager.DIR_DATE_TYPE.DATE_POLICY_YYYY_MM);
 		String fileName = RandomStringUtils.randomAlphanumeric(20) + "." + StringUtils.lowerCase(StringUtils.substringAfterLast(originalFileName, "."));
 		String saveFileName = fileName+"_upfile";
-		
+
 		File fileToSave = DirectoryPathManager.getUniqueFile(imageBaseDir, subDir, saveFileName);
-		
+
 		try {
 			FileUtils.writeByteArrayToFile(fileToSave, fileItem.get());
 		} catch (IOException e) {

@@ -21,13 +21,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comCopBbs.articleVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.detail" /></title><!-- 게시글 상세조회 -->
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -52,8 +52,7 @@
 	
 </script>
 <!-- 댓글 작성 스크립트  -->
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="articleCommentVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 function fn_egov_insert_commentList() {
 	
@@ -162,14 +161,14 @@ function fn_egov_select_commentList(pageNo) {
 		<tr>
 			<th class="vtop"><spring:message code="comCopBbs.articleVO.detail.nttCn" /></th>
 			<td colspan="5" class="cnt">
-				<c:out value="${fn:replace(result.nttCn , crlf , '<br/>')}" escapeXml="false" />
+				<span class="ck-content"><c:out value="${egovc:sanitizeHtml(result.nttCn)}" escapeXml="false"/></span>
 			</td>
 		</tr>
 		<!-- 게시일자 -->
 		<tr>
 			<th class="vtop"><spring:message code="comCopBbs.articleVO.detail.ntceDe" /></th>
 			<td colspan="5" class="left">
-				<c:out value="${result.ntceBgnde} ~ ${result.ntceEndde}" escapeXml="false" />
+				<c:out value="${result.ntceBgnde} ~ ${result.ntceEndde}"/>
 			</td>
 		</tr>
 		<!-- 첨부파일  -->
@@ -191,7 +190,8 @@ function fn_egov_select_commentList(pageNo) {
 	<div class="btn">
 		<c:if test="${result.ntcrId != 'anonymous'}">
 		<!-- 익명글 수정/삭제 불가  -->
-		<form name="articleForm" action="<c:url value='/cop/bbs/updateArticleView.do'/>" method="get" style="float:left;">
+		<form name="articleForm" action="${pageContext.request.contextPath}/cop/bbs/updateArticleView.do" method="post" style="float:left;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
 			<input type="hidden" name="parnts" value="<c:out value='${result.parnts}'/>" >
 			<input type="hidden" name="sortOrdr" value="<c:out value='${result.sortOrdr}'/>" >
@@ -203,7 +203,8 @@ function fn_egov_select_commentList(pageNo) {
 			<input name="searchWrd" type="hidden" value="<c:out value="${searchVO.searchWrd}" />">
 			<input name="pageIndex" type="hidden" value="<c:out value="${searchVO.pageIndex}" />">
 		</form>
-		<form name="formDelete" action="<c:url value='/cop/bbs/deleteArticle.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/cop/bbs/deleteArticle.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_article(this.form); return false;"><!-- 삭제 -->
 			<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
@@ -213,20 +214,22 @@ function fn_egov_select_commentList(pageNo) {
 		</form>
 		</c:if>
 		<c:if test="${boardMasterVO.replyPosblAt == 'Y' }">
-		<form name="formReply" action="<c:url value='/cop/bbs/replyArticleView.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formReply" action="${pageContext.request.contextPath}/cop/bbs/replyArticleView.do" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.reply" />"><!-- 답글 -->
 			<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
 		</form>
 		</c:if>
-		<form name="formList" action="<c:url value='/cop/bbs/selectArticleList.do'/>" method="get" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/cop/bbs/selectArticleList.do" method="get" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />"><!-- 목록 -->
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
 			<input name="searchCnd" type="hidden" value="<c:out value="${searchVO.searchCnd}" />">
 			<input name="searchWrd" type="hidden" value="<c:out value="${searchVO.searchWrd}" />">
 			<input name="pageIndex" type="hidden" value="<c:out value="${searchVO.pageIndex}" />">
 		</form>
-		<form name="formScrap" action="<c:url value='/cop/scp/insertArticleScrapView.do'/>" method="get" style="float:left; margin:0 0 0 3px;" target="targetScrap">
+	<form name="formScrap" action="${pageContext.request.contextPath}/cop/scp/insertArticleScrapView.do" method="post" style="float:left; margin:0 0 0 3px;" target="targetScrap">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.scrap" />"><!-- 스크랩 -->
 			<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 			<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
@@ -244,6 +247,7 @@ function fn_egov_select_commentList(pageNo) {
 
 <c:if test="${useSatisfaction == 'true'}">
 	<form name="frm" method="post" action="">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="<c:out value='${_csrf.parameterName}'/>" value="<c:out value='${_csrf.token}'/>"/></c:if>
 	<input name="nttId" type="hidden" value="<c:out value="${result.nttId}" />">
 	<input name="bbsId" type="hidden" value="<c:out value="${boardMasterVO.bbsId}" />">
 	<c:import url="/cop/stf${prefix}/selectSatisfactionList.do" charEncoding="utf-8">

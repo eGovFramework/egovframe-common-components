@@ -2,15 +2,15 @@ package egovframework.com.uss.olp.opr.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
+import javax.annotation.Resource;
 
 /**
  * 온라인POLL결과를 처리하는 Controller Class 구현
@@ -45,7 +45,8 @@ public class EgovOnlinePollResultController {
      * @return "egovframework/com/uss/olp/opr/EgovOnlinePollResultList"
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/olp/opr/listOnlinePollResult.do")
+    @PostMapping("/uss/olp/opr/listOnlinePollResult.do")
+    @RequireAdmin
     public String egovOnlinePollResultList(
             OnlinePollResult onlinePollResult,
             ModelMap model
@@ -67,7 +68,8 @@ public class EgovOnlinePollResultController {
      *         "/uss/olp/opr/EgovOnlinePollDetail"
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/olp/opr/delOnlinePollResult.do")
+    @PostMapping("/uss/olp/opr/delOnlinePollResult.do")
+    @RequireAdmin
     public String egovOnlinePollResultDetail(
             OnlinePollResult onlinePollResult,
             ModelMap model) throws Exception {

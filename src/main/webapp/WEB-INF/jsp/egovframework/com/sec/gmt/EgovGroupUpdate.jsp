@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comCopSecGmt.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -32,8 +31,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="groupManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 function fncSelectGroupList() {
     var varFrom = document.getElementById("groupManage");
@@ -125,12 +123,12 @@ function fncGroupDelete() {
 <input type="hidden" name="pageIndex" value="<c:out value='${groupManageVO.pageIndex}'/>"/>
 </form:form>
 
-<form id="frmIdDelete" name="frmDelete" method="post">
+<form:form id="frmIdDelete" name="frmDelete" modelAttribute="groupManage" method="post" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupDelete.do">
 <input type="hidden" name="groupId" value="<c:out value='${groupManage.groupId}'/>"/>
 <input type="hidden" name="searchCondition" value="<c:out value='${groupManageVO.searchCondition}'/>"/>
 <input type="hidden" name="searchKeyword" value="<c:out value='${groupManageVO.searchKeyword}'/>"/>
 <input type="hidden" name="pageIndex" value="<c:out value='${groupManageVO.pageIndex}'/>"/>
-</form>
+</form:form>
 
 </body>
 </html>

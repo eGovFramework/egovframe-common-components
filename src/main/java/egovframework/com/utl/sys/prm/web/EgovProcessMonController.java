@@ -4,23 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.prm.service.EgovProcessMonService;
@@ -28,17 +27,19 @@ import egovframework.com.utl.sys.prm.service.ProcessMon;
 import egovframework.com.utl.sys.prm.service.ProcessMonChecker;
 import egovframework.com.utl.sys.prm.service.ProcessMonLogVO;
 import egovframework.com.utl.sys.prm.service.ProcessMonVO;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 개요 - PROCESS모니터링에 대한 controller 클래스를 정의한다.
  *
  * 상세내용 - PROCESS모니터링에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - PROCESS모니터링에 조회기능은 목록조회,
  * 상세조회로 구분된다.
- * 
+ *
  * @author 박종선
  * @version 1.0
  * @created 08-9-2010 오후 3:54:45
- * 
+ *
  *          <pre>
  * == 개정이력(Modification Information) ==
  *
@@ -48,7 +49,6 @@ import egovframework.com.utl.sys.prm.service.ProcessMonVO;
  *  2011.8.26	정진오			IncludedInfo annotation 추가
  *          </pre>
  */
-
 @Controller
 public class EgovProcessMonController {
 
@@ -60,9 +60,6 @@ public class EgovProcessMonController {
 
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 등록된 PROCESS모니터링 정보를 조회 한다.
@@ -107,7 +104,8 @@ public class EgovProcessMonController {
 	 *
 	 * @param processMonVO
 	 */
-	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMon.do")
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMon.do")
 	public String selectProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
 
@@ -120,34 +118,53 @@ public class EgovProcessMonController {
 	}
 
 	/**
-	 * PROCESS모니터링 정보를 신규로 등록한다.
+	 * PROCESS모니터링 등록 화면으로 이동한다.
 	 *
-	 * @param processNm - PROCESS모니터링 model
+	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
-	 *
-	 * @param processNm
 	 */
-	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonRegist.do")
-	public String insertProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonRegistView.do")
+	public String insertProcessMonView(
+		@ModelAttribute("searchVO") ProcessMonVO searchVO,
+		@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model,
+		RedirectAttributes redirectAttributes) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonRegist";
+	}
+
+	/**
+	 * PROCESS모니터링 정보를 신규로 등록한다.
+	 *
+	 * @param processMonVO - PROCESS모니터링 VO
+	 * @return String - 리턴 Url
+	 */
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonRegist.do")
+	public String insertProcessMon(
+		@ModelAttribute("searchVO") ProcessMonVO searchVO,
+		@Valid @ModelAttribute("processMonVO") ProcessMonVO processMonVO,
+		BindingResult bindingResult, ModelMap model,
+		RedirectAttributes redirectAttributes) throws Exception {
+
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		if (processMonVO.getProcessNm() == null || processMonVO.getProcessNm().equals("")) {
-			return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonRegist";
-		}
-
-		// 서버 validate 체크
-		beanValidator.validate(processMonVO, bindingResult);
-		if (bindingResult.hasErrors()) {
+		if (processMonVO.getProcessNm() == null || processMonVO.getProcessNm().equals("") || bindingResult.hasErrors()) {
 			return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonRegist";
 		}
 
@@ -161,48 +178,62 @@ public class EgovProcessMonController {
 	}
 
 	/**
-	 * 기 등록 된 PROCESS모니터링 정보를 수정 한다.
+	 * PROCESS모니터링 수정 화면으로 이동한다.
 	 *
-	 * @param processNm - PROCESS모니터링 model
+	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
-	 *
-	 * @param processNm
 	 */
-	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonModify.do")
-	public String updateProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO,
-			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonModifyView.do")
+	public String updateProcessMonView(
+		@ModelAttribute("searchVO") ProcessMonVO searchVO,
+		@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model) throws Exception {
 
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("")) {
-			ProcessMonVO vo = processMonService.selectProcessMon(processMonVO);
-			model.addAttribute("processMonVO", vo);
-			return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonModify";
-		} else if (sCmd.equals("Modify")) {
-			beanValidator.validate(processMonVO, bindingResult);
-			if (bindingResult.hasErrors()) {
-				ProcessMonVO vo = processMonService.selectProcessMon(processMonVO);
-				model.addAttribute("processMonVO", vo);
-				return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonModify";
-			}
+		ProcessMonVO vo = processMonService.selectProcessMon(processMonVO);
+		model.addAttribute("processMonVO", vo);
+		return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonModify";
+	}
 
-			// 아이디 설정
-			processMonVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			processMonVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	/**
+	 * 기 등록 된 PROCESS모니터링 정보를 수정 한다.
+	 *
+	 * @param processMonVO - PROCESS모니터링 VO
+	 * @return String - 리턴 Url
+	 */
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonModify.do")
+	public String updateProcessMon(
+		@ModelAttribute("searchVO") ProcessMonVO searchVO,
+		@Valid @ModelAttribute("processMonVO") ProcessMonVO processMonVO,
+		BindingResult bindingResult, ModelMap model) throws Exception {
 
-			processMonService.updateProcessMon(processMonVO);
-			return "forward:/utl/sys/prm/EgovComUtlProcessMonList.do";
-		} else {
-			return "forward:/utl/sys/prm/EgovComUtlProcessMonList.do";
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("processMonVO", processMonVO);
+			return "egovframework/com/utl/sys/prm/EgovComUtlProcessMonModify";
+		}
+
+		// 아이디 설정
+		processMonVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		processMonVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+		processMonService.updateProcessMon(processMonVO);
+		return "forward:/utl/sys/prm/EgovComUtlProcessMonList.do";
 	}
 
 	/**
@@ -213,16 +244,18 @@ public class EgovProcessMonController {
 	 *
 	 * @param processNm
 	 */
-	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonRemove.do")
-	public String deleteProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
-			throws Exception {
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonRemove.do")
+	public String deleteProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model,
+			RedirectAttributes redirectAttributes) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
 
 		processMonService.deleteProcessMon(processMonVO);
 		return "forward:/utl/sys/prm/EgovComUtlProcessMonList.do";
@@ -236,11 +269,11 @@ public class EgovProcessMonController {
 	 *
 	 * @param processSttus
 	 */
+	@RequireAdmin
 	@RequestMapping("/utl/sys/prm/selectProcessSttus.do")
 	public String selectProcessSttus(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
 
-		// System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		model.addAttribute("processSttus",
 				ProcessMonChecker.getProcessId(EgovStringUtil.isNullToString(processMonVO.getProcessNm())));
@@ -257,6 +290,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param processMonVO
 	 */
+	@RequireAdmin
 	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMonLogList.do")
 	public String selectProcessMonLogList(@ModelAttribute("searchVO") ProcessMonLogVO processMonLogVO, ModelMap model)
 			throws Exception {
@@ -307,7 +341,8 @@ public class EgovProcessMonController {
 	 *
 	 * @param fileSysMntrngLogVO
 	 */
-	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMonLog.do")
+	@RequireAdmin
+	@PostMapping("/utl/sys/prm/EgovComUtlProcessMonLog.do")
 	public String selectProcessMonLog(@ModelAttribute("processMonLogVO") ProcessMonLogVO processMonLogVO,
 			ModelMap model) throws Exception {
 
@@ -331,7 +366,7 @@ public class EgovProcessMonController {
 	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeHH() {
-		ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
+		ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
 		// HashMap hmHHMM;
 		for (int i = 0; i < 24; i++) {
 			String sHH = "";

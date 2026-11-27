@@ -2,15 +2,13 @@ package egovframework.com.cop.cmt.service;
 
 import java.util.Map;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-
 public interface EgovArticleCommentService {
 
-    public boolean canUseComment(String bbsId) throws Exception;
+    public boolean canUseComment(String bbsId);
 
     Map<String, Object> selectArticleCommentList(CommentVO commentVO);
 
-	void insertArticleComment(Comment comment) throws FdlException;
+	void insertArticleComment(Comment comment);
 
 	void deleteArticleComment(CommentVO commentVO);
 

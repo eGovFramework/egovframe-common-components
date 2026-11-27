@@ -15,7 +15,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 %>
 
@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -175,7 +174,7 @@ function fncDeleteEventRcept() {
 		<c:if test="${eventManageVO.confmAt eq 'A'}">
 			<input class="s_submit" type="submit" value="<spring:message code="comUssIonEvt.eventRceptDetail.confirmCancle"/>" onclick="fncDeleteEventRcept(); return false;" /><!-- 신청취소 -->
 		</c:if>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/evt/EgovEventRcrptManageList.do'/>?searchCondition=1" onclick="fncEventRceptManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEventRceptManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

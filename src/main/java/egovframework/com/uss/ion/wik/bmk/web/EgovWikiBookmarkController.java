@@ -2,27 +2,28 @@ package egovframework.com.uss.ion.wik.bmk.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 /**
  * 위키북마크를 처리하는 Controller Class 구현
@@ -40,13 +41,8 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  * </pre>
  */
-
-
 @Controller
 public class EgovWikiBookmarkController {
-
-//    @Autowired
-//    private DefaultBeanValidator beanValidator;
 
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
@@ -61,7 +57,7 @@ public class EgovWikiBookmarkController {
     protected EgovPropertyService propertiesService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovWikiBookmarkController.class);
-    
+
     /**
      * 위키북마크 목록을 조회한다.
      * @param searchVO -위키북마크 model
@@ -72,12 +68,12 @@ public class EgovWikiBookmarkController {
      * @throws Exception
      */
     @IncludedInfo(name="Wiki기능", order = 810 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do")
+    @RequestMapping("/uss/ion/wik/bmk/listWikiBookmark.do")
     public String EgovWikiBookmarkList(
     		@ModelAttribute("searchVO") WikiBookmark searchVO,
     		WikiBookmark wikiBookmark,
     		@RequestParam Map<?, ?> commandMap,
-    		@RequestParam(value="checkList", required=false) List<String> checkList,
+    		@RequestParam(value = "checkList", required=false) List<String> checkList,
             ModelMap model) throws Exception {
 
     	//변수 설정
@@ -95,9 +91,27 @@ public class EgovWikiBookmarkController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
-	              	
+			// 진입점은 개방, 삭제는 관리자 전용 유지
+			EgovAuthorizationHelper.assertAdmin();
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			javax.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+
+			// 일괄 삭제: 모든 건이 작성자 본인 것인지 먼저 확인한 뒤 삭제한다.
+			String loginUniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+			for(String checkData : checkList) {
+				WikiBookmark ownershipCheck = new WikiBookmark();
+				ownershipCheck.setWikiBkmkId(checkData);
+				ownershipCheck.setFrstRegisterId(loginUniqId);
+				boolean owns = egovWikiBookmarkService.selectWikiBookmarkListCnt(ownershipCheck) > 0;
+				EgovAuthorizationHelper.assertOwner(owns ? loginUniqId : null);
+			}
+
         	for(String checkData : checkList) {
-        		LOGGER.debug("===>>> checkData = "+checkData);   
+        		LOGGER.debug("===>>> checkData = "+checkData);
+
                 wikiBookmark.setWikiBkmkId(checkData);
 	            egovWikiBookmarkService.deleteWikiBookmark(wikiBookmark);
             }
@@ -145,14 +159,23 @@ public class EgovWikiBookmarkController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/wik/bmk/registWikiBookmark.do")
+    @PostMapping("/uss/ion/wik/bmk/registWikiBookmark.do")
+    @RequireAdmin
     public String EgovWikiBookmarkRegist(
     		WikiBookmark wikiBookmark,
             ModelMap model) throws Exception {
 
     	String sDupl = "N";
 
-    	if(wikiBookmark.getUsid() != null &&  wikiBookmark.getWikiBkmkNm() != null){
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치 - usid는 로그인 사용자로 고정
+    	wikiBookmark.setUsid(loginVO.getUniqId());
+    	wikiBookmark.setFrstRegisterId(EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+    	if(wikiBookmark.getWikiBkmkNm() != null){
     		if(egovWikiBookmarkService.selectWikiBookmarkDuplicationCnt(wikiBookmark) > 0){
     			sDupl = "Y";
     		}else{
@@ -164,5 +187,6 @@ public class EgovWikiBookmarkController {
     	model.addAttribute("S_DUPL", sDupl);
     	return "egovframework/com/uss/ion/wik/bmk/EgovWikiBookmarkRegist";
 	}
+
 
 }

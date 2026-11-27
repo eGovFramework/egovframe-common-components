@@ -1,25 +1,26 @@
 package egovframework.com.uss.mpe.web;
 
-import java.util.List;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.uss.mpe.service.EgovIndvdlPgeService;
 import egovframework.com.uss.mpe.service.IndvdlPgeVO;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * 개요
@@ -48,9 +49,6 @@ import egovframework.com.uss.mpe.service.IndvdlPgeVO;
 @Controller
 public class EgovIndvdlPgeController {
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/** EgovMessageSource */
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -61,16 +59,16 @@ public class EgovIndvdlPgeController {
 
     @Resource(name = "EgovIndvdlPgeService")
     private EgovIndvdlPgeService egovIndvdlPgeService;
-    
+
     /**
 	 * 컨텐츠 목록을 조회한다.
 	 * @param indvdlPgeVO - 마이페이지 콘텐츠 Vo
-	 * @return 
+	 * @return
 	 *
 	 * @param indvdlPgeVO
 	 */
 	@IncludedInfo(name="마이페이지관리", order = 480 ,gid = 50)
-	@RequestMapping(value="/uss/mpe/selectIndvdlPgeList.do")
+	@RequestMapping(value = "/uss/mpe/selectIndvdlPgeList.do")
 	public String selectIndvdlPgeList(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.IndvdlPgeList */
@@ -105,7 +103,8 @@ public class EgovIndvdlPgeController {
      * @return	"/uss/mpe/EgovIndvdlPgeDetail"
      * @throws Exception
      */
-     @RequestMapping("/uss/mpe/selectIndvdlPgeDetail.do")
+     @PostMapping("/uss/mpe/selectIndvdlPgeDetail.do")
+     @RequireAdmin
      public String selectIndvdlPgeDetail(IndvdlPgeVO indvdlPgeVO, @ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model) throws Exception {
 
  		IndvdlPgeVO vo = egovIndvdlPgeService.selectIndvdlPgeDetail(indvdlPgeVO);
@@ -114,7 +113,7 @@ public class EgovIndvdlPgeController {
 
          return	"egovframework/com/uss/mpe/EgovIndvdlPgeDetail";
      }
-     
+
      /**
       * 컨텐츠 등록전 단계
       * @param searchVO
@@ -122,7 +121,8 @@ public class EgovIndvdlPgeController {
       * @return	"/uss/mpe/EgovIndvdlPgeRegist"
       * @throws Exception
       */
-     @RequestMapping("/uss/mpe/insertIndvdlPgeView.do")
+     @PostMapping("/uss/mpe/insertIndvdlPgeView.do")
+     @RequireAdmin
      public String insertIndvdlPgeView(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, Model model) throws Exception {
 
          model.addAttribute("indvdlPgeVO", new IndvdlPgeVO());
@@ -130,7 +130,7 @@ public class EgovIndvdlPgeController {
          return "egovframework/com/uss/mpe/EgovIndvdlPgeRegist";
 
      }
-     
+
      /**
       * 컨텐츠를 등록한다.
       * @param searchVO
@@ -139,11 +139,13 @@ public class EgovIndvdlPgeController {
       * @return	"forward:/uss/mpe/selectIndvdlPgeList.do"
       * @throws Exception
       */
-      @RequestMapping("/uss/mpe/insertIndvdlPge.do")
-      public String insertIndvdlPge(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO, BindingResult bindingResult)
-              throws Exception {
+      @PostMapping("/uss/mpe/insertIndvdlPge.do")
+      @RequireAdmin
+	public String insertIndvdlPge(
+	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
+		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,
+		BindingResult bindingResult) throws Exception {
 
-      	beanValidator.validate(indvdlPgeVO, bindingResult);
   		if(bindingResult.hasErrors()){
   			return "egovframework/com/uss/mpe/EgovIndvdlPgeRegist";
   		}
@@ -152,7 +154,7 @@ public class EgovIndvdlPgeController {
 
           return "forward:/uss/mpe/selectIndvdlPgeList.do";
       }
-      
+
       /**
        * 컨텐츠정보 수정 전 처리
        * @param cntntsId
@@ -161,7 +163,8 @@ public class EgovIndvdlPgeController {
        * @return	"/uss/mpe/EgovIndvdlPgeUpdt"
        * @throws Exception
        */
-      @RequestMapping("/uss/mpe/updateIndvdlPgeView.do")
+      @PostMapping("/uss/mpe/updateIndvdlPgeView.do")
+      @RequireAdmin
       public String updateIndvdlPgeView(@RequestParam("cntntsId") String cntntsId ,
               @ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model)
               throws Exception {
@@ -175,7 +178,7 @@ public class EgovIndvdlPgeController {
 
           return "egovframework/com/uss/mpe/EgovIndvdlPgeUpdt";
       }
-      
+
       /**
        * 컨텐츠정보를 수정한다.
        * @param searchVO
@@ -184,13 +187,14 @@ public class EgovIndvdlPgeController {
        * @return	"forward:/uss/mpe/selectIndvdlPgeList.do"
        * @throws Exception
        */
-      @RequestMapping("/uss/mpe/updateIndvdlPge.do")
-      public String updateIndvdlPge(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO, BindingResult bindingResult)
-              throws Exception {
+      @PostMapping("/uss/mpe/updateIndvdlPge.do")
+      @RequireAdmin
+	public String updateIndvdlPge(
+	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
+		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,
+		BindingResult bindingResult) throws Exception {
 
-      	// Validation
-      	beanValidator.validate(indvdlPgeVO, bindingResult);
-  		if(bindingResult.hasErrors()){
+ 		if(bindingResult.hasErrors()){
   			return "egovframework/com/uss/mpe/EgovIndvdlPgeUpdt";
   		}
 
@@ -199,5 +203,5 @@ public class EgovIndvdlPgeController {
           return "forward:/uss/mpe/selectIndvdlPgeList.do";
 
       }
-	
+
 }

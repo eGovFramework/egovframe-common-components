@@ -23,6 +23,7 @@ import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
+ *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -32,9 +33,8 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 행정코드를 삭제한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void deleteAdministCode(AdministCode administCode) throws Exception {
+	public void deleteAdministCode(AdministCode administCode) {
 		delete("AdministCodeManageDAO.deleteAdministCode", administCode);
 	}
 
@@ -42,9 +42,8 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 행정코드를 등록한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void insertAdministCode(AdministCode administCode) throws Exception {
+	public void insertAdministCode(AdministCode administCode) {
         insert("AdministCodeManageDAO.insertAdministCode", administCode);
 	}
 
@@ -53,7 +52,7 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
 	 * @param administCode
 	 * @return AdministCode(행정코드)
 	 */
-	public AdministCode selectAdministCodeDetail(AdministCode administCode) throws Exception {
+	public AdministCode selectAdministCodeDetail(AdministCode administCode) {
 		return (AdministCode) selectOne("AdministCodeManageDAO.selectAdministCodeDetail", administCode);
 	}
 
@@ -62,9 +61,8 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
 	 * 행정코드 목록을 조회한다.
      * @param searchVO
      * @return List(행정코드 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectAdministCodeList(AdministCodeVO searchVO) throws Exception {
+    public List<EgovMap> selectAdministCodeList(AdministCodeVO searchVO) {
         return selectList("AdministCodeManageDAO.selectAdministCodeList", searchVO);
     }
 
@@ -73,16 +71,15 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(행정코드 총 개수)
      */
-    public int selectAdministCodeListTotCnt(AdministCodeVO searchVO) throws Exception {
+    public int selectAdministCodeListTotCnt(AdministCodeVO searchVO) {
         return (Integer)selectOne("AdministCodeManageDAO.selectAdministCodeListTotCnt", searchVO);
     }
 
 	/**
 	 * 행정코드를 수정한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void updateAdministCode(AdministCode administCode) throws Exception {
+	public void updateAdministCode(AdministCode administCode) {
 		update("AdministCodeManageDAO.updateAdministCode", administCode);
 	}
 

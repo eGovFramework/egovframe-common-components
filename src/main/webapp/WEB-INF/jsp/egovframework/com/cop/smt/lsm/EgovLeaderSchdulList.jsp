@@ -46,15 +46,12 @@ function fnTabMenuSelect(objArr){
 	$(".tab01 li a").removeClass("on");
 	if(objArr == 0){
 		document.getElementById('SchdulView').src="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />"; 
-		//document.getElementById("tabMenu0").bgColor = '#BBBBBB';
 		$(".tab01 li a").eq(0).addClass("on");
 	}else if(objArr == 1){
 		document.getElementById('SchdulView').src="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />";
-		//document.getElementById("tabMenu1").bgColor = '#BBBBBB';
 		$(".tab01 li a").eq(1).addClass("on");
 	}else if(objArr == 2){
 		document.getElementById('SchdulView').src="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />";
-		//document.getElementById("tabMenu2").bgColor = '#BBBBBB';
 		$(".tab01 li a").eq(2).addClass("on");
 	}
 
@@ -102,7 +99,6 @@ function resizeFrame(ifr_id,re){
  var ifr= document.getElementById(ifr_id) ;
  var innerBody = ifr.contentWindow.document.body;
  var innerHeight = innerBody.scrollHeight + (innerBody.offsetHeight - innerBody.clientHeight);
- //var innerWidth = document.body.scrollWidth + (document.body.offsetWidth - document.body.clientWidth);
 
  if (ifr.style.height != innerHeight) //주석제거시 다음 구문으로 교체 -> if (ifr.style.height != innerHeight || ifr.style.width != innerWidth)
  {
@@ -177,7 +173,8 @@ $(function() {
 	<iframe id="SchdulView" name="SchdulView" src="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />" width="100%" height="670px" frameborder="0" scrolling="no" marginwidth="0" marginheight="0" title="월별/주별/일별 간부일정목록">
 	</iframe>
 	<!-- //iframe -->
-	<form name="leaderSchdulVO" id="leaderSchdulVO" action="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulList.do' />" method="post" target="SchdulView">
+	<form name="leaderSchdulVO" id="leaderSchdulVO" action="${pageContext.request.contextPath}/cop/smt/lsm/usr/selectLeaderSchdulList.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="hidden" name="year" id="year" value="<c:out value='${leaderSchdulVO.year}'/>"> 
 		<input type="hidden" name="month" id="month" value="<c:out value='${leaderSchdulVO.month}'/>"> 
 		<input type="hidden" name="week" id="week" value="<c:out value='${leaderSchdulVO.week}'/>"> 

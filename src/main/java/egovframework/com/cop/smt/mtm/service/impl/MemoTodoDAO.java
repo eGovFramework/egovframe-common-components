@@ -23,6 +23,7 @@ import egovframework.com.cop.smt.mtm.service.MemoTodoVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.7.19	장철호          최초 생성
+ *   2026.6.15	이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -36,7 +37,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */	
-	public List<MemoTodoVO> selectMemoTodoList(MemoTodoVO memoTodoVO) throws Exception{
+	public List<MemoTodoVO> selectMemoTodoList(MemoTodoVO memoTodoVO) {
 		List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoList", memoTodoVO);
 		for(int i=0; i < resultList.size(); i++){
 			MemoTodoVO resultVO = resultList.get(i);
@@ -57,8 +58,11 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) throws Exception{
+	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) {
 		MemoTodoVO resultVO = (MemoTodoVO)selectOne("MemoTodoDAO.selectMemoTodo", memoTodoVO);
+		if (resultVO == null) {
+			return null;
+		}
 		resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 		resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 		resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));
@@ -74,7 +78,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void updateMemoTodo(MemoTodo memoTodo) throws Exception{
+	public void updateMemoTodo(MemoTodo memoTodo) {
 		update("MemoTodoDAO.updateMemoTodo", memoTodo);
 	}
 
@@ -84,7 +88,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void insertMemoTodo(MemoTodo memoTodo) throws Exception{
+	public void insertMemoTodo(MemoTodo memoTodo) {
 		insert("MemoTodoDAO.insertMemoTodo", memoTodo);
 	}
 
@@ -94,7 +98,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void deleteMemoTodo(MemoTodo memoTodo) throws Exception{
+	public void deleteMemoTodo(MemoTodo memoTodo) {
 		delete("MemoTodoDAO.deleteMemoTodo", memoTodo);
 	}
 
@@ -105,7 +109,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public int selectMemoTodoListCnt(MemoTodoVO memoTodoVO) throws Exception{
+	public int selectMemoTodoListCnt(MemoTodoVO memoTodoVO) {
 		return (Integer)selectOne("MemoTodoDAO.selectMemoTodoListCnt", memoTodoVO);
 	}
 	
@@ -116,7 +120,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO) throws Exception{
+	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO) {
 		List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoListToday", memoTodoVO);
 		for(int i=0; i < resultList.size(); i++){
 			MemoTodoVO resultVO = resultList.get(i);

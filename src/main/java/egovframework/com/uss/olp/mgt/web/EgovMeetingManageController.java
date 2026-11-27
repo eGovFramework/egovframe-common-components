@@ -1,32 +1,36 @@
 package egovframework.com.uss.olp.mgt.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.mgt.service.EgovMeetingManageService;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+
 /**
  * 회의관리를 처리하기 위한 Controller 구현 Class
  * @author 공통서비스 장동한
@@ -44,16 +48,11 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  * </pre>
  */
-
 @Controller
 public class EgovMeetingManageController {
 
 	/** Log Member Variable */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovMeetingManageController.class);
-
-	/** beanValidator Member Variable */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** egovMeetingManageService Member Variable */
 	@Resource(name = "egovMeetingManageService")
@@ -63,12 +62,14 @@ public class EgovMeetingManageController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageMain.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageMain.do")
+    @RequireAdmin
     public String egovMeetingManageMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageMain";
     }
 
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageLeft.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageLeft.do")
+    @RequireAdmin
     public String egovMeetingManageLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLeft";
     }
@@ -84,7 +85,8 @@ public class EgovMeetingManageController {
      * @return	"/uss/sam/cpy/"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovMain.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovMain.do")
+    @RequireAdmin
     public String egovMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMain";
     }
@@ -95,7 +97,8 @@ public class EgovMeetingManageController {
      * @return	"/uss/sam/cpy/EgovLeft"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovLeft.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovLeft.do")
+    @RequireAdmin
     public String egovLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovLeft";
     }
@@ -108,7 +111,7 @@ public class EgovMeetingManageController {
      * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do")
 	public String egovMeetingManageLisAuthorGroupPopupPost (
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -129,7 +132,7 @@ public class EgovMeetingManageController {
      * @return  "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do")
 	public String egovMeetingManageLisEmpLyrPopupPost (
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -152,7 +155,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
     @IncludedInfo(name="회의관리", order = 650 ,gid = 50)
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageList.do")
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageList.do")
 	public String egovMeetingManageList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -197,7 +200,8 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageDetail.do")
+	@PostMapping("/uss/olp/mgt/EgovMeetingManageDetail.do")
+	@RequireAdmin
 	public String egovMeetingManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -220,6 +224,78 @@ public class EgovMeetingManageController {
 	}
 
 	/**
+	 * 회의정보 수정페이지 조회
+	 * @param searchVO
+	 * @param redirectAttributes
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping("/uss/olp/mgt/EgovMeetingManageModifyView.do")
+	@RequireAdmin
+	public String meetingManageModifyView(
+			@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
+			ModelMap model,
+    		RedirectAttributes redirectAttributes
+    		)
+			throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		
+		List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+		if (!resultList.isEmpty()) {
+			model.addAttribute("meetingManageVO", meetingModifyForm(resultList.get(0)));
+		}
+
+		return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
+	}
+	
+	/** 최초 수정 화면에서 조회 결과를 입력 폼에 담는다. */
+	private MeetingManageVO meetingModifyForm(EgovMap stored) {
+		MeetingManageVO form = new MeetingManageVO();
+		form.setMtgId(EgovStringUtil.isNullToString(stored.get("mtgId")));
+		form.setMtgNm(EgovStringUtil.isNullToString(stored.get("mtgNm")));
+		form.setMtgMtrCn(EgovStringUtil.isNullToString(stored.get("mtgMtrCn")));
+		form.setMtgSn(EgovStringUtil.isNullToString(stored.get("mtgSn")));
+		form.setMtgCo(EgovStringUtil.isNullToString(stored.get("mtgCo")));
+		form.setMtgDe(EgovStringUtil.isNullToString(stored.get("mtgDe")));
+		form.setMtgPlace(EgovStringUtil.isNullToString(stored.get("mtgPlace")));
+		form.setMtgBeginTime(EgovStringUtil.isNullToString(stored.get("mtgBeginTime")));
+		form.setMtgEndTime(EgovStringUtil.isNullToString(stored.get("mtgEndTime")));
+		form.setClsdrMtgAt(EgovStringUtil.isNullToString(stored.get("clsdrMtgAt")));
+		form.setReadngBeginDe(EgovStringUtil.isNullToString(stored.get("readngBeginDe")));
+		form.setReadngAt(EgovStringUtil.isNullToString(stored.get("readngAt")));
+		form.setMtgResultCn(EgovStringUtil.isNullToString(stored.get("mtgResultCn")));
+		form.setMtgResultEnnc(EgovStringUtil.isNullToString(stored.get("mtgResultEnnc")));
+		form.setEtcMatter(EgovStringUtil.isNullToString(stored.get("etcMatter")));
+		form.setMngtDeptId(EgovStringUtil.isNullToString(stored.get("mngtDeptId")));
+		form.setMngtDeptNm(EgovStringUtil.isNullToString(stored.get("mngtDeptNm")));
+		form.setMnaerId(EgovStringUtil.isNullToString(stored.get("mnaerId")));
+		// 기존 수정 화면과 직원 선택 팝업은 주관자 로그인 ID를 표시한다.
+		form.setMnaerNm(EgovStringUtil.isNullToString(stored.get("mnaerIds")));
+		form.setMnaerDeptId(EgovStringUtil.isNullToString(stored.get("mnaerDeptId")));
+		form.setMnaerDeptNm(EgovStringUtil.isNullToString(stored.get("mnaerDeptNm")));
+		form.setMtnAt(EgovStringUtil.isNullToString(stored.get("mtnAt")));
+		form.setNonatdrnCo(EgovStringUtil.isNullToString(stored.get("nonatdrnCo")));
+		form.setAtdrnCo(EgovStringUtil.isNullToString(stored.get("atdrnCo")));
+		String[] begin = form.getMtgBeginTime().split(":");
+		if (begin.length == 2) {
+			form.setMtgBeginHH(begin[0].replaceFirst("^0+(?!$)", ""));
+			form.setMtgBeginMM(begin[1].replaceFirst("^0+(?!$)", ""));
+		}
+		String[] end = form.getMtgEndTime().split(":");
+		if (end.length == 2) {
+			form.setMtgEndHH(end[0].replaceFirst("^0+(?!$)", ""));
+			form.setMtgEndMM(end[1].replaceFirst("^0+(?!$)", ""));
+		}
+		return form;
+	}
+
+	/**
 	  * 회의정보를 수정한다.
 	 * @param searchVO
 	 * @param meetingManageVO
@@ -229,50 +305,60 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageModify.do")
+	
+	@PostMapping("/uss/olp/mgt/EgovMeetingManageModify.do")
+	@RequireAdmin
 	public String meetingManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
-			BindingResult bindingResult,
-			@RequestParam Map<?, ?> commandMap,
-    		ModelMap model)
+			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,BindingResult bindingResult,
+    		ModelMap model,
+    		RedirectAttributes redirectAttributes)
     throws Exception {
 
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sLocationUrl = "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
+        List<EgovMap> storedList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+		Object owner = EgovAuthorizationHelper.requireTarget(storedList == null || storedList.isEmpty() ? null : storedList.get(0).get("frstRegisterId"));
+        
+    	if(bindingResult.hasErrors()){
+             bindingResult.getAllErrors().forEach(e -> LOGGER.error(e.toString()));
+             return "egovframework/com/uss/olp/mgt/EgovMeetingManageModify";
+    	}
+    	
+		//아이디 설정
+	
+        meetingManageVO.setFrstRegisterId(owner.toString());
+        meetingManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-
-        if(sCmd.equals("save")){
-    		//서버  validate 체크
-            beanValidator.validate(meetingManageVO, bindingResult);
-    		if(bindingResult.hasErrors()){
-                List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
-                model.addAttribute("resultList", resultList);
-    			return sLocationUrl;
-    		}
-    		//아이디 설정
-        	meetingManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-        	meetingManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-        	egovMeetingManageService.updateMeetingManage(meetingManageVO);
-        	sLocationUrl = "redirect:/uss/olp/mgt/EgovMeetingManageList.do";
-        }else{
-            List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
-            model.addAttribute("resultList", resultList);
-        }
-
-		return sLocationUrl;
+        egovMeetingManageService.updateMeetingManage(meetingManageVO);
+        
+		return "redirect:/uss/olp/mgt/EgovMeetingManageList.do";
 	}
-
+	
+	/**
+	 * 회의정보 등록 페이지 조회 
+	 * @param searchVO
+	 * @param meetingManageVO
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "!cmd")
+	@RequireAdmin
+	public String meetingManageRegistView(
+			@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
+			ModelMap model) throws Exception {
+		return "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist";
+	}
+	
 	/**
 	 * 회의정보를 등록한다.
 	 * @param searchVO
@@ -283,44 +369,56 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageRegist.do")
+	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "cmd=save")
+	@RequireAdmin
 	public String meetingManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
+			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
 			BindingResult bindingResult,
-			@RequestParam Map<?, ?> commandMap,
-    		ModelMap model)
+			RedirectAttributes redirectAttributes)
     throws Exception {
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-
+    	// 유효성 검사
+    	if(bindingResult.hasErrors()){
+			return "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist";
+    	}
+    	
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sLocationUrl = "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist";
+    	//아이디 설정
+        meetingManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        meetingManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        
+        //String "" , null = 0 처리
+        String nonatdrnCo = meetingManageVO.getNonatdrnCo();
+        meetingManageVO.setNonatdrnCo(EgovStringUtil.isEmpty(nonatdrnCo) ? "0" : nonatdrnCo.trim());
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-		LOGGER.info("cmd => {}", sCmd);
-
-        if(sCmd.equals("save")){
-    		//서버  validate 체크
-            beanValidator.validate(meetingManageVO, bindingResult);
-    		if(bindingResult.hasErrors()){
-    			return sLocationUrl;
-    		}
-    		//아이디 설정
-        	meetingManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-        	meetingManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-        	egovMeetingManageService.insertMeetingManage(meetingManageVO);
-        	sLocationUrl = "redirect:/uss/olp/mgt/EgovMeetingManageList.do";
+        String atdrnCo = meetingManageVO.getAtdrnCo();
+        meetingManageVO.setAtdrnCo(EgovStringUtil.isEmpty(atdrnCo) ? "0" : atdrnCo.trim());
+        
+        String mtgBeginTime = meetingManageVO.getMtgBeginTime();
+        String mtgEndTime = meetingManageVO.getMtgEndTime();
+      
+        LOGGER.info("####회의종료시간이나오지않아 :{}",mtgBeginTime);
+        LOGGER.info("####회의시작시간이나오지않아 :{}",mtgEndTime);
+        
+        // 시간 null 방지
+        if(meetingManageVO.getMtgBeginTime()== null|| "".equals(meetingManageVO.getMtgBeginTime())) {
+        	meetingManageVO.setMtgBeginTime("00:00");
         }
-
-		return sLocationUrl;
+        if(meetingManageVO.getMtgEndTime()== null|| "".equals(meetingManageVO.getMtgEndTime())) {
+        	meetingManageVO.setMtgEndTime("00:01");
+        }
+        
+        egovMeetingManageService.insertMeetingManage(meetingManageVO);
+       
+		return "redirect:/uss/olp/mgt/EgovMeetingManageList.do";
 	}
 
 }

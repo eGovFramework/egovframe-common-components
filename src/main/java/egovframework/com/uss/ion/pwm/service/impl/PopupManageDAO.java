@@ -26,33 +26,30 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 기 등록된 팝업창정보를 삭제한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
-	public void deletePopup(PopupManageVO popupManageVO) throws Exception {
+	public void deletePopup(PopupManageVO popupManageVO) {
 	    delete("PopupManage.deletePopupManage", popupManageVO);
 	}
 
 	/**
 	 * 팝업창정보를 신규로 등록한다.
 	 * @param popupManage - 팝업창 model
-	 * @return boolean - 반영성공 여부
 	 *
 	 * @param popupManage
 	 */
-	public void insertPopup(PopupManageVO popupManageVO) throws Exception {
+	public void insertPopup(PopupManageVO popupManageVO) {
 	    insert("PopupManage.insertPopupManage", popupManageVO);
 	}
 
         /**
          * 기 등록된 팝업창정보를 수정한다.
          * @param popupManage - 팝업창 model
-         * @return boolean - 반영성공 여부
          *
          * @param popupManage
          */
-        public void updatePopup(PopupManageVO popupManageVO) throws Exception {
+        public void updatePopup(PopupManageVO popupManageVO) {
             update("PopupManage.updatePopupManage", popupManageVO);
         }
 
@@ -63,7 +60,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param popupManageVO
 	 */
-	public PopupManageVO selectPopup(PopupManageVO popupManageVO) throws Exception {
+	public PopupManageVO selectPopup(PopupManageVO popupManageVO) {
 	    return (PopupManageVO)selectOne("PopupManage.selectPopupManageDetail", popupManageVO);
 	}
 
@@ -74,7 +71,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param popupManageVO
 	 */
-	public List<EgovMap> selectPopupWhiteList() throws Exception {
+	public List<EgovMap> selectPopupWhiteList() {
 	    return selectList("PopupManage.selectPopupWhiteList");
 	}
 	
@@ -85,7 +82,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param popupManageVO
 	 */
-	public List<EgovMap> selectPopupList(PopupManageVO popupManageVO) throws Exception {
+	public List<EgovMap> selectPopupList(PopupManageVO popupManageVO) {
 	    return selectList("PopupManage.selectPopupManage", popupManageVO);
 	}
 
@@ -96,7 +93,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
          *
          * @param popupManageVO
          */
-        public int selectPopupListCount(PopupManageVO popupManageVO) throws Exception {
+        public int selectPopupListCount(PopupManageVO popupManageVO) {
         return (Integer)selectOne("PopupManage.selectPopupManageCnt", popupManageVO);
         }
 
@@ -107,7 +104,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
          *
          * @param popupManageVO
          */
-        public List<EgovMap> selectPopupMainList(PopupManageVO popupManageVO) throws Exception {
+        public List<EgovMap> selectPopupMainList(PopupManageVO popupManageVO) {
             return selectList("PopupManage.selectPopupManageMain", popupManageVO);
         }
 

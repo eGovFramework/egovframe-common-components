@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlhQna.qnaAnswerVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,7 @@ function fn_egov_inquire_qnadetail(qaId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="qnaForm" action="<c:url value='/uss/olh/qna/selectQnaAnswerList.do'/>" method="post" onSubmit="fn_egov_search_qna(); return false;"> 
+<form:form name="qnaForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olh/qna/selectQnaAnswerList.do" method="post" onSubmit="fn_egov_search_qna(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -117,7 +118,7 @@ function fn_egov_inquire_qnadetail(qaId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/qna/selectQnaAnswerDetail.do?qaId=${resultInfo.qaId}'/>" onClick="fn_egov_inquire_qnadetail('<c:out value="${resultInfo.qaId}"/>');return false;"><c:out value='${fn:substring(resultInfo.qestnSj, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_inquire_qnadetail('<c:out value="${resultInfo.qaId}"/>');return false;"><c:out value='${fn:substring(resultInfo.qestnSj, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.wrterNm}'/></td>
 		<td><c:out value='${resultInfo.qnaProcessSttusCodeNm}'/></td>
 		<td><c:out value='${resultInfo.inqireCo}'/></td>
@@ -139,7 +140,7 @@ function fn_egov_inquire_qnadetail(qaId) {
 
 <input name="qaId" type="hidden" value="<c:out value='${searchVO.qaId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

@@ -22,7 +22,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,8 +30,7 @@
 <title><spring:message code="comCopSmtMtm.memoTodoDetail.title"/></title><!-- 메모할일 상세보기 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="memoTodoVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 
 	function fn_egov_update_memotodo() {
@@ -76,16 +74,16 @@
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.todoDe"/> <span class="pilsu">*</span></th><!-- 할일일자 -->
 			<td class="left">
-			    <c:out value="${memoTodo.todoDe}" escapeXml="false" />
-				<c:out value="${memoTodo.todoBeginHour}" escapeXml="false" />:<c:out value="${memoTodo.todoBeginMin}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodo.todoDe}"/></span>
+				<span style="white-space:pre-line"><c:out value="${memoTodo.todoBeginHour}"/></span>:<span style="white-space:pre-line"><c:out value="${memoTodo.todoBeginMin}"/></span>
 				~ 
-				<c:out value="${memoTodo.todoEndHour}" escapeXml="false" />:<c:out value="${memoTodo.todoEndMin}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${memoTodo.todoEndHour}"/></span>:<span style="white-space:pre-line"><c:out value="${memoTodo.todoEndMin}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자명 -->
 			<td class="left">
-			    <c:out value="${memoTodo.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodo.wrterNm}"/></span>
 				<input type="hidden" name="wrterId" id="wrterId" value="${memoTodo.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${memoTodo.wrterNm}"/>
 			</td>
@@ -93,13 +91,13 @@
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.todoNm"/> <span class="pilsu">*</span></th><!-- 할일제목 -->
 			<td class="left">
-			    <c:out value="${memoTodo.todoNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodo.todoNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.todoCn"/> <span class="pilsu">*</span></th><!-- 할일내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(memoTodo.todoCn , crlf , '<br>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(memoTodo.todoCn , crlf , '<br>')}"/></span>
 			</td>
 		</tr>
 	</table>
@@ -107,11 +105,13 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">		
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_update_memotodo(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/mtm/deleteMemoTodo.do'/>?todoId=<c:out value='${memoTodoVO.todoId}'/>" onclick="fn_egov_delete_memotodo(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_memotodo(); return false;"><spring:message code="button.delete" /></a></span>
       <% 
-      	if(request.getHeader("REFERER").indexOf("Today") < 0){
+	  // 2026.02.28 KISA 취약점 조치
+	    String referer = request.getHeader("REFERER");
+      	if(referer == null || !referer.contains("Today")){
       %>
-		<span class="btn_s"><a href="<c:url value='/cop/smt/mtm/selectMemoTodoList.do'/>?searchWrd=<c:out value='${memoTodoVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoTodoVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoTodoVO.pageIndex}'/>&amp;searchDe=<c:out value='${memoTodoVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${memoTodoVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoTodoVO.searchEndDe}'/>" onclick="fn_egov_list_memotodo(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_memotodo(); return false;"><spring:message code="button.list" /></a></span>
 	  <%
 	  	}else{
 	  %>

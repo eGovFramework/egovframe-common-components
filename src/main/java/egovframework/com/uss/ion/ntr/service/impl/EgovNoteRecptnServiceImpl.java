@@ -3,16 +3,21 @@ package egovframework.com.uss.ion.ntr.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
+
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
+import javax.annotation.Resource;
 /**
  * 받은쪽지함관리를 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -33,7 +38,7 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
 
     @Resource(name = "noteRecptnDao")
     private NoteRecptnDao dao;
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnServiceImpl.class);
 
     /**
@@ -66,9 +71,32 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public Map<?, ?> selectNoteRecptnDetail(NoteRecptn noteRecptn) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new EgovBizException("인증 정보가 없습니다.");
+    	}
+    	noteRecptn.setRcverId(loginVO.getUniqId());
+    	Map<?, ?> noteRecptnMap = dao.selectNoteRecptnDetail(noteRecptn);
+    	if (noteRecptnMap == null || noteRecptnMap.isEmpty()) {
+    		throw new EgovAccessDeniedException("권한이 없습니다.");
+    	}
+    	Object rcverId = noteRecptnMap.get("rcverId");
+    	if (rcverId == null) {
+    		rcverId = noteRecptnMap.get("RCVER_ID");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치
+    	if (!loginVO.getUniqId().equals(String.valueOf(rcverId))) {
+    		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    			throw new EgovAccessDeniedException("권한이 없습니다.");
+    		}
+    	}
     	//받은쪽지함관리를 개봉으로 상태를 바꾼다.
     	dao.updateNoteRecptnRelationOpenYn(noteRecptn);
-        return dao.selectNoteRecptnDetail(noteRecptn);
+        return noteRecptnMap;
     }
 
     /**
@@ -79,6 +107,29 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public void deleteNoteRecptn(NoteRecptn noteRecptn) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new EgovBizException("인증 정보가 없습니다.");
+    	}
+    	noteRecptn.setRcverId(loginVO.getUniqId());
+    	Map<?, ?> noteRecptnMap = dao.selectNoteRecptnDetail(noteRecptn);
+    	if (noteRecptnMap == null || noteRecptnMap.isEmpty()) {
+    		throw new EgovAccessDeniedException("권한이 없습니다.");
+    	}
+    	Object rcverId = noteRecptnMap.get("rcverId");
+    	if (rcverId == null) {
+    		rcverId = noteRecptnMap.get("RCVER_ID");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치
+    	if (!loginVO.getUniqId().equals(String.valueOf(rcverId))) {
+    		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    			throw new EgovAccessDeniedException("권한이 없습니다.");
+    		}
+    	}
 
         //보낸쪽지함 건수를 조회함
         int nNoteTrnsmitCnt = dao.selectNoteTrnsmitRelationCnt(noteRecptn);
@@ -102,5 +153,6 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
         	dao.deleteNoteRecptn(noteRecptn);
         }
     }
+
 
 }

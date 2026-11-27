@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,7 @@ import egovframework.com.cop.bbs.service.impl.BBSAddedOptionsDAO;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
+import javax.annotation.Resource;
 
 @Service("EgovArticleCommentService")
 public class EgovArticleCommentServiceImpl extends EgovAbstractServiceImpl implements EgovArticleCommentService {
@@ -26,41 +26,42 @@ public class EgovArticleCommentServiceImpl extends EgovAbstractServiceImpl imple
 
     @Resource(name = "EgovArticleCommentDAO")
     private EgovArticleCommentDAO egovArticleCommentDao;
-    
+
     @Resource(name = "egovAnswerNoGnrService")
     private EgovIdGnrService egovAnswerNoGnrService;
 
     /**
      * 댓글 사용 가능 여부를 확인한다.
      */
-    public boolean canUseComment(String bbsId) throws Exception {
+    @Override
+	public boolean canUseComment(String bbsId) {
 	//String flag = EgovProperties.getProperty("Globals.addedOptions");
 	//if (flag != null && flag.trim().equalsIgnoreCase("true")) {//2011.09.15
 	    BoardMaster vo = new BoardMaster();
-	    
+
 	    vo.setBbsId(bbsId);
-	    
+
 	    BoardMasterVO options = addedOptionsDAO.selectAddedOptionsInf(vo);
-	    
+
 	    if (options == null) {
 		return false;
 	    }
-	    
+
 	    if (options.getCommentAt().equals("Y")) {
 		return true;
 	    }
 	//}
-	
+
 	return false;
-    }    
-	
+    }
+
 	@Override
 	public Map<String, Object> selectArticleCommentList(CommentVO commentVO) {
 		List<CommentVO> result = egovArticleCommentDao.selectArticleCommentList(commentVO);
 		int cnt = egovArticleCommentDao.selectArticleCommentListCnt(commentVO);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+
+		Map<String, Object> map = new HashMap<>();
+
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
 
@@ -69,8 +70,12 @@ public class EgovArticleCommentServiceImpl extends EgovAbstractServiceImpl imple
 
 
 	@Override
-	public void insertArticleComment(Comment comment) throws FdlException {
-		comment.setCommentNo(egovAnswerNoGnrService.getNextLongId() + "");//2011.10.18
+	public void insertArticleComment(Comment comment) {
+		try {
+			comment.setCommentNo(egovAnswerNoGnrService.getNextLongId() + "");//2011.10.18
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 		egovArticleCommentDao.insertArticleComment(comment);
 	}
 

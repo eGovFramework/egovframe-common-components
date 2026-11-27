@@ -26,7 +26,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.userManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -34,8 +34,7 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="mberManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 function fnListPage(){
     document.mberManageVO.action = "<c:url value='/uss/umt/EgovMberManage.do'/>";
@@ -56,7 +55,6 @@ function fnPasswordMove(){
 function fnLockIncorrect(){
 	if(confirm("<spring:message code="comUssUmt.common.lockAtConfirm" />")){
 	    document.mberManageVO.action = "<c:url value='/uss/umt/EgovMberLockIncorrect.do'/>";
-	    document.mberManageVO.selectedId.value=document.mberManageVO.uniqId.value;
 	    document.mberManageVO.submit();
 	}
 }
@@ -82,6 +80,7 @@ function onepassCancel() {
 		return false;
 	}
 }
+<c:if test="${!empty resultMsg}">alert("<spring:message code="${resultMsg}" text="${resultMsg}" javaScriptEscape="true" />");</c:if>
 </script>
 </head>
 <body>
@@ -102,7 +101,7 @@ function onepassCancel() {
 <input type="hidden" name="userTyForPassword" value="<c:out value='${mberManageVO.userTy}'/>" />
 <!-- for validation -->
 <input type="hidden" name="password" id="password" value="ex~Test#$12"/>
-<input type="hidden" name="selectedId" id="selectedId" value=""/>
+<input type="hidden" name="selectedId" id="selectedId" value="<c:out value='${egovc:encryptId(mberManageVO.uniqId)}'/>"/>
 
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
@@ -143,7 +142,8 @@ function onepassCancel() {
 		<tr>
 			<th><label for="mberNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="mberNm" title="${title} ${inputTxt}" size="50" maxlength="60" />
+				<!-- 등록/가입 화면 및 백엔드 제한(50자)과 일치시킴 (기존 60은 실제 저장 가능 길이와 불일치) -->
+				<form:input path="mberNm" title="${title} ${inputTxt}" size="50" maxlength="50" />
 				<div><form:errors path="mberNm" cssClass="error" /></div> 
 			</td>
 		</tr>
@@ -184,9 +184,9 @@ function onepassCancel() {
 		<tr>
 			<th><label for="areaNo">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <form:input path="areaNo" id="areaNo" title="전화번호" cssClass="txaIpUmt" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="middleTelno" id="middleTelno" cssClass="txaIpUmt" size="5" maxlength="5" style="width:40px;"/>
-                    - <form:input path="endTelno" id="endTelno" cssClass="txaIpUmt" size="5" maxlength="5" style="width:40px;"/>
+                    <form:input path="areaNo" id="areaNo" title="전화번호" cssClass="txaIpUmt" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="middleTelno" id="middleTelno" cssClass="txaIpUmt" size="5" maxlength="4" style="width:40px;"/>
+                    - <form:input path="endTelno" id="endTelno" cssClass="txaIpUmt" size="5" maxlength="4" style="width:40px;"/>
                     <div><form:errors path="areaNo" cssClass="error" /></div>
                     <div><form:errors path="middleTelno" cssClass="error" /></div>
                     <div><form:errors path="endTelno" cssClass="error" /></div>
@@ -288,10 +288,10 @@ function onepassCancel() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
-		<button class="btn_s2" onClick="fnDeleteMber('<c:out value='${mberManageVO.userTy}'/>:<c:out value='${mberManageVO.uniqId}'/>'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button>
+		<c:if test="${isAdmin}"><button class="btn_s2" onClick="fnDeleteMber('<c:out value='${mberManageVO.userTy}'/>:<c:out value='${mberManageVO.uniqId}'/>'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button></c:if>
 		<span class="btn_s"><a href="<c:url value='/uss/umt/EgovMberManage.do' />"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 		<button class="btn_s2" onClick="fnPasswordMove(); return false;" title="<spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /></button>
-		<button class="btn_s2" onClick="fnLockIncorrect(); return false;" title="<spring:message code="comUssUmt.common.lockAtBtn" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.common.lockAtBtn" /></button>
+		<c:if test="${isAdmin}"><button class="btn_s2" onClick="fnLockIncorrect(); return false;" title="<spring:message code="comUssUmt.common.lockAtBtn" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.common.lockAtBtn" /></button></c:if>
 		<button class="btn_s2" onClick="document.mberManageVO.reset(); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
 	</div><div style="clear:both;"></div>
 </div>
@@ -299,10 +299,10 @@ function onepassCancel() {
 <!-- content end -->
 
 <!-- 2021.05.30, 정진오, 디지털원패스 연동해지 -->
-<form id="onepassForm" name="onepassForm" method="post">
+<form:form id="onepassForm" name="onepassForm" modelAttribute="mberManageVO" method="post">
 <input type="hidden" name="userKey" id="userKey" value="<c:out value='${onepassUserkey}'/>"/>
 <input type="hidden" name="intfToken" id="intfToken" value="<c:out value='${onepassIntfToken}'/>"/>
-</form>
+</form:form>
 
 </body>
 </html>

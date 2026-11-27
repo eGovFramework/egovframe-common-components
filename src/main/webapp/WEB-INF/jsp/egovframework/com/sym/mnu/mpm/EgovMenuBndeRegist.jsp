@@ -2,6 +2,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%
  /**
@@ -94,7 +95,7 @@ function selectList(){
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymMnuMpm.menuRegist.pageTop.title"/></h2>
 
-	<form name="menuManageRegistForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuBndeRegist.do'/>" method="post" enctype="multipart/form-data">
+	<form:form name="menuManageRegistForm" id="menuManageRegistForm" modelAttribute="menuManageVO" action="${pageContext.request.contextPath}/sym/mnu/mpm/EgovMenuBndeRegist.do" method="post" enctype="multipart/form-data">
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -113,12 +114,12 @@ function selectList(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.bulkUpload" />" onclick="insertMenuManage(); return false;" /><!-- 일괄등록 -->
-		<span class="btn_s"><a href="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 
 	<input name="cmd" type="hidden" value="<c:out value='bndeInsert'/>"/>
-	</form>
+	</form:form>
 	
 </div>
 

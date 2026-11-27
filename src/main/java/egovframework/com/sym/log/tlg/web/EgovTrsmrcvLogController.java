@@ -1,28 +1,33 @@
 package egovframework.com.sym.log.tlg.web;
 
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.apache.commons.collections4.MapUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
+import javax.annotation.Resource;
 
 /**
  * @Class Name : EgovTrsmrcvLogController.java
@@ -53,6 +58,9 @@ public class EgovTrsmrcvLogController {
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
+
+	@Resource(name = "egovMessageSource")
+	protected EgovMessageSource egovMessageSource;
 
 	/**
      * 송수신 로그 목록 조회
@@ -99,10 +107,19 @@ public class EgovTrsmrcvLogController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/log/tlg/InqireTrsmrcvLog.do")
+	@RequireAdmin
 	public String selectTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, @RequestParam("requstId") String requstId, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
 
-		trsmrcvLog.setRequstId(requstId.trim());
 
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (ObjectUtils.isEmpty(requstId)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.request.msg"));
+			return "forward:/sym/log/tlg/SelectTrsmrcvLogList.do";
+		}
+			trsmrcvLog.setRequstId(requstId.trim());
+		
 		TrsmrcvLog vo = trsmrcvLogService.selectTrsmrcvLog(trsmrcvLog);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogInqire";
@@ -115,7 +132,8 @@ public class EgovTrsmrcvLogController {
      * @return sym/log/slg/EgovSysHistRegist
      * @throws Exception
      */
-    @RequestMapping(value = "/sym/log/tlg/AddTrsmrcvLog.do")
+    @PostMapping("/sym/log/tlg/AddTrsmrcvLog.do")
+    @RequireAdmin
     public String addTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model) throws Exception {
         ComDefaultCodeVO vo = new ComDefaultCodeVO();
         vo.setCodeId("COM002");
@@ -131,7 +149,8 @@ public class EgovTrsmrcvLogController {
 	 * @return forward:/sym/log/tlg/SelectTrsmrcvLogList.do
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/tlg/InsertTrsmrcvLog.do")
+	@PostMapping("/sym/log/tlg/InsertTrsmrcvLog.do")
+	@RequireAdmin
 	public String insertTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, SessionStatus status) throws Exception {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -144,5 +163,6 @@ public class EgovTrsmrcvLogController {
 
 		return "forward:/sym/log/tlg/SelectTrsmrcvLogList.do";
 	}
+
 
 }

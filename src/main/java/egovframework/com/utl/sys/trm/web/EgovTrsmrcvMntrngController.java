@@ -2,30 +2,32 @@ package egovframework.com.utl.sys.trm.web;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.trm.service.CntcVO;
 import egovframework.com.utl.sys.trm.service.EgovTrsmrcvMntrngService;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrng;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 송수신모니터링에 대한 controller 클래스를 정의한다.
@@ -46,10 +48,9 @@ import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2017-02-14   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *  2019.12.06   신용호            KISA 보안약점 조치 (부적절한 예외처리)
- *  
+ *
  * </pre>
  */
-
 @Controller
 public class EgovTrsmrcvMntrngController {
 
@@ -62,9 +63,6 @@ public class EgovTrsmrcvMntrngController {
     @Resource(name="egovMessageSource")
     private EgovMessageSource egovMessageSource;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovTrsmrcvMntrngController.class);
 
 	/**
@@ -75,14 +73,17 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
-	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
+    @PostMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
+	@RequireAdmin
+	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+
 
 		egovTrsmrcvMntrngService.deleteTrsmrcvMntrng(trsmrcvMntrng);
 
@@ -98,20 +99,21 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model			ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
-	public String insertTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model)
+    @PostMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
+	@RequireAdmin
+	public String insertTrsmrcvMntrng(@Valid @ModelAttribute TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-        beanValidator.validate(trsmrcvMntrng, bindingResult);
         checkDuplication(trsmrcvMntrng, bindingResult);
     	if (bindingResult.hasErrors()){
     		model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
@@ -135,9 +137,13 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/getTrsmrcvMntrng.do")
+    @PostMapping("/utl/sys/trm/getTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrng);
 		TrsmrcvMntrng result = egovTrsmrcvMntrngService.selectTrsmrcvMntrng(trsmrcvMntrng);
 		model.addAttribute("resultInfo", result);
@@ -155,9 +161,13 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/getTrsmrcvMntrngLog.do")
+    @PostMapping("/utl/sys/trm/getTrsmrcvMntrngLog.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngLog(@ModelAttribute("searchVO") TrsmrcvMntrngLog trsmrcvMntrngLog, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
+
     	LOGGER.debug(" 조회조건 : {}", trsmrcvMntrngLog);
 		TrsmrcvMntrngLog result = egovTrsmrcvMntrngService.selectTrsmrcvMntrngLog(trsmrcvMntrngLog);
 		model.addAttribute("resultInfo", result);
@@ -175,7 +185,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngForRegist.do")
+	@PostMapping("/utl/sys/trm/getTrsmrcvMntrngForRegist.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngForRegist(@ModelAttribute("searchVO")TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
         model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
@@ -191,7 +202,8 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngForUpdate.do")
+	@PostMapping("/utl/sys/trm/getTrsmrcvMntrngForUpdate.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngForUpdate(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
 
@@ -213,15 +225,14 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="송수신모니터링",order = 2080 ,gid = 90)
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngList.do")
 	public String selectTrsmrcvMntrngList(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", searchVO);
-
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
 		searchVO.setPageSize(propertyService.getInt("pageSize")/2);
@@ -256,8 +267,12 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngLogList.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngLogList(@ModelAttribute("searchVO") TrsmrcvMntrngLog searchVO, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치와 동일 기준 - 형제 selectTrsmrcvMntrng와 같은 로그인 검증
+		EgovAuthorizationHelper.assertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", searchVO);
 
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -293,21 +308,22 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model				ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
-	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model)
+	@PostMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
+	@RequireAdmin
+	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO,
+			@Valid @ModelAttribute("trsmrcvMntrng") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-		beanValidator.validate(trsmrcvMntrng, bindingResult);
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
+			//model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
 		    return "egovframework/com/utl/sys/trm/EgovTrsmrcvMntrngUpdt";
 		}
 
@@ -327,6 +343,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getCntcList.do")
+	@RequireAdmin
 	public String selectCntcList(@ModelAttribute("searchVO") CntcVO searchVO, ModelMap model)
 	  throws Exception {
 
@@ -362,6 +379,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getCntcListPopup.do")
+	@RequireAdmin
 	public String openPopupWindow(@ModelAttribute("searchVO") CntcVO searchVO, ModelMap model)
 	  throws Exception{
 		return "egovframework/com/utl/sys/trm/EgovCntcListPopupFrame";
@@ -390,4 +408,5 @@ public class EgovTrsmrcvMntrngController {
 			return ;
 		}
 	}
+
 }

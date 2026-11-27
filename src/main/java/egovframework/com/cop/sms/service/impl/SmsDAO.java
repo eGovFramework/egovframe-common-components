@@ -82,7 +82,6 @@ public class SmsDAO extends EgovComAbstractDAO {
      * 
      * @param SmsRecptn
      * @return
-     * @throws Exception
      */
 	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn smsRecptn) {
         return selectList("SmsDAO.selectSmsRecptnInfs", smsRecptn);

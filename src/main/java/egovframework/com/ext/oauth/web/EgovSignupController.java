@@ -18,6 +18,11 @@
  */
 package egovframework.com.ext.oauth.web;
 
+import java.security.SecureRandom;
+import java.util.Base64;
+
+import egovframework.com.cmm.annotation.RequireAdmin;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,10 +34,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.ComDefaultVO;
+import egovframework.com.cmm.LoginRequestVO;
 import egovframework.com.ext.oauth.service.OAuthConfig;
 import egovframework.com.ext.oauth.service.OAuthLogin;
 import egovframework.com.ext.oauth.service.OAuthUniversalUser;
 import egovframework.com.ext.oauth.service.OAuthVO;
+import javax.servlet.http.HttpSession;
 
 /**
  * 소셜 계정으로 일반회원 가입을 처리하는 컨트롤러 클래스
@@ -58,54 +66,89 @@ public class EgovSignupController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSignupController.class);
 
+	/** OAuth CSRF 방어용 state 값을 보관하는 세션 키 */
+	private static final String OAUTH_STATE_SESSION_KEY = "oauthState";
+
+	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+
+	/** 예측 불가능한 OAuth state 값을 생성한다(URL-safe Base64). */
+	private static String generateState() {
+		byte[] bytes = new byte[32];
+		SECURE_RANDOM.nextBytes(bytes);
+		return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+	}
+
 	@Autowired
 	private OAuthVO naverAuthVO;
-	
+
 	@Autowired
 	private OAuthVO googleAuthVO;
 
 	@Autowired
 	private OAuthVO kakaoAuthVO;
-	
+
 	@RequestMapping(value = "/uat/uia/oauthLoginUsr", method = RequestMethod.GET)
-	public String login(Model model) throws Exception {
+	@RequireAdmin
+	public String login(Model model, HttpSession session) throws Exception {
 		LOGGER.debug("===>>> OAuth Login .....");
-		
+
+		model.addAttribute("loginRequestVO", new LoginRequestVO());
+		model.addAttribute("defaultForm", new ComDefaultVO());
+
+		// 콜백에서 대조할 CSRF 방어용 state를 1회 생성해 세션에 보관하고 모든 제공자 인가 URL에 부착한다.
+		String state = generateState();
+		session.setAttribute(OAUTH_STATE_SESSION_KEY, state);
+
 		OAuthLogin naverLogin = new OAuthLogin(naverAuthVO);
-		LOGGER.debug("naverLogin.getOAuthURL() = "+naverLogin.getOAuthURL());
-		model.addAttribute("naver_url", naverLogin.getOAuthURL());
+		model.addAttribute("naver_url", naverLogin.getOAuthURL(state));
 
 		OAuthLogin googleLogin = new OAuthLogin(googleAuthVO);
-		LOGGER.debug("googleLogin.getOAuthURL() = "+googleLogin.getOAuthURL());
-		model.addAttribute("google_url", googleLogin.getOAuthURL());
+		model.addAttribute("google_url", googleLogin.getOAuthURL(state));
 
 		OAuthLogin kakaoLogin = new OAuthLogin(kakaoAuthVO);
-		LOGGER.debug("kakaoLogin.getOAuthURL() = "+kakaoLogin.getOAuthURL());
-		model.addAttribute("kakao_url", kakaoLogin.getOAuthURL());
+		model.addAttribute("kakao_url", kakaoLogin.getOAuthURL(state));
 
 		return "egovframework/com/uat/uia/EgovLoginUsrOauth";
 	}
 
 	@RequestMapping(value = "/auth/{oauthService}/callback", method = { RequestMethod.GET, RequestMethod.POST })
-	public String oauthLoginCallback(@PathVariable String oauthService, Model model, @RequestParam String code) throws Exception {
-		
+	@RequireAdmin
+	public String oauthLoginCallback(@PathVariable String oauthService, Model model,
+			@RequestParam String code, @RequestParam(required = false) String state, HttpSession session) throws Exception {
+
 		LOGGER.debug("oauthLoginCallback: service={}", oauthService);
-		LOGGER.debug("===>>> code = "+ code);
-		
+
+		// CSRF(로그인 CSRF) 방어 - 콜백의 state를 세션에 보관한 값과 대조한다. 1회용이므로 검증 후 제거한다.
+		String sessionState = (String) session.getAttribute(OAUTH_STATE_SESSION_KEY);
+		session.removeAttribute(OAUTH_STATE_SESSION_KEY);
+		if (sessionState == null || !sessionState.equals(state)) {
+			LOGGER.warn("OAuth state가 일치하지 않아 콜백 요청을 차단합니다. service={}", oauthService);
+			model.addAttribute("message", "Invalid OAuth state.");
+			return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";
+		}
+
 		OAuthVO oauthVO = null;
-		if (StringUtils.equals(OAuthConfig.GOOGLE_SERVICE_NAME, oauthService))
+		if (StringUtils.equals(OAuthConfig.GOOGLE_SERVICE_NAME, oauthService)) {
 			oauthVO = googleAuthVO;
-		else if (StringUtils.equals(OAuthConfig.NAVER_SERVICE_NAME, oauthService))
+		} else if (StringUtils.equals(OAuthConfig.NAVER_SERVICE_NAME, oauthService)) {
 			oauthVO = naverAuthVO;
-		else
+			// 2026.07.13 KISA 보안취약점 조치 - OAuth state 검증
+			if (state == null || state.isEmpty()) {
+				model.addAttribute("message", "Invalid OAuth state.");
+				return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";
+			}
+		} else {
 			oauthVO = kakaoAuthVO;
+		}
 
 		// 1. code를 이용해서 Access Token 받기
 		// 2. Access Token을 이용해서 사용자 제공정보 가져오기
 		OAuthLogin oauthLogin = new OAuthLogin(oauthVO);
 
 		OAuthUniversalUser oauthUser = oauthLogin.getUserProfile(code); // 1,2번 동시
-		LOGGER.debug("Profile ===>>" + oauthUser);
+		if (oauthUser != null) {
+			LOGGER.debug("OAuth profile received for service={}", oauthService);
+		}
 
 		// ========================================================================
 		// 다음 부분은 업무의 목적에 맞게 커스텀 코드를 작성한다.
@@ -123,5 +166,6 @@ public class EgovSignupController {
 
 		return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";
 	}
+
 
 }

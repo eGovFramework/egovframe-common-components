@@ -1,60 +1,64 @@
 package egovframework.com.uss.olh.faq.web;
 
 import java.util.List;
-
-import javax.annotation.Resource;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.Globals;
+import egovframework.com.cmm.util.EgovAttachmentGrants;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
-*
-* FAQ내용을 처리하는 비즈니스 구현 클래스
-* @author 공통서비스 개발팀 박정규
-* @since 2009.04.01
-* @version 1.0
-* @see
-*
-* <pre>
-* << 개정이력(Modification Information) >>
-*
-*  수정일                수정자           수정내용
-*  ----------   --------   ---------------------------
-*  2009.04.01   박정규            최초 생성
-*  2011.08.26   정진오            IncludedInfo annotation 추가
-*  2016.08.03   김연호            표준프레임워크 3.6 개선
-*  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
-*  2021.07.29   정진오            경로 오류 수정
-*
-* </pre>
-*/
-
+ * FAQ내용을 처리하는 비즈니스 구현 클래스
+ * 
+ * @author 공통서비스 개발팀 박정규
+ * @since 2009.04.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  박정규          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2016.08.03  김연호          표준프레임워크 3.6 개선
+ *   2020.10.27  신용호          파일 업로드 수정 (multiRequest.getFiles)
+ *   2021.07.29  정진오          경로 오류 수정
+ *   2025.08.20  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
+ */
 @Controller
 public class EgovFaqController {
-	
+
 	@Resource(name = "EgovFaqService")
 	private EgovFaqService egovFaqService;
 
@@ -73,15 +77,12 @@ public class EgovFaqController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-	
 	/**
 	 * FAQ 목록을 조회한다.
+	 * 
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/faq/EgovFaqList"
+	 * @return "/uss/olh/faq/EgovFaqList"
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "FAQ관리", order = 540, gid = 50)
@@ -102,8 +103,8 @@ public class EgovFaqController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<FaqVO> FaqList = egovFaqService.selectFaqList(searchVO);
-		model.addAttribute("resultList", FaqList);
+		List<FaqVO> resultList = egovFaqService.selectFaqList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovFaqService.selectFaqListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -111,17 +112,20 @@ public class EgovFaqController {
 
 		return "egovframework/com/uss/olh/faq/EgovFaqList";
 	}
-	
+
 	/**
 	 * FAQ 목록에 대한 상세정보를 조회한다.
+	 * 
 	 * @param faqVO
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/faq/EgovFaqDetail"
+	 * @return "/uss/olh/faq/EgovFaqDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/selectFaqDetail.do")
-	public String selectFaqDetail(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO, ModelMap model) throws Exception {
+	@PostMapping("/uss/olh/faq/selectFaqDetail.do")
+	@RequireAdmin
+	public String selectFaqDetail(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO, ModelMap model)
+			throws Exception {
 
 		FaqVO vo = egovFaqService.selectFaqDetail(searchVO);
 
@@ -129,65 +133,71 @@ public class EgovFaqController {
 
 		return "egovframework/com/uss/olh/faq/EgovFaqDetail";
 	}
-	
+
 	/**
 	 * FAQ를 등록하기 위한 전 처리
+	 * 
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/faq/EgovFaqRegist"
+	 * @return "/uss/olh/faq/EgovFaqRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/insertFaqView.do")
+	@RequireAdmin
+	@PostMapping("/uss/olh/faq/insertFaqView.do")
 	public String insertFaqView(@ModelAttribute("searchVO") FaqVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("faqVO", new FaqVO());
-		
-    	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
-    	String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
 
-        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		// 파일업로드 제한
+		String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
+		String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
+
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 
 	}
-	
+
 	/**
 	 * FAQ를 등록한다.
+	 * 
 	 * @param multiRequest
 	 * @param searchVO
 	 * @param faqVO
 	 * @param bindingResult
-	 * @return	"forward:/uss/olh/faq/selectFaqList.do"
+	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/insertFaq.do")
+	@RequireAdmin
+	@PostMapping("/uss/olh/faq/insertFaq.do")
 	public String insertFaqCn(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
-			@ModelAttribute("searchVO") FaqVO searchVO, @ModelAttribute("faqManageVO") FaqVO faqVO, BindingResult bindingResult) throws Exception {
-
-		beanValidator.validate(faqVO, bindingResult);
+			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			// 파일업로드 제한 - 재표시 JSP 가 자바스크립트 인자로 그대로 출력한다
+			model.addAttribute("fileUploadExtensions", Globals.FILE_UP_EXTS);
+			model.addAttribute("fileUploadMaxSize", Globals.FILE_UP_MAX_SIZE);
 			return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 		}
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
-		// 리턴받은 첨부파일ID를 셋팅한다..
-		faqVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+		// 리턴받은 첨부파일ID를 셋팅한다.. (첨부가 없으면 null : ATCH_FILE_ID 는 COMTNFILE 외래키)
+		faqVO.setAtchFileId("".equals(atchFileId) ? null : atchFileId); // 첨부파일 ID
 
-		// 로그인VO에서  사용자 정보 가져오기
+		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String frstRegisterId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
@@ -199,17 +209,20 @@ public class EgovFaqController {
 
 		return "forward:/uss/olh/faq/selectFaqList.do";
 	}
-	
+
 	/**
 	 * FAQ를 수정하기 위한 전 처리
+	 * 
 	 * @param faqId
 	 * @param searchVO
 	 * @param model
-	 * @return	"/uss/olh/faq/EgovFaqUpdt"
+	 * @return "/uss/olh/faq/EgovFaqUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/updateFaqView.do")
-	public String updateFaqView(@RequestParam("faqId") String faqId, @ModelAttribute("searchVO") FaqVO searchVO, ModelMap model) throws Exception {
+	@RequireAdmin
+	@PostMapping("/uss/olh/faq/updateFaqView.do")
+	public String updateFaqView(@RequestParam("faqId") String faqId, @ModelAttribute("searchVO") FaqVO searchVO,
+			ModelMap model, HttpServletRequest request) throws Exception {
 
 		FaqVO faqVO = new FaqVO();
 
@@ -217,65 +230,78 @@ public class EgovFaqController {
 		faqVO.setFaqId(faqId);
 
 		// 변수명은 CoC 에 따라 JSTL사용을 위해
-		model.addAttribute("faqVO", egovFaqService.selectFaqDetail(faqVO));
+		FaqVO stored = EgovAuthorizationHelper.requireTarget(egovFaqService.selectFaqDetailNoCount(faqVO));
+		EgovAttachmentGrants.allowDelete(request, stored.getAtchFileId());
+		model.addAttribute("faqVO", stored);
 
-    	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
-    	String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
+		// 파일업로드 제한
+		String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
+		String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
 
-        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
-		
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+
 		return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 	}
 
 	/**
 	 * FAQ를 수정처리한다.
+	 * 
 	 * @param atchFileAt
 	 * @param multiRequest
 	 * @param searchVO
 	 * @param faqVO
 	 * @param bindingResult
 	 * @param model
-	 * @return	"forward:/uss/olh/faq/selectFaqList.do"
+	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/updateFaq.do")
+	@RequireAdmin
+	@PostMapping("/uss/olh/faq/updateFaq.do")
 	public String updateFaqCn(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("searchVO") FaqVO searchVO, @ModelAttribute("faqVO") FaqVO faqVO, BindingResult bindingResult, ModelMap model)
-			throws Exception {
+			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		// Validation
-		beanValidator.validate(faqVO, bindingResult);
+		FaqVO stored = EgovAuthorizationHelper.requireTarget(egovFaqService.selectFaqDetailNoCount(faqVO));
+		// 첨부 그룹은 요청값이 아니라 저장된 원본의 것만 쓴다(남의 첨부 ID 저장 → 삭제 허가 우회 차단)
+		faqVO.setAtchFileId(Objects.toString(stored.getAtchFileId(), ""));
+
 		if (bindingResult.hasErrors()) {
+			// 파일업로드 제한 - 재표시 JSP 가 자바스크립트 인자로 그대로 출력한다
+			model.addAttribute("fileUploadExtensions", Globals.FILE_UP_EXTS);
+			model.addAttribute("fileUploadMaxSize", Globals.FILE_UP_MAX_SIZE);
 			return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 		}
 
-		
 		// 첨부파일 관련 ID 생성 start....
 		String atchFileId = faqVO.getAtchFileId();
 
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
-	    if (!files.isEmpty()) {
+		if (!files.isEmpty()) {
 			if (atchFileId == null || "".equals(atchFileId)) {
-			    List<FileVO> result = fileUtil.parseFileInf(files, "FAQ_", 0, atchFileId, "");
-			    atchFileId = fileMngService.insertFileInfs(result);
-			    faqVO.setAtchFileId(atchFileId);
+				List<FileVO> result = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
+				atchFileId = fileMngService.insertFileInfs(result);
+				faqVO.setAtchFileId(atchFileId);
 			} else {
-			    FileVO fvo = new FileVO();
-			    fvo.setAtchFileId(atchFileId);
-			    int cnt = fileMngService.getMaxFileSN(fvo);
-			    List<FileVO> _result = fileUtil.parseFileInf(files, "FAQ_", cnt, atchFileId, "");
-			    fileMngService.updateFileInfs(_result);
+				FileVO fvo = new FileVO();
+				fvo.setAtchFileId(atchFileId);
+				int cnt = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "FAQ_", cnt, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
-	    }
+		}
 		// 첨부파일 관련 ID 생성 end...
 
-		// 로그인VO에서  사용자 정보 가져오기
+		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		faqVO.setLastUpdusrId(lastUpdusrId); // 최종수정자ID
+
+		// 첨부가 없으면 null (ATCH_FILE_ID 는 COMTNFILE 외래키)
+		if ("".equals(faqVO.getAtchFileId())) {
+			faqVO.setAtchFileId(null);
+		}
 
 		egovFaqService.updateFaq(faqVO);
 
@@ -285,27 +311,34 @@ public class EgovFaqController {
 
 	/**
 	 * FAQ를 삭제처리한다.
+	 * 
 	 * @param faqVO
 	 * @param searchVO
-	 * @return	"forward:/uss/olh/faq/selectFaqList.do"
+	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/deleteFaq.do")
+	@PostMapping("/uss/olh/faq/deleteFaq.do")
+	@RequireAdmin
 	public String deleteFaq(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO) throws Exception {
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = faqVO.getAtchFileId();
+		// 삭제 폼은 atchFileId를 전송하지 않으므로, 서버에 저장된 값을 다시 조회해서 쓴다.
+		FaqVO stored = EgovAuthorizationHelper.requireTarget(egovFaqService.selectFaqDetailNoCount(faqVO));
+		String atchFileId = stored == null ? null : stored.getAtchFileId();
 
 		egovFaqService.deleteFaq(faqVO);
 
-		// 첨부파일을 삭제하기 위한  Vo
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(_atchFileId);
+		if (atchFileId != null && !atchFileId.isEmpty()) {
+			// 첨부파일을 삭제하기 위한 Vo
+			FileVO fvo = new FileVO();
+			fvo.setAtchFileId(atchFileId);
 
-		fileMngService.deleteAllFileInf(fvo);
+			fileMngService.deleteAllFileInf(fvo);
+		}
 		// 첨부파일 삭제 End.............
 
 		return "forward:/uss/olh/faq/selectFaqList.do";
 	}
-	
+
+
 }

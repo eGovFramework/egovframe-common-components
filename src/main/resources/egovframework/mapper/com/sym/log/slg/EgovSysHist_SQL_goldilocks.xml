@@ -32,6 +32,7 @@
 		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
 		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 	</resultMap>
 
 	<insert id="insertSysHistory" parameterType="egovframework.com.sym.log.slg.service.SysHistory">
@@ -82,6 +83,7 @@
 			     , b.USER_NM as FRST_REGISTER_NM
 			     , a.FRST_REGIST_PNTTM
 			     , a.ATCH_FILE_ID
+			     , a.FRST_REGISTER_ID
 			  FROM COMTHSYSHIST a
 			     , COMVNUSERMASTER b
 			     , COMTCCMMNDETAILCODE c

@@ -1,28 +1,30 @@
 package egovframework.com.uss.olh.wor.web;
 
-import java.util.List;
+import egovframework.com.cmm.annotation.RequireAdmin;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.wor.service.EgovWordDicaryService;
 import egovframework.com.uss.olh.wor.service.WordDicaryVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
 *
@@ -40,11 +42,10 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 *   2009.04.01  박정규          최초 생성
 *   2011.8.26	정진오			IncludedInfo annotation 추가
 *   2016.08.02	김연호			표준프레임워크 3.6 적용
-*   
+*
 *
 * </pre>
 */
-
 @Controller
 public class EgovWordDicaryController {
 
@@ -59,10 +60,6 @@ public class EgovWordDicaryController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-	
 	/**
 	 * 용어사전목록을 조회한다.
 	 * @param searchVO
@@ -97,7 +94,7 @@ public class EgovWordDicaryController {
 
 		return "egovframework/com/uss/olh/wor/EgovWordDicaryList";
 	}
-	
+
 	/**
 	 * 용어사전 목록에 대한 상세정보를 조회한다.
 	 * @param wordDicaryVO
@@ -106,7 +103,8 @@ public class EgovWordDicaryController {
 	 * @return	"/uss/olh/wor/EgovWordDicaryDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/selectWordDicaryDetail.do")
+	@PostMapping("/uss/olh/wor/selectWordDicaryDetail.do")
+	@RequireAdmin
 	public String selectWordDicaryDetail(WordDicaryVO wordDicaryVO, @ModelAttribute("searchVO") WordDicaryVO searchVO, ModelMap model) throws Exception {
 
 		WordDicaryVO vo = egovWordDicaryService.selectWordDicaryDetail(wordDicaryVO);
@@ -115,7 +113,7 @@ public class EgovWordDicaryController {
 
 		return "egovframework/com/uss/olh/wor/EgovWordDicaryDetail";
 	}
-	
+
 	/**
 	 * 용어사전정보를 등록하기 위한 첫 화면
 	 * @param searchVO
@@ -123,14 +121,15 @@ public class EgovWordDicaryController {
 	 * @return	"/uss/olh/wor/EgovWordDicaryRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/insertWordDicaryView.do")
+	@PostMapping("/uss/olh/wor/insertWordDicaryView.do")
+	@RequireAdmin
 	public String insertWordDicaryView(@ModelAttribute("searchVO") WordDicaryVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("wordDicaryVO", new WordDicaryVO());
 
 		return "egovframework/com/uss/olh/wor/EgovWordDicaryRegist";
 	}
-	
+
 	/**
 	 * 용어사전정보를 등록한다.
 	 * @param searchVO
@@ -140,11 +139,13 @@ public class EgovWordDicaryController {
 	 * @return	"forward:/uss/olh/wor/selectWordDicaryList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/insertWordDicary.do")
-	public String insertWordDicary(@ModelAttribute("searchVO") WordDicaryVO searchVO, @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
-			BindingResult bindingResult, Model model) throws Exception {
+	@PostMapping("/uss/olh/wor/insertWordDicary.do")
+	@RequireAdmin
+	public String insertWordDicary(
+		@ModelAttribute("searchVO") WordDicaryVO searchVO,
+		@Valid @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
+		BindingResult bindingResult, Model model) throws Exception {
 
-		beanValidator.validate(wordDicaryVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/wor/EgovWordDicaryRegist";
 		}
@@ -160,7 +161,7 @@ public class EgovWordDicaryController {
 
 		return "forward:/uss/olh/wor/selectWordDicaryList.do";
 	}
-	
+
 	/**
 	 * 용어사전정보를 수정하기 위한 초기 화면
 	 * @param wordId
@@ -169,17 +170,19 @@ public class EgovWordDicaryController {
 	 * @return	"/uss/olh/wor/EgovWordDicaryUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/updateWordDicaryView.do")
+	@PostMapping("/uss/olh/wor/updateWordDicaryView.do")
+	@RequireAdmin
 	public String updateWordDicaryView(@RequestParam("wordId") String wordId, @ModelAttribute("searchVO") WordDicaryVO searchVO, ModelMap model) throws Exception {
 
 		WordDicaryVO wordDicaryVO = new WordDicaryVO();
 		wordDicaryVO.setWordId(wordId);
 
-		model.addAttribute("wordDicaryVO", egovWordDicaryService.selectWordDicaryDetail(wordDicaryVO));
+		WordDicaryVO stored = EgovAuthorizationHelper.requireTarget(egovWordDicaryService.selectWordDicaryDetail(wordDicaryVO));
+		model.addAttribute("wordDicaryVO", stored);
 
 		return "egovframework/com/uss/olh/wor/EgovWordDicaryUpdt";
 	}
-	
+
 	/**
 	 * 용어사전정보를 수정한다.
 	 * @param searchVO
@@ -189,12 +192,14 @@ public class EgovWordDicaryController {
 	 * @return	"forward:/uss/olh/wor/selectWordDicaryList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/updateWordDicary.do")
-	public String updateWordDicary(@ModelAttribute("searchVO") WordDicaryVO searchVO, @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
-			BindingResult bindingResult, Model model) throws Exception {
+	@PostMapping("/uss/olh/wor/updateWordDicary.do")
+	@RequireAdmin
+	public String updateWordDicary(
+		@ModelAttribute("searchVO") WordDicaryVO searchVO,
+		@Valid @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
+		BindingResult bindingResult, Model model) throws Exception {
 
-		// Validation
-		beanValidator.validate(wordDicaryVO, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/wor/EgovWordDicaryUpdt";
 		}
@@ -208,7 +213,7 @@ public class EgovWordDicaryController {
 
 		return "forward:/uss/olh/wor/selectWordDicaryList.do";
 	}
-	
+
 	/**
 	 * 용어사전정보를 삭제한다.
 	 * @param wordDicaryVO
@@ -216,12 +221,14 @@ public class EgovWordDicaryController {
 	 * @return	"forward:/uss/olh/wor/selectWordDicaryList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/deleteWordDicary.do")
+	@PostMapping("/uss/olh/wor/deleteWordDicary.do")
+	@RequireAdmin
 	public String deleteWordDicary(WordDicaryVO wordDicaryVO, @ModelAttribute("searchVO") WordDicaryVO searchVO) throws Exception {
+
 
 		egovWordDicaryService.deleteWordDicary(wordDicaryVO);
 
 		return "forward:/uss/olh/wor/selectWordDicaryList.do";
 	}
-	
+
 }

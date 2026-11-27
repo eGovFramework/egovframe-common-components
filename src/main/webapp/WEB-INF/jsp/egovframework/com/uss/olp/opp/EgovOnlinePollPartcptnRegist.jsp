@@ -24,7 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpp.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -33,7 +32,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/uss/olp/opp/online_poll.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
@@ -70,7 +69,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 <div class="wTableFrm">
 
 <!--  상단타이틀 -->
-<form id="OnlinePollPartcptn" name="OnlinePollPartcptn" action="<c:url value='/uss/olp/opp/registOnlinePollPartcptn.do' />" onsubmit="return fn_egov_save_OnlinePollPartcptn()" method="post">
+<form:form id="OnlinePollPartcptn" name="OnlinePollPartcptn" modelAttribute="onlinePollPartcptn" action="${pageContext.request.contextPath}/uss/olp/opp/registOnlinePollPartcptn.do" onsubmit="return fn_egov_save_OnlinePollPartcptn()" method="post">
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.create" /></h2>
 
@@ -91,7 +90,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 	<tr>
 		<th>${title} <span class="pilsu">*</span></th>
 		<td class="nopd">
-		<c:out value="${PollManage[0].pollNm}" escapeXml="false" />	
+		<span style="white-space:pre-line"><c:out value="${PollManage[0].pollNm}"/></span>	
 		</td>
 	</tr>
 	<!-- POLL시작일자 -->
@@ -99,7 +98,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 	<tr>
 		<th>${title} <span class="pilsu">*</span></th>
 		<td class="nopd">
-			<c:out value="${PollManage[0].pollBeginDe}" escapeXml="false" />
+			<span style="white-space:pre-line"><c:out value="${PollManage[0].pollBeginDe}"/></span>
 		</td>
 	</tr>
 	<!-- POLL종료일자 -->
@@ -107,7 +106,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 	<tr>
 		<th>${title} <span class="pilsu">*</span></th>
 		<td class="nopd">
-			<c:out value="${PollManage[0].pollEndDe}" escapeXml="false" />
+			<span style="white-space:pre-line"><c:out value="${PollManage[0].pollEndDe}"/></span>
 		</td>
 	</tr>
 	<!-- POLL종류 -->
@@ -117,7 +116,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 		<td class="nopd">
 			<c:forEach items="${pollKindCodeList}" var="resultInfo" varStatus="pollKindStatus">
 				<c:if test="${resultInfo.code eq PollManage[0].pollKindCode}">
-					<c:out value="${resultInfo.codeNm}" escapeXml="false" />
+					<c:out value="${resultInfo.codeNm}"/>
 				</c:if>
 			</c:forEach>
 		</td>
@@ -131,7 +130,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 		<div class="boxType2 mt20">
 			<ul class="poll_partcptn">
 				<c:forEach items="${PollItem}" var="resultInfo" varStatus="status">
-	   			<li><div style="float: left;"><input type="radio" name="pollIemId" value="${resultInfo.pollIemId}" style="border:0px;" <c:if test="${status.count == '1'}">checked</c:if> ></div><div style="float: left;margin-left:13px;"><c:out value="${resultInfo.pollIemNm}" escapeXml="false" /></div></li>
+	   			<li><div style="float: left;"><input type="radio" name="pollIemId" value="${resultInfo.pollIemId}" style="border:0px;" <c:if test="${status.count == '1'}">checked</c:if> ></div><div style="float: left;margin-left:13px;"><span style="white-space:pre-line"><c:out value="${resultInfo.pollIemNm}"/></span></div></li>
 				</c:forEach>
 			</ul>
 		</div>
@@ -152,7 +151,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 
 <input name="pollId" type="hidden" value="${PollManage[0].pollId}"/>
 <input name="cmd" type="hidden" value="<c:out value='save'/>"/>
-</form>
+</form:form>
 
 
 

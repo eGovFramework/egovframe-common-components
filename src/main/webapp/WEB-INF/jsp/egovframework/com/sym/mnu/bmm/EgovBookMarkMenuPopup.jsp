@@ -26,7 +26,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/sym/mnu/bmm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/sym/mnu/bmm/"/>
 <%
@@ -59,6 +58,7 @@ function fn_egov_move(progrmStrePath){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="menuListForm" action ="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" name="req_RetrunPath" value="<c:url value='/sym/mnu/bmm/EgovMenuList'/>">
 
 <div class="board">
@@ -77,7 +77,7 @@ function fn_egov_move(progrmStrePath){
 			<td>
 			    <img src="<c:url value='/images/egovframework/com/cmm/utl/menu_page.gif' />" alt="menu_page icon" />
 			   	<a href="" onclick="fn_egov_move('<c:url value="${result.progrmStrePath}"/>'); return false;">
-				<c:out value="${result.menuNm}" escapeXml="false"/></a>
+				<c:out value="${result.menuNm}"/></a>
 			</td>
 		</tr>
 		</c:forEach>

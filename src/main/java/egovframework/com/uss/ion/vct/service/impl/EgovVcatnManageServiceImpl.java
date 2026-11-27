@@ -3,36 +3,48 @@ package egovframework.com.uss.ion.vct.service.impl;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ism.service.EgovInfrmlSanctnService;
 import egovframework.com.uss.ion.ism.service.InfrmlSanctn;
 import egovframework.com.uss.ion.vct.service.EgovVcatnManageService;
-import egovframework.com.uss.ion.vct.service.IndvdlYrycManage;
-import egovframework.com.uss.ion.vct.service.VcatnManage;
 import egovframework.com.uss.ion.vct.service.VcatnManageVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 /**
+ * <pre>
  * 개요
  * - 휴가관리에 대한 ServiceImpl 클래스를 정의한다.
  *
  * 상세내용
  * - 휴가관리에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
  * - 휴가관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
  * @author 이용
+ * @since 2010.06.15
  * @version 1.0
- * @created 06-15-2010 오후 2:08:56
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.15  이용           최초 생성
+ *   2025.08.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
-
 @Service("egovVcatnManageService")
 public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implements EgovVcatnManageService {
 
@@ -41,11 +53,12 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	@Resource(name = "EgovInfrmlSanctnService")
 	protected EgovInfrmlSanctnService infrmlSanctnService;
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovVcatnManageServiceImpl.class);
 
 	/**
 	 * 휴가관리정보를 관리하기 위해 등록된 휴가관리 목록을 조회한다.
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return List - 휴가관리 목록
 	 */
@@ -66,6 +79,7 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	/**
 	 * 휴가관리목록 총 개수를 조회한다.
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int - 휴가관리 카운트 수
 	 */
@@ -76,37 +90,44 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	/**
 	 * 등록된 휴가관리의 상세정보를 조회한다.
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return VcatnManageVO - 휴가관리 VO
 	 */
 	@Override
 	public VcatnManageVO selectVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
 
-		//VcatnManageVO vcatnManageVOTemp = new VcatnManageVO();
+		// VcatnManageVO vcatnManageVOTemp = new VcatnManageVO();
 
 		VcatnManageVO vcatnManageVOTemp = vcatnManageDAO.selectVcatnManage(vcatnManageVO);
+		if (vcatnManageVOTemp == null) {
+			return null;
+		}
+
 		vcatnManageVOTemp.setBgnde(EgovDateUtil.formatDate(vcatnManageVOTemp.getBgnde(), "-"));
 		vcatnManageVOTemp.setEndde(EgovDateUtil.formatDate(vcatnManageVOTemp.getEndde(), "-"));
 
 		// 연차정보
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
-		vcatnManageVOTemp.setOccrrncYear(vcatnManageVO1.getOccrrncYear());
-		vcatnManageVOTemp.setUsid(vcatnManageVO1.getUsid());
-		vcatnManageVOTemp.setOccrncYrycCo(vcatnManageVO1.getOccrncYrycCo());
-		vcatnManageVOTemp.setUseYrycCo(vcatnManageVO1.getUseYrycCo());
-		vcatnManageVOTemp.setRemndrYrycCo(vcatnManageVO1.getRemndrYrycCo());
+		if (vcatnManageVO1 != null) {
+			vcatnManageVOTemp.setOccrrncYear(vcatnManageVO1.getOccrrncYear());
+			vcatnManageVOTemp.setUsid(vcatnManageVO1.getUsid());
+			vcatnManageVOTemp.setOccrncYrycCo(vcatnManageVO1.getOccrncYrycCo());
+			vcatnManageVOTemp.setUseYrycCo(vcatnManageVO1.getUseYrycCo());
+			vcatnManageVOTemp.setRemndrYrycCo(vcatnManageVO1.getRemndrYrycCo());
+		}
 
 		return vcatnManageVOTemp;
 	}
 
 	/**
 	 * 휴가관리정보를 신규로 등록한다.
-	 * @param vcatnManage - 휴가관리 model
-	 * @return String
-	 * 01 : 입력성공, 02 : 연차휴가 등록실패(잔여연차 부족),  03: 반차휴가 등록실패(잔여연차 부족)
+	 * 
+	 * @param vcatnManageVO - 휴가관리 VO
+	 * @return String 01 : 입력성공, 02 : 연차휴가 등록실패(잔여연차 부족), 03: 반차휴가 등록실패(잔여연차 부족)
 	 */
 	@Override
-	public String insertVcatnManage(VcatnManage vcatnManage, VcatnManageVO vcatnManageVO) throws Exception {
+	public String insertVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		String sYear = Integer.toString(cal.get(java.util.Calendar.YEAR));
 		String sMonth = Integer.toString(cal.get(java.util.Calendar.MONTH) + 1);
@@ -115,122 +136,141 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		}
 		String sDay = Integer.toString(cal.get(java.util.Calendar.DATE));
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
 		String uniqId = "";
 		if (user != null) {
 			uniqId = user.getUniqId();
 		}
-		vcatnManage.setOccrrncYear(sYear);
-		vcatnManage.setReqstDe(sYear + sMonth + sDay);
+		vcatnManageVO.setOccrrncYear(sYear);
+		vcatnManageVO.setReqstDe(sYear + sMonth + sDay);
 		/*
-		 * 휴가 승인처리  신청 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManage);
+		 * 휴가 승인처리 신청 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManageVO);
 		 */
-		vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(vcatnManage.getBgnde()));
-		vcatnManage.setEndde(EgovStringUtil.removeMinusChar(vcatnManage.getEndde()));
-		vcatnManage.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManage.getReqstDe()));
-		InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn(converToInfrmlSanctnObject(vcatnManage));
-		//InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn("003", vcatnManage);
-		vcatnManage.setInfrmlSanctnId(infrmlSanctn.getInfrmlSanctnId());
-		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(uniqId);
-		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차개수
-		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차개수
+		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
+		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
+		vcatnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManageVO.getReqstDe()));
+		InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn(converToInfrmlSanctnObject(vcatnManageVO));
+		// InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn("003",
+		// vcatnManageVO);
+		vcatnManageVO.setInfrmlSanctnId(infrmlSanctn.getInfrmlSanctnId());
+		// 연차 잔여일수는 차감 대상과 같은 사람 것을 읽어야 한다. 아래 갱신은 applcntId 앞으로 걸리는데
+		// (setUsid) 조회만 로그인 사용자로 하면, 관리자가 타인의 휴가를 수정할 때 관리자의 잔여일수로 계산한
+		// 값이 그 사람의 연차 행에 덮인다. 등록 경로는 컨트롤러가 applcntId 를 로그인 사용자로 세팅하므로
+		// 동작이 같다.
+		String yrycOwnerId = EgovStringUtil.isNullToString(vcatnManageVO.getApplcntId());
+		if ("".equals(yrycOwnerId)) {
+			yrycOwnerId = uniqId;
+		}
+		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(yrycOwnerId);
+		if (vcatnManageVO1 == null) {
+			vcatnManageVO1 = new VcatnManageVO();
+		}
+		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
+		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
 
 		/*
 		 * 시작일자 와 종료일자 사이의 일자 개수 - 공휴일 or 주말 제외
 		 */
 		// 휴가구분이 연차인 경우
-		if ("01".equals(vcatnManage.getVcatnSe())) {
+		if ("01".equals(vcatnManageVO.getVcatnSe())) {
 			// 연차 휴가 연도 체크
-			if (!getVcatnYearSE(vcatnManage)) {
+			if (!getVcatnYearSE(vcatnManageVO)) {
 				return "09";
 			}
-			iCountYryc = getDateCalc(vcatnManage.getBgnde(), vcatnManage.getEndde());
+			iCountYryc = getDateCalc(vcatnManageVO.getBgnde(), vcatnManageVO.getEndde());
 			if (iCountYryc == 0) {
-				return "99"; //연차설정오류
+				return "99"; // 연차설정오류
 			} else if ((iRemndrYrycCo - iCountYryc) < 0) {
 				return "02";
 			} else {
-				vcatnManageDAO.insertVcatnManage(vcatnManage);
-				IndvdlYrycManage indvdlYrycManage = new IndvdlYrycManage();
-				indvdlYrycManage.setUseYrycCo(iUseYrycCo + iCountYryc);
-				indvdlYrycManage.setRemndrYrycCo(iRemndrYrycCo - iCountYryc);
-				indvdlYrycManage.setLastUpdusrId(vcatnManage.getApplcntId());
-				indvdlYrycManage.setOccrrncYear(vcatnManage.getOccrrncYear());
-				indvdlYrycManage.setUsid(vcatnManage.getApplcntId());
-				updtIndvdlYrycManage(indvdlYrycManage);
+				vcatnManageDAO.insertVcatnManage(vcatnManageVO);
+				VcatnManageVO indvdlYrycVO = new VcatnManageVO();
+				indvdlYrycVO.setUseYrycCo(iUseYrycCo + iCountYryc);
+				indvdlYrycVO.setRemndrYrycCo(iRemndrYrycCo - iCountYryc);
+				indvdlYrycVO.setLastUpdusrId(vcatnManageVO.getApplcntId());
+				indvdlYrycVO.setOccrrncYear(vcatnManageVO.getOccrrncYear());
+				indvdlYrycVO.setUsid(vcatnManageVO.getApplcntId());
+				updtIndvdlYrycManage(indvdlYrycVO);
 				return "01";
 			}
 		}
 		// 휴가구분이 반차인 경우
-		else if ("02".equals(vcatnManage.getVcatnSe())) {
+		else if ("02".equals(vcatnManageVO.getVcatnSe())) {
 
 			// 연차 휴가 연도 체크
-			if (!getVcatnYearSE(vcatnManage)) {
+			if (!getVcatnYearSE(vcatnManageVO)) {
 				return "09";
 			}
-			iCountYryc = getDateCalc(vcatnManage.getBgnde(), vcatnManage.getBgnde()); //반차는 시작일자 종료일자 동일함. 시작일자로만 체크
+			iCountYryc = getDateCalc(vcatnManageVO.getBgnde(), vcatnManageVO.getBgnde()); // 반차는 시작일자 종료일자 동일함. 시작일자로만 체크
 			if (iCountYryc == 0) {
-				return "99"; //연차설정오류
+				return "99"; // 연차설정오류
 			} else if ((iRemndrYrycCo - 0.5) < 0) {
 				return "03";
 			} else {
-				vcatnManageDAO.insertVcatnManage(vcatnManage);
-				IndvdlYrycManage indvdlYrycManage = new IndvdlYrycManage();
-				indvdlYrycManage.setUseYrycCo(iUseYrycCo + 0.5);
-				indvdlYrycManage.setRemndrYrycCo(iRemndrYrycCo - 0.5);
-				indvdlYrycManage.setLastUpdusrId(vcatnManage.getApplcntId());
-				indvdlYrycManage.setOccrrncYear(vcatnManage.getOccrrncYear());
-				indvdlYrycManage.setUsid(vcatnManage.getApplcntId());
-				updtIndvdlYrycManage(indvdlYrycManage);
+				vcatnManageDAO.insertVcatnManage(vcatnManageVO);
+				VcatnManageVO indvdlYrycVO = new VcatnManageVO();
+				indvdlYrycVO.setUseYrycCo(iUseYrycCo + 0.5);
+				indvdlYrycVO.setRemndrYrycCo(iRemndrYrycCo - 0.5);
+				indvdlYrycVO.setLastUpdusrId(vcatnManageVO.getApplcntId());
+				indvdlYrycVO.setOccrrncYear(vcatnManageVO.getOccrrncYear());
+				indvdlYrycVO.setUsid(vcatnManageVO.getApplcntId());
+				updtIndvdlYrycManage(indvdlYrycVO);
 
 				return "01";
 			}
 		} else {
-			vcatnManageDAO.insertVcatnManage(vcatnManage);
+			vcatnManageDAO.insertVcatnManage(vcatnManageVO);
 			return "01";
 		}
 	}
 
 	/**
 	 * 기 등록된 휴가관리정보를 수정한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * 
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	public String updtVcatnManage(VcatnManage vcatnManage, VcatnManageVO vcatnManageVO) throws Exception {
+	public String updtVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
 		int iTemp = 0;
 		String sTempMessage = null;
-		String sTempApplcntId = vcatnManage.getApplcntId();
-		String sTempVcatnSe = vcatnManage.getVcatnSe();
-		String sTempBgnde = vcatnManage.getBgnde();
-		String sTempEndde = vcatnManage.getEndde();
+		String sTempApplcntId = vcatnManageVO.getApplcntId();
+		String sTempVcatnSe = vcatnManageVO.getVcatnSe();
+		String sTempBgnde = vcatnManageVO.getBgnde();
+		String sTempEndde = vcatnManageVO.getEndde();
 
 		/* 삭제처리 */
-		vcatnManage.setApplcntId(vcatnManageVO.getApplcntIdKey());
-		vcatnManage.setVcatnSe(vcatnManageVO.getVcatnSeKey());
-		vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgndeKey()));
-		vcatnManage.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEnddeKey()));
+		VcatnManageVO deleteVO = new VcatnManageVO();
+		deleteVO.setApplcntId(vcatnManageVO.getApplcntIdKey());
+		deleteVO.setVcatnSe(vcatnManageVO.getVcatnSeKey());
+		deleteVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgndeKey()));
+		deleteVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEnddeKey()));
 
-		deleteVcatnManage(vcatnManage);
+		deleteVcatnManage(deleteVO);
 		/* 등록처리 */
-		vcatnManage.setApplcntId(sTempApplcntId);
-		vcatnManage.setVcatnSe(sTempVcatnSe);
-		vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(sTempBgnde));
-		vcatnManage.setEndde(EgovStringUtil.removeMinusChar(sTempEndde));
-		if (vcatnManage.getSanctnerId() != null) {
-			vcatnManage.setConfmAt("A");
+		vcatnManageVO.setApplcntId(sTempApplcntId);
+		vcatnManageVO.setVcatnSe(sTempVcatnSe);
+		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(sTempBgnde));
+		String enddeNormalized = EgovStringUtil.removeMinusChar(sTempEndde);
+		// 반차(02)는 종료일자=시작일자. endde가 비거나 짧으면 bgnde로 통일
+		if ("02".equals(vcatnManageVO.getVcatnSe()) && (enddeNormalized == null || enddeNormalized.length() < 8)) {
+			enddeNormalized = vcatnManageVO.getBgnde();
+		}
+		vcatnManageVO.setEndde(enddeNormalized);
+		if (vcatnManageVO.getSanctnerId() != null) {
+			vcatnManageVO.setConfmAt("A");
 		}
 
-		vcatnManageVO.setSearchKeyword(vcatnManage.getBgnde());
-		//시작일자  포함여부
+		vcatnManageVO.setSearchKeyword(vcatnManageVO.getBgnde());
+		// 시작일자 포함여부
 		iTemp = selectVcatnManageDplctAt(vcatnManageVO);
-		vcatnManageVO.setSearchKeyword(vcatnManage.getEndde());
-		//종료일자  포함여부
+		vcatnManageVO.setSearchKeyword(vcatnManageVO.getEndde());
+		// 종료일자 포함여부
 		iTemp += selectVcatnManageDplctAt(vcatnManageVO);
 
 		if (iTemp == 0) {
-			sTempMessage = insertVcatnManage(vcatnManage, vcatnManageVO);
+			sTempMessage = insertVcatnManage(vcatnManageVO);
 			LOGGER.info("updtVcatnManage 4:" + sTempMessage);
 			return sTempMessage;
 		} else {
@@ -239,74 +279,95 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 			return sTempMessage;
 		}
 		/*
-		    	vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(vcatnManage.getBgnde()));
-		    	vcatnManage.setEndde(EgovStringUtil.removeMinusChar(vcatnManage.getEndde()));
-				vcatnManage.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManage.getReqstDe()));
-				vcatnManageDAO.updtVcatnManage(vcatnManage);
-
-				 return "01";
-		*/
+		 * vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(vcatnManage.getBgnde()));
+		 * vcatnManage.setEndde(EgovStringUtil.removeMinusChar(vcatnManage.getEndde()));
+		 * vcatnManage.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManage.getReqstDe(
+		 * ))); vcatnManageDAO.updtVcatnManage(vcatnManage);
+		 * 
+		 * return "01";
+		 */
 	}
 
 	/**
 	 * 기 등록된 휴가관리정보를 삭제한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * 
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	@SuppressWarnings("unused")
-	public void deleteVcatnManage(VcatnManage vcatnManage) throws Exception {
-		/*
-		 * 휴가 승인처리  삭제 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManage);
-		 */
-		vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(vcatnManage.getBgnde()));
-		vcatnManage.setEndde(EgovStringUtil.removeMinusChar(vcatnManage.getEndde()));
-		vcatnManage.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManage.getReqstDe()));
-		infrmlSanctnService.deleteInfrmlSanctn(converToInfrmlSanctnObject(vcatnManage));
+	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = EgovAuthorizationHelper.assertLoginUser();
+		LOGGER.debug("getUserSe={}", _loginVO.getUserSe());
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null) {
+			throw new EgovBizException("인증 정보가 없습니다.");
+		}
+		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
+		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
+		vcatnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManageVO.getReqstDe()));
+		VcatnManageVO existing = vcatnManageDAO.selectVcatnManage(vcatnManageVO);
+		if (existing == null) {
+			throw new EgovBizException("권한이 없습니다.");
+		}
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!loginVO.getUniqId().equals(existing.getApplcntId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new EgovBizException("권한이 없습니다.");
+			}
+		}
+		/*
+		 * 휴가 승인처리 삭제 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManageVO);
+		 */
+		infrmlSanctnService.deleteInfrmlSanctn(converToInfrmlSanctnObject(vcatnManageVO));
 
 		// 개인연차조회
-		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManage.getApplcntId());
-		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차개수
-		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차개수
+		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
+		if (vcatnManageVO1 == null) {
+			vcatnManageVO1 = new VcatnManageVO();
+		}
+		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
+		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
 		/*
 		 * 시작일자 와 종료일자 사이의 일자 개수 - 공휴일 or 주말 제외
 		 */
 		// 휴가구분이 연차인 경우
-		if ("01".equals(vcatnManage.getVcatnSe())) {
+		if ("01".equals(vcatnManageVO.getVcatnSe())) {
 
-			iCountYryc = getDateCalc(vcatnManage.getBgnde(), vcatnManage.getEndde());
-			IndvdlYrycManage indvdlYrycManage = new IndvdlYrycManage();
-			indvdlYrycManage.setUseYrycCo(iUseYrycCo - iCountYryc);
-			indvdlYrycManage.setRemndrYrycCo(iRemndrYrycCo + iCountYryc);
-			indvdlYrycManage.setLastUpdusrId(vcatnManage.getApplcntId());
-			indvdlYrycManage.setOccrrncYear(vcatnManage.getOccrrncYear());
-			indvdlYrycManage.setUsid(vcatnManage.getApplcntId());
+			iCountYryc = getDateCalc(vcatnManageVO.getBgnde(), vcatnManageVO.getEndde());
+			VcatnManageVO indvdlYrycVO = new VcatnManageVO();
+			indvdlYrycVO.setUseYrycCo(iUseYrycCo - iCountYryc);
+			indvdlYrycVO.setRemndrYrycCo(iRemndrYrycCo + iCountYryc);
+			indvdlYrycVO.setLastUpdusrId(vcatnManageVO.getApplcntId());
+			indvdlYrycVO.setOccrrncYear(vcatnManageVO.getOccrrncYear());
+			indvdlYrycVO.setUsid(vcatnManageVO.getApplcntId());
 
-			updtIndvdlYrycManage(indvdlYrycManage);
-			vcatnManageDAO.deleteVcatnManage(vcatnManage);
+			updtIndvdlYrycManage(indvdlYrycVO);
+			vcatnManageDAO.deleteVcatnManage(vcatnManageVO);
 
 		}
 		// 휴가구분이 반차인 경우
-		else if ("02".equals(vcatnManage.getVcatnSe())) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+		else if ("02".equals(vcatnManageVO.getVcatnSe())) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 
-			IndvdlYrycManage indvdlYrycManage = new IndvdlYrycManage();
-			indvdlYrycManage.setUseYrycCo(iUseYrycCo - 0.5);
-			indvdlYrycManage.setRemndrYrycCo(iRemndrYrycCo + 0.5);
-			indvdlYrycManage.setLastUpdusrId(vcatnManage.getApplcntId());
-			indvdlYrycManage.setOccrrncYear(vcatnManage.getOccrrncYear());
-			indvdlYrycManage.setUsid(vcatnManage.getApplcntId());
-			updtIndvdlYrycManage(indvdlYrycManage);
-			vcatnManageDAO.deleteVcatnManage(vcatnManage);
+			VcatnManageVO indvdlYrycVO = new VcatnManageVO();
+			indvdlYrycVO.setUseYrycCo(iUseYrycCo - 0.5);
+			indvdlYrycVO.setRemndrYrycCo(iRemndrYrycCo + 0.5);
+			indvdlYrycVO.setLastUpdusrId(vcatnManageVO.getApplcntId());
+			indvdlYrycVO.setOccrrncYear(vcatnManageVO.getOccrrncYear());
+			indvdlYrycVO.setUsid(vcatnManageVO.getApplcntId());
+			updtIndvdlYrycManage(indvdlYrycVO);
+			vcatnManageDAO.deleteVcatnManage(vcatnManageVO);
 
 		} else {
-			vcatnManageDAO.deleteVcatnManage(vcatnManage);
+			vcatnManageDAO.deleteVcatnManage(vcatnManageVO);
 		}
 	}
 
 	/**
 	 * 휴가일자 중복여부 체크
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int
 	 * @exception Exception
@@ -319,6 +380,7 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	/*** 승인처리관련 ***/
 	/**
 	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록을 조회한다.
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return List - 휴가관리 목록
 	 */
@@ -339,6 +401,7 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	/**
 	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 개수를 조회한다.
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int - 휴가관리 카운트 수
 	 */
@@ -349,77 +412,98 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	/**
 	 * 신청된 휴가를 승인처리한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * 
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	public void updtVcatnManageConfm(VcatnManage vcatnManage) throws Exception {
+	public void updtVcatnManageConfm(VcatnManageVO vcatnManageVO) throws Exception {
 		InfrmlSanctn infrmlSanctn = new InfrmlSanctn();
-		vcatnManage.setBgnde(EgovStringUtil.removeMinusChar(vcatnManage.getBgnde()));
-		vcatnManage.setEndde(EgovStringUtil.removeMinusChar(vcatnManage.getEndde()));
-		vcatnManage.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManage.getReqstDe()));
+		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
+		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
+		vcatnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManageVO.getReqstDe()));
 
-		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		if ("C".equals(vcatnManage.getConfmAt())) {
+		// 지정된 승인권자 본인 또는 관리자만 승인·반려 가능하도록 소유권 검증 (deleteVcatnManage와 동일)
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null) {
+			throw new EgovBizException("인증 정보가 없습니다.");
+		}
+		VcatnManageVO existing = vcatnManageDAO.selectVcatnManage(vcatnManageVO);
+		if (existing == null) {
+			throw new EgovBizException("권한이 없습니다.");
+		}
+		if (!loginVO.getUniqId().equals(existing.getSanctnerId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new EgovBizException("권한이 없습니다.");
+			}
+		}
+
+		// KISA 보안약점 조치 (2018-10-29, 윤창원)
+		if ("C".equals(vcatnManageVO.getConfmAt())) {
 			/*
 			 * 승인처리
 			 */
-			infrmlSanctn = infrmlSanctnService.updateInfrmlSanctnConfm(converToInfrmlSanctnObject(vcatnManage));
+			infrmlSanctn = infrmlSanctnService.updateInfrmlSanctnConfm(converToInfrmlSanctnObject(vcatnManageVO));
 
-			vcatnManage.setSanctnDt(infrmlSanctn.getSanctnDt());
-			vcatnManage.setConfmAt(infrmlSanctn.getConfmAt());
+			vcatnManageVO.setSanctnDt(infrmlSanctn.getSanctnDt());
+			vcatnManageVO.setConfmAt(infrmlSanctn.getConfmAt());
 
-			vcatnManageDAO.updtVcatnManageConfm(vcatnManage);
+			vcatnManageDAO.updtVcatnManageConfm(vcatnManageVO);
 
-		} else if ("R".equals(vcatnManage.getConfmAt())) {
+		} else if ("R".equals(vcatnManageVO.getConfmAt())) {
 			/*
 			 * 반려처리
 			 */
-			infrmlSanctn = infrmlSanctnService.updateInfrmlSanctnReturn(converToInfrmlSanctnObject(vcatnManage));
-			vcatnManage.setSanctnDt(infrmlSanctn.getSanctnDt());
-			vcatnManage.setConfmAt(infrmlSanctn.getConfmAt());
+			infrmlSanctn = infrmlSanctnService.updateInfrmlSanctnReturn(converToInfrmlSanctnObject(vcatnManageVO));
+			vcatnManageVO.setSanctnDt(infrmlSanctn.getSanctnDt());
+			vcatnManageVO.setConfmAt(infrmlSanctn.getConfmAt());
 
 			// 연차 반환처리
 			// 개인연차조회
-			VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManage.getApplcntId());
-			double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차개수
-			double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차개수
+			VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
+			if (vcatnManageVO1 == null) {
+				vcatnManageVO1 = new VcatnManageVO();
+			}
+			double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); // 연차테이블의 사용 연차개수
+			double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); // 연차테이블의 잔여 연차개수
 			double iCountYryc = 0.0;
 
 			/*
 			 * 시작일자 와 종료일자 사이의 일자 개수 - 공휴일 or 주말 제외
 			 */
 			// 휴가구분이 연차인 경우
-			if ("01".equals(vcatnManage.getVcatnSe())) {
+			if ("01".equals(vcatnManageVO.getVcatnSe())) {
 
-				iCountYryc = getDateCalc(vcatnManage.getBgnde(), vcatnManage.getEndde());
+				iCountYryc = getDateCalc(vcatnManageVO.getBgnde(), vcatnManageVO.getEndde());
 
-				IndvdlYrycManage indvdlYrycManage = new IndvdlYrycManage();
-				indvdlYrycManage.setUseYrycCo(iUseYrycCo - iCountYryc);
-				indvdlYrycManage.setRemndrYrycCo(iRemndrYrycCo + iCountYryc);
-				indvdlYrycManage.setLastUpdusrId(vcatnManage.getApplcntId());
-				indvdlYrycManage.setOccrrncYear(vcatnManage.getOccrrncYear());
-				indvdlYrycManage.setUsid(vcatnManage.getApplcntId());
+				VcatnManageVO indvdlYrycVO = new VcatnManageVO();
+				indvdlYrycVO.setUseYrycCo(iUseYrycCo - iCountYryc);
+				indvdlYrycVO.setRemndrYrycCo(iRemndrYrycCo + iCountYryc);
+				indvdlYrycVO.setLastUpdusrId(vcatnManageVO.getApplcntId());
+				indvdlYrycVO.setOccrrncYear(vcatnManageVO.getOccrrncYear());
+				indvdlYrycVO.setUsid(vcatnManageVO.getApplcntId());
 
-				updtIndvdlYrycManage(indvdlYrycManage);
+				updtIndvdlYrycManage(indvdlYrycVO);
 			}
 			// 휴가구분이 반차인 경우
-			else if ("02".equals(vcatnManage.getVcatnSe())) {
+			else if ("02".equals(vcatnManageVO.getVcatnSe())) {
 
-				IndvdlYrycManage indvdlYrycManage = new IndvdlYrycManage();
-				indvdlYrycManage.setUseYrycCo(iUseYrycCo - 0.5);
-				indvdlYrycManage.setRemndrYrycCo(iRemndrYrycCo + 0.5);
-				indvdlYrycManage.setLastUpdusrId(vcatnManage.getApplcntId());
-				indvdlYrycManage.setOccrrncYear(vcatnManage.getOccrrncYear());
-				indvdlYrycManage.setUsid(vcatnManage.getApplcntId());
-				updtIndvdlYrycManage(indvdlYrycManage);
+				VcatnManageVO indvdlYrycVO = new VcatnManageVO();
+				indvdlYrycVO.setUseYrycCo(iUseYrycCo - 0.5);
+				indvdlYrycVO.setRemndrYrycCo(iRemndrYrycCo + 0.5);
+				indvdlYrycVO.setLastUpdusrId(vcatnManageVO.getApplcntId());
+				indvdlYrycVO.setOccrrncYear(vcatnManageVO.getOccrrncYear());
+				indvdlYrycVO.setUsid(vcatnManageVO.getApplcntId());
+				updtIndvdlYrycManage(indvdlYrycVO);
 			}
-			vcatnManageDAO.updtVcatnManageConfm(vcatnManage);
+			vcatnManageDAO.updtVcatnManageConfm(vcatnManageVO);
 		}
 	}
 
 	/*** 연차관련 ***/
 	/**
 	 * 개인별 연차관리의 상세정보를 조회한다.
+	 * 
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return VcatnManageVO - 휴가관리 VO
 	 */
@@ -438,17 +522,19 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	/**
 	 * 개인별 연차를 수정 처리한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * 
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
 	@Override
-	public void updtIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
-		vcatnManageDAO.updtIndvdlYrycManage(indvdlYrycManage);
+	public void updtIndvdlYrycManage(VcatnManageVO vcatnManageVO) throws Exception {
+		vcatnManageDAO.updtIndvdlYrycManage(vcatnManageVO);
 	}
 
 	/****** 일수 계산 ******/
 	/**
 	 * 해당일자의 날짜사이 일수를 구한다
-	 * @param  String fromDay, String toDay
+	 * 
+	 * @param String fromDay, String toDay
 	 * @return double
 	 * @exception Exception
 	 */
@@ -469,36 +555,49 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		Calendar endDay = Calendar.getInstance();
 		endDay.set(toYear, toMonth, toDate);
 
-		double Count = 0.0;
+		double count = 0.0;
 
 		// 시작일자 부터 종료일자까지 while
 		while (!startDay.after(endDay)) {
-			// 토요일, 일요일은  일수 count에서 제외
+			// 토요일, 일요일은 일수 count에서 제외
 			if (startDay.get(Calendar.DAY_OF_WEEK) != 1 && startDay.get(Calendar.DAY_OF_WEEK) != 7) {
-				Count++;
+				count++;
 			}
 			startDay.add(Calendar.DATE, 1);
 		}
 
-		return Count;
+		return count;
 	}
 
 	/**
 	 * 휴가일자 해당연차발생연도에 속하는지 여부 체크
-	 * @param  VcatnManage vcatnManage
+	 * 
+	 * @param VcatnManageVO vcatnManageVO
 	 * @return boolean
 	 * @exception Exception
 	 */
-	private boolean getVcatnYearSE(VcatnManage vcatnManage) throws Exception {
+	private boolean getVcatnYearSE(VcatnManageVO vcatnManageVO) throws Exception {
 
 		boolean bRetrunValue = false;
-		java.util.Calendar cal = java.util.Calendar.getInstance();
+		String bgnde = vcatnManageVO.getBgnde();
+		String endde = vcatnManageVO.getEndde();
+		// 시작일자 4자리(연도) 이상 필요
+		if (bgnde == null || bgnde.length() < 4) {
+			return false;
+		}
+		// 종료일자: 반차(02)는 시작일자와 동일하므로 endde가 비거나 짧으면 bgnde 사용
+		if (endde == null || endde.length() < 4) {
+			if ("02".equals(vcatnManageVO.getVcatnSe())) {
+				endde = bgnde;
+			} else {
+				return false;
+			}
+		}
 
+		java.util.Calendar cal = java.util.Calendar.getInstance();
 		int iYear = cal.get(java.util.Calendar.YEAR);
-		// 시작일자
-		int iYearBgnVcatn = Integer.parseInt(vcatnManage.getBgnde().substring(0, 4));
-		// 종료일자
-		int iYearEndVcatn = Integer.parseInt(vcatnManage.getEndde().substring(0, 4));
+		int iYearBgnVcatn = Integer.parseInt(bgnde.substring(0, 4));
+		int iYearEndVcatn = Integer.parseInt(endde.substring(0, 4));
 		if (iYear == iYearBgnVcatn && iYear == iYearEndVcatn) {
 			bRetrunValue = true;
 		}
@@ -506,26 +605,28 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * VcatnManage model을 InfrmlSanctn model로 변환한다.
-	 * @param VcatnManage
+	 * VcatnManageVO를 InfrmlSanctn model로 변환한다.
+	 * 
+	 * @param VcatnManageVO
 	 * @return InfrmlSanctn
-	 * @param vcatnManage
+	 * @param vcatnManageVO
 	 */
-	private InfrmlSanctn converToInfrmlSanctnObject(VcatnManage vcatnManage) throws Exception {
+	private InfrmlSanctn converToInfrmlSanctnObject(VcatnManageVO vcatnManageVO) throws Exception {
 		InfrmlSanctn infrmlSanctn = new InfrmlSanctn();
 		infrmlSanctn.setJobSeCode("003"); // 업무구분코드 (공통코드 COM75)
-		infrmlSanctn.setApplcntId(vcatnManage.getApplcntId()); // 신청자ID
-		infrmlSanctn.setReqstDe(vcatnManage.getReqstDe()); // 신청일자
-		infrmlSanctn.setSanctnerId(vcatnManage.getSanctnerId()); // 결재자ID
-		infrmlSanctn.setConfmAt(vcatnManage.getConfmAt()); // 승인구분
-		infrmlSanctn.setSanctnDt(vcatnManage.getSanctnDt()); // 결재일시
-		infrmlSanctn.setReturnResn(vcatnManage.getReturnResn()); // 반려사유
-		infrmlSanctn.setFrstRegisterId(vcatnManage.getFrstRegisterId());
-		infrmlSanctn.setFrstRegisterPnttm(vcatnManage.getFrstRegisterId());
-		infrmlSanctn.setLastUpdusrId(vcatnManage.getLastUpdusrId());
-		infrmlSanctn.setLastUpdusrPnttm(vcatnManage.getLastUpdusrPnttm());
-		infrmlSanctn.setInfrmlSanctnId(vcatnManage.getInfrmlSanctnId());// 약식결재ID
+		infrmlSanctn.setApplcntId(vcatnManageVO.getApplcntId()); // 신청자ID
+		infrmlSanctn.setReqstDe(vcatnManageVO.getReqstDe()); // 신청일자
+		infrmlSanctn.setSanctnerId(vcatnManageVO.getSanctnerId()); // 결재자ID
+		infrmlSanctn.setConfmAt(vcatnManageVO.getConfmAt()); // 승인구분
+		infrmlSanctn.setSanctnDt(vcatnManageVO.getSanctnDt()); // 결재일시
+		infrmlSanctn.setReturnResn(vcatnManageVO.getReturnResn()); // 반려사유
+		infrmlSanctn.setFrstRegisterId(vcatnManageVO.getFrstRegisterId());
+		infrmlSanctn.setFrstRegisterPnttm(vcatnManageVO.getFrstRegisterId());
+		infrmlSanctn.setLastUpdusrId(vcatnManageVO.getLastUpdusrId());
+		infrmlSanctn.setLastUpdusrPnttm(vcatnManageVO.getLastUpdusrPnttm());
+		infrmlSanctn.setInfrmlSanctnId(vcatnManageVO.getInfrmlSanctnId());// 약식결재ID
 		return infrmlSanctn;
 	}
+
 
 }

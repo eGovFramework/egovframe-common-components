@@ -4,47 +4,53 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.SessionVO;
+import egovframework.com.cmm.exception.EgovAccessDeniedException;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
-
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
- * @Class Name : EgovImageProcessController.java
- * @Description :
- * @Modification Information
- *
- *    수정일       	      수정자                수정내용
- *    ----------   ---------     -------------------
- *    2009.04.02      이삼섭			 최초생성
- *    2014.03.31      유지보수		 fileSn 오류수정
- *    2018.08.31      이정은		     MimeType 중복설정 제거
- *    2019.11.29      신용호	         KISA 보안약점 조치 : HTTP응답분할(HTTP_Response_Splitting,CRLF)취약점 조치
- *
+ * EgovImageProcessController.java
+ * 
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 4. 2.
  * @version
  * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.02  이삼섭          최초생성
+ *   2014.03.31  유지보수         fileSn 오류수정
+ *   2018.08.31  이정은          MimeType 중복설정 제거
+ *   2019.11.29  신용호          KISA 보안약점 조치 : HTTP응답분할(HTTP_Response_Splitting,CRLF)취약점 조치
+ *   2025.06.03  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙), CloseResource(리소스 닫기), AssignmentInOperand(피연산자의 할당)
+ *
+ *      </pre>
  */
 @SuppressWarnings("serial")
 @Controller
@@ -53,97 +59,107 @@ public class EgovImageProcessController extends HttpServlet {
 	/** 암호화서비스 */
 	@Resource(name = "egovEnvCryptoService")
 	EgovEnvCryptoService cryptoService;
-	
-    @Resource(name = "EgovFileMngService")
-    private EgovFileMngService fileService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EgovImageProcessController.class);
+	@Resource(name = "EgovFileMngService")
+	private EgovFileMngService fileService;
 
-    /**
-     * 첨부된 이미지에 대한 미리보기 기능을 제공한다.
-     *
-     * @param atchFileId
-     * @param fileSn
-     * @param sessionVO
-     * @param model
-     * @param response
-     * @throws Exception
-     */
-    @RequestMapping("/cmm/fms/getImage.do")
-    public void getImageInf(SessionVO sessionVO, ModelMap model, @RequestParam Map<String, Object> commandMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	/** getImage.do가 인라인(image/*)으로 제공할 수 있는 안전한 이미지 확장자 화이트리스트 */
+	private static final List<String> SAFE_INLINE_IMAGE_EXTENSIONS =
+			Arrays.asList("jpg", "jpeg", "png", "gif", "bmp", "webp");
 
-		// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
-    	String param_atchFileId = (String) commandMap.get("atchFileId");
-    	param_atchFileId = param_atchFileId.replaceAll(" ", "+");
+	/**
+	 * 첨부된 이미지에 대한 미리보기 기능을 제공한다.
+	 *
+	 * @param atchFileId
+	 * @param fileSn
+	 * @param sessionVO
+	 * @param model
+	 * @param response
+	 */
+	@RequestMapping("/cmm/fms/getImage.do")
+	public void getImageInf(SessionVO sessionVO, ModelMap model, @RequestParam Map<String, Object> commandMap,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new EgovAccessDeniedException("인증 정보가 없습니다.");
+		}
+
+		// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추
+		// 불가능하도록 조치
+		String param_atchFileId = (String) commandMap.get("atchFileId");
+		if (param_atchFileId == null || param_atchFileId.isEmpty()) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
+		param_atchFileId = param_atchFileId.replaceAll(" ", "+");
 		byte[] decodedBytes = Base64.getDecoder().decode(param_atchFileId);
 		String decodedString = cryptoService.decrypt(new String(decodedBytes));
+		if (decodedString == null || decodedString.isEmpty()) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
 		String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
 		String decodedFileId = StringUtils.substringAfter(decodedString, "|");
 
-		String fileSn = (String)commandMap.get("fileSn");
+		String fileSn = (String) commandMap.get("fileSn");
 
 		String sessionId = request.getSession().getId();
 
 		boolean isSameSessionId = StringUtils.equals(decodedSessionId, sessionId);
 
 		if (!isSameSessionId) {
-			throw new Exception();
+			throw new EgovAccessDeniedException("권한이 없습니다.");
 		}
-		
+
 		FileVO vo = new FileVO();
 
 		vo.setAtchFileId(decodedFileId);
 		vo.setFileSn(fileSn);
 
-		//------------------------------------------------------------
+		// ------------------------------------------------------------
 		// fileSn이 없는 경우 마지막 파일 참조
-		//------------------------------------------------------------
+		// ------------------------------------------------------------
 		if (fileSn == null || fileSn.equals("")) {
 			int newMaxFileSN = fileService.getMaxFileSN(vo);
 			vo.setFileSn(Integer.toString(newMaxFileSN - 1));
 		}
-		//------------------------------------------------------------
+		// ------------------------------------------------------------
 
 		FileVO fvo = fileService.selectFileInf(vo);
+		if (fvo == null) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
+		// 2026.07.13 KISA 보안취약점 조치 - fileSn을 atchFileId에 바인딩
+		if (fvo.getAtchFileId() == null || !fvo.getAtchFileId().equals(decodedFileId)) {
+			throw new EgovAccessDeniedException("권한이 없습니다.");
+		}
 
-		//String fileLoaction = fvo.getFileStreCours() + fvo.getStreFileNm();
+		// String fileLoaction = fvo.getFileStreCours() + fvo.getStreFileNm();
 
-		File file = null;
-		FileInputStream fis = null;
-
-		BufferedInputStream in = null;
-		ByteArrayOutputStream bStream = null;
-		
 		String fileStreCours = EgovWebUtil.filePathBlackList(fvo.getFileStreCours());
 		String streFileNm = EgovWebUtil.filePathBlackList(fvo.getStreFileNm());
+		File file = new File(fileStreCours, streFileNm);
 
-		try {
-		    file = new File(fileStreCours, streFileNm);
-		    fis = new FileInputStream(file);
+		ByteArrayOutputStream bStream = null;
 
-		    in = new BufferedInputStream(fis);
-		    bStream = new ByteArrayOutputStream();
+		try (FileInputStream fis = new FileInputStream(file); BufferedInputStream in = new BufferedInputStream(fis);) {
+			bStream = new ByteArrayOutputStream();
 
-		    int imgByte;
-		    while ((imgByte = in.read()) != -1) {
-		    	bStream.write(imgByte);
-		    }
+			FileCopyUtils.copy(in, bStream);
 
-			String type = "";
+			String extsn = fvo.getFileExtsn() == null ? "" : fvo.getFileExtsn().toLowerCase();
 
-			if (fvo.getFileExtsn() != null && !"".equals(fvo.getFileExtsn())) {
-			    if ("jpg".equals(fvo.getFileExtsn().toLowerCase())) {
-				type = "image/jpeg";
-			    } else {
-			    	type = "image/" + fvo.getFileExtsn().toLowerCase();
-			    }
-			    /*type = "image/" + fvo.getFileExtsn().toLowerCase();*/
-
+			// 화이트리스트에 없는 확장자(svg, html 등)는 브라우저가 인라인으로 해석해
+			// 저장형 XSS로 이어질 수 있으므로, image/* 콘텐츠 타입 대신 다운로드(attachment)로 처리한다.
+			if (!SAFE_INLINE_IMAGE_EXTENSIONS.contains(extsn)) {
+				response.setHeader("Content-Type", "application/octet-stream");
+				response.setHeader("Content-Disposition", "attachment");
+				response.setHeader("X-Content-Type-Options", "nosniff");
 			} else {
-				LOGGER.debug("Image fileType is null.");
+				String type = "jpg".equals(extsn) ? "image/jpeg" : "image/" + extsn;
+				response.setHeader("Content-Type", EgovWebUtil.removeCRLF(type));
+				response.setHeader("X-Content-Type-Options", "nosniff");
 			}
 
-			response.setHeader("Content-Type", EgovWebUtil.removeCRLF(type));
 			response.setContentLength(bStream.size());
 
 			bStream.writeTo(response.getOutputStream());
@@ -151,8 +167,11 @@ public class EgovImageProcessController extends HttpServlet {
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 
+		} catch (IOException e) {
+			throw new BaseRuntimeException(e);
 		} finally {
-			EgovResourceCloseHelper.close(bStream, in, fis);
+			EgovResourceCloseHelper.close(bStream);
 		}
-    }
+	}
+
 }
