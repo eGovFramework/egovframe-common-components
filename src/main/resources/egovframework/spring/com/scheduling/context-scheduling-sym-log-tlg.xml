@@ -16,7 +16,7 @@
 		<property name="repeatInterval" value="3600000" />
 	</bean>
 
-	<!-- 송수신 로그 스케줄러 -->
+	<!-- 송수신 로그 요약 스케줄러 -->
 	<bean id="trsmrcvScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>

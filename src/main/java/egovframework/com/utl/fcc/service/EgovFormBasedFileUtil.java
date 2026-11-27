@@ -272,4 +272,25 @@ public class EgovFormBasedFileUtil {
 
 		return contentTypeWL;
 	}
+
+	/**
+	 * 에디터 이미지의 Content-Type 을 저장 파일명의 확장자로 정한다.
+	 * 업로드 요청이 보낸 Content-Type 은 임의 문자열일 수 있어 이미지 URL 에 암호화해 넣지 않는다
+	 * (넣으면 공용 암호화 키로 임의 평문을 암호화해 주는 통로가 된다). 허용 목록에 없는 확장자는
+	 * viewFile 이 내려주는 기본값과 같은 application/octet-stream 으로 둔다.
+	 *
+	 * @param fileName 서버가 정한 저장 파일명
+	 * @return 허용 목록의 Content-Type 또는 application/octet-stream
+	 */
+	public static String resolveImageContentType(String fileName) {
+		String ext = "";
+		if (fileName != null && fileName.lastIndexOf('.') >= 0) {
+			ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase(java.util.Locale.ROOT);
+		}
+		if ("jpg".equals(ext)) {
+			ext = "jpeg";
+		}
+		String contentType = getContentTypeWL().get(ext);
+		return contentType == null ? "application/octet-stream" : contentType;
+	}
 }

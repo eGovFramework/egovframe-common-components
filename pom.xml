@@ -6,7 +6,7 @@
 	<groupId>egovframework</groupId>
 	<artifactId>egovframe-template-common-components</artifactId>
 	<packaging>war</packaging>
-	<version>5.0.7</version>
+	<version>5.1.0</version>
 	<name>egovframe-template-common-components</name>
 	<url>http://www.egovframe.go.kr</url>
 
@@ -20,13 +20,13 @@
 	<parent>
 		<groupId>org.egovframe.web</groupId>
 		<artifactId>egovframe-web-config-parent</artifactId>
-		<version>5.0.2</version>
+		<version>5.1.0</version>
 	</parent>
 
 	<properties>
-		<!-- DB 가 준비되지 않은 환경에서도 빌드가 되도록 테스트는 기본으로 건너뛴다.
-		     테스트를 돌리려면 -DskipTests=false 를 준다.
-		     DB 의존 테스트(118개)는 테스트 스키마가 적재돼 있어야 하고 -Ptest 가 필요하다. -->
+		<!-- 실행환경 5.1.0 -->
+		<egovframe.rte.version>5.1.0</egovframe.rte.version>
+		<!-- 테스트 기본 생략 (실행: -DskipTests=false, DB 테스트는 -Ptest 추가) -->
 		<skipTests>true</skipTests>
 	</properties>
 
@@ -59,45 +59,15 @@
 	</repositories>
 
 	<dependencies>
-		<!-- 실행환경 라이브러리 -->
-
-		<!--
-			mybatis를 사용하는 데 jdk1.5로 컴파일 할 경우 아래와 같이 변경해 주시기 바랍니다.
-			(3.2.X 버전에서 부터 jdk1.6으로 컴파일 되어 발생하는 현상)
-			<dependency>
-				<groupId>org.egovframe.rte</groupId>
-				<artifactId>org.egovframe.rte.psl.dataaccess</artifactId>
-				<version>${egovframe.rte.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>mybatis</artifactId>
-						<groupId>org.mybatis</groupId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>org.mybatis</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>3.5.16</version>
-			</dependency>
-		-->
+		<!-- 실행환경 -->
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>egovframe-rte-psl-dataaccess</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>egovframe-rte-fdl-idgnr</artifactId>
 		</dependency>
-
-		<!--
-			JBoss의 경우는 <body-context>부분을 empty로 수정하여 적용하시면 되며,
-			pom.xml을 아래와 같이 적용하시면 수정된 jar를 참조하실 수 있습니다.
-			(기존 org.egovframe.rte.ptl.mvc dependency에 내부적으로 참조되고 있어,
-			해당 부분을 exclude 처리해야 함)
-			아래 주석을 해제하시면 됩니다.
-		-->
 		<dependency>
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>egovframe-rte-ptl-mvc</artifactId>
@@ -130,10 +100,8 @@
 			<groupId>org.egovframe.rte</groupId>
 			<artifactId>egovframe-rte-ptl-reactive</artifactId>
 		</dependency>
-		<!-- 실행환경 라이브러리 끝 -->
 
-		<!-- Logging -->
-		<!-- CVE-2025-68161: 취약점 보완용 업데이트 -->
+		<!-- 로깅 (log4j-core: CVE-2025-68161 대응) -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
@@ -154,7 +122,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.googlecode.log4jdbc</groupId>
 			<artifactId>log4jdbc</artifactId>
@@ -165,6 +132,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- 커넥션 풀 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
@@ -175,31 +144,21 @@
 			<version>6.3.3</version>
 		</dependency>
 
-		<!-- Jakarta -->
+		<!-- Servlet / JSP / JSTL -->
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- 테스트 환경(test classpath)에서는 반드시 Jakarta Servlet 6.0 API를 사용 -->
-		<!-- <dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<version>6.0.0</version>
-		</dependency> -->
-
-		<!-- JSP 구문을 지원하기 위한 표준 사양 -->
 		<dependency>
 			<groupId>jakarta.servlet.jsp</groupId>
 			<artifactId>jakarta.servlet.jsp-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<!-- JSTL 태그의 표준 사양 -->
 		<dependency>
 			<groupId>jakarta.servlet.jsp.jstl</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
 		</dependency>
-		<!-- JSTL 태그가 실제로 작동하게 하는 구현 -->
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>jakarta.servlet.jsp.jstl</artifactId>
@@ -210,15 +169,11 @@
 			<artifactId>jasypt</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 		</dependency>
 
-		<!-- Scheduling -->
+		<!-- 스케줄링 -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -229,39 +184,22 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz-jobs</artifactId>
-		</dependency>
-		<!-- Scheduling end-->
 
-		<!-- 공통컴포넌트 시작 -->
+		<!-- 공통컴포넌트 -->
 
-		<!-- Validation 에서 사용 antlr.TokenStream -->
-		<dependency>
-			<groupId>org.antlr</groupId>
-			<artifactId>antlr4</artifactId>
-		</dependency>
-
-		<!-- 우편번호를 위한 라이브러리 -->
-		<dependency>
-			<groupId>oro</groupId>
-			<artifactId>oro</artifactId>
-		</dependency>
-
-		<!-- 요소기술 달력을 위한 라이브러리 -->
+		<!-- 달력 (요소기술) -->
 		<dependency>
 			<groupId>com.ibm.icu</groupId>
 			<artifactId>icu4j</artifactId>
 		</dependency>
 
-		<!-- FTP용 3rd party 라이브러리 -->
+		<!-- FTP -->
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 		</dependency>
 
-		<!-- Email -->
+		<!-- 메일 (jakarta.mail: CVE-2025-7962 대응) -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-email2-jakarta</artifactId>
@@ -270,18 +208,12 @@
 			<groupId>egovframework.com.ems</groupId>
 			<artifactId>sndng-mail</artifactId>
 		</dependency>
-		<!-- CVE-2025-7962: 취약점 보완용 업데이트 -->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
 			<artifactId>jakarta.mail</artifactId>
 		</dependency>
 
-		<!-- LDAP SDK -->
-		<dependency>
-			<groupId>ldapsdk</groupId>
-			<artifactId>ldapsdk</artifactId>
-		</dependency>
-		<!-- PDF변환용 라이브러리 -->
+		<!-- PDF 변환 -->
 		<dependency>
 			<groupId>com.artofsolving</groupId>
 			<artifactId>jodconverter</artifactId>
@@ -297,10 +229,11 @@
 			</exclusions>
 		</dependency>
 
-		<!-- fileupload -->
+		<!-- 파일 업로드 (fileupload2-core: CVE-2025-48976 대응) -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-fileupload2-jakarta-servlet6</artifactId>
+			<version>2.0.0-M5</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>commons-io</artifactId>
@@ -308,7 +241,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- CVE-2025-48976: 취약점 보완용 업데이트 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-fileupload2-core</artifactId>
@@ -321,25 +253,19 @@
 			<artifactId>twitter4j-core</artifactId>
 		</dependency>
 
-		<!-- Ajax -->
+		<!-- Ajax 태그 -->
 		<dependency>
 			<groupId>net.sourceforge.ajaxtags</groupId>
 			<artifactId>ajaxtags-resources</artifactId>
 		</dependency>
 
-		<!-- WYSIWYG Editor -->
+		<!-- 웹에디터 (CKEditor) -->
 		<dependency>
 			<groupId>com.ckeditor</groupId>
 			<artifactId>ckeditor-java-core</artifactId>
 		</dependency>
 
-		<!-- xmlParserAPI -->
-		<dependency>
-			<groupId>org.apache.xmlgraphics</groupId>
-			<artifactId>batik-ext</artifactId>
-		</dependency>
-
-		<!-- oauth2 login -->
+		<!-- OAuth2 로그인 -->
 		<dependency>
 			<groupId>com.github.scribejava</groupId>
 			<artifactId>scribejava-apis</artifactId>
@@ -349,15 +275,7 @@
 			<artifactId>scribejava-core</artifactId>
 		</dependency>
 
-		<!-- Spring MVC
-	        <dependency>
-	            <groupId>org.springframework</groupId>
-	            <artifactId>spring-webmvc</artifactId>
-	            <version>${spring.maven.artifact.version}</version>
-	        </dependency> -->
-
-		<!-- WebSocket Messenger - Spring WebSocket 사용 -->
-		<!-- CVE-2025-41254: 취약점 보완용 업데이트 -->
+		<!-- WebSocket 메신저 (CVE-2025-41254 대응) -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
@@ -366,32 +284,24 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-messaging</artifactId>
 		</dependency>
-
-		<!-- Jakarta WebSocket API (백업용) -->
 		<dependency>
 			<groupId>jakarta.websocket</groupId>
 			<artifactId>jakarta.websocket-api</artifactId>
 		</dependency>
-		<!-- Jakarta WebSocket 서버 구현체 -->
 		<dependency>
 			<groupId>jakarta.websocket</groupId>
 			<artifactId>jakarta.websocket-client-api</artifactId>
 		</dependency>
 
-		<!-- Jakarta JSON Processing API -->
+		<!-- JSON 처리 (parsson: CVE-2023-7272, CVE-2023-4043 대응) -->
 		<dependency>
 			<groupId>jakarta.json</groupId>
 			<artifactId>jakarta.json-api</artifactId>
 		</dependency>
-		<!-- Jakarta JSON Processing Implementation -->
-		<!-- CVE-2023-7272/CVE-2023-4043: 취약점 보완용 업데이트 -->
 		<dependency>
 			<groupId>org.eclipse.parsson</groupId>
 			<artifactId>parsson</artifactId>
 		</dependency>
-
-		<!-- ajax json -->
-		<!-- social에서 참조 하고 있어 임시 주석 처리 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -405,8 +315,7 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
-		<!-- LDAP조직도관리 관련 라이브러리  -->
-		<!-- CVE-2024-38829: 취약점 보완용 업데이트 -->
+		<!-- LDAP 조직도 관리 (CVE-2024-38829 대응) -->
 		<dependency>
 			<groupId>org.springframework.ldap</groupId>
 			<artifactId>spring-ldap-core</artifactId>
@@ -434,6 +343,7 @@
 			</exclusions>
 		</dependency>
 
+		<!-- JDBC 드라이버 -->
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
@@ -446,6 +356,7 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -455,30 +366,24 @@
 			<groupId>com.github.javaparser</groupId>
 			<artifactId>javaparser-core</artifactId>
 		</dependency>
-		<!-- CVE-2021-23926: 취약점 보완용 업데이트 -->
+		<!-- CVE-2021-23926 대응 -->
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
 		</dependency>
-
-		<!-- CVE-2024-7254: mysql-connector-j에서 주입되는 protobuf-java 3.25.1 취약점
-		보완용 직접 주입 -->
+		<!-- mysql-connector-j 의 protobuf-java 고정 (CVE-2024-7254 대응) -->
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-			<version>3.25.5</version>
 		</dependency>
 
-		<!-- 3rd party 라이브러리로 별도의 설치 필요 끝 -->
-
-		<!-- 법정도코드, 기관코드 연계 -->
+		<!-- 법정동코드·기관코드 연계 -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
 		</dependency>
 
-		<!-- 공통컴포넌트 끝 -->
-
+		<!-- 테스트 -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -494,13 +399,11 @@
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- HSQLDB(테스트용) -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -516,7 +419,7 @@
 			<artifactId>jakarta.annotation-api</artifactId>
 		</dependency>
 
-		<!-- Jakarta Validation -->
+		<!-- Bean Validation -->
 		<dependency>
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
@@ -526,54 +429,33 @@
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 
-		<!-- 3rd party 라이브러리로 별도의 설치 필요 -->
-
-		<!--  M-Gov (SMS Service API) -->
+		<!-- M-Gov SMS (동봉 jar) -->
 		<dependency>
 			<groupId>project</groupId>
 			<artifactId>smeapi</artifactId>
 			<version>2.7.0</version>
 		</dependency>
 
-		<!-- GPKI인증서 로그인처리 라이브러리 -->
-		<!--<dependency>
-	            <groupId>project</groupId>
-	            <artifactId>gpkisecureweb</artifactId>
-	            <version>1.0.4.9</version>
-	        </dependency>
-	        <dependency>
-	            <groupId>project</groupId>
-	            <artifactId>libgpkiapi</artifactId>
-	            <version>1.4.0</version>
-	        </dependency>-->
-
-		<dependency>
-			<groupId>jakarta.faces</groupId>
-			<artifactId>jakarta.faces-api</artifactId>
-		</dependency>
-
-		<!-- CVE-2025-48734: 취약점 보완용 업데이트 -->
+		<!-- CVE-2025-48734 대응 -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
-
-		<!-- CVE-2025-48924: 취약점 보완용 업데이트 -->
+		<!-- CVE-2025-48924 대응 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-		<!-- CKEditor 등록 컨텐츠(이미지 포함) 조회화면 출력 시 XSS 방지를 위한 HTML Sanitizer -->
+		<!-- 웹에디터 본문 XSS 방지 -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.18.3</version>
 		</dependency>
-
 	</dependencies>
 
 	<profiles>
+		<!-- DB·MockMvc 테스트용 (Servlet 6.0, EL 구현체) -->
 		<profile>
 			<id>test</id>
 			<properties>
@@ -605,14 +487,6 @@
 							<containerId>tomcat11x</containerId>
 							<type>embedded</type>
 						</container>
-						<configuration>
-							<!--<properties>
-								<property>
-									<name>cargo.servlet.port</name>
-									<value>8080</value>
-								</property>
-							</properties>-->
-						</configuration>
 					</configuration>
 				</plugin>
 				<plugin>
@@ -642,7 +516,6 @@
 					<artifactId>exec-maven-plugin</artifactId>
 					<version>3.5.0</version>
 				</plugin>
-				<!-- PMD manven plugin -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-pmd-plugin</artifactId>
@@ -651,7 +524,6 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
-			<!-- EMMA -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
@@ -661,13 +533,14 @@
 					<excludes>
 						<exclude>**/Abstract*.java</exclude>
 						<exclude>**/*Suite.java</exclude>
+						<!-- 전자정부 저장소 루트의 src/script/ddl 디렉터리를 전제하는 테스트 (템플릿에는 script/ddl 만 존재) -->
+						<exclude>**/MberNmDdlConsistencyTest.java</exclude>
 					</excludes>
 					<includes>
 						<include>**/*Test.java</include>
 					</includes>
 				</configuration>
 			</plugin>
-			<!--  JavaDoc -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>

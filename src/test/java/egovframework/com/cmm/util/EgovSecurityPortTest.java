@@ -371,6 +371,8 @@ class EgovSecurityPortTest {
             if (m.equals("selectArticleCommentDetail")) return stored;
             return null;
         }));
+        // 수정 화면은 소유자 검사 뒤 부모 글의 비밀글 여부도 확인한다. 부모 글이 없으면 그 검사는 건너뛴다.
+        ReflectionTestUtils.setField(controller, "egovArticleService", stub(EgovArticleService.class, (m,a) -> null));
         ReflectionTestUtils.setField(controller, "propertyService", stub(org.egovframe.rte.fdl.property.EgovPropertyService.class, (m,a) -> 10));
         CommentVO request = new CommentVO();
         assertThrows(IllegalStateException.class, () -> controller.updateArticleCommentView(request, new ModelMap()));

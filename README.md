@@ -1,8 +1,8 @@
 # 표준프레임워크 공통컴포넌트
 
-[![eGovFrame](https://img.shields.io/badge/eGovFrame-5.0.7-134F8C?labelColor=white&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNzMuMjgyIDE3My4yODIiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xNzMuMjgyIDg2LjY1YzAgNDcuODQ0LTM4Ljc5NCA4Ni42MzItODYuNjQ2IDg2LjYzMkMzOC43OTkgMTczLjI4MiAwIDEzNC40OTQgMCA4Ni42NSAwIDM4Ljc4OCAzOC43OTkgMCA4Ni42MzYgMGM0Ny44NTIgMCA4Ni42NDYgMzguNzg4IDg2LjY0NiA4Ni42NSIvPjxwYXRoIGZpbGw9IiMwMDM3NjQiIGQ9Ik0xMjcuMzg5IDgwLjU5OGMtMTMuNzkxLTkuMzY1LTMxLjQzOS01LjU0Mi00MC43MTcgOC41MzMtNy43MiAxMS43NjctMTkuNDA1IDEzLjIzNS0yMy45MDYgMTMuMjM1LTE0Ljc1MSAwLTI0LjgyNC0xMC4zNjctMjcuODE4LTIxLjA5NWgtLjAxYy0uMDM5LS4xMDgtLjA1OS0uMi0uMDktLjMwNy0uMDI1LS4xMi0uMDU2LS4yMzMtLjA4OS0uMzY2LTEuMTc3LTQuNDY3LTEuNDY3LTYuNjA5LTEuNDY3LTExLjM2OCAwLTI1LjY1IDI2LjMyMS01NC4yMTMgNjQuMjE1LTU0LjIxMyAzOC44MjkgMCA2MS4wNSAyOS41NDUgNjYuNzggNDUuOTc5LS4xMDctLjI5NS0uMjA5LS41ODEtLjI5MS0uODc3LTExLjAxNS0zMi4xMjUtNDEuNDc0LTU1LjIxNi03Ny4zNTctNTUuMjE2LTQ1LjEzIDAtODEuNzI5IDM2LjU5LTgxLjcyOSA4MS43MzkgMCA0MC4zNTEgMjkuMTA4IDc0Ljg5MSA2OS40NzkgNzQuODkxIDMyLjE5NyAwIDUzLjg0Mi0xOC4wNTIgNjMuNzU3LTQyLjkzIDUuNDUtMTMuNjE0IDEuNTk1LTI5LjYwNS0xMC43NTctMzguMDA1Ii8%2BPHBhdGggZmlsbD0iI2U0MDMyZSIgZD0iTTE2NC43ODggNjIuNTg5Yy00Ljc3Ny0xNi4wMjYtMjcuMTUzLTQ3LjU3MS02Ny4yODItNDcuNTcxLTM3Ljg5NCAwLTY0LjIxNCAyOC41NjMtNjQuMjE0IDU0LjIxMiAwIDQuNzU5LjI5IDYuOTAxIDEuNDY2IDExLjM2OC0uNDg5LTEuOTUxLS43NC0zLjkwOC0uNzQtNS44MjMgMC0yNi43MjEgMjYuNzQxLTQ1LjIyNyA1NC4yNDgtNDUuMjI3IDM3LjIxOCAwIDY3LjM4OCAzMC4xNzQgNjcuMzg4IDY3LjM5IDAgMjkuMTczLTE2Ljc4NSA1NC40MzctNDEuMTc5IDY2LjU2NXYuMDIzYzMxLjQ1NS0xMS4zOTEgNTMuOTA4LTQxLjUxMiA1My45MDgtNzYuODg0IDAtOC4zNzgtMS4xMjctMTUuNzU5LTMuNTk1LTI0LjA1MyIvPjwvc3ZnPg%3D%3D)](https://www.egovframe.go.kr)
+[![eGovFrame](https://img.shields.io/badge/eGovFrame-5.1.0-134F8C?labelColor=white&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNzMuMjgyIDE3My4yODIiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0xNzMuMjgyIDg2LjY1YzAgNDcuODQ0LTM4Ljc5NCA4Ni42MzItODYuNjQ2IDg2LjYzMkMzOC43OTkgMTczLjI4MiAwIDEzNC40OTQgMCA4Ni42NSAwIDM4Ljc4OCAzOC43OTkgMCA4Ni42MzYgMGM0Ny44NTIgMCA4Ni42NDYgMzguNzg4IDg2LjY0NiA4Ni42NSIvPjxwYXRoIGZpbGw9IiMwMDM3NjQiIGQ9Ik0xMjcuMzg5IDgwLjU5OGMtMTMuNzkxLTkuMzY1LTMxLjQzOS01LjU0Mi00MC43MTcgOC41MzMtNy43MiAxMS43NjctMTkuNDA1IDEzLjIzNS0yMy45MDYgMTMuMjM1LTE0Ljc1MSAwLTI0LjgyNC0xMC4zNjctMjcuODE4LTIxLjA5NWgtLjAxYy0uMDM5LS4xMDgtLjA1OS0uMi0uMDktLjMwNy0uMDI1LS4xMi0uMDU2LS4yMzMtLjA4OS0uMzY2LTEuMTc3LTQuNDY3LTEuNDY3LTYuNjA5LTEuNDY3LTExLjM2OCAwLTI1LjY1IDI2LjMyMS01NC4yMTMgNjQuMjE1LTU0LjIxMyAzOC44MjkgMCA2MS4wNSAyOS41NDUgNjYuNzggNDUuOTc5LS4xMDctLjI5NS0uMjA5LS41ODEtLjI5MS0uODc3LTExLjAxNS0zMi4xMjUtNDEuNDc0LTU1LjIxNi03Ny4zNTctNTUuMjE2LTQ1LjEzIDAtODEuNzI5IDM2LjU5LTgxLjcyOSA4MS43MzkgMCA0MC4zNTEgMjkuMTA4IDc0Ljg5MSA2OS40NzkgNzQuODkxIDMyLjE5NyAwIDUzLjg0Mi0xOC4wNTIgNjMuNzU3LTQyLjkzIDUuNDUtMTMuNjE0IDEuNTk1LTI5LjYwNS0xMC43NTctMzguMDA1Ii8%2BPHBhdGggZmlsbD0iI2U0MDMyZSIgZD0iTTE2NC43ODggNjIuNTg5Yy00Ljc3Ny0xNi4wMjYtMjcuMTUzLTQ3LjU3MS02Ny4yODItNDcuNTcxLTM3Ljg5NCAwLTY0LjIxNCAyOC41NjMtNjQuMjE0IDU0LjIxMiAwIDQuNzU5LjI5IDYuOTAxIDEuNDY2IDExLjM2OC0uNDg5LTEuOTUxLS43NC0zLjkwOC0uNzQtNS44MjMgMC0yNi43MjEgMjYuNzQxLTQ1LjIyNyA1NC4yNDgtNDUuMjI3IDM3LjIxOCAwIDY3LjM4OCAzMC4xNzQgNjcuMzg4IDY3LjM5IDAgMjkuMTczLTE2Ljc4NSA1NC40MzctNDEuMTc5IDY2LjU2NXYuMDIzYzMxLjQ1NS0xMS4zOTEgNTMuOTA4LTQxLjUxMiA1My45MDgtNzYuODg0IDAtOC4zNzgtMS4xMjctMTUuNzU5LTMuNTk1LTI0LjA1MyIvPjwvc3ZnPg%3D%3D)](https://www.egovframe.go.kr)
 [![Java](https://img.shields.io/badge/Java-17-007396?logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Spring Framework](https://img.shields.io/badge/Spring%20Framework-6.2.11-%236DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-framework)
+[![Spring Framework](https://img.shields.io/badge/Spring%20Framework-6.2.19--egov.2-%236DB33F?logo=spring&logoColor=white)](https://spring.io/projects/spring-framework)
 [![maven](https://img.shields.io/badge/Maven-C71A36?logo=apache-maven&logoColor=white)](https://maven.apache.org/)
 [![javascript](https://img.shields.io/badge/javascript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/docs/Web/JavaScript)
 [![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?logo=jquery&logoColor=white)](https://jquery.com/)
@@ -18,8 +18,12 @@
 ## 공통컴포넌트 구성
 
 ```
-egovframe-common-components
+egovframe-template-common-components
+  ├─k8s
   ├─script
+  ├─Dockerfile, docker-compose.yml
+  ├─init-crypto-key.bat, init-crypto-key.sh
+  ├─pom.xml
   └─src
      ├─main
      │  ├─java/egovframework/com
@@ -36,12 +40,17 @@ egovframe-common-components
      │  │  └─utl
      │  ├─resources
      │  └─webapp
-     └─script
+     ├─script
+     └─test
 ```
 
 ### 공통컴포넌트 구성 설명
 
+- `k8s` : Kubernetes 매니페스트(Deployment, Service)와 컨테이너 실행 가이드 ([k8s/README.md](k8s/README.md))
 - `script` : 공통컴포넌트에서 지원하는 데이터베이스(mysql, oracle, altibase, tibero, cubrid, mariadb, postgres, goldilocks 8종)에 대한 전체 DDL, DML, Comment 제공
+- `Dockerfile`, `docker-compose.yml` : 컨테이너 이미지 빌드(Maven · JDK 17)와 실행(Tomcat 11.0 · JRE 17) 설정
+- `init-crypto-key.bat`, `init-crypto-key.sh` : 암호화 키 초기화 도구 (아래 [보안 주의사항 1](#1-crypto-암호화-키-변경-algorithmkey--algorithmkeyhash) 참조)
+- `pom.xml` : Maven 빌드 설정 (`egovframe-web-config-parent` 5.1.0 상속, 실행환경 5.1.0, war 패키징)
 - `src/main/java/egovframework/com/cmm` : 공통으로 사용하는 클래스들로 구성
 - `src/main/java/egovframework/com/cop` : 게시판, 커뮤니티, 일정관리 같은 협업 업무에서 사용하는 클래스들로 구성
 - `src/main/java/egovframework/com/dam` : 개인지식관리, 지식맵 관리 같은 디지털 자산관리 업무에서 사용하는 클래스들로 구성
@@ -56,6 +65,17 @@ egovframe-common-components
 - `src/main/resources` : 공통컴포넌트 코드에서 사용하는 리소스 폴더
 - `src/main/webapp` : 공통컴포넌트 웹페이지 루트 폴더
 - `src/script` : 공통컴포넌트에서 지원하는 데이터베이스에 대한 업무 분류별 DDL, DML 제공
+- `src/test` : 단위·통합 테스트 (기본 생략. 실행: `mvn test -DskipTests=false`, DB·MockMvc 테스트는 `-Ptest` 추가)
+
+### 개발·실행 환경
+
+| 항목 | 버전 |
+| --- | --- |
+| 표준프레임워크 실행환경 | 5.1.0 |
+| Java | 17 |
+| Spring Framework / Spring Security | 6.2.19-egov.2 / 6.5.11-egov.2 |
+| WAS | Tomcat 11 |
+| 빌드 | Maven (결과물 `target/egovframe-template-common-components-5.1.0.war`) |
 
 ## 공통컴포넌트 구동 방법
 
@@ -70,6 +90,18 @@ egovframe-common-components
 8. 브라우저를 통해 공통컴포넌트 서비스를 확인함
 
 <img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://github.com/user-attachments/assets/aad11f93-b9d2-4bcf-bf45-c06365899a5d">
+
+### Docker / Kubernetes 로 구동
+
+위 4 ~ 6번(데이터베이스 정보, 암호화 키 초기화, 인증/권한방식)을 마친 뒤 프로젝트 루트에서 실행합니다. 설정은 war 안에 들어가므로 바꾼 뒤에는 이미지를 다시 빌드해야 합니다.
+
+```bash
+docker compose up -d --build     # http://localhost:8080/
+```
+
+- 이미지는 `egovframe-template-common-components:5.1.0` 으로 만들어지며 Tomcat 11.0(JRE 17)에서 ROOT 컨텍스트(`/`)로 실행됩니다.
+- DB 컨테이너는 포함하지 않습니다. `globals.properties` 의 DB 주소는 컨테이너에서 접근할 수 있는 주소여야 합니다(기본값 `127.0.0.1` 은 컨테이너 자신). 기동 시점에 DB 에 연결되지 않으면 애플리케이션이 배포되지 않아 모든 경로가 404 를 응답합니다.
+- 단독 `docker` 실행, Kubernetes 배포(`k8s/deployment.yaml`, `k8s/service.yaml`), 헬스 체크, 볼륨 구성은 [k8s/README.md](k8s/README.md) 를 참조하십시오.
 
 ## ⚠️ 보안 주의사항 (개발 적용 전 필수 변경)
 
@@ -148,11 +180,12 @@ src/main/resources/egovframework/egovProps/conf/egov-crypto-config.properties
 - 개발시 초기값을 그대로 사용할 경우, 그대로 배포까지 이어져서 누구나 알고 있는 계정정보로 시스템에 접근할 수 있어 심각한 보안 위험이 발생합니다.
 
 
-## 5.0.7 패치 내용
+## 5.1.0 변경 내용
 
-- 2026년 컨트리뷰션 반영
-- 접근 제어 보안 수정 (IDOR : 요청 식별자 조작을 통한 다른 사용자 데이터 접근 차단)
-- 기능별 접근권한 정비 및 주요 기능의 소유권 검증 보완
+- 표준프레임워크 실행환경 5.1.0 적용 (`egovframe-web-config-parent` 5.1.0, Spring Framework 6.2.19-egov.2, Spring Security 6.5.11-egov.2)
+- 암호화 키 기동 가드 및 키 초기화 도구(`init-crypto-key`) 추가 : 배포 기본 키로는 서비스되지 않음
+- 초기 계정 보호 : 초기 비밀번호 변경 안내 팝업, `TEST1` 외 초기 계정 잠금
+- 배포 패키징 스크립트(`build-script`) 및 컨테이너 실행 설정(`Dockerfile`, `docker-compose.yml`, `k8s`) 정비
 
 ## 참조
 

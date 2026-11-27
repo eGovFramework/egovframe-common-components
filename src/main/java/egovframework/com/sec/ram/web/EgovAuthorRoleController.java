@@ -70,6 +70,7 @@ public class EgovAuthorRoleController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/ram/EgovAuthorRoleListView.do")
+    @RequireAdmin
     public String selectAuthorRoleListView() throws Exception {
         return "egovframework/com/sec/ram/EgovAuthorRoleManage";
     }
@@ -82,6 +83,7 @@ public class EgovAuthorRoleController {
 	 * @exception Exception
 	 */
     @RequestMapping(value = "/sec/ram/EgovAuthorRoleList.do")
+    @RequireAdmin
 	public String selectAuthorRoleList(@ModelAttribute("authorRoleManageVO") AuthorRoleManageVO authorRoleManageVO,
 			                            ModelMap model) throws Exception {
 

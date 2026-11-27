@@ -56,4 +56,13 @@ public class UserDefaultVO implements Serializable {
 	/** recordCountPerPage */
 	private int recordCountPerPage = 10;
 
+	/**
+	 * 목록 범위. 'N' 이면 전체(관리자), 그 외에는 ownerUniqId 한 건만 조회한다.
+	 * 요청 파라미터로 바인딩되더라도 목록 컨트롤러가 항상 서버 값으로 덮어쓴다. 기본값은 본인 한정(값이 없으면 0건).
+	 */
+	private String ownerOnly = "Y";
+
+	/** 본인 한정 조회 시 고유ID(ESNTL_ID) */
+	private String ownerUniqId = "";
+
 }

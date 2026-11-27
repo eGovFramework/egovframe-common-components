@@ -4,10 +4,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-	<!--  자료이용현황 통계 AOP -->
+	<!-- 자료이용현황 통계 AOP -->
 	<aop:config>
 		<aop:aspect id="dtaUseStatsLogging" ref="egovDtaUseStatsService">
-			<!--  파일 다운로드 후 자료이용통계 기록 -->
 			<aop:after-returning pointcut="execution(public * egovframework.com.cmm.web.EgovFileDownloadController.cvplFileDownload(..))" method="insertDtaUseStats" />
 		</aop:aspect>
 	</aop:config>

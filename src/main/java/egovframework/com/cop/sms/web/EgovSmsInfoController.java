@@ -15,6 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
@@ -189,6 +190,8 @@ public class EgovSmsInfoController {
         }
 
 		SmsVO vo = smsInfoService.selectSmsInf(smsVO);
+		// 2026.11.25 KVE-2026-3296 조치 - 보낸 사람 본인 또는 관리자만 상세를 볼 수 있다
+		EgovAuthorizationHelper.assertAdminOrOwner(vo == null ? null : vo.getFrstRegisterId());
 
 		model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		model.addAttribute("result", vo);

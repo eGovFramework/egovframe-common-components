@@ -25,6 +25,7 @@
         SBSCRB_DE             as SBSCRB_DE
 	    FROM    COMTNGNRLMBER
         WHERE 1=1
+        AND (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
             AND MBER_STTUS LIKE  #{sbscrbSttus}
         </if>
@@ -58,6 +59,7 @@
                 MBER_STTUS        "sttus",
                 SBSCRB_DE         "sbscrbDe"
             FROM    COMTNGNRLMBER
+            WHERE (#{ownerOnly} = 'N' OR ESNTL_ID = #{ownerUniqId})
             ) A
         WHERE 1=1
             <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>

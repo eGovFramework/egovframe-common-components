@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: egov-common-components
+  name: egovframe-template-common-components
   labels:
-    app.kubernetes.io/name: egov-common-components
+    app.kubernetes.io/name: egovframe-template-common-components
     app.kubernetes.io/part-of: egovframe
 spec:
   replicas: 1
@@ -14,11 +14,11 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      app.kubernetes.io/name: egov-common-components
+      app.kubernetes.io/name: egovframe-template-common-components
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: egov-common-components
+        app.kubernetes.io/name: egovframe-template-common-components
         app.kubernetes.io/part-of: egovframe
     spec:
       securityContext:
@@ -28,8 +28,9 @@ spec:
         fsGroup: 1000
       containers:
         - name: app
-          # Replace with your registry/tag, e.g. ghcr.io/<org>/egov-common-components:5.0.0
-          image: egovframe-common-components:5.0.0
+          # 클러스터가 접근할 수 있는 레지스트리의 태그로 바꾼다.
+          # 예) ghcr.io/<org>/egovframe-template-common-components:5.1.0
+          image: egovframe-template-common-components:5.1.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -45,7 +46,11 @@ spec:
           # ROOT('/')와 '/index.do'는 DispatcherServlet/스프링 시큐리티/DB에 의존해
           # 기동 시점에 302(로그인 리다이렉트)나 500을 반환할 수 있어 프로브에 부적합하다.
           # /css/** 는 egov-security-config.properties의 permitAllList에 포함된
-          # 정적 경로로, 톰캣 DefaultServlet이 인증/DB 없이 200을 반환한다.
+          # 정적 경로로, 로그인 없이 200을 반환하고 요청마다 DB 를 조회하지 않는다.
+          # 단, 아래 두 경우에는 이 경로도 실패해 파드가 Ready 가 되지 않는다.
+          #  - 암호화 키가 배포 기본값 : EgovCryptoKeyGuardFilter(/*)가 503 응답
+          #    (이미지 빌드 전에 init-crypto-key 를 실행한다)
+          #  - 기동 시점에 DB 연결 실패 : 스프링 컨텍스트 초기화 실패로 404 응답
           startupProbe:
             httpGet:
               path: /css/egovframework/com/com12.css
@@ -79,10 +84,17 @@ spec:
               mountPath: /usr/local/tomcat/temp
             - name: tomcat-logs
               mountPath: /usr/local/tomcat/logs
+            # 첨부파일 저장 위치 (Globals.fileStorePath, Globals.SynchrnServerPath)
+            - name: upload
+              mountPath: /upload
       volumes:
         - name: tomcat-work
           emptyDir: {}
         - name: tomcat-temp
           emptyDir: {}
         - name: tomcat-logs
+          emptyDir: {}
+        # emptyDir 는 파드가 재생성되면 비워진다. 첨부파일을 보존하거나 replicas 를 늘리려면
+        # PersistentVolumeClaim(다중 파드는 ReadWriteMany)으로 바꾼다.
+        - name: upload
           emptyDir: {}

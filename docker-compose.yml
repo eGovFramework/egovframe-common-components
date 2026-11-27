@@ -1,8 +1,17 @@
+# 애플리케이션 컨테이너만 정의한다. DB 는 포함하지 않으므로 빌드 전에
+# src/main/resources/egovframework/egovProps/globals.properties 의 접속 정보를 맞추고
+# init-crypto-key.sh(.bat)로 암호화 키를 초기화해 둔다. (k8s/README.md 참조)
 services:
   app:
     build: .
-    image: egovframe-common-components:${APP_VERSION:-5.0.0}
-    container_name: egov-common-components
+    image: egovframe-template-common-components:${APP_VERSION:-5.1.0}
+    container_name: egovframe-template-common-components
     ports:
       - "8080:8080"
+    volumes:
+      # 첨부파일 저장 위치 (Globals.fileStorePath, Globals.SynchrnServerPath)
+      - upload:/upload
     restart: unless-stopped
+
+volumes:
+  upload:

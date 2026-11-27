@@ -90,6 +90,7 @@ public class EgovEmplyrManageController {
 	 */
 	@IncludedInfo(name = "업무사용자관리", order = 460, gid = 50)
 	@RequestMapping(value = "/uss/umt/EgovEmplyrManage.do")
+	@RequireAdmin
 	public String selectEmplyrList(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO, ModelMap model)
 			throws Exception {
 
@@ -256,7 +257,6 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrSelectUpdtView.do")
-	@RequireAdmin
 	public String updateUserView(@RequestParam("selectedId") String uniqId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, Model model) throws Exception {
 		uniqId = decryptSelectedId(uniqId);
@@ -268,6 +268,9 @@ public class EgovEmplyrManageController {
 		if (!EgovAuthorizationHelper.isAdminOrOwner(uniqId)) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
+
+		// 삭제·잠금해제 버튼은 관리자에게만 보여준다(화면 표시용)
+		model.addAttribute("isAdmin", EgovAuthorizationHelper.isAdmin());
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -347,7 +350,6 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrSelectUpdt.do")
-	@RequireAdmin
 	public String updateUser(@Valid @ModelAttribute("emplyrManageVO") EmplyrManageVO emplyrManageVO, BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -367,6 +369,14 @@ public class EgovEmplyrManageController {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
+		// 본인이 수정하는 경우(관리자 아님) 권한과 관련된 항목은 기존 저장값으로 고정한다.
+		if (!EgovAuthorizationHelper.isAdmin()) {
+			emplyrManageVO.setGroupId(currentEmplyr.getGroupId());
+			emplyrManageVO.setOrgnztId(currentEmplyr.getOrgnztId());
+			emplyrManageVO.setInsttCode(currentEmplyr.getInsttCode());
+			emplyrManageVO.setEmplyrSttusCode(currentEmplyr.getEmplyrSttusCode());
+		}
+
 		// 과다바인딩 방지: 신원/인증 관련 주요 필드는 기존 저장값으로 고정한다.
 		emplyrManageVO.setEmplyrId(currentEmplyr.getEmplyrId());
 		emplyrManageVO.setPasswordHint(currentEmplyr.getPasswordHint());
@@ -378,7 +388,7 @@ public class EgovEmplyrManageController {
 		if (bindingResult.hasErrors()) {
 			String resultMsgCode = bindingResult.getAllErrors().get(0).getCode();
 			model.addAttribute("resultMsg", resultMsgCode);
-			return "forward:/uss/umt/EgovEmplyrManage.do";
+			return forwardAfterUpdate();
 		} else {
 			// 업무사용자 수정시 히스토리 정보를 등록한다.
 			emplyrManageService.insertEmplyrHistory(emplyrManageVO);
@@ -391,7 +401,7 @@ public class EgovEmplyrManageController {
 			emplyrManageService.updateEmplyr(emplyrManageVO);
 			// Exception 없이 진행시 수정성공메시지
 			model.addAttribute("resultMsg", "success.common.update");
-			return "forward:/uss/umt/EgovEmplyrManage.do";
+			return forwardAfterUpdate();
 		}
 	}
 
@@ -510,7 +520,6 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrPasswordUpdt.do")
-	@RequireAdmin
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("emplyrPasswordManageVO") EmplyrPasswordManageVO emplyrPasswordManageVO,
@@ -520,6 +529,11 @@ public class EgovEmplyrManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
+		}
+
+		// 비밀번호 변경은 관리자 또는 본인(로그인 사용자의 uniqId 와 일치)만 할 수 있다
+		if (!EgovAuthorizationHelper.isAdminOrOwner(emplyrPasswordManageVO.getUniqId())) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		if (bindingResult.hasErrors()) {
@@ -570,7 +584,6 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/uss/umt/EgovEmplyrPasswordUpdtView.do")
-	@RequireAdmin
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("emplyrPasswordManageVO") EmplyrPasswordManageVO emplyrPasswordManageVO) throws Exception {
@@ -579,6 +592,11 @@ public class EgovEmplyrManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
+		}
+
+		// 비밀번호 변경은 관리자 또는 본인(로그인 사용자의 uniqId 와 일치)만 할 수 있다
+		if (!EgovAuthorizationHelper.isAdminOrOwner(emplyrPasswordManageVO.getUniqId())) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		String userTyForPassword = (String) commandMap.get("userTyForPassword");
@@ -626,6 +644,14 @@ public class EgovEmplyrManageController {
 
 		// 실명인증기능 미탑재로 바로 회원가입 페이지로 이동.
 		return "forward:" + link;
+	}
+
+	/**
+	 * 2026.11.25 KVE-2026-3294 후속 조치 - 수정 후 이동할 곳. 목록은 관리자 전용이므로,
+	 * 본인 정보를 수정한 사용자(관리자 아님)는 자기 수정 화면으로 돌아간다(수정 폼의 selectedId 가 그대로 전달된다).
+	 */
+	private static String forwardAfterUpdate() {
+		return EgovAuthorizationHelper.isAdmin() ? "forward:/uss/umt/EgovEmplyrManage.do" : "forward:/uss/umt/EgovEmplyrSelectUpdtView.do";
 	}
 
 	private String decryptSelectedId(String selectedId) {

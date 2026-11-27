@@ -25,7 +25,7 @@
         <session-timeout>60</session-timeout>
         <cookie-config>
 		<http-only>true</http-only>
-		<secure>true</secure><!-- Local & Safari 브라우저 사용 시 false 로 변경해야 함(HTTPS 엄격한 적용) -->
+		<secure>true</secure><!-- HTTP 로컬 개발·Safari 에서는 false -->
 	</cookie-config>
     	<tracking-mode>COOKIE</tracking-mode>
     </session-config>

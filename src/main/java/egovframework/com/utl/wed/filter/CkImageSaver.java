@@ -44,6 +44,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.utl.fcc.service.EgovFormBasedFileUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -153,7 +154,7 @@ public class CkImageSaver {
 						+ "/utl/web/imageSrc.do?"
 						+ "path=" + this.encrypt(filePath, request)
 						+ "&physical=" + this.encrypt(fileName, request)
-						+ "&contentType=" + this.encrypt(uploaded.contentType, request);
+						+ "&contentType=" + this.encrypt(EgovFormBasedFileUtil.resolveImageContentType(fileName), request);
 			}
 		} catch (FileUploadException e) {
 			log.error(e);

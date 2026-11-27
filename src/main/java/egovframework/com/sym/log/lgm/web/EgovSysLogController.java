@@ -57,6 +57,7 @@ public class EgovSysLogController {
 	 */
 	@IncludedInfo(name = "로그관리", listUrl = "/sym/log/lgm/SelectSysLogList.do", order = 1030, gid = 60)
 	@RequestMapping(value = "/sym/log/lgm/SelectSysLogList.do")
+	@RequireAdmin
 	public String selectSysLogInf(@ModelAttribute("searchVO") SysLog sysLog, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.sample */

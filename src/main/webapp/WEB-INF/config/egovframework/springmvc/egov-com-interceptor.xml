@@ -6,22 +6,18 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-	<!-- 세션(Session) 방식 인증시에만 AuthenticInterceptor 동작  -->
+	<!-- 세션 인증 시에만 동작 (profile: dummy, session, security) -->
 	<beans profile="session">
 		<mvc:interceptors>
-			<!-- IP 정보 기록 인터셉터 - 모든 요청에 대해 실행 -->
+			<!-- IP 기록 (모든 요청) -->
 			<bean class="egovframework.com.cmm.interceptor.IpObtainInterceptor" />
 		</mvc:interceptors>
 	</beans>
 
-	<!-- 세션(Session) 방식 인증시에만 AuthenticInterceptor 동작  -->
-	<!-- 동작모드(프로파일명) : dummy, session, security ex)<beans profile="session"/> -->
+	<!-- 더미 인증 시에만 동작 -->
 	<beans profile="dummy">
 		<mvc:interceptors>
-			<!--
-			* 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터 등록에 대한 간단한 기능 예시이다.
-			* 실무에 사용시 시큐리티 간소화 서비스 또는 세션모드 접근제어를 사용한다.
-			-->
+			<!-- 로그인 확인 예시 (실무는 시큐리티 간소화 또는 세션 접근제어 사용) -->
 			<mvc:interceptor>
 				<mvc:mapping path="/**/*.do" />
 				<mvc:exclude-mapping path="/uat/uia/**" />
@@ -34,10 +30,9 @@
 				<mvc:exclude-mapping path="/EgovBottom.do" />
 				<mvc:exclude-mapping path="/EgovModal.do" />
 				<bean class="egovframework.com.cmm.interceptor.AuthenticInterceptor">
-				<!-- 관리자 권한 Ant style Pattern List -->			
+				<!-- 관리자 권한 URL 패턴 -->			
 					<property name="adminAuthPatternList">
 						<list>
-						<!-- 보안 > 권한관리 -->
 							<value>/sec/ram/*.do</value>
 						</list>
 					</property>

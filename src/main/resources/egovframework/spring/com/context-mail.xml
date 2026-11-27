@@ -2,15 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xmlns:p="http://www.springframework.org/schema/p"  
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"> 
-     
-    <!-- 일반용   
-    <bean id="mntrngMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" 
-        p:host="STMP서버주소"  
-        p:username="아이디" 
-        p:password="비밀번호" /> 
-    --> 
-    
-    <!-- 메일 연동 인터페이스에서 첨부파일 미사용 -->
+
+    <!-- 메일 연동 (첨부파일 없음) -->
     <bean id="EMSMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" 
         p:host="STMP서버주소" 
         p:port="465"  
@@ -27,7 +20,7 @@
         </property> 
     </bean>
      
-    <!-- 메일 연동 인터페이스에서 첨부파일 사용 -->
+    <!-- 메일 연동 (첨부파일 포함) -->
 	<bean id="egovMultiPartEmail" class="egovframework.com.cop.ems.service.EgovMultiPartEmail"
 		p:host="이메일SMTP주소"
 		p:port="587"
@@ -36,7 +29,7 @@
 		p:senderName="System"
 		p:emailAddress="이메일주소" />
 	  
-    <!-- 모니터링 서비스에서 사용 gmail, hanmail 용 -->
+    <!-- 모니터링 알림 메일 -->
     <bean id="mntrngMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" 
         p:host="이메일SMTP주소"
         p:port="587"
@@ -54,7 +47,7 @@
         </property> 
     </bean>
     
-    <!-- 스케줄러에서 메일발송시 설정 -->
+    <!-- 스케줄러 메일 발송 -->
     <bean id="mntrngMessage" class="org.springframework.mail.SimpleMailMessage" 
         p:from="SYSTEM &lt; orgpig@naver.com &gt;"   
         p:subject="{모니터링종류} 상태통보." 

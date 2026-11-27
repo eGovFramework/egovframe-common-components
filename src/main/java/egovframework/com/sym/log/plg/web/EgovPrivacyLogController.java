@@ -46,6 +46,7 @@ public class EgovPrivacyLogController {
 	 */
 	@IncludedInfo(name="개인정보조회로그관리", listUrl="/sym/log/plg/SelectPrivacyLogList.do", order = 1085 ,gid = 60)
 	@RequestMapping(value = "/sym/log/plg/SelectPrivacyLogList.do")
+	@RequireAdmin
 	public String selectPrivacyLogList(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 

@@ -156,7 +156,7 @@ public class EgovWebEditorImageController {
 						+ "/utl/web/imageSrc.do?"
 						+ "path=" + this.encrypt(vo.getServerSubPath())
 						+ "&physical=" + this.encrypt(vo.getPhysicalName())
-						+ "&contentType=" + this.encrypt(vo.getContentType());
+						+ "&contentType=" + this.encrypt(EgovFormBasedFileUtil.resolveImageContentType(vo.getPhysicalName()));
 
 				model.addAttribute("url", url);
 				model.addAttribute("msg",egovMessageSource.getMessage("success.file.transfer"));

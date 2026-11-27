@@ -68,6 +68,7 @@ public class EgovAuthorManageController {
 	 */
     @IncludedInfo(name="권한관리", listUrl="/sec/ram/EgovAuthorList.do", order = 60,gid = 20)
     @RequestMapping(value = "/sec/ram/EgovAuthorList.do")
+    @RequireAdmin
     public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                        ModelMap model)
             throws Exception {

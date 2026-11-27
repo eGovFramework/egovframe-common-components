@@ -1,12 +1,25 @@
+# 이미지 빌드에는 pom.xml 과 src/ 만 쓴다. 나머지는 빌드 컨텍스트에서 제외한다.
 target/
+build-script/
+script/
+k8s/
+# 암호화 키 초기화 도구 백업 - 옛 키가 들어 있다
+crypto-key-backup/
 *.log
 .idea/
 .vscode/
+.settings/
+.project
+.classpath
+.factorypath
 .git/
 .gitignore
+.gitattributes
 .dockerignore
+.DS_Store
 Dockerfile
 docker-compose.yml
-k8s/
+init-crypto-key.*
+LICENSE
 README*.md
 *.iml
